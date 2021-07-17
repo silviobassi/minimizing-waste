@@ -49,22 +49,6 @@ public class SupplyMovement extends BaseEntity{
         setMovable(true);
     }
 
-    public void quantitySupplyCalculateToNewMovement(){
-        supply.getSupplyDescription().setQuantity(supply.getSupplyDescription().getQuantity()
-                - reservedQuantity);
-    }
-
-    public void quantitySupplyCalculateToCurrentMovement(){
-        var currentQuantitySupply = supply.getSupplyDescription().getQuantity()
-                + allocatedQuantity - reservedQuantity;
-
-        supply.getSupplyDescription().setQuantity(currentQuantitySupply);
-    }
-
-    public void quantitySupplyCalculateToExcludedMovement(){
-        supply.getSupplyDescription().setQuantity(supply.getSupplyDescription().getQuantity() + allocatedQuantity);
-    }
-
     public void returnAllocatedQuantity(){
         allocatedQuantity -= reservedQuantity;
         updateSupplyAmount();

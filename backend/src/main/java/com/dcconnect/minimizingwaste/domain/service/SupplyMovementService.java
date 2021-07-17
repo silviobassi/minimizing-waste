@@ -54,8 +54,8 @@ public class SupplyMovementService {
     public void delete(Long supplyMovementId){
         SupplyMovement supplyMovement = findOrFail(supplyMovementId);
 
-        SupplyCalculate supplyCalculate = new WhenDeleting();
-        supplyCalculate.calculate(supplyMovement);
+        SupplyCalculate whenDeleting = new WhenDeleting();
+        whenDeleting.calculate(supplyMovement);
 
         suppliesMovementRepository.save(supplyMovement);
 
@@ -101,18 +101,18 @@ public class SupplyMovementService {
                                 supplyMovement.getSupply().getSupplyDescription().getQuantity()));
             }
 
-            SupplyCalculate supplyCalculate = new WhenCreating();
-            supplyCalculate.calculate(supplyMovement);
+            SupplyCalculate whenCreating = new WhenCreating();
+            whenCreating.calculate(supplyMovement);
 
         } else {
             if(supplyMovement.isReservedQuantityGreaterThanAllocatedQuantityAndSupplyQuantity()){
                 throw new BusinessException(String.format(QUANTITY_RESERVED_GREATER_AVAILABLE,
                         supplyMovement.getReservedQuantity(),
-                        supplyMovement.sumAllocatedQuantityWithSuppliesQuantity()));
+                        supplyMovement.getSupply().getSupplyDescription().getQuantity()));
             }
 
-            SupplyCalculate supplyCalculate = new WhenUpdating();
-            supplyCalculate.calculate(supplyMovement);
+            SupplyCalculate whenUpdating = new WhenUpdating();
+            whenUpdating.calculate(supplyMovement);
         }
     }
 

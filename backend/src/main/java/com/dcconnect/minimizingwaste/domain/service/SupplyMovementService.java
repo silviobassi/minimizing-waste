@@ -1,15 +1,12 @@
 package com.dcconnect.minimizingwaste.domain.service;
 
+import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMovementInput;
 import com.dcconnect.minimizingwaste.domain.exception.BusinessException;
 import com.dcconnect.minimizingwaste.domain.exception.SuppliesMovementNotFoundException;
 import com.dcconnect.minimizingwaste.domain.model.Supply;
-import com.dcconnect.minimizingwaste.domain.model.WorkStation;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
+import com.dcconnect.minimizingwaste.domain.model.WorkStation;
 import com.dcconnect.minimizingwaste.domain.repository.SuppliesMovementRepository;
-import com.dcconnect.minimizingwaste.domain.strategy.SupplyCalculate;
-import com.dcconnect.minimizingwaste.domain.strategy.WhenCreating;
-import com.dcconnect.minimizingwaste.domain.strategy.WhenDeleting;
-import com.dcconnect.minimizingwaste.domain.strategy.WhenUpdating;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +15,8 @@ import javax.transaction.Transactional;
 @Service
 public class SupplyMovementService {
 
-    public static final String QUANTITY_RETURNED_GREATER_ALLOCATED =
+    public static final String DEVOLVED_QUANTITY_GREATER_ALLOCATED =
             "A quantidade devolvida (%d), não pode ser maior do que a quantidade alocada (%d).";
-
-    public static final String QUANTITY_RESERVED_GREATER_AVAILABLE = "A quantidade reservada (%d) não pode" +
-            " ser maior do que quantidade disponível (%d)";
 
     @Autowired
     private SuppliesMovementRepository suppliesMovementRepository;
@@ -33,8 +27,18 @@ public class SupplyMovementService {
     @Autowired
     private SupplyService supplyService;
 
+    @Autowired
+    private GiveBackAllocatedSupplyServiceImpl giveBackAllocatedSupplyService;
+
     @Transactional
     public SupplyMovement create(SupplyMovement supplyMovement){
+        setModels(supplyMovement);
+        giveBackAllocatedSupplyService.whenCreating(supplyMovement);
+        return suppliesMovementRepository.save(supplyMovement);
+    }
+
+    @Transactional
+    public SupplyMovement update(SupplyMovement supplyMovement){
 
         Supply supply = supplyService.findOrFail(supplyMovement.getSupply().getId());
         WorkStation workStation =
@@ -42,7 +46,7 @@ public class SupplyMovementService {
 
         supplyMovement.setSupply(supply);
 
-        handleQuantityToCalculation(supplyMovement);
+        giveBackAllocatedSupplyService.whenUpdating(supplyMovement);
 
         supplyMovement.setWorkStation(workStation);
         supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());
@@ -52,13 +56,8 @@ public class SupplyMovementService {
 
     @Transactional
     public void delete(Long supplyMovementId){
-        SupplyMovement supplyMovement = findOrFail(supplyMovementId);
-
-        SupplyCalculate whenDeleting = new WhenDeleting();
-        whenDeleting.calculate(supplyMovement);
-
-        suppliesMovementRepository.save(supplyMovement);
-
+        var supplyMovementCurrent = findOrFail(supplyMovementId);
+        giveBackAllocatedSupplyService.whenDeleting(supplyMovementCurrent);
         suppliesMovementRepository.deleteById(supplyMovementId);
     }
 
@@ -68,12 +67,12 @@ public class SupplyMovementService {
     }
 
     @Transactional
-    public SupplyMovement returnSupply(SupplyMovement supplyMovement){
+    public SupplyMovement giveBackSupply(SupplyMovement supplyMovement){
 
-        if(supplyMovement.isReturnedQuantityGreaterThanAllocatedQuantity()){
-            throw new BusinessException(String.format(QUANTITY_RETURNED_GREATER_ALLOCATED,
+        /*if(supplyMovement.iDevolvedQuantityGreaterThanAllocatedQuantity()){
+            throw new BusinessException(String.format(DEVOLVED_QUANTITY_GREATER_ALLOCATED,
                     supplyMovement.getReservedQuantity(), supplyMovement.getAllocatedQuantity()));
-        }
+        }*/
 
         Supply supply = supplyService.findOrFail(supplyMovement.getSupply().getId());
         WorkStation workStation = workStationService
@@ -82,7 +81,7 @@ public class SupplyMovementService {
         supplyMovement.setSupply(supply);
         supplyMovement.setWorkStation(workStation);
 
-        supplyMovement.returnAllocatedQuantity();
+        supplyMovement.devolveAllocatedQuantity();
 
         return suppliesMovementRepository.save(supplyMovement);
 
@@ -93,27 +92,15 @@ public class SupplyMovementService {
         suppliesMovementRepository.save(supplyMovement);
     }
 
-    private void handleQuantityToCalculation(SupplyMovement supplyMovement) {
-        if(supplyMovement.getId() == null){
-            if(supplyMovement.isAllocatedQuantityGreaterThanSupplyQuantity()){
-                throw new BusinessException(String.format(QUANTITY_RESERVED_GREATER_AVAILABLE,
-                                supplyMovement.getReservedQuantity(),
-                                supplyMovement.getSupply().getSupplyDescription().getQuantity()));
-            }
+    private void setModels(SupplyMovement supplyMovement) {
+        Supply supply = supplyService.findOrFail(supplyMovement.getSupply().getId());
+        WorkStation workStation =
+                workStationService.findOrFail(supplyMovement.getWorkStation().getId());
 
-            SupplyCalculate whenCreating = new WhenCreating();
-            whenCreating.calculate(supplyMovement);
+        supplyMovement.setSupply(supply);
 
-        } else {
-            if(supplyMovement.isReservedQuantityGreaterThanAllocatedQuantityAndSupplyQuantity()){
-                throw new BusinessException(String.format(QUANTITY_RESERVED_GREATER_AVAILABLE,
-                        supplyMovement.getReservedQuantity(),
-                        supplyMovement.getSupply().getSupplyDescription().getQuantity()));
-            }
-
-            SupplyCalculate whenUpdating = new WhenUpdating();
-            whenUpdating.calculate(supplyMovement);
-        }
+        supplyMovement.setWorkStation(workStation);
+        supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());
     }
 
 }

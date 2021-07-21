@@ -49,7 +49,7 @@ public class SupplyMovement extends BaseEntity{
         setMovable(true);
     }
 
-    public void returnAllocatedQuantity(){
+    public void devolveAllocatedQuantity(){
         allocatedQuantity -= reservedQuantity;
         updateSupplyAmount();
     }
@@ -58,7 +58,7 @@ public class SupplyMovement extends BaseEntity{
         return allocatedQuantity + supply.getSupplyDescription().getQuantity();
     }
 
-    public boolean isReturnedQuantityGreaterThanAllocatedQuantity() {
+    public boolean iDevolvedQuantityGreaterThanAllocatedQuantity() {
         return reservedQuantity > allocatedQuantity;
     }
 

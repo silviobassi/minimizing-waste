@@ -9,35 +9,32 @@ import org.springframework.stereotype.Service;
 @Service
 public class GiveBackAllocatedSupplyService {
 
-    @Autowired
-    private SupplyService supplyService;
-
     public static final String QUANTITY_RESERVED_GREATER_AVAILABLE = "A quantidade reservada (%d) não pode" +
             " ser maior do que quantidade disponível (%d)";
 
     public void whenCreatingMovement(SupplyMovement supplyMovement) {
         var supply = supplyMovement.getSupply();
+        var supplyMovementReservedQuantity = supplyMovement.getReservedQuantity();
+        var supplyQuantity = supply.getSupplyDescription().getQuantity();
 
-        if (supplyMovement.getId() == null){
-            if (supplyMovement.isAllocatedQuantityGreaterThanSupplyQuantity()) {
-                throw new BusinessException(String.format(QUANTITY_RESERVED_GREATER_AVAILABLE,
-                        supplyMovement.getReservedQuantity(),
-                        supply.getSupplyDescription().getQuantity()));
-            }
-
-        supply.getSupplyDescription().setQuantity(
-                supply.getSupplyDescription().getQuantity()
-                        - supplyMovement.getReservedQuantity());
+        if (supplyMovement.isAllocatedQuantityGreaterThanSupplyQuantity()) {
+            throw new BusinessException(String.format(QUANTITY_RESERVED_GREATER_AVAILABLE,
+                    supplyMovementReservedQuantity, supplyQuantity));
         }
+
+        supply.getSupplyDescription().setQuantity(supplyQuantity - supplyMovementReservedQuantity);
+
     }
 
     public void whenUpdatingMovement(SupplyMovement supplyMovement, Long supplyId) {
+
         var supply = supplyMovement.getSupply();
+        var supplyMovementReservedQuantity = supplyMovement.getReservedQuantity();
+        var supplyQuantity = supplyMovement.getSupply().getSupplyDescription().getQuantity();
 
         if(supplyMovement.isReservedQuantityGreaterThanAvailableQuantity()){
             throw new BusinessException(String.format(QUANTITY_RESERVED_GREATER_AVAILABLE,
-                    supplyMovement.getReservedQuantity(),
-                    supplyMovement.getSupply().getSupplyDescription().getQuantity()));
+                    supplyMovementReservedQuantity, supplyQuantity));
         }
 
         if(!supplyMovement.getSupply().getId().equals(supplyId)){
@@ -46,7 +43,7 @@ public class GiveBackAllocatedSupplyService {
         }
 
         supply.getSupplyDescription().setQuantity(supply.getSupplyDescription().getQuantity()
-                + supplyMovement.getAllocatedQuantity() - supplyMovement.getReservedQuantity());
+                + supplyMovement.getAllocatedQuantity() - supplyMovementReservedQuantity);
 
     }
 

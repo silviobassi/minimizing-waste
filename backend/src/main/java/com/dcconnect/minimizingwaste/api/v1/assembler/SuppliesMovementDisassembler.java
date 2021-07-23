@@ -1,9 +1,10 @@
 package com.dcconnect.minimizingwaste.api.v1.assembler;
 
+import com.dcconnect.minimizingwaste.api.v1.model.input.DevolvedSupplyMovementInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMovementInput;
 import com.dcconnect.minimizingwaste.domain.model.Supply;
-import com.dcconnect.minimizingwaste.domain.model.WorkStation;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
+import com.dcconnect.minimizingwaste.domain.model.WorkStation;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

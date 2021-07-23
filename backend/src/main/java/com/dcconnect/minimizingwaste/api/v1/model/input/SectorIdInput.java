@@ -10,6 +10,6 @@ import javax.validation.constraints.NotNull;
 public class SectorIdInput {
 
     @NotNull
-    private Long id;
+    private SupplyMovementInput id;
 
 }

@@ -19,7 +19,7 @@ public class SupplyDescriptionInput {
 
     @NotNull
     @Min(value = 1L)
-    private Long quantity;
+    private SupplyMovementInput quantity;
 
     @NotNull
     @Min(value = 1L)

@@ -1,6 +1,5 @@
 package com.dcconnect.minimizingwaste.api.v1.model.input;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -4,13 +4,13 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.DevolvedSupplyMovementDisa
 import com.dcconnect.minimizingwaste.api.v1.assembler.SuppliesMovementAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.SuppliesMovementDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.SupplyMovementModel;
-import com.dcconnect.minimizingwaste.api.v1.model.input.ReturnedSupplyMovementInput;
+import com.dcconnect.minimizingwaste.api.v1.model.input.DevolvedSupplyMovementInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMovementInput;
 import com.dcconnect.minimizingwaste.domain.model.Supply;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
 import com.dcconnect.minimizingwaste.domain.model.WorkStation;
 import com.dcconnect.minimizingwaste.domain.repository.SuppliesMovementRepository;
-import com.dcconnect.minimizingwaste.domain.service.GiveBackAllocatedSupplyServiceImpl;
+import com.dcconnect.minimizingwaste.domain.service.GiveBackAllocatedSupplyService;
 import com.dcconnect.minimizingwaste.domain.service.SupplyMovementService;
 import com.dcconnect.minimizingwaste.domain.service.SupplyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class SupplyMovementController {
     private SupplyMovementService supplyMovementService;
 
     @Autowired
-    private GiveBackAllocatedSupplyServiceImpl giveBackAllocatedSupplyService;
+    private GiveBackAllocatedSupplyService giveBackAllocatedSupplyService;
 
     @Autowired
     private SuppliesMovementAssembler suppliesMovementAssembler;
@@ -67,15 +67,12 @@ public class SupplyMovementController {
 
         SupplyMovement currentSupplyMovement = supplyMovementService.findOrFail(supplyMovementId);
 
-        if(!currentSupplyMovement.getSupply().getId().equals(supplyMovementInput.getSupply().getId())){
-            var supply = supplyService.findOrFail(currentSupplyMovement.getSupply().getId());
+        Long supplyId = supplyMovementInput.getSupply().getId();
 
-            supply.getSupplyDescription().setQuantity(currentSupplyMovement.getAllocatedQuantity() +
-                    supply.getSupplyDescription().getQuantity());
-        }
+        giveBackAllocatedSupplyService.whenReplaceSupply(currentSupplyMovement, supplyId);
 
         suppliesMovementDisassembler.copyToDomainModel(supplyMovementInput, currentSupplyMovement);
-        return suppliesMovementAssembler.toModel(supplyMovementService.update(currentSupplyMovement));
+        return suppliesMovementAssembler.toModel(supplyMovementService.update(currentSupplyMovement, supplyId));
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -93,11 +90,11 @@ public class SupplyMovementController {
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/returns/{supplyMovementId}")
     public SupplyMovementModel giveBackSupply(
-            @RequestBody @Valid ReturnedSupplyMovementInput returnedSupplyMovementInput,
+            @RequestBody @Valid DevolvedSupplyMovementInput devolvedSupplyMovementInput,
             @PathVariable Long supplyMovementId){
 
         SupplyMovement supplyMovement = supplyMovementService.findOrFail(supplyMovementId);
-        devolvedSupplyMovementDisassembler.copyToDomainModel(returnedSupplyMovementInput, supplyMovement);
+        devolvedSupplyMovementDisassembler.copyToDomainModel(devolvedSupplyMovementInput, supplyMovement);
         return suppliesMovementAssembler.toModel(supplyMovementService.giveBackSupply(supplyMovement));
     }
 

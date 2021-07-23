@@ -1,7 +1,5 @@
 package com.dcconnect.minimizingwaste.domain.service;
 
-import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMovementInput;
-import com.dcconnect.minimizingwaste.domain.exception.BusinessException;
 import com.dcconnect.minimizingwaste.domain.exception.SuppliesMovementNotFoundException;
 import com.dcconnect.minimizingwaste.domain.model.Supply;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
@@ -28,17 +26,17 @@ public class SupplyMovementService {
     private SupplyService supplyService;
 
     @Autowired
-    private GiveBackAllocatedSupplyServiceImpl giveBackAllocatedSupplyService;
+    private GiveBackAllocatedSupplyService giveBackAllocatedSupplyService;
 
     @Transactional
     public SupplyMovement create(SupplyMovement supplyMovement){
         setModels(supplyMovement);
-        giveBackAllocatedSupplyService.whenCreating(supplyMovement);
+        giveBackAllocatedSupplyService.whenCreatingMovement(supplyMovement);
         return suppliesMovementRepository.save(supplyMovement);
     }
 
     @Transactional
-    public SupplyMovement update(SupplyMovement supplyMovement){
+    public SupplyMovement update(SupplyMovement supplyMovement, Long supplyId){
 
         Supply supply = supplyService.findOrFail(supplyMovement.getSupply().getId());
         WorkStation workStation =
@@ -46,7 +44,7 @@ public class SupplyMovementService {
 
         supplyMovement.setSupply(supply);
 
-        giveBackAllocatedSupplyService.whenUpdating(supplyMovement);
+        giveBackAllocatedSupplyService.whenUpdatingMovement(supplyMovement, supplyId);
 
         supplyMovement.setWorkStation(workStation);
         supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());

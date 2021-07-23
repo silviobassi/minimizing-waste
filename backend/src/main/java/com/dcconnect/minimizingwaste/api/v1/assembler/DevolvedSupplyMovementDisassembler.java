@@ -1,6 +1,6 @@
 package com.dcconnect.minimizingwaste.api.v1.assembler;
 
-import com.dcconnect.minimizingwaste.api.v1.model.input.ReturnedSupplyMovementInput;
+import com.dcconnect.minimizingwaste.api.v1.model.input.DevolvedSupplyMovementInput;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,13 +12,13 @@ public class DevolvedSupplyMovementDisassembler {
     @Autowired
     private ModelMapper modelMapper;
 
-    public SupplyMovement toDomainObject(ReturnedSupplyMovementInput returnedSupplyMovementInput) {
-        return modelMapper.map(returnedSupplyMovementInput, SupplyMovement.class);
+    public SupplyMovement toDomainObject(DevolvedSupplyMovementInput devolvedSupplyMovementInput) {
+        return modelMapper.map(devolvedSupplyMovementInput, SupplyMovement.class);
     }
 
-    public void copyToDomainModel(ReturnedSupplyMovementInput returnedSupplyMovementInput,
+    public void copyToDomainModel(DevolvedSupplyMovementInput devolvedSupplyMovementInput,
                                   SupplyMovement supplyMovement) {
-        modelMapper.map(returnedSupplyMovementInput, supplyMovement);
+        modelMapper.map(devolvedSupplyMovementInput, supplyMovement);
     }
 
 }

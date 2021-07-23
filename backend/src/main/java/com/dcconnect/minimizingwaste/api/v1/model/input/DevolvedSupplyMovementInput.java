@@ -8,10 +8,10 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class ReturnedSupplyMovementInput {
+public class DevolvedSupplyMovementInput {
 
     @NotNull
     @Min(value = 1L)
-    private Long reservedQuantity;
+    private SupplyMovementInput reservedQuantity;
 
 }

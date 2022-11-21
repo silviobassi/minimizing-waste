@@ -13,6 +13,6 @@ public class SupplyMovementModel {
     private Long allocatedQuantity;
 
     private NotificationModel notification;
-    private WorkStationModel workstation;
+    private WorkStationModel workStation;
     private SupplyModel supply;
 }

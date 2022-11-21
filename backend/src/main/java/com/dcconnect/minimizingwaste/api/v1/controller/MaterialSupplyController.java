@@ -35,7 +35,7 @@ public class MaterialSupplyController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{supplyMaterialId}")
-    public MaterialSupplySupplyModel atualizar(
+    public MaterialSupplySupplyModel update(
             @RequestBody @Valid SupplyMaterialInput supplyMaterialInput, @PathVariable Long supplyMaterialId) {
 
         Material supplyMaterialCurrent = (Material) supplyService.findOrFail(supplyMaterialId);

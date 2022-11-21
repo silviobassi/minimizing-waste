@@ -1,0 +1,34 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+
+spring:
+  datasource:
+    url: jdbc:mysql://localhost/minimizing_waste?createDatabaseIfNotExist=true&serverTimezone=UTC
+    username: root
+    password: mysql123
+
+  flyway:
+    locations: db/migration, db/datatest
+
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+    show-sql: true
+    #generate-ddl: true
+    #hibernate:
+      #ddl-auto: create-drop
+
+  jackson:
+    deserialization:
+      fail-on-ignored-properties: true
+      fail-on-unknown-properties: true
+
+  mvc:
+    throw-exception-if-no-handler-found: true
+  web:
+    resources:
+      add-mappings: false

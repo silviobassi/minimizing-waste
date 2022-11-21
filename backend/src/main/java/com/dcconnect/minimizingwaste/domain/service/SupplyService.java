@@ -14,7 +14,7 @@ import javax.transaction.Transactional;
 @Service
 public class SupplyService {
 
-    public static final String SUPPLY_IN_USE = "Setor de código %d não pode ser removida, pois está em uso";
+    public static final String SUPPLY_IN_USE = "Recurso de código %d não pode ser removido, pois está em uso";
     @Autowired
     private SupplyRepository supplyRepository;
 

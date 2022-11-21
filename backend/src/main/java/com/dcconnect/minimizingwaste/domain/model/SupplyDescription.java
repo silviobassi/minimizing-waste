@@ -24,6 +24,9 @@ public class SupplyDescription extends BaseEntity{
     @PrePersist
     @PreUpdate
     public void quantityCalculate(){
+        if(measure == null){
+            measure = new BigDecimal(1.0);
+        }
         total = measure.multiply(new BigDecimal(quantity));
     }
 }

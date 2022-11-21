@@ -58,7 +58,7 @@ public class SupplyMovement extends BaseEntity{
         return allocatedQuantity + supply.getSupplyDescription().getQuantity();
     }
 
-    public boolean iDevolvedQuantityGreaterThanAllocatedQuantity() {
+    public boolean isDevolvedQuantityGreaterThanAllocatedQuantity() {
         return reservedQuantity > allocatedQuantity;
     }
 

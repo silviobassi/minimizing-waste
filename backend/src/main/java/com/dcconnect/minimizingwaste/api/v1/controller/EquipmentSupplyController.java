@@ -3,7 +3,7 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 import com.dcconnect.minimizingwaste.api.v1.assembler.EquipmentSuppliesAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.EquipmentSuppliesDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.EquipmentSupplySupplyModel;
-import com.dcconnect.minimizingwaste.api.v1.model.input.EquipmentSupplyInput;
+import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyEquipmentInput;
 import com.dcconnect.minimizingwaste.domain.model.Equipment;
 import com.dcconnect.minimizingwaste.domain.service.SupplyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +27,8 @@ public class EquipmentSupplyController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public EquipmentSupplySupplyModel create(@RequestBody @Valid EquipmentSupplyInput equipmentSupplyInput){
-        Equipment equipment = equipmentSuppliesDisassembler.toDomainObject(equipmentSupplyInput);
+    public EquipmentSupplySupplyModel create(@RequestBody @Valid SupplyEquipmentInput supplyEquipmentInput){
+        Equipment equipment = equipmentSuppliesDisassembler.toDomainObject(supplyEquipmentInput);
         return equipmentSuppliesAssembler.toModel(supplyService.create(equipment));
 
     }
@@ -36,11 +36,11 @@ public class EquipmentSupplyController {
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{supplyEquipmentId}")
     public EquipmentSupplySupplyModel update(
-            @RequestBody @Valid EquipmentSupplyInput equipmentSupplyInput,
+            @RequestBody @Valid SupplyEquipmentInput supplyEquipmentInput,
             @PathVariable Long supplyEquipmentId) {
 
         Equipment supplyEquipmentCurrent = (Equipment) supplyService.findOrFail(supplyEquipmentId);
-        equipmentSuppliesDisassembler.copyToDomainModel(equipmentSupplyInput, supplyEquipmentCurrent);
+        equipmentSuppliesDisassembler.copyToDomainModel(supplyEquipmentInput, supplyEquipmentCurrent);
         return equipmentSuppliesAssembler.toModel(supplyService.create(supplyEquipmentCurrent));
 
     }

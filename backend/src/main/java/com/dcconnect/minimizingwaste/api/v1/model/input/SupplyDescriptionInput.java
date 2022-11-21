@@ -19,10 +19,8 @@ public class SupplyDescriptionInput {
 
     @NotNull
     @Min(value = 1L)
-    private SupplyMovementInput quantity;
+    private Long quantity;
 
-    @NotNull
-    @Min(value = 1L)
     private BigDecimal measure;
 
     @Valid

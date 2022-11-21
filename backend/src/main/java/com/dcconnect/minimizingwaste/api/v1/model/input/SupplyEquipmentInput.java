@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Getter
 @Setter
-public class EquipmentSupplyInput extends SupplyInput {
+public class SupplyEquipmentInput extends SupplyInput {
 
     @Valid
     @NotNull

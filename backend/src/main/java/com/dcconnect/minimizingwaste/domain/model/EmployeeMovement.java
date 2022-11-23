@@ -7,6 +7,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,6 +27,15 @@ public class EmployeeMovement extends BaseEntity{
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
     private User user;
+
+    @ManyToMany
+    @JoinTable(name = "employees_movements_tasks", joinColumns = @JoinColumn(name = "employee_movement_id"),
+            inverseJoinColumns = @JoinColumn(name = "task_id"))
+    private List<Task> tasks;
+
+    @OneToOne
+    @JoinColumn(name = "notification_id")
+    private Notification notification;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "sector_id")

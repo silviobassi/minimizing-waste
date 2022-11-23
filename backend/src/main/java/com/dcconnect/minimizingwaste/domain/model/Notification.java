@@ -17,9 +17,4 @@ public class Notification extends BaseEntity{
     private String reason;
     private String goal;
 
-    @ManyToMany
-    @JoinTable(name = "notifications_users", joinColumns = @JoinColumn(name = "notification_id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> users;
-
 }

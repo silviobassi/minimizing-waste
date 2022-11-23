@@ -22,8 +22,4 @@ public class Task extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     private Nature nature;
-
-    @OneToOne(optional = false)
-    @JoinColumn(name = "notification_id")
-    private Notification notification;
 }

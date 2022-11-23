@@ -1,0 +1,1 @@
+drop table notifications_users, users_tasks;

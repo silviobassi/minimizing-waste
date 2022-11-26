@@ -38,6 +38,10 @@ public class SupplyMovement extends BaseEntity{
     @JoinColumn(name = "supply_id")
     private Supply supply;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "employee_responsible_id")
+    private User user;
+
     @PrePersist
     public void prePersist(){
         notBusy = false;

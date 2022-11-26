@@ -16,7 +16,7 @@ public class Task extends BaseEntity{
     private String title;
     private OffsetDateTime startDate;
     private OffsetDateTime endDate;
-    private int deadline;
+    private OffsetDateTime deadline;
     private boolean completed;
     private boolean validated;
 

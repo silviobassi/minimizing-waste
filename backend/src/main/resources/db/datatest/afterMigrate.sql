@@ -1,5 +1,6 @@
 set foreign_key_checks = 0;
 
+delete from users;
 delete from work_stations;
 delete from sectors;
 delete from descriptions_supplies;
@@ -7,14 +8,23 @@ delete from supplies;
 delete from notifications;
 delete from supplies_movement;
 
+
 set foreign_key_checks = 1;
 
+alter table users auto_increment = 1;
 alter table work_stations auto_increment = 1;
 alter table sectors auto_increment = 1;
 alter table descriptions_supplies auto_increment = 1;
 alter table supplies auto_increment = 1;
 alter table notifications auto_increment = 1;
 alter table supplies_movement auto_increment = 1;
+
+insert into users (name, cpf, email, password, office, occupation, literate)
+values ('Pedro Bassi', '99999999999', 'pedro205@gmail.com', '1234', 'Azulejista', 'Chefe de Setor', true);
+insert into users (name, cpf, email, password, office, occupation, literate)
+values ('Silvio Bassi', '99999999999', 'silviobassi2@gmail.com', '1234', 'Pedreiro', 'Operário', false);
+insert into users (name, cpf, email, password, office, occupation, literate)
+values ('Ana Paula', '99999999999', 'paulaanabassi@hotmail.com', '1234', 'Ajudante Geral', 'Faxineira', true);
 
 insert into sectors (name) values ('Obras');
 insert into sectors (name) values ('Administrativo');
@@ -63,16 +73,16 @@ insert into supplies (supply_type, name, bulk, manipulation, supply_description_
 insert into supplies (supply_type, name, bulk, manipulation, supply_description_id) values
 ('material', 'Porcelanato', null, 'IMUTÁVEL', 5);
 
-insert into supplies_movement (create_at, not_busy, movable, allocated_quantity, notification_id, work_station_id, supply_id)
-values (utc_timestamp(), true, false,1, 3, 5, 1);
-insert into supplies_movement (create_at, not_busy, movable, allocated_quantity, notification_id, work_station_id, supply_id)
-values (utc_timestamp(), false, false, 1, 2, 3, 2);
-insert into supplies_movement (create_at, not_busy, movable, allocated_quantity, notification_id, work_station_id, supply_id)
-values (utc_timestamp(), false, true, 1, 1, 2, 3);
-insert into supplies_movement (create_at, not_busy, movable, allocated_quantity, notification_id, work_station_id, supply_id)
-values (utc_timestamp(), false, true, 1, 4, 2, 4);
-insert into supplies_movement (create_at, not_busy, movable, allocated_quantity, notification_id, work_station_id, supply_id)
-values (utc_timestamp(), true, true, 1, 5, 2, 5);
+insert into supplies_movement (create_at, not_busy, movable, allocated_quantity, notification_id, work_station_id, supply_id, employee_responsible_id)
+values (utc_timestamp(), true, false,1, 3, 5, 1, 2);
+insert into supplies_movement (create_at, not_busy, movable, allocated_quantity, notification_id, work_station_id, supply_id, employee_responsible_id)
+values (utc_timestamp(), false, false, 1, 2, 3, 2, 1);
+insert into supplies_movement (create_at, not_busy, movable, allocated_quantity, notification_id, work_station_id, supply_id, employee_responsible_id)
+values (utc_timestamp(), false, true, 1, 1, 2, 3,2);
+insert into supplies_movement (create_at, not_busy, movable, allocated_quantity, notification_id, work_station_id, supply_id, employee_responsible_id)
+values (utc_timestamp(), false, true, 1, 4, 2, 1, 3);
+insert into supplies_movement (create_at, not_busy, movable, allocated_quantity, notification_id, work_station_id, supply_id, employee_responsible_id)
+values (utc_timestamp(), true, true, 1, 5, 2, 2, 1);
 
 
 

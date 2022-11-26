@@ -13,7 +13,7 @@ import java.util.List;
 @Setter
 
 @Entity
-@Table(name = "employees_movements")
+@Table(name = "employees_movement")
 public class EmployeeMovement extends BaseEntity{
 
     @CreationTimestamp
@@ -27,11 +27,6 @@ public class EmployeeMovement extends BaseEntity{
     @ManyToOne(optional = false)
     @JoinColumn(name = "user_id")
     private User user;
-
-    @ManyToMany
-    @JoinTable(name = "employees_movements_tasks", joinColumns = @JoinColumn(name = "employee_movement_id"),
-            inverseJoinColumns = @JoinColumn(name = "task_id"))
-    private List<Task> tasks;
 
     @OneToOne
     @JoinColumn(name = "notification_id")

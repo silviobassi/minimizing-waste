@@ -24,8 +24,8 @@ public class Task extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Nature nature;
 
-    @ManyToMany
-    @JoinTable(name = "tasks_employees_movement", joinColumns = @JoinColumn(name = "task_id"),
-            inverseJoinColumns = @JoinColumn(name = "employee_movement_id"))
-    private Set<Task> employeesMovement;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "employee_movement_id")
+    private EmployeeMovement employeeMovement;
 }

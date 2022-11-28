@@ -7,7 +7,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
-import java.util.List;
 
 @Getter
 @Setter
@@ -33,6 +32,6 @@ public class EmployeeMovement extends BaseEntity{
     private Notification notification;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "sector_id")
-    private Sector sector;
+    @JoinColumn(name = "work_station_id")
+    private WorkStation workStation;
 }

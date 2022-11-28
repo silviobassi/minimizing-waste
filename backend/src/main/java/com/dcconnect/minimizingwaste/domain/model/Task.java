@@ -19,13 +19,20 @@ public class Task extends BaseEntity {
     private OffsetDateTime endDate;
     private OffsetDateTime deadline;
     private boolean completed;
-    private boolean validated;
+    private Boolean approved;
+    private String approvalDescription;
 
     @Enumerated(EnumType.STRING)
     private Nature nature;
 
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = "employee_movement_id")
-    private EmployeeMovement employeeMovement;
+    @JoinColumn(name = "work_station_id")
+    private WorkStation workStation;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "employee_responsible_id")
+    private User employeeResponsible;
+
+
 }

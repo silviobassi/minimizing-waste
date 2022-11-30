@@ -1,4 +1,4 @@
-import {Layout} from "antd";
+import {Button, Layout} from "antd";
 const { Content } = Layout;
 
 export interface ContentLayoutProps {

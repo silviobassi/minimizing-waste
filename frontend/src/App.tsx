@@ -3,30 +3,28 @@ import {
     Routes
 } from "react-router-dom";
 
-import Sector from "./app/views/Sectors.view";
-import Home from "./app/views/Home.view";
-import WorkStations from "./app/views/WorkStations.view";
-import WorkStationsEdit from "./app/views/WorkStationEdit.view";
-import Supplies from "./app/views/Supplies.view";
-import Employees from "./app/views/Employees.view";
-import Tasks from "./app/views/Tasks.view";
-import Users from "./app/views/Users.view";
+import SectorView from "./app/views/Sector.view";
+import HomeView from "./app/views/Home.view";
+import WorkStationView from "./app/views/WorkStation.view";
+import SupplyMaterialView from "./app/views/SupplyMaterial.view";
+import SupplyEquipmentView from "./app/views/SupplyEquipment.view";
+import EmployeeView from "./app/views/Employee.view";
+import TaskView from "./app/views/Task.view";
+import UserView from "./app/views/User.view";
+
 
 function App() {
     return (
 
         <Routes>
-            <Route path={'/'} index={1} element={<Home />}/>
-            <Route path={'/setores'} element={<Sector />}/>
-
-            <Route path={'/estacoes-de-trabalho'} element={<WorkStations />}/>
-            <Route path={'/estacao-de-trabalho/:id'} element={<WorkStationsEdit />}/>
-
-
-            <Route path={'/recursos'} element={<Supplies />}/>
-            <Route path={'/colaboradores'} element={<Employees />}/>
-            <Route path={'/tarefas'} element={<Tasks />}/>
-            <Route path={'/usuarios'} element={<Users />}/>
+            <Route path={'/'} element={<HomeView />}/>
+            <Route path={'/setores'} element={<SectorView />}/>
+            <Route path={'/estacoes-de-trabalho'} element={<WorkStationView />}/>
+            <Route path={'/recursos/materiais'} element={<SupplyMaterialView />}/>
+            <Route path={'/recursos/equipamentos'} element={<SupplyEquipmentView />}/>
+            <Route path={'/colaboradores'} element={<EmployeeView />}/>
+            <Route path={'/tarefas'} element={<TaskView />}/>
+            <Route path={'/usuarios'} element={<UserView />}/>
         </Routes>
     );
 }

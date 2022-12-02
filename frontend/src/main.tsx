@@ -6,19 +6,14 @@ import 'antd/dist/reset.css';
 
 import DefaultLayout from "./app/layouts";
 import App from "./App";
-import {ConfigProvider} from "antd";
+import {BrowserRouter as Router} from "react-router-dom";
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <React.StrictMode>
-        <ConfigProvider
-            theme={{
-            token: {
-                colorPrimary: '#fa6900',
-            },
-        }}>
+        <Router>
             <DefaultLayout>
-                <App/>
+                <App />
             </DefaultLayout>
-        </ConfigProvider>
+        </Router>
     </React.StrictMode>
 );

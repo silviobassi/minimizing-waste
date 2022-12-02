@@ -1,6 +1,5 @@
-import usePageTitle from "../../core/usePageTitle";
-
-export default function Home() {
-    usePageTitle('Home')
-    return <div>Home</div>
+export default function HomeView() {
+    return (
+        <div>HomeView</div>
+    )
 }

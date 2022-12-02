@@ -1,7 +1,7 @@
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Button, Space, Tooltip } from "antd";
+import { ColumnsType } from "antd/es/table";
 import React from "react";
-import {ColumnsType} from "antd/es/table";
-import {Button, Space, Tooltip} from "antd";
-import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import TableCustom from "../features/TableCustom";
 
 
@@ -18,16 +18,17 @@ interface SupplyEquipmentType {
 }
 
 const columns: ColumnsType<SupplyEquipmentType> = [
-    {title: 'ID', dataIndex: 'id'},
-    {title: 'Título', dataIndex: 'title'},
-    {title: 'Porte', dataIndex: 'carry'},
-    {title: 'Empacotamento', dataIndex: 'packing'},
-    {title: 'Quantidade Unitária', dataIndex: 'quantity'},
-    {title: 'Medida', dataIndex: 'measure'},
-    {title: 'Total', dataIndex: 'total'},
-    {title: 'Unidade de Medida', dataIndex: 'measureUnitType'},
-    {title: 'Ações' , dataIndex: 'actions',
-        render: ( _:any, workstation) => (
+    { title: 'ID', dataIndex: 'id' },
+    { title: 'Título', dataIndex: 'title' },
+    { title: 'Porte', dataIndex: 'carry' },
+    { title: 'Empacotamento', dataIndex: 'packing' },
+    { title: 'Quantidade Unitária', dataIndex: 'quantity' },
+    { title: 'Medida', dataIndex: 'measure' },
+    { title: 'Total', dataIndex: 'total' },
+    { title: 'Unidade de Medida', dataIndex: 'measureUnitType' },
+    {
+        title: 'Ações', dataIndex: 'actions',
+        render: (_: any, workstation) => (
             <Space size={"middle"}>
                 <Tooltip title={"Editar"}>
                     <Button type={"primary"} shape={'circle'} icon={<EditOutlined />} />
@@ -40,9 +41,9 @@ const columns: ColumnsType<SupplyEquipmentType> = [
     }
 ]
 
-const data: SectorType[] = [];
+const data: SupplyEquipmentType[] = [];
 
-for(let i = 1; i < 20;i++){
+for (let i = 1; i < 20; i++) {
     data.push({
         key: i,
         id: i,
@@ -62,7 +63,7 @@ export default function SupplyEquipmentView() {
             data={data}
             columns={columns}
             buttonAndTableColWidth={24}
-            createButtonLabel={'CRIAR RECURSOS'}
+            createButtonLabel={'CRIAR RECURSOS EQUIPAMENTOS'}
             tablePageSize={5}
         />
     );

@@ -1,10 +1,8 @@
-import {ColumnsType} from "antd/es/table";
-import {Button, Col, Divider, Row, Table} from "antd";
-import React from "react";
+import { Button, Col, Divider, Row, Table, TableColumnsType } from "antd";
 
 interface TableCustomProps {
     data: any,
-    columns: ColumnsType<any>,
+    columns: TableColumnsType<any>,
     buttonAndTableColWidth: string | number,
     createButtonLabel: string,
     tablePageSize: number,
@@ -32,9 +30,8 @@ export default function TableCustom(props: TableCustomProps) {
                         columns={props.columns}
                         dataSource={props.data}
                         pagination={{
-                            pageSize:
-                            props.tablePageSize
-                        }}/>
+                            pageSize: props.tablePageSize
+                        }} />
                 </Col>
             </Row>
         </>

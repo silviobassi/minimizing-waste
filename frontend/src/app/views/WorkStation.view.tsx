@@ -1,8 +1,7 @@
-import {Button, Col, Divider, Pagination, Row, Space, Table, Tooltip} from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Button, Space, Tooltip } from "antd";
+import { ColumnsType } from "antd/es/table";
 import React from "react";
-import {ColumnsType} from "antd/es/table";
-import {DeleteFilled, DeleteOutlined, EditFilled, EditOutlined} from "@ant-design/icons";
-import usePagination from "antd/es/table/hooks/usePagination";
 import TableCustom from "../features/TableCustom";
 
 interface WorkStationType {
@@ -14,12 +13,13 @@ interface WorkStationType {
 }
 
 const columns: ColumnsType<WorkStationType> = [
-    {title: 'ID', dataIndex: 'id'},
-    {title: 'Nome', dataIndex: 'name'},
-    {title: 'localização', dataIndex: 'localization'},
-    {title: 'Setor', dataIndex: 'sector'},
-    {title: 'Ações' , dataIndex: 'actions',
-        render: ( _:any, workstation) => (
+    { title: 'ID', dataIndex: 'id' },
+    { title: 'Nome', dataIndex: 'name' },
+    { title: 'localização', dataIndex: 'localization' },
+    { title: 'Setor', dataIndex: 'sector' },
+    {
+        title: 'Ações', dataIndex: 'actions',
+        render: (_: any, workstation) => (
             <Space size={"middle"}>
                 <Tooltip title={"Editar"}>
                     <Button type={"primary"} shape={'circle'} icon={<EditOutlined />} />
@@ -34,7 +34,7 @@ const columns: ColumnsType<WorkStationType> = [
 
 const data: WorkStationType[] = [];
 
-for(let i = 1; i < 20;i++){
+for (let i = 1; i < 20; i++) {
     data.push({
         key: i,
         id: i,

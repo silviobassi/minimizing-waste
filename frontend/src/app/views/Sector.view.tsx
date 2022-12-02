@@ -1,7 +1,7 @@
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Button, Space, Tooltip } from "antd";
+import { ColumnsType } from "antd/es/table";
 import React from "react";
-import {ColumnsType} from "antd/es/table";
-import {Button, Space, Tooltip} from "antd";
-import {DeleteOutlined, EditOutlined} from "@ant-design/icons";
 import TableCustom from "../features/TableCustom";
 
 interface SectorType {
@@ -11,10 +11,11 @@ interface SectorType {
 }
 
 const columns: ColumnsType<SectorType> = [
-    {title: 'ID', dataIndex: 'id'},
-    {title: 'Nome', dataIndex: 'name'},
-    {title: 'Ações' , dataIndex: 'actions',
-        render: ( _:any, workstation) => (
+    { title: 'ID', dataIndex: 'id' },
+    { title: 'Nome', dataIndex: 'name' },
+    {
+        title: 'Ações', dataIndex: 'actions',
+        render: (_: any, workstation) => (
             <Space size={"middle"}>
                 <Tooltip title={"Editar"}>
                     <Button type={"primary"} shape={'circle'} icon={<EditOutlined />} />
@@ -29,7 +30,7 @@ const columns: ColumnsType<SectorType> = [
 
 const data: SectorType[] = [];
 
-for(let i = 1; i < 20;i++){
+for (let i = 1; i < 20; i++) {
     data.push({
         key: i,
         id: i,
@@ -42,7 +43,7 @@ export default function SectorView() {
         <TableCustom
             data={data}
             columns={columns}
-            buttonAndTableColWidth={10}
+            buttonAndTableColWidth={18}
             createButtonLabel={'CRIAR SETOR'}
             tablePageSize={5}
         />

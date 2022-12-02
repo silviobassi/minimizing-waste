@@ -1,7 +1,6 @@
-import {Breadcrumb} from "antd";
-import React from "react";
+import { Breadcrumb } from "antd";
 
-export default function BreadcrumbLayout(){
+export default function BreadcrumbLayout() {
 
     return (
         <Breadcrumb style={{ margin: '16px 0' }}>

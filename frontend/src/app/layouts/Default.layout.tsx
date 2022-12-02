@@ -1,7 +1,7 @@
+import { Layout } from "antd";
 import React from "react";
-import {Layout} from "antd";
-import HeaderLayout from "./HeaderLayout";
 import ContentLayout from "./ContentLayout";
+import HeaderLayout from "./HeaderLayout";
 
 const { Content } = Layout;
 
@@ -16,7 +16,7 @@ interface DefaultLayoutProps {
 export default function DefaultLayout(props: DefaultLayoutProps) {
     return (
         <Layout>
-            <HeaderLayout/>
+            <HeaderLayout />
             <ContentLayout>
                 {props.children}
             </ContentLayout>

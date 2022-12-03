@@ -1,8 +1,8 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Space, Tooltip } from 'antd';
+import { Button, Col, Divider, Row, Space, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import React from 'react';
-import TableCustom from '../features/TableCustom';
+import WorkStationList from '../features/WorkStationList';
 
 interface WorkStationType {
   key: React.Key;
@@ -44,14 +44,26 @@ for (let i = 1; i < 20; i++) {
     sector: 'Acabamento',
   });
 }
-export default function WorkStationView() {
+export default function WorkStationListView() {
   return (
-    <TableCustom
-      data={data}
-      columns={columns}
-      buttonAndTableColWidth={18}
-      createButtonLabel={'CRIAR ESTAÇÃO DE TRABALHO'}
-      tablePageSize={7}
-    />
+    <>
+      <Row justify={'center'}>
+        <Col xs={24}>
+          <Button type={'primary'} size={'large'}>
+            CRIAR ESTAÇÃO DE TRABALHO
+          </Button>
+        </Col>
+      </Row>
+      <Row>
+        <Col xs={24}>
+          <Divider />
+        </Col>
+      </Row>
+      <Row justify={'center'}>
+        <Col xs={24}>
+          <WorkStationList />
+        </Col>
+      </Row>
+    </>
   );
 }

@@ -15,7 +15,7 @@ interface DefaultLayoutProps {
 }
 export default function DefaultLayout(props: DefaultLayoutProps) {
   return (
-    <Layout>
+    <Layout >
       <HeaderLayout />
       <ContentLayout>{props.children}</ContentLayout>
     </Layout>

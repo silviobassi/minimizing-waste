@@ -2,6 +2,7 @@ import {
   ApartmentOutlined,
   BankOutlined,
   HomeOutlined,
+  NotificationOutlined,
   UsergroupAddOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
@@ -17,25 +18,37 @@ export default function NavbarLayout() {
       icon: <ApartmentOutlined />,
     },
 
-    { label: <Link to={'/setores'}>Setores</Link>, key: 'sectors', icon: <BankOutlined /> },
+    {
+      label: <Link to={'/setores'}>Setores</Link>,
+      key: 'sectors',
+      icon: <BankOutlined />,
+    },
+
+    { label: <Link to={'/recursos'}>Recursos</Link>, key: 'supply' },
+
+    {
+      label: <Link to={'/tarefas'}>Tarefas</Link>,
+      key: 'tasks',
+      icon: <BankOutlined />,
+    },
     {
       label: <Link to={'/colaboradores'}>Colaboradores</Link>,
-      key: 'employees',
+      key: 'users',
       icon: <UsergroupAddOutlined />,
     },
-
     {
-      label: 'Recursos',
-      key: 'supplies',
-      children: [
-        { label: <Link to={'/recursos/equipamentos'}>Equipamentos</Link>, key: 'equipment' },
-        { label: <Link to={'/recursos/materiais'}>Materiais</Link>, key: 'material' },
-      ],
+      label: <Link to={'/notificacoes'}>Notificações</Link>,
+      key: 'notification',
+      icon: <NotificationOutlined />,
     },
-
-    { label: <Link to={'/tarefas'}>Tarefas</Link>, key: 'tasks', icon: <BankOutlined /> },
-    { label: <Link to={'/usuarios'}>Usuários</Link>, key: 'users', icon: <BankOutlined /> },
   ];
 
-  return <Menu theme="dark" mode="horizontal" defaultSelectedKeys={['2']} items={items} />;
+  return (
+    <Menu
+      theme="dark"
+      mode="horizontal"
+      defaultSelectedKeys={['2']}
+      items={items}
+    />
+  );
 }

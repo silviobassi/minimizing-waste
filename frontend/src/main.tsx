@@ -1,19 +1,19 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 
-import './index.css'
 import 'antd/dist/reset.css';
+import './index.css';
 
-import DefaultLayout from "./app/layouts";
-import App from "./App";
-import {BrowserRouter as Router} from "react-router-dom";
+import { BrowserRouter as Router } from 'react-router-dom';
+import App from './App';
+import DefaultLayout from './app/layouts';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-    <React.StrictMode>
-        <Router>
-            <DefaultLayout>
-                <App />
-            </DefaultLayout>
-        </Router>
-    </React.StrictMode>
+  <React.StrictMode>
+    <Router>
+      <DefaultLayout>
+        <App />
+      </DefaultLayout>
+    </Router>
+  </React.StrictMode>,
 );

@@ -1,12 +1,11 @@
-import { Breadcrumb } from "antd";
+import { Breadcrumb } from 'antd';
 
 export default function BreadcrumbLayout() {
-
-    return (
-        <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>Home</Breadcrumb.Item>
-            <Breadcrumb.Item>List</Breadcrumb.Item>
-            <Breadcrumb.Item>App</Breadcrumb.Item>
-        </Breadcrumb>
-    );
+  return (
+    <Breadcrumb style={{ margin: '16px 0' }}>
+      <Breadcrumb.Item>Home</Breadcrumb.Item>
+      <Breadcrumb.Item>List</Breadcrumb.Item>
+      <Breadcrumb.Item>App</Breadcrumb.Item>
+    </Breadcrumb>
+  );
 }

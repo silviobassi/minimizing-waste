@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { useEffect } from 'react';
 
-export default function usePageTitle (title: string) {
-    const BASE_TITLE = 'E7'
-    useEffect(() => {
-        document.title = `${BASE_TITLE} - ${title}`
-    }, []) // eslint-disable-line
+export default function usePageTitle(title: string) {
+  const BASE_TITLE = 'E7';
+  useEffect(() => {
+    document.title = `${BASE_TITLE} - ${title}`;
+  }, []); // eslint-disable-line
 }

@@ -1,5 +1,3 @@
 export default function EmployeeView() {
-    return (
-        <div>EmployeeView</div>
-    )
+  return <div>EmployeeView</div>;
 }

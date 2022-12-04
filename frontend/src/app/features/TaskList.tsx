@@ -6,6 +6,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Checkbox, Space, Table, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import WrapperDefault from '../components/WrapperDefault';
 
 interface TaskType {
   key: React.Key;
@@ -100,14 +101,14 @@ export default function TaskList() {
   }
 
   return (
-    <>
+    <WrapperDefault title="Lista de Tarefas">
       <Table<TaskType>
         dataSource={tasks}
         columns={columns}
         pagination={{
-          pageSize: 6,
+          pageSize: 5,
         }}
       />
-    </>
+    </WrapperDefault>
   );
 }

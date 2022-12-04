@@ -3,6 +3,7 @@ import { Route, Routes } from 'react-router-dom';
 import HomeView from './app/views/Home.view';
 import SectorListView from './app/views/SectorList.view';
 
+import SectorEditView from './app/views/SectorEdit.view';
 import NotificationListView from './app/views/NotificationList.view';
 import SupplyListView from './app/views/SupplyList.view';
 import TaskListView from './app/views/TaskList.view';
@@ -14,6 +15,7 @@ function App() {
     <Routes>
       <Route path={'/'} element={<HomeView />} />
       <Route path={'/setores'} element={<SectorListView />} />
+      <Route path={'/setor/editar/:id'} element={<SectorEditView />} />
       <Route path={'/estacoes-de-trabalho'} element={<WorkStationListView />} />
       <Route path={'/recursos'} element={<SupplyListView />} />
       <Route path={'/tarefas'} element={<TaskListView />} />

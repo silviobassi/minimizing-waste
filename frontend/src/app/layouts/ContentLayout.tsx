@@ -16,8 +16,6 @@ export default function ContentLayout(props: ContentLayoutProps) {
         <BreadcrumbLayout />
           <Content
             style={{
-              padding: '40px',
-              background: '#fff',
               minHeight: 280,
             }}
           >

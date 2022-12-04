@@ -7,6 +7,7 @@ import {
 import { Button, Space, Tooltip } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 import React from 'react';
+import WrapperDefault from '../components/WrapperDefault';
 
 interface SupplyType {
   key: React.Key;
@@ -90,14 +91,14 @@ export default function SupplyList() {
   }
 
   return (
-    <>
+    <WrapperDefault title='Lista de Recursos'>
       <Table<SupplyType>
         dataSource={supplies}
         columns={columns}
         pagination={{
-          pageSize: 6,
+          pageSize: 5,
         }}
       />
-    </>
+    </WrapperDefault>
   );
 }

@@ -13,15 +13,14 @@ export default function NavbarLayout() {
     { label: <Link to={'/'}>Home</Link>, key: 'home', icon: <HomeOutlined /> },
 
     {
-      label: <Link to={'/estacoes-de-trabalho'}>Estação de Trabalho</Link>,
-      key: 'work stations',
-      icon: <ApartmentOutlined />,
-    },
-
-    {
       label: <Link to={'/setores'}>Setores</Link>,
       key: 'sectors',
       icon: <BankOutlined />,
+    },
+    {
+      label: <Link to={'/estacoes-de-trabalho'}>Estação de Trabalho</Link>,
+      key: 'work stations',
+      icon: <ApartmentOutlined />,
     },
 
     { label: <Link to={'/recursos'}>Recursos</Link>, key: 'supply' },

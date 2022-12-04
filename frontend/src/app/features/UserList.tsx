@@ -6,6 +6,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Space, Table, Tag, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import WrapperDefault from '../components/WrapperDefault';
 
 interface UserType {
   key: React.Key;
@@ -18,7 +19,7 @@ interface UserType {
 
 export default function UserList() {
   const columns: ColumnsType<UserType> = [
-    { title: 'ID', dataIndex: 'id', width: 60  },
+    { title: 'ID', dataIndex: 'id', width: 60 },
     { title: 'Nome', dataIndex: 'name', responsive: ['sm'] },
     { title: 'CPF', dataIndex: 'cpf', width: 150 },
     { title: 'Email', dataIndex: 'email', width: 270 },
@@ -69,7 +70,7 @@ export default function UserList() {
     });
   }
   return (
-    <>
+    <WrapperDefault title="Lista de Colaboradores">
       <Table<UserType>
         dataSource={users}
         columns={columns}
@@ -77,6 +78,6 @@ export default function UserList() {
           pageSize: 6,
         }}
       />
-    </>
+    </WrapperDefault>
   );
 }

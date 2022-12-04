@@ -1,6 +1,7 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Space, Tooltip } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
+import WrapperDefault from '../components/WrapperDefault';
 
 interface WorkStationType {
   key: React.Key;
@@ -51,7 +52,7 @@ export default function WorkStationList() {
   }
 
   return (
-    <>
+    <WrapperDefault title="Lista de Estações de Trabalho">
       <Table<WorkStationType>
         dataSource={workStations}
         columns={columns}
@@ -59,6 +60,6 @@ export default function WorkStationList() {
           pageSize: 6,
         }}
       />
-    </>
+    </WrapperDefault>
   );
 }

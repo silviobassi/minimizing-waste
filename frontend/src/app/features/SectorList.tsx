@@ -1,6 +1,8 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Space, Table, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import { useNavigate } from 'react-router-dom';
+import WrapperDefault from '../components/WrapperDefault';
 interface SectorType {
   key: React.Key;
   id: number;
@@ -8,6 +10,8 @@ interface SectorType {
 }
 
 export default function SectorList() {
+  const navigate = useNavigate();
+
   const columns: ColumnsType<SectorType> = [
     { title: 'ID', dataIndex: 'id', width: 60 },
     { title: 'Nome', dataIndex: 'name' },
@@ -16,10 +20,15 @@ export default function SectorList() {
       dataIndex: 'actions',
       align: 'center',
       width: 200,
-      render: (_: any, workstation) => (
+      render: (_: any, sector) => (
         <Space size={'middle'}>
           <Tooltip title={'Editar'}>
-            <Button type={'primary'} shape={'circle'} icon={<EditOutlined />} />
+            <Button
+              type={'primary'}
+              shape={'circle'}
+              icon={<EditOutlined />}
+              onClick={() => navigate(`/setor/editar/${sector.id}`)}
+            />
           </Tooltip>
           <Tooltip title={'Excluir'}>
             <Button
@@ -44,14 +53,14 @@ export default function SectorList() {
   }
 
   return (
-    <>
+    <WrapperDefault title="Edição de Setor">
       <Table<SectorType>
         dataSource={sectors}
         columns={columns}
         pagination={{
-          pageSize: 6,
+          pageSize: 5,
         }}
       />
-    </>
+    </WrapperDefault>
   );
 }

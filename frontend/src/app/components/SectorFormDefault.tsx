@@ -1,8 +1,11 @@
-import { SendOutlined, StopOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Space } from 'antd';
 
 interface SectorFormDefaultProps {
   labelRegister: string;
+  iconButton: {
+    register: React.ReactNode;
+    cancel: React.ReactNode;
+  };
 }
 
 export default function SectorFormDefault(props: SectorFormDefaultProps) {
@@ -14,10 +17,10 @@ export default function SectorFormDefault(props: SectorFormDefaultProps) {
       </Form.Item>
       <Form.Item>
         <Space direction="horizontal">
-          <Button type="primary" icon={<SendOutlined />}>
+          <Button type="primary" icon={props.iconButton.register}>
             {props.labelRegister}
           </Button>
-          <Button type="primary" danger icon={<StopOutlined />}>
+          <Button type="primary" danger icon={props.iconButton.cancel}>
             Cancelar
           </Button>
         </Space>

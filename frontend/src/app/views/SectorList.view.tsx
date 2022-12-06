@@ -1,12 +1,19 @@
 import { Button, Col, Divider, Row } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import SectorList from '../features/SectorList';
 
 export default function SectorListView() {
+  const navigate = useNavigate();
+
   return (
     <>
       <Row justify={'center'}>
         <Col xs={24}>
-          <Button type={'primary'} size={'large'}>
+          <Button
+            type={'primary'}
+            size={'large'}
+            onClick={(_) => navigate('/setor/criar')}
+          >
             CRIAR SETOR
           </Button>
         </Col>

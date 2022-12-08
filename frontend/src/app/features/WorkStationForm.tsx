@@ -11,7 +11,6 @@ interface WorkStationFormDefaultProps {
 }
 
 export default function WorkStationForm(props: WorkStationFormDefaultProps) {
-  const [form] = Form.useForm();
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
   };

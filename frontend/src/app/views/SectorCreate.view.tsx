@@ -1,4 +1,4 @@
-import { SendOutlined, StopOutlined } from '@ant-design/icons';
+import { SaveOutlined, SendOutlined, StopOutlined } from '@ant-design/icons';
 import { Col, Divider, Row } from 'antd';
 import usePageTitle from '../../core/usePageTitle';
 import SectorForm from '../features/SectorForm';
@@ -18,7 +18,7 @@ export default function SetorCreateView() {
           <SectorForm
             labelRegister="CRIAR"
             iconButton={{
-              register: <SendOutlined />,
+              register: <SaveOutlined />,
               cancel: <StopOutlined />,
             }}
             title='Criação de Setor'

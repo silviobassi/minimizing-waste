@@ -1,4 +1,4 @@
-import { SendOutlined, StopOutlined } from '@ant-design/icons';
+import { SaveOutlined, StopOutlined } from '@ant-design/icons';
 import { Col, Divider, Row } from 'antd';
 import WorkStationForm from '../features/WorkStationForm';
 
@@ -15,10 +15,10 @@ export default function WorkStationCreateView() {
           <WorkStationForm
             labelRegister="CRIAR"
             iconButton={{
-              register: <SendOutlined />,
+              register: <SaveOutlined />,
               cancel: <StopOutlined />,
             }}
-            title='Criação de Estação de Trabalho'
+            title="Criação de Estação de Trabalho"
           />
         </Col>
       </Row>

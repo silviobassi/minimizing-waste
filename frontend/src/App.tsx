@@ -28,7 +28,7 @@ function App() {
         element={<WorkStationCreateView />}
       />
       <Route
-        path={'/estacao-de-trabalho/editar/:id'}
+        path={'/estacao-de-trabalho/editar/:id'}yarn 
         element={<WorkStationEditView />}
       />
       <Route path={'/recursos'} element={<SupplyListView />} />

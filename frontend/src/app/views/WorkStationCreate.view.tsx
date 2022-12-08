@@ -1,11 +1,8 @@
 import { SendOutlined, StopOutlined } from '@ant-design/icons';
 import { Col, Divider, Row } from 'antd';
-import usePageTitle from '../../core/usePageTitle';
-import SectorForm from '../features/SectorForm';
+import WorkStationForm from '../features/WorkStationForm';
 
-export default function SetorCreateView() {
-  usePageTitle('Criação de Setor');
-
+export default function WorkStationCreateView() {
   return (
     <>
       <Row>
@@ -15,13 +12,13 @@ export default function SetorCreateView() {
       </Row>
       <Row justify={'center'}>
         <Col xs={24}>
-          <SectorForm
+          <WorkStationForm
             labelRegister="CRIAR"
             iconButton={{
               register: <SendOutlined />,
               cancel: <StopOutlined />,
             }}
-            title='Criação de Setor'
+            title='Criação de Estação de Trabalho'
           />
         </Col>
       </Row>

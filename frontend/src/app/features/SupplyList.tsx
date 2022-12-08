@@ -7,6 +7,7 @@ import {
 import { Button, Space, Tooltip } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import WrapperDefault from '../components/WrapperDefault';
 
 interface SupplyType {
@@ -20,16 +21,17 @@ interface SupplyType {
 }
 
 export default function SupplyList() {
+  const navigate = useNavigate();
   const columns: ColumnsType<SupplyType> = [
     {
       title: 'ID',
       dataIndex: 'id',
       align: 'center',
-      width: 60
+      width: 60,
     },
     {
       title: 'Nome',
-      dataIndex: 'name'
+      dataIndex: 'name',
     },
     {
       title: 'Quantidade',
@@ -60,7 +62,11 @@ export default function SupplyList() {
       render: (_: any, supply) => (
         <Space size={'middle'}>
           <Tooltip title={'Editar'}>
-            <Button type={'link'} icon={<EditOutlined />} />
+            <Button
+              type={'link'}
+              icon={<EditOutlined />}
+              onClick={(_) => navigate(`/recurso/editar/${supply.id}`)}
+            />
           </Tooltip>
           <Tooltip title={'Excluir'}>
             <Button type={'link'} icon={<DeleteOutlined />} />
@@ -91,7 +97,7 @@ export default function SupplyList() {
   }
 
   return (
-    <WrapperDefault title='Lista de Recursos'>
+    <WrapperDefault title="Lista de Recursos">
       <Table<SupplyType>
         dataSource={supplies}
         columns={columns}

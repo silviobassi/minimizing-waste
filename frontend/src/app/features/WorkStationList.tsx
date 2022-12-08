@@ -1,6 +1,7 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Space, Tooltip } from 'antd';
 import Table, { ColumnsType } from 'antd/es/table';
+import { useNavigate } from 'react-router-dom';
 import WrapperDefault from '../components/WrapperDefault';
 
 interface WorkStationType {
@@ -12,6 +13,7 @@ interface WorkStationType {
 }
 
 export default function WorkStationList() {
+  const navigate = useNavigate();
   const columns: ColumnsType<WorkStationType> = [
     { title: 'ID', dataIndex: 'id', width: 60 },
     { title: 'Nome', dataIndex: 'name' },
@@ -25,7 +27,14 @@ export default function WorkStationList() {
       render: (_: any, workstation) => (
         <Space size={'middle'}>
           <Tooltip title={'Editar'}>
-            <Button type={'primary'} shape={'circle'} icon={<EditOutlined />} />
+            <Button
+              type={'primary'}
+              shape={'circle'}
+              icon={<EditOutlined />}
+              onClick={() =>
+                navigate(`/estacao-de-trabalho/editar/${workstation.id}`)
+              }
+            />
           </Tooltip>
           <Tooltip title={'Excluir'}>
             <Button

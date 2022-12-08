@@ -1,11 +1,8 @@
 import { EditOutlined, StopOutlined } from '@ant-design/icons';
 import { Col, Divider, Row } from 'antd';
-import usePageTitle from '../../core/usePageTitle';
-import SectorForm from '../features/SectorForm';
+import WorkStationForm from '../features/WorkStationForm';
 
-export default function SetorEditView() {
-  usePageTitle('Edição de Setor');
-
+export default function WorkStationEditView() {
   return (
     <>
       <Row>
@@ -15,13 +12,13 @@ export default function SetorEditView() {
       </Row>
       <Row justify={'center'}>
         <Col xs={24}>
-          <SectorForm
-            labelRegister="EDITAR"
+          <WorkStationForm
+            labelRegister="Editar"
             iconButton={{
               register: <EditOutlined />,
               cancel: <StopOutlined />,
             }}
-            title="Edição de Setor"
+            title="Edição de Estação de Trabalho"
           />
         </Col>
       </Row>

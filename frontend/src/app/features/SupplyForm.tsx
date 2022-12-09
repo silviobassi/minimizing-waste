@@ -1,4 +1,3 @@
-import { ArrowRightOutlined } from '@ant-design/icons';
 import {
   Button,
   Col,
@@ -86,10 +85,6 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
               )}
             </Col>
           </Row>
-
-          <Button type="link" icon={<ArrowRightOutlined />}>
-            Avançar
-          </Button>
         </Form>
       ),
     },
@@ -163,7 +158,7 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
 
   return (
     <WrapperDefault title={props.title}>
-      <Tabs type="card" items={items} />
+      <Tabs type="card" items={items} style={{minHeight: 276}}/>
     </WrapperDefault>
   );
 }

@@ -6,6 +6,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Space, Table, Tag, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import { useNavigate } from 'react-router-dom';
 import WrapperDefault from '../components/WrapperDefault';
 
 interface UserType {
@@ -17,7 +18,9 @@ interface UserType {
   group: string;
 }
 
-export default function UserList() {
+export default function EmployeeList() {
+  const navigate = useNavigate();
+
   const columns: ColumnsType<UserType> = [
     { title: 'ID', dataIndex: 'id', width: 60 },
     { title: 'Nome', dataIndex: 'name', responsive: ['sm'] },
@@ -38,10 +41,14 @@ export default function UserList() {
       dataIndex: 'actions',
       align: 'center',
       width: 200,
-      render: (_: any, user) => (
+      render: (_: any, employee) => (
         <Space size={'middle'}>
           <Tooltip title={'Editar'}>
-            <Button type={'link'} icon={<EditOutlined />} />
+            <Button
+              type={'link'}
+              icon={<EditOutlined />}
+              onClick={() => navigate(`/colaborador/editar/${employee.id}`)}
+            />
           </Tooltip>
           <Tooltip title={'Excluir'}>
             <Button type={'link'} icon={<DeleteOutlined />} />

@@ -1,12 +1,11 @@
 import { Button, Col, Divider, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import usePageTitle from '../../core/usePageTitle';
-import TaskList from '../features/TaskList';
+import UserList from '../features/EmployeeList';
+export default function EmployeeListView() {
+  usePageTitle('Lista de Colaboradores');
 
-export default function TaskListView() {
-  usePageTitle('Lista de Tarefas');
   const navigate = useNavigate();
-
   return (
     <>
       <Row justify={'center'}>
@@ -14,9 +13,9 @@ export default function TaskListView() {
           <Button
             type={'primary'}
             size={'large'}
-            onClick={() => navigate('/tarefa/criar')}
+            onClick={() => navigate('/colaborador/criar')}
           >
-            CRIAR TAREFAS
+            CRIAR COLABORADORES
           </Button>
         </Col>
       </Row>
@@ -27,7 +26,7 @@ export default function TaskListView() {
       </Row>
       <Row justify={'center'}>
         <Col xs={24}>
-          <TaskList />
+          <UserList />
         </Col>
       </Row>
     </>

@@ -6,6 +6,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Checkbox, Space, Table, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import { useNavigate } from 'react-router-dom';
 import WrapperDefault from '../components/WrapperDefault';
 
 interface TaskType {
@@ -21,6 +22,8 @@ interface TaskType {
 }
 
 export default function TaskList() {
+  const navigate = useNavigate();
+
   const columns: ColumnsType<TaskType> = [
     { title: 'ID', dataIndex: 'id', width: 60 },
     { title: 'Título', dataIndex: 'title' },
@@ -68,7 +71,11 @@ export default function TaskList() {
       render: (_: any, task) => (
         <Space size={'middle'}>
           <Tooltip title={'Editar'}>
-            <Button type={'link'} icon={<EditOutlined />} />
+            <Button
+              type={'link'}
+              icon={<EditOutlined />}
+              onClick={() => navigate(`/tarefa/editar/${task.id}`)}
+            />
           </Tooltip>
           <Tooltip title={'Excluir'}>
             <Button type={'link'} icon={<DeleteOutlined />} />

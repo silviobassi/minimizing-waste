@@ -1,13 +1,13 @@
 import { SaveOutlined, StopOutlined } from '@ant-design/icons';
 import usePageTitle from '../../core/usePageTitle';
-import SupplyForm from '../features/SupplyForm';
+import EmployeeForm from '../features/EmployeeForm';
 
-export default function SupplyCreateView() {
-  usePageTitle('Criação de Recurso')
+export default function EmployeeEditView() {
+  usePageTitle('Edição de Colaborador');
 
   return (
-    <SupplyForm
-      title="Criação de Recurso"
+    <EmployeeForm
+      title="Edição de Colaborador"
       labelRegister="CRIAR"
       iconButton={{ register: <SaveOutlined />, cancel: <StopOutlined /> }}
     />

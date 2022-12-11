@@ -1,8 +1,11 @@
 import { Button, Col, Divider, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import usePageTitle from '../../core/usePageTitle';
 import SupplyList from '../features/SupplyList';
 
 export default function SupplyListView() {
+  usePageTitle('Lista de Recursos')
+
   const navigate = useNavigate();
   return (
     <>

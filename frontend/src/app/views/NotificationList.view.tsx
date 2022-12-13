@@ -1,8 +1,8 @@
 import usePageTitle from '../../core/usePageTitle';
-import NotificationList from '../features/NotificationList';
+import NotificationAvailableSupply from '../features/NotificationAvailableSupply';
 
 export default function NotificationListView() {
-  usePageTitle('Lista de Notificações');
+  usePageTitle('Listas de Notificações');
 
-  return <NotificationList />;
+  return <NotificationAvailableSupply />;
 }

@@ -82,7 +82,7 @@ export default function EmployeeList() {
         dataSource={users}
         columns={columns}
         pagination={{
-          pageSize: 6,
+          pageSize: 5,
         }}
       />
     </WrapperDefault>

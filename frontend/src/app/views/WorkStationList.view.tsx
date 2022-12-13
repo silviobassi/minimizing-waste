@@ -11,7 +11,6 @@ export default function WorkStationListView() {
       <Row justify={'center'}>
         <Col xs={24}>
           <Button
-            style={{ marginBottom: 20 }}
             type={'primary'}
             size={'large'}
             onClick={(_) => navigate('/estacao-de-trabalho/criar')}

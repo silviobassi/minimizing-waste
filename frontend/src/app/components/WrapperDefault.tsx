@@ -3,13 +3,13 @@ import React from 'react';
 
 interface WrapperDefaultProps {
   children: React.ReactNode;
-  title: string
+  title: string;
 }
 
 export default function WrapperDefault(props: WrapperDefaultProps) {
   return (
-    <Card title={props.title} >
-      <Card type="inner">{props.children}</Card>
+    <Card type="inner" title={props.title}>
+      {props.children}
     </Card>
   );
 }

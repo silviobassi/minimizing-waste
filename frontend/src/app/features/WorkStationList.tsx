@@ -28,7 +28,7 @@ export default function WorkStationList() {
         <Space size={'middle'}>
           <Tooltip title={'Editar'}>
             <Button
-              type={'primary'}
+              type={'link'}
               shape={'circle'}
               icon={<EditOutlined />}
               onClick={() =>
@@ -38,7 +38,7 @@ export default function WorkStationList() {
           </Tooltip>
           <Tooltip title={'Excluir'}>
             <Button
-              type={'primary'}
+               type={'link'}
               shape={'circle'}
               icon={<DeleteOutlined />}
             />
@@ -66,7 +66,7 @@ export default function WorkStationList() {
         dataSource={workStations}
         columns={columns}
         pagination={{
-          pageSize: 6,
+          pageSize: 5,
         }}
       />
     </WrapperDefault>

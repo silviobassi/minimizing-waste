@@ -24,7 +24,7 @@ export default function SectorList() {
         <Space size={'middle'}>
           <Tooltip title={'Editar'}>
             <Button
-              type={'primary'}
+               type={'link'}
               shape={'circle'}
               icon={<EditOutlined />}
               onClick={() => navigate(`/setor/editar/${sector.id}`)}
@@ -32,7 +32,7 @@ export default function SectorList() {
           </Tooltip>
           <Tooltip title={'Excluir'}>
             <Button
-              type={'primary'}
+               type={'link'}
               shape={'circle'}
               icon={<DeleteOutlined />}
             />

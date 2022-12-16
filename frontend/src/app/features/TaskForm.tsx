@@ -25,12 +25,12 @@ export default function TaskForm(props: TaskFormDefaultProps) {
     <WrapperDefault title={props.title}>
       <Form layout={'vertical'} form={form}>
         <Row justify={'space-between'}>
-          <Col xs={24} xl={12}>
+          <Col xs={24} xl={15}>
             <Form.Item label="Título:*">
               <Input size="large" placeholder="ex: Título" />
             </Form.Item>
           </Col>
-          <Col xs={24} xl={7}>
+          <Col xs={24} xl={8}>
             <Form.Item label="Período de Conclusão:*">
               <RangePicker
                 style={{ width: '100%' }}
@@ -41,21 +41,10 @@ export default function TaskForm(props: TaskFormDefaultProps) {
               />
             </Form.Item>
           </Col>
-          <Col xs={24} xl={4}>
-            <Form.Item label="Prazo para Conclusão:*">
-              <DatePicker
-                style={{ width: '100%' }}
-                locale={locale}
-                format={dateFormat}
-                size="large"
-                onChange={(date) => console.log(date)}
-              />
-            </Form.Item>
-          </Col>
         </Row>
 
         <Row justify={'space-between'}>
-          <Col xs={24} xl={8}>
+          <Col xs={24} xl={7}>
             <Form.Item label="Tipo da Tarefa*">
               <Select
                 size="large"

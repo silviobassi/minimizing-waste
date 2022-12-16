@@ -3,12 +3,13 @@ import {
   BankOutlined,
   HomeOutlined,
   NotificationOutlined,
+  PrinterOutlined,
   UsergroupAddOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
 import { Link } from 'react-router-dom';
 
-export default function NavbarLayout() {
+export default function MenuLayout() {
   const items = [
     { label: <Link to={'/'}>Home</Link>, key: 'home', icon: <HomeOutlined /> },
 
@@ -23,7 +24,11 @@ export default function NavbarLayout() {
       icon: <ApartmentOutlined />,
     },
 
-    { label: <Link to={'/recursos'}>Recursos</Link>, key: 'supply' },
+    {
+      label: <Link to={'/recursos'}>Recursos</Link>,
+      key: 'supply',
+      icon: <PrinterOutlined />,
+    },
 
     {
       label: <Link to={'/tarefas'}>Tarefas</Link>,
@@ -44,9 +49,10 @@ export default function NavbarLayout() {
 
   return (
     <Menu
+      style={{ minHeight: '100%', paddingTop: 20 }}
       theme="dark"
-      mode="horizontal"
-      defaultSelectedKeys={['2']}
+      mode="inline"
+      defaultSelectedKeys={['4']}
       items={items}
     />
   );

@@ -37,11 +37,7 @@ export default function WorkStationList() {
             />
           </Tooltip>
           <Tooltip title={'Excluir'}>
-            <Button
-               type={'link'}
-              shape={'circle'}
-              icon={<DeleteOutlined />}
-            />
+            <Button type={'link'} shape={'circle'} icon={<DeleteOutlined />} />
           </Tooltip>
         </Space>
       ),

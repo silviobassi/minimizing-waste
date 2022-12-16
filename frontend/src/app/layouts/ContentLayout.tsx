@@ -1,6 +1,5 @@
-import { Col, Layout, Row } from 'antd';
+import { Layout, theme } from 'antd';
 import React from 'react';
-import BreadcrumbLayout from './BreadcrumbLayout';
 const { Content } = Layout;
 
 export interface ContentLayoutProps {
@@ -8,21 +7,22 @@ export interface ContentLayoutProps {
 }
 
 export default function ContentLayout(props: ContentLayoutProps) {
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
+
   return (
-    <Content style={{ padding: '0 30px' }}>
-      
-      <Row justify={'center'}>
-        <Col xs={24} xl={20}>
-        <BreadcrumbLayout />
-          <Content
-            style={{
-              minHeight: 280,
-            }}
-          >
-            {props.children}
-          </Content>
-        </Col>
-      </Row>
+    <Content style={{ margin: '24px 16px 0' }}>
+      <div
+        style={{
+          padding: 24,
+          minHeight: 360,
+          background: colorBgContainer,
+          margin: 20,
+        }}
+      >
+        {props.children}
+      </div>
     </Content>
   );
 }

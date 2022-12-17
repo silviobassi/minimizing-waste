@@ -158,7 +158,7 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
 
   return (
     <WrapperDefault title={props.title}>
-      <Tabs type="card" items={items} style={{minHeight: 276}}/>
+      <Tabs type="card" items={items} style={{ minHeight: 276 }} />
     </WrapperDefault>
   );
 }

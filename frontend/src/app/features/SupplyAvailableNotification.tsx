@@ -1,4 +1,4 @@
-import { Card, Col, Divider, Form, List, Row, Select } from 'antd';
+import { Card, Col, List, Row } from 'antd';
 import { useEffect, useState } from 'react';
 interface SupplyAvailableNotification {
   title: string;
@@ -12,13 +12,9 @@ interface SupplyAvailableNotification {
   allocatedQuantity: string;
 }
 
-export default function NotificationAvailableSupply() {
+export default function SupplyAvailableNotification() {
   const [supplyAvailableNotification, setSupplyAvailableNotification] =
     useState<SupplyAvailableNotification[]>([]);
-
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
 
   const loadMoreData = () => {
     const data: SupplyAvailableNotification[] = [];
@@ -45,50 +41,6 @@ export default function NotificationAvailableSupply() {
 
   return (
     <>
-      <Row justify={'start'}>
-        <Col xs={7}>
-          <Form layout="vertical">
-            <Form.Item label="Tipo de Notificações:*">
-              <Select
-                size="large"
-                defaultValue="Selecione o Tipo das Notificações"
-                onChange={handleChange}
-                options={[
-                  {
-                    label: 'Disponibilidade de Recursos',
-                    value: 'Disponibilidade de Recursos',
-                  },
-                  {
-                    label: 'Alocação de Colaboradores',
-                    value: 'Alocação de Colaboradores',
-                  },
-                  {
-                    label: 'Conclusão de Tarefas',
-                    value: 'Conclusão de Tarefas',
-                  },
-                  {
-                    label: 'Tarefas Aprovadas',
-                    value: 'Tarefas Aprovadas',
-                  },
-                  {
-                    label: 'Tarefas com Prazos Expirados',
-                    value: 'Tarefas com Prazos Expirados',
-                  },
-                  {
-                    label: 'Atribuição de Tarefas aos Colaboradores',
-                    value: 'Atribuição de Tarefas aos Colaboradores',
-                  },
-                ]}
-              />
-            </Form.Item>
-          </Form>
-        </Col>
-      </Row>
-      <Row>
-        <Col xs={24}>
-          <Divider />
-        </Col>
-      </Row>
       <Row>
         <Col xs={24}>
           <Card type="inner" title="Disponibilidade de Recursos">

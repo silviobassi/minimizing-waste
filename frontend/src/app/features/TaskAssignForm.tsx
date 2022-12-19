@@ -84,7 +84,7 @@ export default function TaskAssignForm() {
           <div
             id="scrollableDiv"
             style={{
-              height: 476,
+              height: 440,
               overflow: 'auto',
               padding: '0 16px',
               border: '1px solid rgba(140, 140, 140, 0.35)',

@@ -81,7 +81,11 @@ export default function TaskList() {
             <Button type={'link'} icon={<DeleteOutlined />} />
           </Tooltip>
           <Tooltip title={'Atribuir Tarefa'}>
-            <Button type={'link'} icon={<ReconciliationOutlined />} />
+            <Button
+              type={'link'}
+              icon={<ReconciliationOutlined />}
+              onClick={() => navigate(`/tarefa/atribuicao/${task.id}`)}
+            />
           </Tooltip>
           <Tooltip title={'Ver Detalhes'}>
             <Button type={'link'} icon={<EyeOutlined />} />

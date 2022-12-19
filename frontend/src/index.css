@@ -1,10 +1,3 @@
 #root > section.ant-layout {
   min-height: 100vh;
 }
-
-.border-line-menu-item {
-  border-radius: 0;
-  border-bottom: 1px solid #002b54;
-}
-
-

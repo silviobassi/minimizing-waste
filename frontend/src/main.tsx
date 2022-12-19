@@ -10,7 +10,7 @@ import App from './App';
 import DefaultLayout from './app/layouts';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <React.StrictMode>
+ 
     <ConfigProvider
       theme={{
         
@@ -22,5 +22,5 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
         </DefaultLayout>
       </Router>
     </ConfigProvider>
-  </React.StrictMode>,
+  
 );

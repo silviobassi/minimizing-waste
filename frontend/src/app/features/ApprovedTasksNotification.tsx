@@ -1,7 +1,7 @@
 import { Card, Col, List, Row } from 'antd';
 import { useEffect, useState } from 'react';
 
-interface CompletionOfTasks {
+interface ApprovedTasksNotification {
   title: string;
   notificationDate: string;
   reason: string;
@@ -16,17 +16,15 @@ interface CompletionOfTasks {
   deadline: string;
 }
 
-export default function EmployeeAllocationNotification() {
-  const [completionOfTasks, setCompletionOfTasks] = useState<
-    CompletionOfTasks[]
-  >([]);
+export default function ApprovedTasksNotification() {
+  const [approvedTasks, setApprovedTasks] = useState<ApprovedTasksNotification[]>([]);
 
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
   };
 
   const loadMoreData = () => {
-    const data: CompletionOfTasks[] = [];
+    const data: ApprovedTasksNotification[] = [];
     for (let i: number = 1; i < 20; i++) {
       data.push({
         title: `Cimento não usado - ${i}`,
@@ -40,11 +38,11 @@ export default function EmployeeAllocationNotification() {
         occupation: 'Instalador de Revestimento',
         taskTitle: 'Revestimento de Banheiros',
         taskType: 'Obras',
-        deadline: '22/01/2023 à 22/02/1023',
+        deadline: '22/01/2023 à 12/03/2023',
       });
     }
 
-    setCompletionOfTasks(data);
+    setApprovedTasks(data);
   };
 
   useEffect(() => {
@@ -55,9 +53,9 @@ export default function EmployeeAllocationNotification() {
     <>
       <Row>
         <Col xs={24}>
-          <Card type="inner" title="Conclusão de Tarefas">
+          <Card type="inner" title="Tarefas Aprovadas">
             <List
-              dataSource={completionOfTasks}
+              dataSource={approvedTasks}
               pagination={{
                 onChange: (page) => {
                   console.log(page);
@@ -75,8 +73,7 @@ export default function EmployeeAllocationNotification() {
                               <strong>Título:</strong> {item.title}
                             </p>
                             <p>
-                              <strong>Data da Notificação:</strong>{' '}
-                              {item.notificationDate}
+                              <strong>Data de Início:</strong> {item.notificationDate}
                             </p>
                             <p>
                               <strong>Motivo:</strong> {item.reason}

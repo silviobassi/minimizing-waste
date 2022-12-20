@@ -71,9 +71,7 @@ export default function SupplyList() {
           <Tooltip title={'Excluir'}>
             <Button type={'link'} icon={<DeleteOutlined />} />
           </Tooltip>
-          <Tooltip title={'Alocar Recursos'}>
-            <Button type={'link'} icon={<ReconciliationOutlined />} />
-          </Tooltip>
+         
           <Tooltip title={'Ver Detalhes'}>
             <Button type={'link'} icon={<EyeOutlined />} />
           </Tooltip>

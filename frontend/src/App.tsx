@@ -9,6 +9,7 @@ import EmployeeListView from './app/views/EmployeeList.view';
 import NotificationListView from './app/views/NotificationList.view';
 import SectorCreateView from './app/views/SectorCreate.view';
 import SectorEditView from './app/views/SectorEdit.view';
+import SupplyAllocateView from './app/views/SupplyAllocation.view';
 import SupplyCreateView from './app/views/SupplyCreate.view';
 import SupplyEditView from './app/views/SupplyEdit.view';
 import SupplyListView from './app/views/SupplyList.view';
@@ -39,6 +40,7 @@ function App() {
       <Route path={'/recursos'} element={<SupplyListView />} />
       <Route path={'/recurso/criar'} element={<SupplyCreateView />} />
       <Route path={'/recurso/editar/:id'} element={<SupplyEditView />} />
+      <Route path={'/recurso/alocacao/:id'} element={<SupplyAllocateView />} />
       <Route path={'/tarefas'} element={<TaskListView />} />
       <Route path={'/tarefa/criar'} element={<TaskCreateView />} />
       <Route path={'/tarefa/editar/:id'} element={<TaskEditView />} />

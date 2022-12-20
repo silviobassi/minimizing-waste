@@ -5,45 +5,47 @@ import {
   UserAddOutlined,
 } from '@ant-design/icons';
 import {
-  Avatar,
   Button,
   Card,
   Col,
   Divider,
   Form,
+  InputNumber,
   List,
   Row,
+  Select,
   Skeleton,
   Space,
 } from 'antd';
+import { Option } from 'antd/es/mentions';
 import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-
 import WrapperDefault from '../components/WrapperDefault';
 
-interface EmployeeSummary {
+interface SupplySummary {
   id: number;
-  name: string;
-  office: string;
-  occupation: string;
-}
-
-interface TaskSummary {
   title: string;
-  deadline: string;
-  nature: string;
-  sector: string;
-  workStation: string;
+  supplyType: string;
+  quantityAvailable: string;
+  quantity?: number;
 }
 
-export default function TaskAssignForm() {
+interface WorkStationAllocate {
+  name: string;
+}
+
+interface SectorAllocate {
+  name: string;
+  workStations: WorkStationAllocate[];
+  quantityAllocate?: number;
+}
+
+export default function SupplyAllocateForm() {
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [employees, setEmployees] = useState<EmployeeSummary[]>([]);
-  const [employeesAssign, setEmployeesAssign] = useState<EmployeeSummary[]>([]);
-  const [task, setTask] = useState<TaskSummary>();
-
-  const data: EmployeeSummary[] = [];
+  const [supplies, setSupplies] = useState<SupplySummary[]>([]);
+  const [suppliesAllocate, setSuppliesAllocate] = useState<SupplySummary[]>([]);
+  const [sectorAllocate, setSectorAllocate] = useState<SectorAllocate>();
 
   const loadMoreData = () => {
     if (loading) {
@@ -52,39 +54,36 @@ export default function TaskAssignForm() {
 
     setLoading(true);
     for (let i = 1; i < 5; i++) {
-      employees.push({
+      supplies.push({
         id: i,
-        name: `Pedro Bassi ${i}`,
-        office: `Azulejista`,
-        occupation: `Encarregado de Acabamento`,
+        title: `Cimento ${i}`,
+        supplyType: `Material`,
+        quantityAvailable: `${10 + 1 * i}`,
       });
     }
     setLoading(false);
   };
 
-  const taskSingle: TaskSummary = {
-    title: 'Organização de Ferramentas',
-    deadline: '22/06/2023 à 23/06/2023',
-    nature: 'Limpeza',
-    sector: 'Acabamento',
-    workStation: 'Bloco B26 Apto 176',
+  const sectorSingle: SectorAllocate = {
+    name: 'Estruturas em Concreto',
+    workStations: [
+      { name: 'Bloco B25 Apto 37' },
+      { name: 'Bloco C4 Apto 28' },
+      { name: 'Bloco G67 Apto 176' },
+    ],
   };
 
   useEffect(() => {
     loadMoreData();
-    setTask(taskSingle);
-  }, [setEmployees, setEmployeesAssign]);
-
-  const handleChange = (value: string) => {
-    console.log(value);
-  };
+    setSectorAllocate(sectorSingle);
+  }, [setSupplies, setSuppliesAllocate]);
 
   return (
     <WrapperDefault title="Atribuição de Colaborador">
       <Row justify={'space-between'}>
         <Col xs={24} xl={12}>
           <Divider orientation="left">
-            Colaboradores Disponíveis Para Alocação
+            Recursos Disponíveis para Alocação
           </Divider>
           <div
             id="scrollableDiv"
@@ -96,9 +95,9 @@ export default function TaskAssignForm() {
             }}
           >
             <InfiniteScroll
-              dataLength={employees.length}
+              dataLength={supplies.length}
               next={loadMoreData}
-              hasMore={employees.length < 50}
+              hasMore={supplies.length < 50}
               loader={<Skeleton avatar paragraph={{ rows: 1 }} active />}
               endMessage={
                 <Divider plain>Isto é tudo, Não há mais nada 🤐</Divider>
@@ -107,25 +106,20 @@ export default function TaskAssignForm() {
             >
               <List
                 itemLayout="horizontal"
-                dataSource={employees}
-                renderItem={(employee) => (
+                dataSource={supplies}
+                renderItem={(supply) => (
                   <List.Item>
                     <List.Item.Meta
-                      avatar={
-                        <Avatar
-                          src={`https://i.pravatar.cc/300?img=${employee.id}`}
-                        />
-                      }
-                      title={employee.name}
+                      title={supply.title}
                       description={
                         <>
                           <p>
-                            <strong>Cargo: </strong>
-                            {employee.office}
+                            <strong>Tipo do Recurso: </strong>
+                            {supply.supplyType}
                           </p>
                           <p>
-                            <strong>Função: </strong>
-                            {employee.occupation}
+                            <strong>Quantidade Disponível: </strong>
+                            {supply.quantityAvailable}
                           </p>
                           <Button
                             type="primary"
@@ -133,20 +127,14 @@ export default function TaskAssignForm() {
                             size="small"
                             icon={<UserAddOutlined />}
                             onClick={() => {
-                              setEmployeesAssign([
-                                ...employeesAssign,
-                                employee,
+                              setSuppliesAllocate([
+                                ...suppliesAllocate,
+                                supply,
                               ]);
 
-                              //employees.splice(employee.id, 1)
-
-                              const emp = employees.filter(
-                                (current) => current.id !== employee.id,
-                              );
-
-                              setEmployees(
-                                employees.filter(
-                                  (current) => current.id !== employee.id,
+                              setSupplies(
+                                supplies.filter(
+                                  (current) => current.id !== supply.id,
                                 ),
                               );
                             }}
@@ -163,71 +151,62 @@ export default function TaskAssignForm() {
           </div>
         </Col>
         <Col xs={24} xl={11}>
-          <Divider orientation="left">Tarefa a Atribuir</Divider>
-          <p>
-            {' '}
-            <strong>Título: </strong>
-            {task?.title}
-          </p>
-
-          <p>
-            <strong>Período de Conclusão: </strong>
-            {task?.deadline}
-          </p>
-
-          <p>
-            {' '}
-            <strong>Natureza: </strong>
-            {task?.nature}
-          </p>
+          <Divider orientation="left">Setor a Alocar</Divider>
 
           <p>
             <strong>Setor: </strong>
-            {task?.sector}
+            {sectorSingle.name}
           </p>
-
-          <p>
-            <strong>Estação de Trabalho: </strong>
-            {task?.workStation}
-          </p>
+          <Form layout="vertical" form={form}>
+            <Form.Item label="Estações de Trabalho:*">
+              <Select
+                size="large"
+                placeholder="Selecione a Estação de Trabalho"
+              >
+                {sectorSingle.workStations.map((workStation) => (
+                  <Option value={workStation.name}>{workStation.name}</Option>
+                ))}
+              </Select>
+            </Form.Item>
+          </Form>
           <Divider orientation="left">
             Colaboradores Atribuídos à Tarefa
           </Divider>
           <Card>
             <List
               itemLayout="horizontal"
-              dataSource={employeesAssign}
-              renderItem={(employeeAssign) => (
+              dataSource={suppliesAllocate}
+              renderItem={(supplyAllocate) => (
                 <List.Item>
                   <List.Item.Meta
-                    avatar={
-                      <Avatar
-                        size={'large'}
-                        src={`https://i.pravatar.cc/300?img=${employeeAssign.id}`}
-                      />
-                    }
-                    title={employeeAssign.name}
+                    title={supplyAllocate.title}
                     description={
                       <>
                         <p>
-                          <strong>Cargo: </strong>
-                          {employeeAssign.office}
+                          <strong>Tipo do Recurso: </strong>
+                          {supplyAllocate.supplyType}
                         </p>
-                        <p>
-                          <strong>Função: </strong>
-                          {employeeAssign.occupation}
-                        </p>
+                        <Form layout="vertical">
+                          <Form.Item label="Quantidade a Alocar:*">
+                            <InputNumber<number>
+                              defaultValue={1}
+                              min={1}
+                              max={20}
+                              style={{ width: 200 }}
+                            />
+                          </Form.Item>
+                        </Form>
                         <Button
                           type="primary"
                           ghost
                           size="small"
                           icon={<ClearOutlined />}
                           onClick={() => {
-                            setEmployees([...employees, employeeAssign]);
+                            setSupplies([...supplies, supplyAllocate]);
 
-                            setEmployeesAssign(
-                              employeesAssign.filter(
-                                (current) => current.id !== employeeAssign.id,
+                            setSuppliesAllocate(
+                              suppliesAllocate.filter(
+                                (current) => current.id !== supplyAllocate.id,
                               ),
                             );
                           }}
@@ -244,7 +223,7 @@ export default function TaskAssignForm() {
           <Form.Item style={{ marginTop: 20 }}>
             <Space direction="horizontal">
               <Button type="primary" icon={<ReconciliationOutlined />}>
-                Atribuir
+                Alocar
               </Button>
               <Button type="primary" danger icon={<StopOutlined />}>
                 Cancelar

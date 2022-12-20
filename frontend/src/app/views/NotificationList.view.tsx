@@ -1,9 +1,8 @@
 import { Col, Divider, Form, Row, Select } from 'antd';
 import { useState } from 'react';
 import usePageTitle from '../../core/usePageTitle';
-import ApprovedTasks from '../features/ApprovedTasks';
-import CompletionOfTasks from '../features/CompletionOfTasks';
-import EmployeeAllocationNotification from '../features/EmployeeAllocationNotification';
+import ApprovedTasksNotification from '../features/ApprovedTasksNotification';
+import CompletionOfTasksNotification from '../features/CompletionOfTasksNotification';
 import EmployeeTasksAssignNotification from '../features/EmployeeTasksAssignNotification.tsx';
 import ExpiredTasksNotification from '../features/ExpiredTasksNotification';
 import SupplyAvailableNotification from '../features/SupplyAvailableNotification';
@@ -14,9 +13,8 @@ export default function NotificationListView() {
 
   const notifications: any = {
     available: <SupplyAvailableNotification />,
-    allocation: <EmployeeAllocationNotification />,
-    taskCompleted: <CompletionOfTasks />,
-    approvedTasks: <ApprovedTasks />,
+    taskCompleted: <CompletionOfTasksNotification />,
+    approvedTasks: <ApprovedTasksNotification />,
     expiredTasks: <ExpiredTasksNotification />,
     tasksAssign: <EmployeeTasksAssignNotification />,
   };
@@ -40,10 +38,6 @@ export default function NotificationListView() {
                   {
                     label: 'Disponibilidade de Recursos',
                     value: 'available',
-                  },
-                  {
-                    label: 'Alocação de Colaboradores',
-                    value: 'allocation',
                   },
                   {
                     label: 'Conclusão de Tarefas',

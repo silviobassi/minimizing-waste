@@ -1,7 +1,7 @@
 import { Card, Col, List, Row } from 'antd';
 import { useEffect, useState } from 'react';
 
-interface EmployeeAllocationNotification {
+interface CompletionOfTasksNotification {
   title: string;
   notificationDate: string;
   reason: string;
@@ -11,18 +11,22 @@ interface EmployeeAllocationNotification {
   employeeName: string;
   office: string;
   occupation: string;
+  taskTitle: string;
+  taskType: string;
+  deadline: string;
 }
 
-export default function EmployeeAllocationNotification() {
-  const [employeeAllocationNotification, setEmployeeAllocationNotification] =
-    useState<EmployeeAllocationNotification[]>([]);
+export default function CompletionOfTasksNotification() {
+  const [completionOfTasks, setCompletionOfTasks] = useState<
+    CompletionOfTasksNotification[]
+  >([]);
 
   const handleChange = (value: string) => {
     console.log(`selected ${value}`);
   };
 
   const loadMoreData = () => {
-    const data: EmployeeAllocationNotification[] = [];
+    const data: CompletionOfTasksNotification[] = [];
     for (let i: number = 1; i < 20; i++) {
       data.push({
         title: `Cimento não usado - ${i}`,
@@ -34,10 +38,13 @@ export default function EmployeeAllocationNotification() {
         employeeName: 'Pedro Bassi',
         office: 'Azulejista',
         occupation: 'Instalador de Revestimento',
+        taskTitle: 'Revestimento de Banheiros',
+        taskType: 'Obras',
+        deadline: '22/01/2023 à 22/02/1023',
       });
     }
 
-    setEmployeeAllocationNotification(data);
+    setCompletionOfTasks(data);
   };
 
   useEffect(() => {
@@ -48,9 +55,9 @@ export default function EmployeeAllocationNotification() {
     <>
       <Row>
         <Col xs={24}>
-          <Card type="inner" title="Alocação de Colaboradores">
+          <Card type="inner" title="Conclusão de Tarefas">
             <List
-              dataSource={employeeAllocationNotification}
+              dataSource={completionOfTasks}
               pagination={{
                 onChange: (page) => {
                   console.log(page);
@@ -101,6 +108,18 @@ export default function EmployeeAllocationNotification() {
                             <p>
                               <strong>Função: </strong>
                               {item.occupation}
+                            </p>
+                            <p>
+                              <strong>Título da Tarefa: </strong>
+                              {item.taskTitle}
+                            </p>
+                            <p>
+                              <strong>Tipo da Tarefa: </strong>
+                              {item.taskType}
+                            </p>
+                            <p>
+                              <strong>Data de Finalização: </strong>
+                              {item.deadline}
                             </p>
                           </Col>
                         </Row>

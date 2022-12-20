@@ -41,7 +41,7 @@ export default function SectorList() {
             <Button
               type={'link'}
               icon={<ReconciliationOutlined />}
-              onClick={() => navigate(`/recurso/alocacao/${sector.id}`)}
+              onClick={() => navigate(`/setor/${sector.id}/alocacao/recurso`)}
             />
           </Tooltip>
         </Space>

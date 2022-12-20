@@ -20,6 +20,7 @@ import {
 import { Option } from 'antd/es/mentions';
 import { useEffect, useState } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
+import { Navigate, useNavigate } from 'react-router-dom';
 import WrapperDefault from '../components/WrapperDefault';
 
 interface SupplySummary {
@@ -41,6 +42,7 @@ interface SectorAllocate {
 }
 
 export default function SupplyAllocateForm() {
+  const navigate = useNavigate()
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [supplies, setSupplies] = useState<SupplySummary[]>([]);
@@ -225,7 +227,7 @@ export default function SupplyAllocateForm() {
               <Button type="primary" icon={<ReconciliationOutlined />}>
                 Alocar
               </Button>
-              <Button type="primary" danger icon={<StopOutlined />}>
+              <Button type="primary" danger icon={<StopOutlined />} onClick={() => navigate('/setores')}>
                 Cancelar
               </Button>
             </Space>

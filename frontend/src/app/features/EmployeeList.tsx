@@ -53,9 +53,6 @@ export default function EmployeeList() {
           <Tooltip title={'Excluir'}>
             <Button type={'link'} icon={<DeleteOutlined />} />
           </Tooltip>
-          <Tooltip title={'Alocar Colaborador'}>
-            <Button type={'link'} icon={<UserOutlined />} />
-          </Tooltip>
           <Tooltip title={'Ver Detalhes'}>
             <Button type={'link'} icon={<EyeOutlined />} />
           </Tooltip>

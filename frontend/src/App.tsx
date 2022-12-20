@@ -28,6 +28,7 @@ function App() {
       <Route path={'/setores'} element={<SectorListView />} />
       <Route path={'/setor/criar'} element={<SectorCreateView />} />
       <Route path={'/setor/editar/:id'} element={<SectorEditView />} />
+      <Route path={'/setor/:id/alocacao/recurso'} element={<SupplyAllocateView />} />
       <Route path={'/estacoes-de-trabalho'} element={<WorkStationListView />} />
       <Route
         path={'/estacao-de-trabalho/criar'}
@@ -40,7 +41,7 @@ function App() {
       <Route path={'/recursos'} element={<SupplyListView />} />
       <Route path={'/recurso/criar'} element={<SupplyCreateView />} />
       <Route path={'/recurso/editar/:id'} element={<SupplyEditView />} />
-      <Route path={'/recurso/alocacao/:id'} element={<SupplyAllocateView />} />
+      
       <Route path={'/tarefas'} element={<TaskListView />} />
       <Route path={'/tarefa/criar'} element={<TaskCreateView />} />
       <Route path={'/tarefa/editar/:id'} element={<TaskEditView />} />

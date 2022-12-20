@@ -80,7 +80,7 @@ export default function TaskAssignForm() {
   };
 
   return (
-    <WrapperDefault title="Atribuição de Colaborador">
+    <WrapperDefault title="Atribuição de Tarefas">
       <Row justify={'space-between'}>
         <Col xs={24} xl={12}>
           <Divider orientation="left">

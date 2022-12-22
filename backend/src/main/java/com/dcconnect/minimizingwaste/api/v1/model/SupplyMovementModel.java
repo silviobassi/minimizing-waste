@@ -14,5 +14,5 @@ public class SupplyMovementModel {
 
     private NotificationModel notification;
     private WorkStationModel workStation;
-    private SupplyModel supply;
+    private SupplySummary supply;
 }

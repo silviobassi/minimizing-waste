@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class MaterialSupplySupplyModel extends SupplyModel {
+public class MaterialSupplySupplyModel extends SupplySummary {
 
     private Manipulation manipulation;
 

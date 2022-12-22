@@ -2,7 +2,7 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.EquipmentSuppliesAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.EquipmentSuppliesDisassembler;
-import com.dcconnect.minimizingwaste.api.v1.model.EquipmentSupplySupplyModel;
+import com.dcconnect.minimizingwaste.api.v1.model.EquipmentSupplyModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyEquipmentInput;
 import com.dcconnect.minimizingwaste.domain.model.Equipment;
 import com.dcconnect.minimizingwaste.domain.service.SupplyService;
@@ -27,7 +27,7 @@ public class EquipmentSupplyController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public EquipmentSupplySupplyModel create(@RequestBody @Valid SupplyEquipmentInput supplyEquipmentInput){
+    public EquipmentSupplyModel create(@RequestBody @Valid SupplyEquipmentInput supplyEquipmentInput){
         Equipment equipment = equipmentSuppliesDisassembler.toDomainObject(supplyEquipmentInput);
         return equipmentSuppliesAssembler.toModel(supplyService.create(equipment));
 
@@ -35,7 +35,7 @@ public class EquipmentSupplyController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{supplyEquipmentId}")
-    public EquipmentSupplySupplyModel update(
+    public EquipmentSupplyModel update(
             @RequestBody @Valid SupplyEquipmentInput supplyEquipmentInput,
             @PathVariable Long supplyEquipmentId) {
 

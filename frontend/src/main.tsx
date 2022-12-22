@@ -8,6 +8,7 @@ import { ConfigProvider, theme } from 'antd';
 import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
 import DefaultLayout from './app/layouts';
+import HomeView from './app/views/Home.view';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
  

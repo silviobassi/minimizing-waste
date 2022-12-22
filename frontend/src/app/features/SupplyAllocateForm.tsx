@@ -85,7 +85,7 @@ export default function SupplyAllocateForm() {
       <Row justify={'space-between'}>
         <Col xs={24} xl={12}>
           <Divider orientation="left">
-            Recursos Disponíveis para Alocação
+            RECURSOS DISPONÍVEIS PARA ALOCAÇÃO
           </Divider>
           <div
             id="scrollableDiv"
@@ -153,7 +153,7 @@ export default function SupplyAllocateForm() {
           </div>
         </Col>
         <Col xs={24} xl={11}>
-          <Divider orientation="left">Setor a Alocar</Divider>
+          <Divider orientation="left">SETOR A ALOCAR</Divider>
 
           <p>
             <strong>Setor: </strong>

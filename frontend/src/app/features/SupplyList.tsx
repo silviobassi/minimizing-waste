@@ -27,11 +27,6 @@ export default function SupplyList() {
       dataIndex: 'name',
     },
     {
-      title: 'Empacotamento',
-      dataIndex: ['supplyDescription', 'packing'],
-      width: 130,
-    },
-    {
       title: 'Quantidade',
       dataIndex: ['supplyDescription', 'quantity'],
 
@@ -65,7 +60,7 @@ export default function SupplyList() {
             <Button
               type={'link'}
               icon={<EditOutlined />}
-              onClick={(_) => navigate(`/recurso/editar/${supply.id}`)}
+              onClick={(_) => navigate(`/recursos/editar/${supply.id}`)}
             />
           </Tooltip>
           <Tooltip title={'Excluir'}>
@@ -73,7 +68,11 @@ export default function SupplyList() {
           </Tooltip>
 
           <Tooltip title={'Ver Detalhes'}>
-            <Button type={'link'} icon={<EyeOutlined />} />
+            <Button
+              type={'link'}
+              icon={<EyeOutlined />}
+              onClick={() => navigate(`/recursos/${supply.id}/detalhes`)}
+            />
           </Tooltip>
         </Space>
       ),
@@ -87,7 +86,7 @@ export default function SupplyList() {
         columns={columns}
         rowKey="id"
         pagination={{
-          pageSize: 2,
+          pageSize: 5,
         }}
       />
     </WrapperDefault>

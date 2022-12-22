@@ -12,6 +12,6 @@ public class SupplySummaryModel {
     private Long id;
     private String name;
 
-    private SupplyDescriptionModel supplyDescription;
+    private SupplyDescriptionSummaryModel supplyDescription;
 
 }

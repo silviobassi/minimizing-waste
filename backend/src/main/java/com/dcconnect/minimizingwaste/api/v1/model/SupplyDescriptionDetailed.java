@@ -9,8 +9,6 @@ import java.math.BigDecimal;
 @Getter
 @Setter
 public class SupplyDescriptionModel {
-
-    private Long id;
     private String packing;
     private Long quantity;
     private BigDecimal measure;

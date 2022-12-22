@@ -1,31 +1,18 @@
-import {
-  DeleteOutlined,
-  EditOutlined,
-  EyeOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Space, Table, Tag, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
 import { useNavigate } from 'react-router-dom';
+import { User } from '../../@types/User';
 import WrapperDefault from '../components/WrapperDefault';
-
-interface UserType {
-  key: React.Key;
-  id: number;
-  name: string;
-  cpf: string;
-  email: string;
-  group: string;
-}
 
 export default function EmployeeList() {
   const navigate = useNavigate();
 
-  const columns: ColumnsType<UserType> = [
+  const columns: ColumnsType<User.Summary> = [
     { title: 'ID', dataIndex: 'id', width: 60 },
     { title: 'Nome', dataIndex: 'name', responsive: ['sm'] },
     { title: 'CPF', dataIndex: 'cpf', width: 150 },
-    { title: 'Email', dataIndex: 'email', width: 270 },
+    { title: 'WhatsApp', dataIndex: 'whatsApp', width: 270 },
     {
       title: 'Tipo de Usuário',
       dataIndex: 'group',
@@ -54,33 +41,37 @@ export default function EmployeeList() {
             <Button type={'link'} icon={<DeleteOutlined />} />
           </Tooltip>
           <Tooltip title={'Ver Detalhes'}>
-            <Button type={'link'} icon={<EyeOutlined />} />
+            <Button
+              type={'link'}
+              icon={<EyeOutlined />}
+              onClick={() => navigate(`/colaboradores/${employee.id}/detalhes`)}
+            />
           </Tooltip>
         </Space>
       ),
     },
   ];
 
-  const users: UserType[] = [];
+  const users: User.Summary[] = [];
 
   for (let i = 1; i < 20; i++) {
     users.push({
-      key: i,
       id: i,
       name: `Pedro Oliveira Bassi ${i}`,
       cpf: '999.999.999-99',
-      email: 'pedrobassi205@gmail.com',
+      whatsApp: '(17) 99999 9999',
       group: i % 2 === 0 ? 'ENCARREGADO' : 'ADMINISTRADOR',
     });
   }
   return (
     <WrapperDefault title="Lista de Colaboradores">
-      <Table<UserType>
+      <Table<User.Summary>
         dataSource={users}
         columns={columns}
         pagination={{
           pageSize: 5,
         }}
+        rowKey="id"
       />
     </WrapperDefault>
   );

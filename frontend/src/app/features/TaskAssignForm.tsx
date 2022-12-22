@@ -84,7 +84,7 @@ export default function TaskAssignForm() {
       <Row justify={'space-between'}>
         <Col xs={24} xl={12}>
           <Divider orientation="left">
-            Colaboradores Disponíveis Para Alocação
+            COLABORADORES DISPONÍVEIS À ALOCAÇÃO
           </Divider>
           <div
             id="scrollableDiv"
@@ -163,7 +163,7 @@ export default function TaskAssignForm() {
           </div>
         </Col>
         <Col xs={24} xl={11}>
-          <Divider orientation="left">Tarefa a Atribuir</Divider>
+          <Divider orientation="left">TAREFA A ATRIBUIR</Divider>
           <p>
             {' '}
             <strong>Título: </strong>

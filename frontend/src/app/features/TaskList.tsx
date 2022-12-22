@@ -6,25 +6,31 @@ import {
 } from '@ant-design/icons';
 import { Button, Checkbox, Space, Table, Tooltip } from 'antd';
 import { ColumnsType } from 'antd/es/table';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { Task } from '../../@types/Task';
 import WrapperDefault from '../components/WrapperDefault';
-
-interface TaskType {
-  key: React.Key;
-  id: number;
-  title: string;
-  workStation: string;
-  startDate: Date;
-  deadline: Date;
-  endDate: Date;
-  completed: boolean;
-  approved: boolean;
-}
 
 export default function TaskList() {
   const navigate = useNavigate();
+  const [tasks, setTasks] = useState<Task.Summary[]>([]);
 
-  const columns: ColumnsType<TaskType> = [
+  for (let i = 1; i < 20; i++) {
+    tasks.push({
+      id: i,
+      title: 'Instalação de Revestimento',
+      workStation: `Bloco B${i * 3} Apto ${i * 9}`,
+      startDate: '22/05/2023',
+      deadline: '22/05/2023',
+      endDate: '22/05/2023',
+      completed: true,
+      approved: true,
+    });
+  }
+
+  useEffect(() => {}, []);
+
+  const columns: ColumnsType<Task.Summary> = [
     { title: 'ID', dataIndex: 'id', width: 60 },
     { title: 'Título', dataIndex: 'title' },
     { title: 'Estação de Trabalho', dataIndex: 'workStation' },
@@ -35,17 +41,18 @@ export default function TaskList() {
       width: 130,
     },
     {
-      title: 'Data do Término',
-      dataIndex: 'endDate',
-      align: 'center',
-      width: 130,
-    },
-    {
       title: 'Prazo Para Conclusão',
       dataIndex: 'deadline',
       align: 'center',
       width: 130,
     },
+    {
+      title: 'Data do Término',
+      dataIndex: 'endDate',
+      align: 'center',
+      width: 130,
+    },
+
     {
       title: 'Finalização',
       dataIndex: 'completed',
@@ -88,37 +95,26 @@ export default function TaskList() {
             />
           </Tooltip>
           <Tooltip title={'Ver Detalhes'}>
-            <Button type={'link'} icon={<EyeOutlined />} />
+            <Button
+              type={'link'}
+              icon={<EyeOutlined />}
+              onClick={() => navigate(`/tarefas/${task.id}/detalhes`)}
+            />
           </Tooltip>
         </Space>
       ),
     },
   ];
 
-  const tasks: TaskType[] = [];
-
-  for (let i = 1; i < 20; i++) {
-    tasks.push({
-      key: i,
-      id: i,
-      title: 'Instalação de Revestimento',
-      workStation: `Bloco B${i * 3} Apto ${i * 9}`,
-      startDate: new Date(Date.now()),
-      deadline: new Date(),
-      endDate: new Date(),
-      completed: true,
-      approved: true,
-    });
-  }
-
   return (
     <WrapperDefault title="Lista de Tarefas">
-      <Table<TaskType>
+      <Table<Task.Summary>
         dataSource={tasks}
         columns={columns}
         pagination={{
           pageSize: 5,
         }}
+        rowKey="id"
       />
     </WrapperDefault>
   );

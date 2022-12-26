@@ -4,9 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -27,5 +25,6 @@ public class User extends BaseEntity{
     @ManyToMany
     @JoinTable(name = "users_groups", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "group_id"))
-    private Set<Group> groups = new HashSet<>();
+    private Set<AccessGroup> accessGroups = new HashSet<>();
+
 }

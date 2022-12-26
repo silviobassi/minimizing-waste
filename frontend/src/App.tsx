@@ -62,7 +62,7 @@ function App() {
         path={'/tarefas/:taskId/detalhes'}
         element={<TaskDetailedView />}
       />
-      <Route path={'/tarefa/atribuicao/:id'} element={<TaskAssignView />} />
+      <Route path={'/tarefa/:id/atribuicao'} element={<TaskAssignView />} />
       <Route path={'/colaboradores'} element={<EmployeeListView />} />
       <Route path={'/colaborador/criar'} element={<EmployeeCreateView />} />
       <Route path={'/colaborador/editar/:id'} element={<EmployeeEditView />} />

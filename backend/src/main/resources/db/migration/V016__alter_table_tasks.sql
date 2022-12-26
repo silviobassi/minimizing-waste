@@ -1,0 +1,1 @@
+alter table assignments modify column deadline datetime(6) not null;

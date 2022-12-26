@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import com.dcconnect.minimizingwaste.domain.model.WorkStation;
 import com.dcconnect.minimizingwaste.domain.repository.WorkStationRepository;
 
+import javax.transaction.Transactional;
+
 @Service
 public class WorkStationService {
 
@@ -18,6 +20,7 @@ public class WorkStationService {
     @Autowired
     private SectorService sectorService;
 
+    @Transactional
     public WorkStation create(WorkStation workStation){
 
         Sector sector = sectorService.findOrFail(workStation.getSector().getId());
@@ -27,6 +30,7 @@ public class WorkStationService {
         return workStationRepository.save(workStation);
     }
 
+    @Transactional
     public void delete(Long sectorId){
         try {
             workStationRepository.deleteById(sectorId);

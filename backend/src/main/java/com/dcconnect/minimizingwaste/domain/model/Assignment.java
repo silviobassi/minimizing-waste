@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.OffsetDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Getter
@@ -12,13 +13,13 @@ import java.util.Set;
 
 @Entity
 @Table(name = "tasks")
-public class Task extends BaseEntity {
+public class Assignment extends BaseEntity {
 
     private String title;
     private OffsetDateTime startDate;
     private OffsetDateTime endDate;
     private OffsetDateTime deadline;
-    private boolean completed;
+    private Boolean completed;
     private Boolean approved;
     private String approvalDescription;
 
@@ -30,9 +31,18 @@ public class Task extends BaseEntity {
     @JoinColumn(name = "work_station_id")
     private WorkStation workStation;
 
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "employee_responsible_id")
-    private User employeeResponsible;
+    @ManyToMany
+    @JoinTable(name = "assignments_employees",
+    joinColumns = @JoinColumn(name = "assignment_id"),
+    inverseJoinColumns = @JoinColumn(name = "responsible_employee_id"))
+    private Set<User> employeeResponsible = new HashSet<>();
 
+    @PrePersist
+    public void persist(){
+        if(completed == null)
+            setCompleted(false);
 
+        if(approved == null)
+            setApproved(false);
+    }
 }

@@ -7,6 +7,10 @@ delete from descriptions_supplies;
 delete from supplies;
 delete from notifications;
 delete from supplies_movement;
+delete from assignments;
+delete from permissions;
+delete from access_groups;
+delete from groups_permissions;
 
 
 set foreign_key_checks = 1;
@@ -18,6 +22,10 @@ alter table descriptions_supplies auto_increment = 1;
 alter table supplies auto_increment = 1;
 alter table notifications auto_increment = 1;
 alter table supplies_movement auto_increment = 1;
+alter table assignments auto_increment = 1;
+alter table permissions auto_increment = 1;
+alter table access_groups auto_increment = 1;
+alter table groups_permissions auto_increment = 1;
 
 insert into users (name, cpf, email, password, office, occupation, literate)
 values ('Pedro Bassi', '99999999999', 'pedro205@gmail.com', '1234', 'Azulejista', 'Chefe de Setor', true);
@@ -84,6 +92,27 @@ values (utc_timestamp(), false, true, 1, 4, 2, 1, 3);
 insert into supplies_movement (create_at, not_busy, movable, allocated_quantity, notification_id, work_station_id, supply_id, employee_responsible_id)
 values (utc_timestamp(), true, true, 1, 5, 2, 2, 1);
 
+insert into assignments (title, start_date, end_date, deadline, completed, approved, nature, work_station_id, approval_description)
+values ('Revestimento de Banheiros', utc_timestamp(), utc_timestamp(), utc_timestamp(), true, false, 'OBRAS', 1,
+        'Rejuntar novamente os banheiros, pois estão mau rejuntados. Trocar um revestimento que estã descascado em uma das pontas');
+insert into assignments (title, start_date, end_date, deadline, completed, approved, nature, work_station_id, approval_description)
+values ('Instalação de Porcelanato', utc_timestamp(), null, utc_timestamp(), false, false, 'OBRAS', 2,
+        '3 Porcelanatos marcados devem ser trocados, pois estão sem argamassa');
+insert into assignments (title, start_date, end_date, deadline, completed, approved, nature, work_station_id, approval_description)
+values ('Organização de Materiais Espalhados', utc_timestamp(), utc_timestamp(), utc_timestamp(), true, true, 'LIMPEZA', 2,
+        'Trabalho Coeso e cumprimento das metas técnicas estabelecidas');
 
+insert into permissions (name, description) values ('CONSULT_SUPPLIES', 'Permite Consultar Recursos');
+insert into permissions (name, description) values ('EDIT_SUPPLIES', 'Permite Editar Recursos');
+insert into permissions (name, description) values ('CREATE_SUPPLIES', 'Permite Criar Recursos');
 
+insert into access_groups (name) values ('Encarregado');
+insert into access_groups (name) values ('Administrador');
+insert into access_groups (name) values ('Colaborador');
 
+insert into groups_permissions (group_id, permission_id) values (1, 1);
+insert into groups_permissions (group_id, permission_id) values (1, 2);
+insert into groups_permissions (group_id, permission_id) values (2, 1);
+insert into groups_permissions (group_id, permission_id) values (2, 2);
+insert into groups_permissions (group_id, permission_id) values (2, 3);
+insert into groups_permissions (group_id, permission_id) values (3, 1);

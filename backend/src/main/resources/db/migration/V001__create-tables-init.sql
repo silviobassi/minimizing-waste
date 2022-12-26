@@ -18,7 +18,7 @@ create table employees_movements (
     primary key (id)
 ) engine=InnoDB default charset=utf8 collate=utf8_general_ci;
 
-create table `groups` (
+create table access_groups (
     id bigint not null auto_increment,
     name varchar(255),
     primary key (id)
@@ -78,10 +78,10 @@ create table supplies_movement (
     primary key (id)
 ) engine=InnoDB default charset=utf8 collate=utf8_general_ci;
 
-create table tasks (
+create table assignments (
     id bigint not null auto_increment,
     title varchar(255),
-    start_date datetime(6),
+    start_date datetime(6) not null,
     end_date datetime(6),
     deadline integer not null,
     completed bit not null,

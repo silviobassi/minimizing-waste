@@ -7,7 +7,7 @@ create table employees_movements_tasks (
 alter table employees_movements_tasks
     add constraint employees_movements_FK_tasks
         foreign key (task_id)
-            references tasks (id);
+            references assignments (id);
 
 alter table employees_movements_tasks
     add constraint employees_movements_FK_employees_movements

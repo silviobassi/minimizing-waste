@@ -6,7 +6,7 @@ alter table supplies_movement
     add constraint UK_notification_id
         unique (notification_id);
 
-alter table tasks
+alter table assignments
     add constraint UK_notification_id
         unique (notification_id);
 
@@ -32,7 +32,7 @@ alter table groups_permissions
 alter table groups_permissions
     add constraint groups_permissions_FK_group
         foreign key (group_id)
-            references `groups` (id);
+            references access_groups (id);
 
 alter table notifications_users
     add constraint notifications_users_FK_users
@@ -64,7 +64,7 @@ alter table supplies_movement
         foreign key (work_station_id)
             references work_stations (id);
 
-alter table tasks
+alter table assignments
     add constraint tasks_FK_notifications
         foreign key (notification_id)
             references notifications (id);
@@ -82,7 +82,7 @@ alter table users_employees_movement
 alter table users_groups
     add constraint users_groups_FK_groups
         foreign key (group_id)
-            references `groups` (id);
+            references access_groups (id);
 
 alter table users_groups
     add constraint user_groups_FK_users
@@ -92,7 +92,7 @@ alter table users_groups
 alter table users_tasks
     add constraint users_tasks_FK_tasks
         foreign key (task_id)
-            references tasks (id);
+            references assignments (id);
 
 alter table users_tasks
     add constraint users_tasks_FK_users

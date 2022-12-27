@@ -1,6 +1,6 @@
 package com.dcconnect.minimizingwaste.api.v1.assembler;
 
-import com.dcconnect.minimizingwaste.api.v1.model.AssignmentSummary;
+import com.dcconnect.minimizingwaste.api.v1.model.AssignmentSummaryModel;
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +15,12 @@ public class AssignmentSummaryAssembler {
     @Autowired
     private ModelMapper modelMapper;
 
-    public AssignmentSummary toModel(Assignment assignment){
-        return modelMapper.map(assignment, AssignmentSummary
+    public AssignmentSummaryModel toModel(Assignment assignment){
+        return modelMapper.map(assignment, AssignmentSummaryModel
                 .class);
     }
 
-    public List<AssignmentSummary> toCollectionModel(List<Assignment> assignments){
+    public List<AssignmentSummaryModel> toCollectionModel(List<Assignment> assignments){
         return assignments.stream().map(this::toModel)
                 .collect(Collectors.toList());
     }

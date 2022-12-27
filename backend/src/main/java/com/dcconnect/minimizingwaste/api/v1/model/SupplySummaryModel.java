@@ -7,11 +7,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SupplySummary {
+public class SupplySummaryModel {
 
     private Long id;
     private String name;
 
-    private SupplyDescriptionSummary supplyDescription;
+    private SupplyDescriptionSummaryModel supplyDescription;
 
 }

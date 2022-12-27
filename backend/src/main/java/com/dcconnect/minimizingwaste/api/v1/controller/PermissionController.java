@@ -1,7 +1,7 @@
 package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.PermissionAssembler;
-import com.dcconnect.minimizingwaste.api.v1.model.PermissionDetailed;
+import com.dcconnect.minimizingwaste.api.v1.model.PermissionDetailedModel;
 import com.dcconnect.minimizingwaste.domain.model.Permission;
 import com.dcconnect.minimizingwaste.domain.repository.PermissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ public class PermissionController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<PermissionDetailed> all(){
+    public List<PermissionDetailedModel> all(){
         List<Permission> permissions = permissionRepository.findAll();
         return permissionAssembler.toCollectionModel(permissions);
     }

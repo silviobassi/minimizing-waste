@@ -1,7 +1,6 @@
 package com.dcconnect.minimizingwaste.api.v1.assembler;
 
 import com.dcconnect.minimizingwaste.api.v1.model.AssignmentModel;
-import com.dcconnect.minimizingwaste.api.v1.model.AssignmentSummary;
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;

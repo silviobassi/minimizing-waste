@@ -2,7 +2,7 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.MaterialSupplyAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.MaterialSupplyDisassembler;
-import com.dcconnect.minimizingwaste.api.v1.model.MaterialSupplySupplyModel;
+import com.dcconnect.minimizingwaste.api.v1.model.MaterialSupplySupplyModelModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMaterialInput;
 import com.dcconnect.minimizingwaste.domain.model.Material;
 import com.dcconnect.minimizingwaste.domain.service.SupplyService;
@@ -27,7 +27,7 @@ public class MaterialSupplyController {
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public MaterialSupplySupplyModel create(@RequestBody @Valid SupplyMaterialInput supplyMaterialInput) {
+    public MaterialSupplySupplyModelModel create(@RequestBody @Valid SupplyMaterialInput supplyMaterialInput) {
         Material material = materialSupplyDisassembler.toDomainObject(supplyMaterialInput);
         return materialSupplyAssembler.toModel(supplyService.create(material));
 
@@ -35,7 +35,7 @@ public class MaterialSupplyController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{supplyMaterialId}")
-    public MaterialSupplySupplyModel update(
+    public MaterialSupplySupplyModelModel update(
             @RequestBody @Valid SupplyMaterialInput supplyMaterialInput, @PathVariable Long supplyMaterialId) {
 
         Material supplyMaterialCurrent = (Material) supplyService.findOrFail(supplyMaterialId);

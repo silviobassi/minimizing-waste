@@ -1,7 +1,7 @@
 package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.AccessGroupAssembler;
-import com.dcconnect.minimizingwaste.api.v1.model.AccessGroupSummary;
+import com.dcconnect.minimizingwaste.api.v1.model.AccessGroupSummaryModel;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class UserAccessGroupController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<AccessGroupSummary> all(@PathVariable Long userId){
+    public List<AccessGroupSummaryModel> all(@PathVariable Long userId){
         User user = userService.findOrFail(userId);
 
         return accessGroupAssembler.toCollectionModel(user.getAccessGroups());

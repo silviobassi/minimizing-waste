@@ -2,7 +2,7 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.UserAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.UserDisassembler;
-import com.dcconnect.minimizingwaste.api.v1.model.UserDetailed;
+import com.dcconnect.minimizingwaste.api.v1.model.UserDetailedModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.PasswordInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.UserInput;
 import com.dcconnect.minimizingwaste.domain.model.User;
@@ -33,14 +33,14 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<UserDetailed> all() {
+    public List<UserDetailedModel> all() {
         List<User> users = userRepository.findAll();
         return userAssembler.toCollectionModel(users);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public UserDetailed create(@RequestBody @Valid UserInput userInput){
+    public UserDetailedModel create(@RequestBody @Valid UserInput userInput){
         User user = userDisassembler.toDomainObject(userInput);
         user = userService.create(user);
         return userAssembler.toModel(user);
@@ -48,7 +48,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{userId}")
-    public UserDetailed update(@PathVariable Long userId, @RequestBody @Valid UserInput userInput){
+    public UserDetailedModel update(@PathVariable Long userId, @RequestBody @Valid UserInput userInput){
         User currentUser =  userService.findOrFail(userId);
         userDisassembler.copyToDomainModel(userInput, currentUser);
         currentUser = userService.create(currentUser);
@@ -58,7 +58,7 @@ public class UserController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{userId}")
-    public UserDetailed findOrFail(@PathVariable Long userId){
+    public UserDetailedModel findOrFail(@PathVariable Long userId){
         User user = userService.findOrFail(userId);
 
         return userAssembler.toModel(user);

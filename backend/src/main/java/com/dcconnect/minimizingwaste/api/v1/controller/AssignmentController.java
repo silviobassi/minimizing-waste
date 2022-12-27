@@ -1,15 +1,10 @@
 package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentAssembler;
-import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentSummaryAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.AssignmentModel;
-import com.dcconnect.minimizingwaste.api.v1.model.AssignmentSummary;
-import com.dcconnect.minimizingwaste.api.v1.model.UserDetailed;
 import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentInput;
-import com.dcconnect.minimizingwaste.api.v1.model.input.UserInput;
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
-import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.repository.AssignmentRepository;
 import com.dcconnect.minimizingwaste.domain.service.AssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;

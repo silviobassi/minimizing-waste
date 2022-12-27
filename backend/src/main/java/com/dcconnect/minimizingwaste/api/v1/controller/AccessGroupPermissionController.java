@@ -1,7 +1,7 @@
 package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.PermissionAssembler;
-import com.dcconnect.minimizingwaste.api.v1.model.PermissionDetailed;
+import com.dcconnect.minimizingwaste.api.v1.model.PermissionDetailedModel;
 import com.dcconnect.minimizingwaste.domain.model.AccessGroup;
 import com.dcconnect.minimizingwaste.domain.service.AccessGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +22,9 @@ public class AccessGroupPermissionController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<PermissionDetailed> all(@PathVariable Long accessGroupId){
+    public List<PermissionDetailedModel> all(@PathVariable Long accessGroupId){
         AccessGroup accessGroup =  accessGroupService.findOrFail(accessGroupId);
-        List<PermissionDetailed> permissionsDetailed = permissionAssembler
+        List<PermissionDetailedModel> permissionsDetailed = permissionAssembler
                 .toCollectionModel(accessGroup.getPermissions());
         return permissionsDetailed;
     }

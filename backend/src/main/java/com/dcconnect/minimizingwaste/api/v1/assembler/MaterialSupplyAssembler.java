@@ -1,6 +1,6 @@
 package com.dcconnect.minimizingwaste.api.v1.assembler;
 
-import com.dcconnect.minimizingwaste.api.v1.model.MaterialSupplySupplyModel;
+import com.dcconnect.minimizingwaste.api.v1.model.MaterialSupplySupplyModelModel;
 import com.dcconnect.minimizingwaste.domain.model.Material;
 import com.dcconnect.minimizingwaste.domain.model.Supply;
 import org.modelmapper.ModelMapper;
@@ -16,11 +16,11 @@ public class MaterialSupplyAssembler {
     @Autowired
     private ModelMapper modelMapper;
 
-    public MaterialSupplySupplyModel toModel(Supply supply){
-        return modelMapper.map(supply, MaterialSupplySupplyModel.class);
+    public MaterialSupplySupplyModelModel toModel(Supply supply){
+        return modelMapper.map(supply, MaterialSupplySupplyModelModel.class);
     }
 
-    public List<MaterialSupplySupplyModel> toCollectionModel(List<Material> materials){
+    public List<MaterialSupplySupplyModelModel> toCollectionModel(List<Material> materials){
         return materials.stream().map(this::toModel)
                 .collect(Collectors.toList());
     }

@@ -1,8 +1,6 @@
 package com.dcconnect.minimizingwaste.api.v1.assembler;
 
-import com.dcconnect.minimizingwaste.api.v1.model.AccessGroupSummary;
-import com.dcconnect.minimizingwaste.api.v1.model.UserDetailed;
-import com.dcconnect.minimizingwaste.domain.model.AccessGroup;
+import com.dcconnect.minimizingwaste.api.v1.model.UserDetailedModel;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,11 +15,11 @@ public class UserAssembler {
     @Autowired
     private ModelMapper modelMapper;
 
-    public UserDetailed toModel(User user){
-        return modelMapper.map(user, UserDetailed.class);
+    public UserDetailedModel toModel(User user){
+        return modelMapper.map(user, UserDetailedModel.class);
     }
 
-    public List<UserDetailed> toCollectionModel(List<User> users){
+    public List<UserDetailedModel> toCollectionModel(List<User> users){
         return users.stream().map(this::toModel)
                 .collect(Collectors.toList());
     }

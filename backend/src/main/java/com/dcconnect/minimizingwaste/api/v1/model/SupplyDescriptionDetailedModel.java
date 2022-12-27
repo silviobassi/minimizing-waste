@@ -8,7 +8,8 @@ import java.math.BigDecimal;
 
 @Getter
 @Setter
-public class SupplyDescriptionSummary {
+public class SupplyDescriptionDetailedModel {
+    private String packing;
     private Long quantity;
     private BigDecimal measure;
     private BigDecimal total;

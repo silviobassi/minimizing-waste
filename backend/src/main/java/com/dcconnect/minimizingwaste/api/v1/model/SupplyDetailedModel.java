@@ -9,7 +9,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class SupplyDetailed {
+public class SupplyDetailedModel {
 
     private Long id;
     private String name;
@@ -18,6 +18,6 @@ public class SupplyDetailed {
 
     private Bulk bulk;
 
-    private SupplyDescriptionDetailed supplyDescription;
+    private SupplyDescriptionDetailedModel supplyDescription;
 
 }

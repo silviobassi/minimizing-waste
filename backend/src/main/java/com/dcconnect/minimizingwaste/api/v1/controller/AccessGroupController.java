@@ -2,7 +2,7 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.AccessGroupAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.AccessGroupDisassembler;
-import com.dcconnect.minimizingwaste.api.v1.model.AccessGroupSummary;
+import com.dcconnect.minimizingwaste.api.v1.model.AccessGroupSummaryModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.AccessGroupInput;
 import com.dcconnect.minimizingwaste.domain.model.AccessGroup;
 import com.dcconnect.minimizingwaste.domain.repository.AccessGroupRepository;
@@ -32,14 +32,14 @@ public class AccessGroupController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<AccessGroupSummary> all() {
+    public List<AccessGroupSummaryModel> all() {
         List<AccessGroup> accessGroups = accessGroupRepository.findAll();
         return accessGroupAssembler.toCollectionModel(accessGroups);
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public AccessGroupSummary create(@RequestBody @Valid AccessGroupInput accessGroupInput){
+    public AccessGroupSummaryModel create(@RequestBody @Valid AccessGroupInput accessGroupInput){
         AccessGroup accessGroup = accessGroupDisassembler.toDomainObject(accessGroupInput);
         accessGroup = accessGroupService.create(accessGroup);
         return accessGroupAssembler.toModel(accessGroup);
@@ -47,8 +47,8 @@ public class AccessGroupController {
 
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{accessGroupId}")
-    public AccessGroupSummary update(@PathVariable Long accessGroupId,
-                                     @RequestBody @Valid AccessGroupInput accessGroupInput){
+    public AccessGroupSummaryModel update(@PathVariable Long accessGroupId,
+                                          @RequestBody @Valid AccessGroupInput accessGroupInput){
         AccessGroup accessGroupCurrent = accessGroupService.findOrFail(accessGroupId);
         accessGroupDisassembler.copyToDomainModel(accessGroupInput, accessGroupCurrent);
         accessGroupCurrent = accessGroupService.create(accessGroupCurrent);

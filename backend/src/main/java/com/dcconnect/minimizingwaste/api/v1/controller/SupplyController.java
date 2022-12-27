@@ -2,8 +2,8 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.SuppliesDetailedAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.SuppliesSummaryAssembler;
-import com.dcconnect.minimizingwaste.api.v1.model.SupplyDetailed;
-import com.dcconnect.minimizingwaste.api.v1.model.SupplySummary;
+import com.dcconnect.minimizingwaste.api.v1.model.SupplyDetailedModel;
+import com.dcconnect.minimizingwaste.api.v1.model.SupplySummaryModel;
 import com.dcconnect.minimizingwaste.domain.model.Supply;
 import com.dcconnect.minimizingwaste.domain.repository.SupplyRepository;
 import com.dcconnect.minimizingwaste.domain.service.SupplyService;
@@ -31,7 +31,7 @@ public class SupplyController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<SupplySummary> all(){
+    public List<SupplySummaryModel> all(){
         List<Supply> supplies = supplyRepository.findAll();
         return suppliesSummaryAssembler.toCollectionModel(supplies);
     }
@@ -44,7 +44,7 @@ public class SupplyController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{supplyId}")
-    public SupplyDetailed findById(@PathVariable Long supplyId){
+    public SupplyDetailedModel findById(@PathVariable Long supplyId){
         Supply supply = supplyService.findOrFail(supplyId);
         return suppliesDetailedAssembler.toModel(supply);
     }

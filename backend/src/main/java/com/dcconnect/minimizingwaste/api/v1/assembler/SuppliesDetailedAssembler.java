@@ -1,7 +1,6 @@
 package com.dcconnect.minimizingwaste.api.v1.assembler;
 
-import com.dcconnect.minimizingwaste.api.v1.model.SupplyDetailed;
-import com.dcconnect.minimizingwaste.api.v1.model.SupplySummary;
+import com.dcconnect.minimizingwaste.api.v1.model.SupplyDetailedModel;
 import com.dcconnect.minimizingwaste.domain.model.Supply;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +15,11 @@ public class SuppliesDetailedAssembler {
     @Autowired
     private ModelMapper modelMapper;
 
-    public SupplyDetailed toModel(Supply supply){
-        return modelMapper.map(supply, SupplyDetailed.class);
+    public SupplyDetailedModel toModel(Supply supply){
+        return modelMapper.map(supply, SupplyDetailedModel.class);
     }
 
-    public List<SupplyDetailed> toCollectionModel(List<Supply> supplies){
+    public List<SupplyDetailedModel> toCollectionModel(List<Supply> supplies){
         return supplies.stream().map(this::toModel)
                 .collect(Collectors.toList());
     }

@@ -7,7 +7,7 @@ import java.time.OffsetDateTime;
 
 @Getter
 @Setter
-public class AssignmentSummary {
+public class AssignmentSummaryModel {
 
     private Long id;
     private String title;

@@ -1,0 +1,1 @@
+alter table users add column created_at datetime(6);

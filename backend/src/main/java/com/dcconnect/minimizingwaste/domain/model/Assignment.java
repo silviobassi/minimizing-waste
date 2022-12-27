@@ -12,7 +12,7 @@ import java.util.Set;
 @Setter
 
 @Entity
-@Table(name = "tasks")
+@Table(name = "assignments")
 public class Assignment extends BaseEntity {
 
     private String title;

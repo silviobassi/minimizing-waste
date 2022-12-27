@@ -1,6 +1,7 @@
 package com.dcconnect.minimizingwaste.domain.service;
 
 import com.dcconnect.minimizingwaste.domain.exception.AccessGroupNotFoundException;
+import com.dcconnect.minimizingwaste.domain.exception.BusinessException;
 import com.dcconnect.minimizingwaste.domain.exception.EntityInUseException;
 import com.dcconnect.minimizingwaste.domain.model.AccessGroup;
 import com.dcconnect.minimizingwaste.domain.model.Permission;
@@ -11,6 +12,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.List;
 
 @Service
 public class AccessGroupService {
@@ -45,17 +47,40 @@ public class AccessGroupService {
     public void disassociatePermission(Long accessGroupId, Long permissionId) {
         AccessGroup accessGroup = findOrFail(accessGroupId);
         Permission permission = permissionService.findOrFail(permissionId);
+
+        List<Permission> permissionMatches = getPermissionMatches(accessGroup, permission);
+
+        if(permissionMatches.isEmpty()){
+            throw new BusinessException(
+                    String.format("A permissão não está associada ao grupo de acesso %s", accessGroup.getName()));
+        }
+
         accessGroup.removePermission(permission);
     }
+
     @Transactional
     public void associatePermission(Long accessGroupId, Long permissionId){
         AccessGroup accessGroup = findOrFail(accessGroupId);
         Permission permission = permissionService.findOrFail(permissionId);
+
+        List<Permission> permissionMatches = getPermissionMatches(accessGroup, permission);
+
+        if(!permissionMatches.isEmpty()){
+            throw new BusinessException(
+                    String.format("A permissão já está associada ao grupo de acesso %s", accessGroup.getName()));
+        }
+
         accessGroup.addPermission(permission);
     }
 
     public AccessGroup findOrFail(Long accessGroupId) {
         return accessGroupRepository.findById(accessGroupId)
                 .orElseThrow(() -> new AccessGroupNotFoundException(accessGroupId));
+    }
+
+    private static List<Permission> getPermissionMatches(AccessGroup accessGroup, Permission permission) {
+        var permissionDoNotMatch = accessGroup.getPermissions().stream()
+                .filter((permissionCurrent) -> permissionCurrent.equals(permission)).toList();
+        return permissionDoNotMatch;
     }
 }

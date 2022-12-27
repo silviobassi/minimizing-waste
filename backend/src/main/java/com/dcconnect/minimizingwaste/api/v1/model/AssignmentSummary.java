@@ -15,5 +15,5 @@ public class AssignmentSummary {
     private OffsetDateTime endDate;
     private OffsetDateTime deadline;
     private boolean completed;
-    private Boolean approved;
+    private boolean approved;
 }

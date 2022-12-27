@@ -29,8 +29,4 @@ public class AssignmentInput {
     @NotNull
     private WorkStationIdInput workStation;
 
-    @Valid
-    @NotNull
-    private Set<UserIdInput> responsibleEmployees = new HashSet<>();
-
 }

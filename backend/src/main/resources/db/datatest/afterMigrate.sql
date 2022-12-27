@@ -27,12 +27,13 @@ alter table permissions auto_increment = 1;
 alter table access_groups auto_increment = 1;
 alter table groups_permissions auto_increment = 1;
 
-insert into users (name, cpf, email, password, office, occupation, literate)
-values ('Pedro Bassi', '99999999999', 'pedro205@gmail.com', '1234', 'Azulejista', 'Chefe de Setor', true);
-insert into users (name, cpf, email, password, office, occupation, literate)
-values ('Silvio Bassi', '99999999999', 'silviobassi2@gmail.com', '1234', 'Pedreiro', 'Operário', false);
-insert into users (name, cpf, email, password, office, occupation, literate)
-values ('Ana Paula', '99999999999', 'paulaanabassi@hotmail.com', '1234', 'Ajudante Geral', 'Faxineira', true);
+insert into users (name, cpf, email, whats_app, password, office, occupation, literate, created_at) values
+('Silvio Bassi', '25782713801', 'silviobassi2@gmail.com', '17996079654', '123', 'Azulejista', 'Instalador de Porcelanato',
+ 'Ensino Médio', utc_timestamp),
+('Pedro Bassi', '99999999999', 'pedrobassi@gmail.com', '99999999999', '123', 'Pedreiro', 'Assentamento de Tijolos',
+ 'Curso Superior Completo', utc_timestamp),
+('Ana Paula Bassi', '99999999999', 'paulaanabassi@hotmail.com', '17997843606', '123', 'Azulejista', 'Rejuntamento de Porcelanato',
+ 'Curso Superior Incompleto', utc_timestamp);
 
 insert into sectors (name) values ('Obras');
 insert into sectors (name) values ('Administrativo');

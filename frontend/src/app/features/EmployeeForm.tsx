@@ -18,19 +18,24 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
     <WrapperDefault title={props.title}>
       <Form layout={'vertical'} form={form}>
         <Row justify={'space-between'}>
-          <Col xs={24} xl={8}>
+          <Col xs={24} xl={7}>
             <Form.Item label="Nome:*">
               <Input size="large" placeholder="ex: João dos Santos" />
             </Form.Item>
           </Col>
-          <Col xs={24} xl={7}>
+          <Col xs={24} xl={4}>
             <Form.Item label="CPF:*">
-              <Input size="large" placeholder="ex: João dos Santos" />
+              <Input size="large" placeholder="ex: 999.999.999-99" />
             </Form.Item>
           </Col>
-          <Col xs={24} xl={7}>
+          <Col xs={24} xl={5}>
             <Form.Item label="Email:*">
               <Input size="large" placeholder="ex: joaosantos@email.com" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} xl={5}>
+            <Form.Item label="WhatsApp:*">
+              <Input size="large" placeholder="ex: (17) 99999-9999" />
             </Form.Item>
           </Col>
         </Row>

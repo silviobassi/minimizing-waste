@@ -12,12 +12,12 @@ public class MaterialSupplyDisassembler {
     @Autowired
     private ModelMapper modelMapper;
 
-    public Material toDomainObject(SupplyMaterialInput recursoMaterialInput) {
-        return modelMapper.map(recursoMaterialInput, Material.class);
+    public Material toDomainObject(SupplyMaterialInput supplyMaterialInput) {
+        return modelMapper.map(supplyMaterialInput, Material.class);
     }
 
-    public void copyToDomainModel(SupplyMaterialInput recursoMaterialInput, Material material) {
-        modelMapper.map(recursoMaterialInput, material);
+    public void copyToDomainModel(SupplyMaterialInput supplyMaterialInput, Material material) {
+        modelMapper.map(supplyMaterialInput, material);
     }
 
 }

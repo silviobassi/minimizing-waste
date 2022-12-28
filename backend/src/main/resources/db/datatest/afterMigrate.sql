@@ -11,6 +11,7 @@ delete from assignments;
 delete from permissions;
 delete from access_groups;
 delete from groups_permissions;
+delete from assignments_employees;
 
 
 set foreign_key_checks = 1;
@@ -26,6 +27,7 @@ alter table assignments auto_increment = 1;
 alter table permissions auto_increment = 1;
 alter table access_groups auto_increment = 1;
 alter table groups_permissions auto_increment = 1;
+alter table assignments_employees auto_increment = 1;
 
 insert into users (name, cpf, email, whats_app, password, office, occupation, literate, created_at) values
 ('Silvio Bassi', '25782713801', 'silviobassi2@gmail.com', '17996079654', '123', 'Azulejista', 'Instalador de Porcelanato',

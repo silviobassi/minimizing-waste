@@ -37,6 +37,13 @@ public class Assignment extends BaseEntity {
     inverseJoinColumns = @JoinColumn(name = "responsible_employee_id"))
     private Set<User> employeeResponsible = new HashSet<>();
 
+    public void addEmployeeResponsible(User employeeResponsible){
+        getEmployeeResponsible().add(employeeResponsible);
+    }
+
+    public void removeEmployeeResponsible(User employeeResponsible){
+        getEmployeeResponsible().remove(employeeResponsible);
+    }
     @PrePersist
     public void persist(){
         if(completed == null)

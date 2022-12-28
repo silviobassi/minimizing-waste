@@ -88,7 +88,7 @@ public class SupplyMovementController {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/returns/{supplyMovementId}")
+    @PutMapping("/give-back/{supplyMovementId}")
     public SupplyMovementModel giveBackSupply(
             @RequestBody @Valid DevolvedSupplyMovementInput devolvedSupplyMovementInput,
             @PathVariable Long supplyMovementId){

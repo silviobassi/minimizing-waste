@@ -1,6 +1,7 @@
 package com.dcconnect.minimizingwaste.domain.service;
 
 import com.dcconnect.minimizingwaste.domain.exception.SuppliesMovementNotFoundException;
+import com.dcconnect.minimizingwaste.domain.model.Notification;
 import com.dcconnect.minimizingwaste.domain.model.Supply;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
 import com.dcconnect.minimizingwaste.domain.model.WorkStation;
@@ -26,6 +27,9 @@ public class SupplyMovementService {
     private SupplyService supplyService;
 
     @Autowired
+    private NotificationService notificationService;
+
+    @Autowired
     private GiveBackAllocatedSupplyService giveBackAllocatedSupplyService;
 
     @Transactional
@@ -47,6 +51,7 @@ public class SupplyMovementService {
         giveBackAllocatedSupplyService.whenUpdatingMovement(supplyMovement, supplyId);
 
         supplyMovement.setWorkStation(workStation);
+
         supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());
 
         return suppliesMovementRepository.save(supplyMovement);
@@ -98,6 +103,11 @@ public class SupplyMovementService {
         supplyMovement.setSupply(supply);
 
         supplyMovement.setWorkStation(workStation);
+
+        Notification notification = supplyMovement.getNotification();
+
+        notificationService.create(notification);
+
         supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());
     }
 

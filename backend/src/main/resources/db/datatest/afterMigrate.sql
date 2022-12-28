@@ -62,16 +62,16 @@ insert into descriptions_supplies (packing, quantity, measure, total, measure_un
 ('Caixa', 30, 2, 60, 'M2');
 
 
-insert into notifications (title, goal, reason)
-values ('Recurso Requisitado', 'Atender Colaborador', 'Alocado em Local Errado');
-insert into notifications (title, goal, reason)
-values ('Recurso Vencido', 'Devolver Recurso ao Fornecedor', 'Inutilidade na execução de serviços');
-insert into notifications (title, goal, reason)
-values ('Recurso imcompatível', 'Realocar supplies compatível', 'Não pode ser utilizado devido a ocorrência');
-insert into notifications (title, goal, reason)
-values ('Recurso imcompatível', 'Realocar supplies compatível', 'Não pode ser utilizado devido a ocorrência');
-insert into notifications (title, goal, reason)
-values ('Recurso imcompatível', 'Realocar supplies compatível', 'Não pode ser utilizado devido a ocorrência');
+insert into notifications (created_at, title, goal, reason)
+values (utc_timestamp, 'Recurso Requisitado', 'Atender Colaborador', 'Alocado em Local Errado');
+insert into notifications (created_at, title, goal, reason)
+values (utc_timestamp, 'Recurso Vencido', 'Devolver Recurso ao Fornecedor', 'Inutilidade na execução de serviços');
+insert into notifications (created_at, title, goal, reason)
+values (utc_timestamp, 'Recurso imcompatível', 'Realocar supplies compatível', 'Não pode ser utilizado devido a ocorrência');
+insert into notifications (created_at, title, goal, reason)
+values (utc_timestamp, 'Recurso imcompatível', 'Realocar supplies compatível', 'Não pode ser utilizado devido a ocorrência');
+insert into notifications (created_at, title, goal, reason)
+values (utc_timestamp, 'Recurso imcompatível', 'Realocar supplies compatível', 'Não pode ser utilizado devido a ocorrência');
 
 insert into supplies (supply_type, name, bulk, manipulation, supply_description_id) values
 ('equipment', 'Betoneira', 'GRANDE', null, 2);

@@ -37,6 +37,10 @@ public class Assignment extends BaseEntity {
     inverseJoinColumns = @JoinColumn(name = "responsible_employee_id"))
     private Set<User> employeeResponsible = new HashSet<>();
 
+    @OneToOne
+    @JoinColumn(name = "notification_id")
+    private Notification notification;
+
     public void addEmployeeResponsible(User employeeResponsible){
         getEmployeeResponsible().add(employeeResponsible);
     }

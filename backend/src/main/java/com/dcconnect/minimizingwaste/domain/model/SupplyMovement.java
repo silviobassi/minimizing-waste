@@ -26,7 +26,7 @@ public class SupplyMovement extends BaseEntity{
     @Transient
     private Long reservedQuantity;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name = "notification_id")
     private Notification notification;
 
@@ -40,7 +40,7 @@ public class SupplyMovement extends BaseEntity{
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "employee_responsible_id")
-    private User user;
+    private User employeeResponsible;
 
     @PrePersist
     public void prePersist(){

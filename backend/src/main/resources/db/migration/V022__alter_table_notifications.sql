@@ -1,0 +1,1 @@
+alter table notifications add column created_at datetime(6) not null;

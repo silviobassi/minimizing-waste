@@ -1,0 +1,1 @@
+alter table supplies_movement modify column notification_id bigint null;

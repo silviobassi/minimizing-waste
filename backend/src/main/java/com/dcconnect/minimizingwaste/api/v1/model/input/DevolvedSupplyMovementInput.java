@@ -12,6 +12,6 @@ public class DevolvedSupplyMovementInput {
 
     @NotNull
     @Min(value = 1L)
-    private SupplyMovementInput reservedQuantity;
+    private Long reservedQuantity;
 
 }

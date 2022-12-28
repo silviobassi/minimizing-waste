@@ -29,4 +29,6 @@ public class SupplyMovementInput {
     @NotNull
     private SupplyIdInput supply;
 
+    private UserIdInput employeeResponsible;
+
 }

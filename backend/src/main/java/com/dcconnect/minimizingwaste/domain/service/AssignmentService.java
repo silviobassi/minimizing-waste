@@ -4,6 +4,7 @@ import com.dcconnect.minimizingwaste.domain.exception.AssignmentNotFoundExceptio
 
 import com.dcconnect.minimizingwaste.domain.exception.BusinessException;
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
+import com.dcconnect.minimizingwaste.domain.model.Notification;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.model.WorkStation;
 import com.dcconnect.minimizingwaste.domain.repository.AssignmentRepository;
@@ -24,6 +25,8 @@ public class AssignmentService {
 
     @Autowired
     private WorkStationService workStationService;
+
+    @Autowired NotificationService notificationService;
 
     @Autowired
     private UserService userService;
@@ -50,35 +53,36 @@ public class AssignmentService {
     }
 
     @Transactional
-    public void attachEmployee(Long assignmentId, Long employeeResponsibleId){
-        Assignment currentAssignment = findOrFail(assignmentId);
+    public void attachEmployee(Long employeeResponsibleId, Assignment assignment){
         User currentEmployeeResponsible = userService.findOrFail(employeeResponsibleId);
 
         List<User> employeeResponsibleMatches = getEmployeeResponsibleMatches(
-                currentAssignment, currentEmployeeResponsible);
+                assignment, currentEmployeeResponsible);
 
         if(!employeeResponsibleMatches.isEmpty()){
             throw new BusinessException(String.format(
                     "O Colaborador com o nome: %s já está atribuído à tarefa", currentEmployeeResponsible.getName()));
         }
 
-        currentAssignment.addEmployeeResponsible(currentEmployeeResponsible);
+        Notification notification = notificationService.create(assignment.getNotification());
+        assignment.setNotification(notification);
+        assignment.addEmployeeResponsible(currentEmployeeResponsible);
     }
 
     @Transactional
-    public void detachEmployee(Long assignmentId, Long employeeResponsibleId){
-        Assignment currentAssignment = findOrFail(assignmentId);
+    public void detachEmployee(Long employeeResponsibleId, Assignment assignment){
         User currentEmployeeResponsible = userService.findOrFail(employeeResponsibleId);
 
         List<User> employeeResponsibleMatches = getEmployeeResponsibleMatches(
-                currentAssignment, currentEmployeeResponsible);
+                assignment, currentEmployeeResponsible);
 
         if(employeeResponsibleMatches.isEmpty()){
             throw new BusinessException(String.format(
                     "O Colaborador com o nome: %s não está atribuído à tarefa", currentEmployeeResponsible.getName()));
         }
-
-        currentAssignment.removeEmployeeResponsible(currentEmployeeResponsible);
+        Notification notification = notificationService.create(assignment.getNotification());
+        assignment.setNotification(notification);
+        assignment.removeEmployeeResponsible(currentEmployeeResponsible);
     }
 
     public Assignment findOrFail(Long assignmentId){

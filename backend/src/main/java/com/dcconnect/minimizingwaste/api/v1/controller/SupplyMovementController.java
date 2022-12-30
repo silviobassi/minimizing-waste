@@ -1,15 +1,13 @@
 package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.DevolvedSupplyMovementDisassembler;
-import com.dcconnect.minimizingwaste.api.v1.assembler.SuppliesMovementAssembler;
+import com.dcconnect.minimizingwaste.api.v1.assembler.SupplyMovementAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.SuppliesMovementDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.SupplyMovementModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.DevolvedSupplyMovementInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMovementInput;
-import com.dcconnect.minimizingwaste.domain.model.Supply;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
-import com.dcconnect.minimizingwaste.domain.model.WorkStation;
-import com.dcconnect.minimizingwaste.domain.repository.SuppliesMovementRepository;
+import com.dcconnect.minimizingwaste.domain.repository.SupplyMovementRepository;
 import com.dcconnect.minimizingwaste.domain.service.GiveBackAllocatedSupplyService;
 import com.dcconnect.minimizingwaste.domain.service.SupplyMovementService;
 import com.dcconnect.minimizingwaste.domain.service.SupplyService;
@@ -25,7 +23,7 @@ import java.util.List;
 public class SupplyMovementController {
 
     @Autowired
-    private SuppliesMovementRepository suppliesMovementRepository;
+    private SupplyMovementRepository supplyMovementRepository;
 
     @Autowired
     private SupplyMovementService supplyMovementService;
@@ -34,7 +32,7 @@ public class SupplyMovementController {
     private GiveBackAllocatedSupplyService giveBackAllocatedSupplyService;
 
     @Autowired
-    private SuppliesMovementAssembler suppliesMovementAssembler;
+    private SupplyMovementAssembler supplyMovementAssembler;
 
     @Autowired
     private SuppliesMovementDisassembler suppliesMovementDisassembler;
@@ -48,7 +46,7 @@ public class SupplyMovementController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public List<SupplyMovementModel> all(){
-        return suppliesMovementAssembler.toCollectionModel(suppliesMovementRepository.findAll());
+        return supplyMovementAssembler.toCollectionModel(supplyMovementRepository.findAll());
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -57,7 +55,7 @@ public class SupplyMovementController {
         SupplyMovement supplyMovement = suppliesMovementDisassembler.toDomainObject(supplyMovementInput);
         supplyMovement = supplyMovementService.create(supplyMovement);
 
-        return suppliesMovementAssembler.toModel(supplyMovement);
+        return supplyMovementAssembler.toModel(supplyMovement);
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -72,7 +70,7 @@ public class SupplyMovementController {
         giveBackAllocatedSupplyService.whenReplaceSupply(currentSupplyMovement, supplyId);
 
         suppliesMovementDisassembler.copyToDomainModel(supplyMovementInput, currentSupplyMovement);
-        return suppliesMovementAssembler.toModel(supplyMovementService.update(currentSupplyMovement, supplyId));
+        return supplyMovementAssembler.toModel(supplyMovementService.update(currentSupplyMovement, supplyId));
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -84,7 +82,7 @@ public class SupplyMovementController {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{supplyMovementId}")
     public SupplyMovementModel findById(@PathVariable Long supplyMovementId){
-        return suppliesMovementAssembler.toModel(supplyMovementService.findOrFail(supplyMovementId));
+        return supplyMovementAssembler.toModel(supplyMovementService.findOrFail(supplyMovementId));
     }
 
     @ResponseStatus(HttpStatus.OK)
@@ -95,7 +93,7 @@ public class SupplyMovementController {
 
         SupplyMovement supplyMovement = supplyMovementService.findOrFail(supplyMovementId);
         devolvedSupplyMovementDisassembler.copyToDomainModel(devolvedSupplyMovementInput, supplyMovement);
-        return suppliesMovementAssembler.toModel(supplyMovementService.giveBackSupply(supplyMovement));
+        return supplyMovementAssembler.toModel(supplyMovementService.giveBackSupply(supplyMovement));
     }
 
     @ResponseStatus(HttpStatus.OK)

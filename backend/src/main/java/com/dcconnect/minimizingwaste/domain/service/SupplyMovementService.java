@@ -5,7 +5,7 @@ import com.dcconnect.minimizingwaste.domain.model.Notification;
 import com.dcconnect.minimizingwaste.domain.model.Supply;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
 import com.dcconnect.minimizingwaste.domain.model.WorkStation;
-import com.dcconnect.minimizingwaste.domain.repository.SuppliesMovementRepository;
+import com.dcconnect.minimizingwaste.domain.repository.SupplyMovementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +18,7 @@ public class SupplyMovementService {
             "A quantidade devolvida (%d), não pode ser maior do que a quantidade alocada (%d).";
 
     @Autowired
-    private SuppliesMovementRepository suppliesMovementRepository;
+    private SupplyMovementRepository supplyMovementRepository;
 
     @Autowired
     private WorkStationService workStationService;
@@ -36,7 +36,7 @@ public class SupplyMovementService {
     public SupplyMovement create(SupplyMovement supplyMovement){
         setModels(supplyMovement);
         giveBackAllocatedSupplyService.whenCreatingMovement(supplyMovement);
-        return suppliesMovementRepository.save(supplyMovement);
+        return supplyMovementRepository.save(supplyMovement);
     }
 
     @Transactional
@@ -54,18 +54,18 @@ public class SupplyMovementService {
 
         supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());
 
-        return suppliesMovementRepository.save(supplyMovement);
+        return supplyMovementRepository.save(supplyMovement);
     }
 
     @Transactional
     public void delete(Long supplyMovementId){
         var supplyMovementCurrent = findOrFail(supplyMovementId);
         giveBackAllocatedSupplyService.whenDeleting(supplyMovementCurrent);
-        suppliesMovementRepository.deleteById(supplyMovementId);
+        supplyMovementRepository.deleteById(supplyMovementId);
     }
 
     public SupplyMovement findOrFail(Long supplyMovementId){
-        return suppliesMovementRepository.findById(supplyMovementId)
+        return supplyMovementRepository.findById(supplyMovementId)
                 .orElseThrow(() -> new SuppliesMovementNotFoundException(supplyMovementId));
     }
 
@@ -86,13 +86,13 @@ public class SupplyMovementService {
 
         supplyMovement.devolveAllocatedQuantity();
 
-        return suppliesMovementRepository.save(supplyMovement);
+        return supplyMovementRepository.save(supplyMovement);
 
     }
 
     public void vacateSupply(SupplyMovement supplyMovement){
         supplyMovement.vacate();
-        suppliesMovementRepository.save(supplyMovement);
+        supplyMovementRepository.save(supplyMovement);
     }
 
     private void setModels(SupplyMovement supplyMovement) {

@@ -34,7 +34,19 @@ public class SupplyMovementService {
 
     @Transactional
     public SupplyMovement create(SupplyMovement supplyMovement){
-        setModels(supplyMovement);
+        Supply supply = supplyService.findOrFail(supplyMovement.getSupply().getId());
+        WorkStation workStation =
+                workStationService.findOrFail(supplyMovement.getWorkStation().getId());
+
+        supplyMovement.setSupply(supply);
+
+        supplyMovement.setWorkStation(workStation);
+
+        Notification notification = supplyMovement.getNotification();
+
+        notificationService.create(notification);
+
+        supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());
         giveBackAllocatedSupplyService.whenCreatingMovement(supplyMovement);
         return supplyMovementRepository.save(supplyMovement);
     }

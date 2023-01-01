@@ -96,8 +96,8 @@ public class SupplyMovementController {
         return supplyMovementAssembler.toModel(supplyMovementService.giveBackSupply(supplyMovement));
     }
 
-    @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/vacancies/{supplyMovementId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/vacancies/{supplyMovementId}")
     public void vacateSupply(@PathVariable Long supplyMovementId){
         SupplyMovement supplyMovement = supplyMovementService.findOrFail(supplyMovementId);
         supplyMovementService.vacateSupply(supplyMovement);

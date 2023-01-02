@@ -9,6 +9,12 @@ import com.dcconnect.minimizingwaste.domain.model.Sector;
 import com.dcconnect.minimizingwaste.domain.repository.SectorRepository;
 import com.dcconnect.minimizingwaste.domain.service.SectorService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,11 +37,14 @@ public class SectorController {
     @Autowired
     private SectorDisassembler sectorDisassembler;
 
+    @Autowired
+    private PagedResourcesAssembler<Sector> pagedResourcesAssembler;
+
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<SectorModel> all(){
-        List<Sector> sectors = sectorRepository.findAll();
-        return sectorAssembler.toCollectionModel(sectors);
+    public PagedModel<SectorModel> all(@PageableDefault(size = 10) Pageable pageable){
+        Page<Sector> sectorsPage = sectorRepository.findAll(pageable);
+        return pagedResourcesAssembler.toModel(sectorsPage, sectorAssembler);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

@@ -6,12 +6,18 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.SuppliesMovementDisassembl
 import com.dcconnect.minimizingwaste.api.v1.model.SupplyMovementModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.DevolvedSupplyMovementInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMovementInput;
+import com.dcconnect.minimizingwaste.domain.model.Supply;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
 import com.dcconnect.minimizingwaste.domain.repository.SupplyMovementRepository;
 import com.dcconnect.minimizingwaste.domain.service.GiveBackAllocatedSupplyService;
 import com.dcconnect.minimizingwaste.domain.service.SupplyMovementService;
 import com.dcconnect.minimizingwaste.domain.service.SupplyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -43,10 +49,15 @@ public class SupplyMovementController {
     @Autowired
     private SupplyService supplyService;
 
+    @Autowired
+    private PagedResourcesAssembler<SupplyMovement> pagedResourcesAssembler;
+
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<SupplyMovementModel> all(){
-        return supplyMovementAssembler.toCollectionModel(supplyMovementRepository.findAll());
+    public PagedModel<SupplyMovementModel> all(@PageableDefault(size = 2) Pageable pageable){
+        Page<SupplyMovement> supplyPage = supplyMovementRepository.findAll(pageable);
+
+        return pagedResourcesAssembler.toModel(supplyPage, supplyMovementAssembler);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

@@ -9,6 +9,11 @@ import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.repository.UserRepository;
 import com.dcconnect.minimizingwaste.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,11 +36,14 @@ public class UserController {
     @Autowired
     private UserDisassembler userDisassembler;
 
+    @Autowired
+    private PagedResourcesAssembler<User> pagedResourcesAssembler;
+
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<UserDetailedModel> all() {
-        List<User> users = userRepository.findAll();
-        return userAssembler.toCollectionModel(users);
+    public PagedModel<UserDetailedModel> all(@PageableDefault(size = 2) Pageable pageable) {
+        Page<User> users = userRepository.findAll(pageable);
+        return pagedResourcesAssembler.toModel(users, userAssembler);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

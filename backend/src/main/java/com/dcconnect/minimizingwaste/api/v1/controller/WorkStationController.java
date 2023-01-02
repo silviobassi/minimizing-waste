@@ -8,6 +8,11 @@ import com.dcconnect.minimizingwaste.domain.model.WorkStation;
 import com.dcconnect.minimizingwaste.domain.repository.WorkStationRepository;
 import com.dcconnect.minimizingwaste.domain.service.WorkStationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,11 +35,14 @@ public class WorkStationController {
     @Autowired
     private WorkStationDisassembler workStationDisassembler;
 
+    @Autowired
+    private PagedResourcesAssembler<WorkStation> pagedResourcesAssembler;
+
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<WorkStationModel> all() {
-        List<WorkStation> workStation = workStationRepository.findAll();
-        return workStationAssembler.toCollectionModel(workStation);
+    public PagedModel<WorkStationModel> all(@PageableDefault(size = 10) Pageable pageable) {
+        Page<WorkStation> workStationPage = workStationRepository.findAll(pageable);
+        return pagedResourcesAssembler.toModel(workStationPage, workStationAssembler);
     }
 
     @PostMapping

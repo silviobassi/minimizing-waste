@@ -2,10 +2,13 @@ package com.dcconnect.minimizingwaste.api.v1.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.hateoas.RepresentationModel;
+import org.springframework.hateoas.server.core.Relation;
 
+@Relation(collectionRelation = "supplies-movements")
 @Getter
 @Setter
-public class SupplyMovementModel {
+public class SupplyMovementModel extends RepresentationModel<SupplyMovementModel> {
 
     private Long id;
     private boolean notBusy;

@@ -1,43 +1,48 @@
 package com.dcconnect.minimizingwaste.api.v1.assembler;
 
-import com.dcconnect.minimizingwaste.api.v1.controller.AccessGroupController;
-import com.dcconnect.minimizingwaste.api.v1.controller.SectorController;
-import com.dcconnect.minimizingwaste.api.v1.controller.UserController;
+import com.dcconnect.minimizingwaste.api.v1.controller.AssignmentController;
+import com.dcconnect.minimizingwaste.api.v1.controller.AssignmentEmployeeController;
 import com.dcconnect.minimizingwaste.api.v1.model.UserDetailedModel;
+import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentNotificationInput;
 import com.dcconnect.minimizingwaste.domain.model.User;
+import lombok.Getter;
+import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.IanaLinkRelations;
+import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.lang.reflect.Method;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class UserAssembler extends RepresentationModelAssemblerSupport<User, UserDetailedModel> {
+public class AssignEmployeeAssembler extends RepresentationModelAssemblerSupport<User, UserDetailedModel> {
 
     @Autowired
     private ModelMapper modelMapper;
 
-    public UserAssembler() {
-        super(UserController.class, UserDetailedModel.class);
+    @Getter
+    @Setter
+    private Long assignmentId;
+
+    @Getter
+    @Setter
+    private Long employeeResponsibleId;
+
+    public AssignEmployeeAssembler() {
+        super(AssignmentController.class, UserDetailedModel.class);
     }
 
     public UserDetailedModel toModel(User user){
-        UserDetailedModel userDetailedModel = createModelWithId(user.getId(), user);
-        modelMapper.map(user, userDetailedModel);
-
-        return userDetailedModel;
+        return  modelMapper.map(user, UserDetailedModel.class);
     }
 
     public CollectionModel<UserDetailedModel> toCollectionModel(Iterable<? extends User> entities){
-        return super.toCollectionModel(entities)
-                .add(linkTo(UserController.class).withRel(IanaLinkRelations.SELF.value()));
+        return super.toCollectionModel(entities);
     }
 
 }

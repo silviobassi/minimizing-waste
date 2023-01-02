@@ -1,13 +1,14 @@
 package com.dcconnect.minimizingwaste.api.v1.controller;
 
+import com.dcconnect.minimizingwaste.api.v1.assembler.AssignEmployeeAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentNotificationDisassembler;
-import com.dcconnect.minimizingwaste.api.v1.assembler.UserAssembler;
 import com.dcconnect.minimizingwaste.api.v1.model.UserDetailedModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentNotificationInput;
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.service.AssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,19 +24,17 @@ public class AssignmentEmployeeController {
     private AssignmentService assignmentService;
 
     @Autowired
-    private UserAssembler userAssembler;
+    private AssignEmployeeAssembler assignEmployeeAssembler;
 
     @Autowired
     private AssignmentNotificationDisassembler assignmentNotificationDisassembler;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<UserDetailedModel> all(@PathVariable Long assignmentId){
+    public CollectionModel<UserDetailedModel> all(@PathVariable Long assignmentId){
         Assignment assignment = assignmentService.findOrFail(assignmentId);
-
         List<User> users = assignment.getEmployeeResponsible().stream().collect(Collectors.toList());
-
-        return userAssembler.toCollectionModel(users);
+        return assignEmployeeAssembler.toCollectionModel(users);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -48,7 +47,6 @@ public class AssignmentEmployeeController {
 
         assignmentService.attachEmployee(employeeResponsibleId, currentAssignment);
     }
-
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{employeeResponsibleId}")

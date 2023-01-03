@@ -2,41 +2,52 @@ package com.dcconnect.minimizingwaste.api.v1.assembler;
 
 import com.dcconnect.minimizingwaste.api.v1.controller.AccessGroupController;
 import com.dcconnect.minimizingwaste.api.v1.controller.UserAccessGroupController;
-import com.dcconnect.minimizingwaste.api.v1.controller.WorkStationController;
 import com.dcconnect.minimizingwaste.api.v1.model.AccessGroupSummaryModel;
-import com.dcconnect.minimizingwaste.api.v1.model.WorkStationModel;
 import com.dcconnect.minimizingwaste.domain.model.AccessGroup;
-import com.dcconnect.minimizingwaste.domain.model.WorkStation;
+import lombok.Getter;
+import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class AccessGroupAssembler extends RepresentationModelAssemblerSupport<AccessGroup, AccessGroupSummaryModel> {
+public class UserAccessGroupAssembler extends RepresentationModelAssemblerSupport<AccessGroup, AccessGroupSummaryModel> {
 
     @Autowired
     private ModelMapper modelMapper;
 
-    public AccessGroupAssembler() {
+    @Getter
+    @Setter
+    private Long userId;
+
+    public UserAccessGroupAssembler() {
         super(UserAccessGroupController.class, AccessGroupSummaryModel.class);
     }
 
     public AccessGroupSummaryModel toModel(AccessGroup accessGroup){
-        return modelMapper.map(accessGroup, AccessGroupSummaryModel.class);
+
+        AccessGroupSummaryModel accessGroupSummaryModel = new AccessGroupSummaryModel();
+
+        accessGroupSummaryModel.add(linkTo(methodOn(UserAccessGroupController.class)
+                .associate(getUserId(), accessGroup.getId())).withRel("disassociate"));
+
+        modelMapper.map(accessGroup, accessGroupSummaryModel);
+
+        return accessGroupSummaryModel;
     }
 
-    public CollectionModel<AccessGroupSummaryModel> toCollectionModel(Iterable<? extends AccessGroup> entities){
+    public CollectionModel<AccessGroupSummaryModel> toCollectionModel(
+            Iterable<? extends AccessGroup> entities,
+            Long userId){
+
+        setUserId(userId);
         return super.toCollectionModel(entities)
-                .add(linkTo(AccessGroupController.class).withSelfRel());
+                .add(linkTo(methodOn(UserAccessGroupController.class).all(getUserId())).withSelfRel());
     }
 
 

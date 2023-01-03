@@ -7,9 +7,11 @@ import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentNotificationIn
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.service.AssignmentService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -34,28 +36,31 @@ public class AssignmentEmployeeController {
     public CollectionModel<UserDetailedModel> all(@PathVariable Long assignmentId){
         Assignment assignment = assignmentService.findOrFail(assignmentId);
         List<User> users = assignment.getEmployeeResponsible().stream().collect(Collectors.toList());
-        return assignEmployeeAssembler.toCollectionModel(users);
+        return assignEmployeeAssembler.toCollectionModel(users, assignmentId);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{employeeResponsibleId}")
-    public void attachEmployee(@PathVariable Long assignmentId,
-                               @PathVariable Long employeeResponsibleId,
-                               @RequestBody @Valid AssignmentNotificationInput assignmentNotificationInput){
+    public ResponseEntity<Void> attachEmployee(@PathVariable Long assignmentId,
+                        @PathVariable Long employeeResponsibleId,
+                        @RequestBody @Valid AssignmentNotificationInput assignmentNotificationInput){
         Assignment currentAssignment = assignmentService.findOrFail(assignmentId);
         assignmentNotificationDisassembler.copyToDomainModel(assignmentNotificationInput, currentAssignment);
 
         assignmentService.attachEmployee(employeeResponsibleId, currentAssignment);
+        return ResponseEntity.noContent().build();
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{employeeResponsibleId}")
-    public void detachEmployee(@PathVariable Long assignmentId,
-                               @PathVariable Long employeeResponsibleId,
-                               @RequestBody @Valid AssignmentNotificationInput assignmentNotificationInput){
+    public ResponseEntity<Void> detachEmployee(@PathVariable Long assignmentId,
+                                                 @PathVariable Long employeeResponsibleId,
+                                                 @RequestBody @Valid AssignmentNotificationInput assignmentNotificationInput){
         Assignment currentAssignment = assignmentService.findOrFail(assignmentId);
         assignmentNotificationDisassembler.copyToDomainModel(assignmentNotificationInput, currentAssignment);
         assignmentService.detachEmployee(employeeResponsibleId, currentAssignment);
+
+        return ResponseEntity.noContent().build();
     }
 
 }

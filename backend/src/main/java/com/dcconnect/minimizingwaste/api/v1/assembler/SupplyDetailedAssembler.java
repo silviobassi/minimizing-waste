@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
-public class SuppliesDetailedAssembler {
+public class SupplyDetailedAssembler {
 
     @Autowired
     private ModelMapper modelMapper;

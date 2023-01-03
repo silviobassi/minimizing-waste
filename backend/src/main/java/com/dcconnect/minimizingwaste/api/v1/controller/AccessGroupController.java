@@ -8,6 +8,7 @@ import com.dcconnect.minimizingwaste.domain.model.AccessGroup;
 import com.dcconnect.minimizingwaste.domain.repository.AccessGroupRepository;
 import com.dcconnect.minimizingwaste.domain.service.AccessGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,7 +33,7 @@ public class AccessGroupController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<AccessGroupSummaryModel> all() {
+    public CollectionModel<AccessGroupSummaryModel> all() {
         List<AccessGroup> accessGroups = accessGroupRepository.findAll();
         return accessGroupAssembler.toCollectionModel(accessGroups);
     }

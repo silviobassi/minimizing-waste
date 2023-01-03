@@ -1,17 +1,20 @@
 package com.dcconnect.minimizingwaste.api.v1.controller;
 
-import com.dcconnect.minimizingwaste.api.v1.assembler.SuppliesDetailedAssembler;
-import com.dcconnect.minimizingwaste.api.v1.assembler.SuppliesSummaryAssembler;
+import com.dcconnect.minimizingwaste.api.v1.assembler.SupplyDetailedAssembler;
+import com.dcconnect.minimizingwaste.api.v1.assembler.SupplySummaryAssembler;
 import com.dcconnect.minimizingwaste.api.v1.model.SupplyDetailedModel;
 import com.dcconnect.minimizingwaste.api.v1.model.SupplySummaryModel;
 import com.dcconnect.minimizingwaste.domain.model.Supply;
 import com.dcconnect.minimizingwaste.domain.repository.SupplyRepository;
 import com.dcconnect.minimizingwaste.domain.service.SupplyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/v1/supplies")
@@ -24,16 +27,19 @@ public class SupplyController {
     private SupplyService supplyService;
 
     @Autowired
-    private SuppliesSummaryAssembler suppliesSummaryAssembler;
+    private SupplySummaryAssembler supplySummaryAssembler;
 
     @Autowired
-    private SuppliesDetailedAssembler suppliesDetailedAssembler;
+    private SupplyDetailedAssembler supplyDetailedAssembler;
+
+    @Autowired
+    private PagedResourcesAssembler<Supply> pagedResourcesAssembler;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<SupplySummaryModel> all(){
-        List<Supply> supplies = supplyRepository.findAll();
-        return suppliesSummaryAssembler.toCollectionModel(supplies);
+    public PagedModel<SupplySummaryModel> all(@PageableDefault(size = 2) Pageable pageable){
+        Page<Supply> supplies = supplyRepository.findAll(pageable);
+        return pagedResourcesAssembler.toModel(supplies, supplySummaryAssembler);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -46,7 +52,7 @@ public class SupplyController {
     @GetMapping("/{supplyId}")
     public SupplyDetailedModel findById(@PathVariable Long supplyId){
         Supply supply = supplyService.findOrFail(supplyId);
-        return suppliesDetailedAssembler.toModel(supply);
+        return supplyDetailedAssembler.toModel(supply);
     }
 
 

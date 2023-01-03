@@ -9,9 +9,14 @@ import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Affordance;
+import org.springframework.hateoas.AffordanceModel;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
+import org.springframework.hateoas.mediatype.Affordances;
+import org.springframework.hateoas.mediatype.ConfigurableAffordance;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
@@ -29,20 +34,29 @@ public class AssignEmployeeAssembler extends RepresentationModelAssemblerSupport
     @Setter
     private Long assignmentId;
 
-    @Getter
-    @Setter
-    private Long employeeResponsibleId;
-
     public AssignEmployeeAssembler() {
         super(AssignmentController.class, UserDetailedModel.class);
     }
 
     public UserDetailedModel toModel(User user){
-        return  modelMapper.map(user, UserDetailedModel.class);
+        UserDetailedModel userDetailedModel = new UserDetailedModel();
+        
+        userDetailedModel.add(linkTo(methodOn(AssignmentEmployeeController.class)
+                .detachEmployee(getAssignmentId(), user.getId(), null))
+                .withRel("detach-employee"));
+
+        modelMapper.map(user, userDetailedModel);
+
+        return  userDetailedModel;
     }
 
-    public CollectionModel<UserDetailedModel> toCollectionModel(Iterable<? extends User> entities){
-        return super.toCollectionModel(entities);
+    public CollectionModel<UserDetailedModel> toCollectionModel(
+            Iterable<? extends User> entities, Long assignmentId){
+
+        setAssignmentId(assignmentId);
+        return super.toCollectionModel(entities)
+                .add(linkTo(methodOn(AssignmentEmployeeController.class)
+                        .all(getAssignmentId())).withSelfRel());
     }
 
 }

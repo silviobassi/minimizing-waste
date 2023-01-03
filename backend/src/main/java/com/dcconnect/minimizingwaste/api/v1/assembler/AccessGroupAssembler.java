@@ -31,7 +31,16 @@ public class AccessGroupAssembler extends RepresentationModelAssemblerSupport<Ac
     }
 
     public AccessGroupSummaryModel toModel(AccessGroup accessGroup){
-        return modelMapper.map(accessGroup, AccessGroupSummaryModel.class);
+
+        AccessGroupSummaryModel accessGroupSummaryModel = new AccessGroupSummaryModel();
+
+        accessGroupSummaryModel
+                .add(linkTo(methodOn(AccessGroupController.class)
+                        .delete(accessGroup.getId())).withRel("delete"));
+
+        modelMapper.map(accessGroup, accessGroupSummaryModel);
+
+        return accessGroupSummaryModel;
     }
 
     public CollectionModel<AccessGroupSummaryModel> toCollectionModel(Iterable<? extends AccessGroup> entities){

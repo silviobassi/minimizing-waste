@@ -8,6 +8,11 @@ import com.dcconnect.minimizingwaste.domain.model.Assignment;
 import com.dcconnect.minimizingwaste.domain.repository.AssignmentRepository;
 import com.dcconnect.minimizingwaste.domain.service.AssignmentService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,11 +35,14 @@ public class AssignmentController {
     @Autowired
     private AssignmentService assignmentService;
 
+    @Autowired
+    private PagedResourcesAssembler<Assignment> pagedResourcesAssembler;
+
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public List<AssignmentModel> all(){
-        List<Assignment> assignments = assignmentRepository.findAll();
-        return assignmentAssembler.toCollectionModel(assignments);
+    public CollectionModel<AssignmentModel> all(@PageableDefault(size = 2) Pageable pageable){
+        Page<Assignment> assignmentsPage = assignmentRepository.findAll(pageable);
+        return pagedResourcesAssembler.toModel(assignmentsPage, assignmentAssembler);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

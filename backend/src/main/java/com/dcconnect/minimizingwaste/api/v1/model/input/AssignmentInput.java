@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.OffsetDateTime;
 import java.util.HashSet;
@@ -14,16 +15,15 @@ import java.util.Set;
 @Setter
 public class AssignmentInput {
 
-    @NotNull
+    @NotBlank
     private String title;
     @NotNull
     private OffsetDateTime startDate;
     @NotNull
     private OffsetDateTime deadline;
 
-    @Valid
-    @NotNull
-    private Nature nature;
+    @NotBlank
+    private String nature;
 
     @Valid
     @NotNull

@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class SupplyMovementAssembler extends RepresentationModelAssemblerSupport<SupplyMovement, SupplyMovementModel> {
@@ -29,6 +30,13 @@ public class SupplyMovementAssembler extends RepresentationModelAssemblerSupport
 
     public SupplyMovementModel toModel(SupplyMovement supplyMovement){
         SupplyMovementModel supplyMovementModel = createModelWithId(supplyMovement.getId(), supplyMovement);
+
+        supplyMovementModel.add(linkTo(methodOn(SupplyMovementController.class)
+                .giveBackSupply(null, supplyMovement.getId())).withRel("give-back-supply"));
+
+        supplyMovementModel.add(linkTo(methodOn(SupplyMovementController.class)
+                .vacateSupply(supplyMovement.getId())).withRel("vacate-supply"));
+
         modelMapper.map(supplyMovement, supplyMovementModel);
 
         return supplyMovementModel;

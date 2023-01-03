@@ -10,6 +10,7 @@ import com.dcconnect.minimizingwaste.domain.service.AccessGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -58,8 +59,9 @@ public class AccessGroupController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{accessGroupId}")
-    public void delete(@PathVariable Long accessGroupId){
+    public ResponseEntity<Void> delete(@PathVariable Long accessGroupId){
         accessGroupService.delete(accessGroupId);
+        return ResponseEntity.noContent().build();
     }
 
 }

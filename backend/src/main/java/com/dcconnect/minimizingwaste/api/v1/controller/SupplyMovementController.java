@@ -12,6 +12,7 @@ import com.dcconnect.minimizingwaste.domain.repository.SupplyMovementRepository;
 import com.dcconnect.minimizingwaste.domain.service.GiveBackAllocatedSupplyService;
 import com.dcconnect.minimizingwaste.domain.service.SupplyMovementService;
 import com.dcconnect.minimizingwaste.domain.service.SupplyService;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +20,7 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -109,9 +111,10 @@ public class SupplyMovementController {
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/vacancies/{supplyMovementId}")
-    public void vacateSupply(@PathVariable Long supplyMovementId){
+    public ResponseEntity<Void> vacateSupply(@PathVariable Long supplyMovementId){
         SupplyMovement supplyMovement = supplyMovementService.findOrFail(supplyMovementId);
         supplyMovementService.vacateSupply(supplyMovement);
+        return ResponseEntity.noContent().build();
     }
 
 }

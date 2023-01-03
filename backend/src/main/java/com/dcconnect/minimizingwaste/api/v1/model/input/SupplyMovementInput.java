@@ -5,6 +5,7 @@ import lombok.Setter;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Getter
@@ -14,7 +15,8 @@ public class SupplyMovementInput {
     @NotNull
     private Boolean movable;
 
-    @Min(value = 1L)
+    @NotNull
+    @Min(1L)
     private Long reservedQuantity;
 
     @Valid
@@ -29,6 +31,8 @@ public class SupplyMovementInput {
     @NotNull
     private SupplyIdInput supply;
 
+    @Valid
+    @NotNull
     private UserIdInput employeeResponsible;
 
 }

@@ -10,6 +10,7 @@ import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSuppor
 import org.springframework.stereotype.Component;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class SupplySummaryAssembler extends RepresentationModelAssemblerSupport<Supply, SupplySummaryModel> {
@@ -24,6 +25,7 @@ public class SupplySummaryAssembler extends RepresentationModelAssemblerSupport<
     public SupplySummaryModel toModel(Supply supply){
 
         SupplySummaryModel supplySummaryModel = createModelWithId(supply.getId(), supply);
+
         modelMapper.map(supply, supplySummaryModel);
 
         return supplySummaryModel;

@@ -18,5 +18,4 @@ public class NotificationInput {
     @NotBlank
     private String goal;
 
-
 }

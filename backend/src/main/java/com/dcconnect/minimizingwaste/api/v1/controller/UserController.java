@@ -5,6 +5,7 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.UserDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.UserDetailedModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.PasswordInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.UserInput;
+import com.dcconnect.minimizingwaste.api.v1.openapi.UserControllerOpenApi;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.repository.UserRepository;
 import com.dcconnect.minimizingwaste.domain.service.UserService;
@@ -22,7 +23,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/users")
-public class UserController {
+public class UserController implements UserControllerOpenApi {
 
     @Autowired
     private UserRepository userRepository;

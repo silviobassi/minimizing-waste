@@ -4,6 +4,7 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.WorkStationAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.WorkStationDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.WorkStationModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.WorkStationInput;
+import com.dcconnect.minimizingwaste.api.v1.openapi.WorkStationControllerOpenApi;
 import com.dcconnect.minimizingwaste.domain.model.WorkStation;
 import com.dcconnect.minimizingwaste.domain.repository.WorkStationRepository;
 import com.dcconnect.minimizingwaste.domain.service.WorkStationService;
@@ -21,7 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/work-stations")
-public class WorkStationController {
+public class WorkStationController implements WorkStationControllerOpenApi {
 
     @Autowired
     private WorkStationRepository workStationRepository;

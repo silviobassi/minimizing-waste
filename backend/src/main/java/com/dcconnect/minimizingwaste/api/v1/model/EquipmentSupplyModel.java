@@ -6,7 +6,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class EquipmentModelSupplyModel extends SupplySummaryModel {
+public class EquipmentSupplyModel extends SupplySummaryModel {
 
     private Bulk bulk;
 

@@ -32,3 +32,8 @@ spring:
   web:
     resources:
       add-mappings: false
+
+springdoc:
+  packages-to-scan: com.dcconnect.minimizingwaste.api
+  paths-to-match: /v1/**
+

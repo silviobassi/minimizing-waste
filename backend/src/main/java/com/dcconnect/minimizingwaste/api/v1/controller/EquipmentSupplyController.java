@@ -4,6 +4,7 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.EquipmentSuppliesAssembler
 import com.dcconnect.minimizingwaste.api.v1.assembler.EquipmentSuppliesDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.EquipmentSupplyModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyEquipmentInput;
+import com.dcconnect.minimizingwaste.api.v1.openapi.EquipmentSupplyControllerOpenApi;
 import com.dcconnect.minimizingwaste.domain.model.Equipment;
 import com.dcconnect.minimizingwaste.domain.service.SupplyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/v1/supplies/equipments")
-public class EquipmentSupplyController {
+public class EquipmentSupplyController implements EquipmentSupplyControllerOpenApi {
 
     @Autowired
     private SupplyService supplyService;

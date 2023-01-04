@@ -5,6 +5,7 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.SectorAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.SectorDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.SectorModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SectorInput;
+import com.dcconnect.minimizingwaste.api.v1.openapi.SectorControllerOpenApi;
 import com.dcconnect.minimizingwaste.domain.model.Sector;
 import com.dcconnect.minimizingwaste.domain.repository.SectorRepository;
 import com.dcconnect.minimizingwaste.domain.service.SectorService;
@@ -23,7 +24,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/sectors")
-public class SectorController {
+public class SectorController implements SectorControllerOpenApi {
 
     @Autowired
     private SectorRepository sectorRepository;
@@ -72,7 +73,7 @@ public class SectorController {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{sectorId}")
-    public SectorModel findById(@PathVariable Long sectorId){
+    public SectorModel findOrFail(@PathVariable Long sectorId){
         return sectorAssembler.toModel(sectorService.findOrFail(sectorId));
     }
 

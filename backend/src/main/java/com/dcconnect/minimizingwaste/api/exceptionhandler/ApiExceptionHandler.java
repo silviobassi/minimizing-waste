@@ -1,6 +1,7 @@
 package com.dcconnect.minimizingwaste.api.exceptionhandler;
 
 import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,7 +51,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	    
 	    BindingResult bindingResult = ex.getBindingResult();
 	    
-	    List<Problem.Fields> problemFields = bindingResult.getAllErrors().stream()
+	    List<Problem.Object> problemFields = bindingResult.getAllErrors().stream()
 	    		.map(fieldError -> {
 	    			String message = messageSource.getMessage(fieldError, LocaleContextHolder.getLocale());
 	    			
@@ -60,7 +61,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	    				name = ((FieldError) fieldError).getField();
 	    			}
 	    			
-	    			return Problem.Fields.builder()
+	    			return Problem.Object.builder()
 	    				.name(name)
 	    				.userMessage(message)
 	    				.build();
@@ -69,7 +70,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 	    
 	    Problem problem = createProblemBuilder(status, problemType, detail)
 	        .userMessage(detail)
-	        .fields(problemFields)
+	        .objects(problemFields)
 	        .build();
 	    
 	    return handleExceptionInternal(ex, problem, headers, status, request);
@@ -240,14 +241,14 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		
 		if (body == null) {
 			body = Problem.builder()
-				.timestamp(LocalDateTime.now())
+				.timestamp(OffsetDateTime.now())
 				.title(status.getReasonPhrase())
 				.status(status.value())
 				.userMessage(GENERIC_MESSAGE_END_USER)
 				.build();
 		} else if (body instanceof String) {
 			body = Problem.builder()
-				.timestamp(LocalDateTime.now())
+				.timestamp(OffsetDateTime.now())
 				.title((String) body)
 				.status(status.value())
 				.userMessage(GENERIC_MESSAGE_END_USER)
@@ -272,7 +273,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 			ProblemType problemType, String detail) {
 		
 		return Problem.builder()
-			.timestamp(LocalDateTime.now())
+			.timestamp(OffsetDateTime.now())
 			.status(status.value())
 			.type(problemType.getUri())
 			.title(problemType.getTitle())

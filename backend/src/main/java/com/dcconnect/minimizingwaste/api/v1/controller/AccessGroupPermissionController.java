@@ -2,6 +2,7 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.PermissionAssembler;
 import com.dcconnect.minimizingwaste.api.v1.model.PermissionDetailedModel;
+import com.dcconnect.minimizingwaste.api.v1.openapi.AccessGroupPermissionControllerOpenApi;
 import com.dcconnect.minimizingwaste.domain.model.AccessGroup;
 import com.dcconnect.minimizingwaste.domain.service.AccessGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/access-groups/{accessGroupId}/permissions")
-public class AccessGroupPermissionController {
+public class AccessGroupPermissionController implements AccessGroupPermissionControllerOpenApi {
 
     @Autowired
     private AccessGroupService accessGroupService;

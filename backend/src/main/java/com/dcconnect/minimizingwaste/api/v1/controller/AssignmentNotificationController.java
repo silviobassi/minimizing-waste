@@ -2,6 +2,7 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.model.AssignmentNotificationModel;
 import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentNotificationAssembler;
+import com.dcconnect.minimizingwaste.api.v1.openapi.AssignmentNotificationControllerOpenApi;
 import com.dcconnect.minimizingwaste.domain.repository.AssignmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/notifications/assignments")
-public class AssignmentNotificationController {
+public class AssignmentNotificationController implements AssignmentNotificationControllerOpenApi {
 
     @Autowired
     private AssignmentRepository assignmentRepository;

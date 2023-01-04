@@ -3,6 +3,7 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.SupplyMovementNotificationAssembler;
 import com.dcconnect.minimizingwaste.api.v1.model.SupplyMovementNotificationModel;
+import com.dcconnect.minimizingwaste.api.v1.openapi.SupplyMovementNotificationControllerOpenApi;
 import com.dcconnect.minimizingwaste.domain.repository.SupplyMovementRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,7 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/supplies-movement/notifications")
-public class SupplyMovementNotificationController {
+public class SupplyMovementNotificationController implements SupplyMovementNotificationControllerOpenApi {
 
     @Autowired
     private SupplyMovementRepository supplyMovementRepository;

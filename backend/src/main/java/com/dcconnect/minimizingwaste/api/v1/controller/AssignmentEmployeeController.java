@@ -4,6 +4,7 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.AssignEmployeeAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentNotificationDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.UserDetailedModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentNotificationInput;
+import com.dcconnect.minimizingwaste.api.v1.openapi.AssignmentEmployeeControllerOpenApi;
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.service.AssignmentService;
@@ -20,7 +21,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/assignments/{assignmentId}/employee-responsible")
-public class AssignmentEmployeeController {
+public class AssignmentEmployeeController implements AssignmentEmployeeControllerOpenApi {
 
     @Autowired
     private AssignmentService assignmentService;

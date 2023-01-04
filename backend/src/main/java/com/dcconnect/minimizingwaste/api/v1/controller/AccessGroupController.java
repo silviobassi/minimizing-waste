@@ -4,6 +4,7 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.AccessGroupAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.AccessGroupDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.AccessGroupSummaryModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.AccessGroupInput;
+import com.dcconnect.minimizingwaste.api.v1.openapi.AccessGroupControllerOpenApi;
 import com.dcconnect.minimizingwaste.domain.model.AccessGroup;
 import com.dcconnect.minimizingwaste.domain.repository.AccessGroupRepository;
 import com.dcconnect.minimizingwaste.domain.service.AccessGroupService;
@@ -18,7 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/access-groups")
-public class AccessGroupController {
+public class AccessGroupController implements AccessGroupControllerOpenApi {
 
     @Autowired
     private AccessGroupRepository accessGroupRepository;

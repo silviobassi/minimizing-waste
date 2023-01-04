@@ -4,6 +4,7 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.MaterialSupplyAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.MaterialSupplyDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.MaterialSupplyModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMaterialInput;
+import com.dcconnect.minimizingwaste.api.v1.openapi.MaterialSupplyControllerOpenApi;
 import com.dcconnect.minimizingwaste.domain.model.Material;
 import com.dcconnect.minimizingwaste.domain.service.SupplyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/v1/supplies/materials")
-public class MaterialSupplyController {
+public class MaterialSupplyController implements MaterialSupplyControllerOpenApi {
 
     @Autowired
     private SupplyService supplyService;

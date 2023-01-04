@@ -4,6 +4,7 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.AssignmentModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentInput;
+import com.dcconnect.minimizingwaste.api.v1.openapi.AssignmentControllerOpenApi;
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
 import com.dcconnect.minimizingwaste.domain.repository.AssignmentRepository;
 import com.dcconnect.minimizingwaste.domain.service.AssignmentService;
@@ -21,7 +22,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/v1/assignments")
-public class AssignmentController {
+public class AssignmentController implements AssignmentControllerOpenApi {
 
     @Autowired
     private AssignmentRepository assignmentRepository;

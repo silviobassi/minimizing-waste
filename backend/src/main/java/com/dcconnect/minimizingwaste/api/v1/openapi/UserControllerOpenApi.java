@@ -14,11 +14,11 @@ import org.springdoc.api.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 
-@Tag(name = "Users", description = "Manage the users")
+@Tag(name = "Users")
 public interface UserControllerOpenApi {
 
     @Operation(summary = "Lista os usuários")
-    public PagedModel<UserDetailedModel> all(@ParameterObject Pageable pageable);
+    public PagedModel<UserDetailedModel> all(@Parameter(hidden = true) Pageable pageable);
 
     @Operation(summary = "Cria um usuário")
     public UserDetailedModel create(
@@ -32,7 +32,11 @@ public interface UserControllerOpenApi {
     @Operation(summary = "Busca um usuário pelo ID", responses = {
             @ApiResponse(responseCode = "400",
                     description = "ID do usuário inválido",
-                    content = @Content(schema = @Schema)
+                    content = @Content(schema = @Schema(ref = "Problema"))
+            ),
+            @ApiResponse(responseCode = "404",
+                    description = "Usuário não encontrado",
+                    content = @Content(schema = @Schema(ref = "Problema"))
             )
     })
     public UserDetailedModel findOrFail(

@@ -6,6 +6,7 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.SuppliesMovementDisassembl
 import com.dcconnect.minimizingwaste.api.v1.model.SupplyMovementModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.DevolvedSupplyMovementInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMovementInput;
+import com.dcconnect.minimizingwaste.api.v1.openapi.SupplyMovementControllerOpenApi;
 import com.dcconnect.minimizingwaste.domain.model.Supply;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
 import com.dcconnect.minimizingwaste.domain.repository.SupplyMovementRepository;
@@ -28,7 +29,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/v1/supplies-movements")
-public class SupplyMovementController {
+public class SupplyMovementController implements SupplyMovementControllerOpenApi {
 
     @Autowired
     private SupplyMovementRepository supplyMovementRepository;

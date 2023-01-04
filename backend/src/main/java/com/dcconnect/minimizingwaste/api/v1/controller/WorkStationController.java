@@ -70,7 +70,7 @@ public class WorkStationController implements WorkStationControllerOpenApi {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{workStationId}")
-    public WorkStationModel findById(@PathVariable Long workStationId){
+    public WorkStationModel findOrFail(@PathVariable Long workStationId){
         return workStationAssembler.toModel(workStationService.findOrFail(workStationId));
     }
 

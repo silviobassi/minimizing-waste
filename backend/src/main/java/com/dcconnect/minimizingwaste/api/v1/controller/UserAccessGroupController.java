@@ -2,6 +2,7 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.UserAccessGroupAssembler;
 import com.dcconnect.minimizingwaste.api.v1.model.AccessGroupSummaryModel;
+import com.dcconnect.minimizingwaste.api.v1.openapi.UserAccessGroupControllerOpenApi;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/v1/users/{userId}/access-groups")
-public class UserAccessGroupController {
+public class UserAccessGroupController implements UserAccessGroupControllerOpenApi {
 
     @Autowired
     private UserService userService;

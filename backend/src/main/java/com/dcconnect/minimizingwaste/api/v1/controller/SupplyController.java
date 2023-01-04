@@ -4,6 +4,7 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.SupplyDetailedAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.SupplySummaryAssembler;
 import com.dcconnect.minimizingwaste.api.v1.model.SupplyDetailedModel;
 import com.dcconnect.minimizingwaste.api.v1.model.SupplySummaryModel;
+import com.dcconnect.minimizingwaste.api.v1.openapi.SupplyControllerOpenApi;
 import com.dcconnect.minimizingwaste.domain.model.Supply;
 import com.dcconnect.minimizingwaste.domain.repository.SupplyRepository;
 import com.dcconnect.minimizingwaste.domain.service.SupplyService;
@@ -18,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(path = "/v1/supplies")
-public class SupplyController {
+public class SupplyController implements SupplyControllerOpenApi {
 
     @Autowired
     private SupplyRepository supplyRepository;

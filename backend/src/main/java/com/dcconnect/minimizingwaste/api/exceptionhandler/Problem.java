@@ -12,13 +12,13 @@ import java.util.List;
 @JsonInclude(Include.NON_NULL)
 @Builder
 @Getter
-@Schema(name = "Problema")
+@Schema(name = "Problem")
 public class Problem {
 
 	@Schema(example = "400")
 	private Integer status;
 
-	@Schema(example = "https://algafood.com.br/dados-invalidos")
+	@Schema(example = "https://enfatiza7.com/invalidated-data")
 	private String type;
 
 	@Schema(example = "Dados inválidos")
@@ -38,7 +38,7 @@ public class Problem {
 
 	@Builder
 	@Getter
-	@Schema(name = "ObjetoProblema")
+	@Schema(name = "ProblemObject")
 	public static class Object {
 
 		@Schema(example = "title")

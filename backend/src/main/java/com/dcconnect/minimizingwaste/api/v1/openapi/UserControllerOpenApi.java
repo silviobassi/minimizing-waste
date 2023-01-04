@@ -21,23 +21,20 @@ public interface UserControllerOpenApi {
     public PagedModel<UserDetailedModel> all(@Parameter(hidden = true) Pageable pageable);
 
     @Operation(summary = "Cria um usuário")
-    public UserDetailedModel create(
-            @RequestBody(description = "Representação de um novo usuário", required = true) UserInput userInput);
+    public UserDetailedModel create(@RequestBody(description = "Representação de um novo usuário", required = true)
+                                        UserInput userInput);
 
-    @Operation(summary = "Edita um usuário")
+    @Operation(summary = "Edita um usuário", responses = {
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado",
+                    content = @Content(schema = @Schema(ref = "Problem")))
+    })
     public UserDetailedModel update(
             @Parameter(description = "ID de um usuário", example = "1", required = true) Long userId,
             @RequestBody(description = "Representação de um usuário editado", required = true) UserInput userInput);
 
     @Operation(summary = "Busca um usuário pelo ID", responses = {
-            @ApiResponse(responseCode = "400",
-                    description = "ID do usuário inválido",
-                    content = @Content(schema = @Schema(ref = "Problema"))
-            ),
-            @ApiResponse(responseCode = "404",
-                    description = "Usuário não encontrado",
-                    content = @Content(schema = @Schema(ref = "Problema"))
-            )
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado",
+                    content = @Content(schema = @Schema(ref = "Problem")))
     })
     public UserDetailedModel findOrFail(
             @Parameter(description = "ID de um usuário", example = "1", required = true) Long userId);

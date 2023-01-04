@@ -27,7 +27,6 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 public class SpringDocConfig {
 
     private static final String badRequestResponse = "BadRequestResponse";
-    private static final String notFoundResponse = "NotFoundResponse";
     private static final String notAcceptableResponse = "NotAcceptableResponse";
     private static final String internalServerErrorResponse = "InternalServerErrorResponse";
 
@@ -68,7 +67,6 @@ public class SpringDocConfig {
                                 ApiResponses responses = operation.getResponses();
                                 switch (httpMethod) {
                                     case GET:
-                                        responses.addApiResponse("406", new ApiResponse().$ref(notAcceptableResponse));
                                         responses.addApiResponse("500", new ApiResponse().$ref(internalServerErrorResponse));
                                         break;
                                     case POST:
@@ -91,6 +89,7 @@ public class SpringDocConfig {
         };
     }
 
+
     private Map<String, Schema> generateSchemas() {
         final Map<String, Schema> schemaMap = new HashMap<>();
 
@@ -112,10 +111,6 @@ public class SpringDocConfig {
 
         apiResponseMap.put(badRequestResponse, new ApiResponse()
                 .description("Requisição inválida")
-                .content(content));
-
-        apiResponseMap.put(notFoundResponse, new ApiResponse()
-                .description("Recurso não encontrado")
                 .content(content));
 
         apiResponseMap.put(notAcceptableResponse, new ApiResponse()

@@ -18,17 +18,9 @@ public interface WorkStationControllerOpenApi {
     @Operation(summary = "Lista as estações de trabalho")
     PagedModel<WorkStationModel> all(@Parameter(hidden = true) Pageable pageable);
 
-    @Operation(summary = "Cria uma estação de trabalho")
-    public WorkStationModel create(
-            @RequestBody(description = "Representação de um a nova estação de trabalho", required = true)
-            WorkStationInput workStationInput);
-
-    @Operation(summary = "Edita uma estação de trabalho", responses = {
-            @ApiResponse(responseCode = "400", description = "ID da estação de trabalho inválido",
-                    content = @Content(schema = @Schema(ref = "Problema"))),
-
-            @ApiResponse(responseCode = "404", description = "Estação de trabalho não encontrada",
-                    content = @Content(schema = @Schema(ref = "Problema")))
+    @Operation(summary = "Cria uma estação de trabalho", responses = {
+            @ApiResponse(responseCode = "404", description = "Estação de Trabalho não encontrada",
+                    content = @Content(schema = @Schema(ref = "Problem"))),
     })
     public WorkStationModel update(
             @Parameter(description = "ID de uma estação de trabalho", example = "1", required = true)
@@ -37,22 +29,15 @@ public interface WorkStationControllerOpenApi {
             WorkStationInput workStationInput);
 
     @Operation(summary = "Deleta uma estação de trabalho", responses = {
-            @ApiResponse(responseCode = "400", description = "ID da estação de trabalho inválido",
-                    content = @Content(schema = @Schema(ref = "Problema"))),
-
-            @ApiResponse(responseCode = "404", description = "Estação de trabalho não encontrada",
-                    content = @Content(schema = @Schema(ref = "Problema")))
+            @ApiResponse(responseCode = "404", description = "Estação de Trabalho não encontrada",
+                    content = @Content(schema = @Schema(ref = "Problem"))),
     })
-    public void delete(
-            @Parameter(description = "ID de uma estação de trabalho", example = "1", required = true)
+    public void delete(@Parameter(description = "ID de uma estação de trabalho", example = "1", required = true)
             Long workStationId);
 
     @Operation(summary = "Deleta uma estação de trabalho", responses = {
-            @ApiResponse(responseCode = "400", description = "ID do usuário inválido",
-                    content = @Content(schema = @Schema(ref = "Problema"))),
-
-            @ApiResponse(responseCode = "404", description = "Usuário não encontrado",
-                    content = @Content(schema = @Schema(ref = "Problema")))
+            @ApiResponse(responseCode = "404", description = "Estação de Trabalho não encontrada",
+                    content = @Content(schema = @Schema(ref = "Problem"))),
     })
     public WorkStationModel findOrFail(
             @Parameter(description = "ID de um usuário", example = "1", required = true)

@@ -5,9 +5,13 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.SupplySummaryAssembler;
 import com.dcconnect.minimizingwaste.api.v1.model.SupplyDetailedModel;
 import com.dcconnect.minimizingwaste.api.v1.model.SupplySummaryModel;
 import com.dcconnect.minimizingwaste.api.v1.openapi.SupplyControllerOpenApi;
+import com.dcconnect.minimizingwaste.core.data.PageWrapper;
+import com.dcconnect.minimizingwaste.core.data.PageableTranslator;
 import com.dcconnect.minimizingwaste.domain.model.Supply;
 import com.dcconnect.minimizingwaste.domain.repository.SupplyRepository;
+import com.dcconnect.minimizingwaste.domain.repository.filter.SupplyFilter;
 import com.dcconnect.minimizingwaste.domain.service.SupplyService;
+import com.dcconnect.minimizingwaste.infrastructure.spec.SupplySpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +20,8 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Map;
 
 @RestController
 @RequestMapping(path = "/v1/supplies")
@@ -38,9 +44,16 @@ public class SupplyController implements SupplyControllerOpenApi {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public PagedModel<SupplySummaryModel> all(@PageableDefault(size = 2) Pageable pageable){
-        Page<Supply> supplies = supplyRepository.findAll(pageable);
-        return pagedResourcesAssembler.toModel(supplies, supplySummaryAssembler);
+    public PagedModel<SupplySummaryModel> search(SupplyFilter supplyFilter,
+                                                 @PageableDefault(size = 2) Pageable pageable){
+
+        Pageable translatedPageable = pageableTranslate(pageable);
+
+        Page<Supply> suppliesPage = supplyRepository.findAll(SupplySpecs.usingFilter(supplyFilter), pageable);
+
+        suppliesPage = new PageWrapper<>(suppliesPage, pageable);
+
+        return pagedResourcesAssembler.toModel(suppliesPage, supplySummaryAssembler);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
@@ -56,5 +69,10 @@ public class SupplyController implements SupplyControllerOpenApi {
         return supplyDetailedAssembler.toModel(supply);
     }
 
+    private Pageable pageableTranslate(Pageable apiPageable){
+        var mapping = Map.of("name", "name");
+
+        return PageableTranslator.translate(apiPageable, mapping);
+    }
 
 }

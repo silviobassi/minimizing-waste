@@ -9,5 +9,4 @@ public interface SupplyMovementRepository extends CustomJpaRepository<SupplyMove
 
     @Query("select sm from SupplyMovement sm join fetch sm.notification n")
     List<SupplyMovement> findNotificationBySuppliesAvailable();
-
 }

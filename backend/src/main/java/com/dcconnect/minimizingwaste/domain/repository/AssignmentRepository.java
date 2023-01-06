@@ -1,11 +1,13 @@
 package com.dcconnect.minimizingwaste.domain.repository;
 
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface AssignmentRepository extends CustomJpaRepository<Assignment, Long> {
+public interface AssignmentRepository extends CustomJpaRepository<Assignment, Long>,
+        JpaSpecificationExecutor<Assignment> {
 
     @Query("select a from Assignment a join fetch a.notification n")
     List<Assignment> findNotificationByAttachAssignment();

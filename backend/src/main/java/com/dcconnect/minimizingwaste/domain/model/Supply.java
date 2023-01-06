@@ -2,8 +2,12 @@ package com.dcconnect.minimizingwaste.domain.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Getter
 @Setter

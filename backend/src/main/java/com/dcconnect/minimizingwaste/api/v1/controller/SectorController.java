@@ -6,21 +6,24 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.SectorDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.SectorModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SectorInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.SectorControllerOpenApi;
+import com.dcconnect.minimizingwaste.core.data.PageWrapper;
+import com.dcconnect.minimizingwaste.core.data.PageableTranslator;
+import com.dcconnect.minimizingwaste.domain.repository.filter.SectorFilter;
 import com.dcconnect.minimizingwaste.domain.model.Sector;
 import com.dcconnect.minimizingwaste.domain.repository.SectorRepository;
 import com.dcconnect.minimizingwaste.domain.service.SectorService;
+import com.dcconnect.minimizingwaste.infrastructure.spec.SectorSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/sectors")
@@ -43,8 +46,14 @@ public class SectorController implements SectorControllerOpenApi {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public PagedModel<SectorModel> all(@PageableDefault(size = 10) Pageable pageable){
-        Page<Sector> sectorsPage = sectorRepository.findAll(pageable);
+    public PagedModel<SectorModel> search(SectorFilter sectorFilter, @PageableDefault(size = 10) Pageable pageable){
+
+        Pageable translatedPageable = pageableTranslate(pageable);
+
+        Page<Sector> sectorsPage = sectorRepository.findAll(SectorSpecs.usingFilter(sectorFilter), translatedPageable);
+
+        sectorsPage = new PageWrapper<>(sectorsPage, pageable);
+
         return pagedResourcesAssembler.toModel(sectorsPage, sectorAssembler);
     }
 
@@ -75,6 +84,12 @@ public class SectorController implements SectorControllerOpenApi {
     @GetMapping("/{sectorId}")
     public SectorModel findOrFail(@PathVariable Long sectorId){
         return sectorAssembler.toModel(sectorService.findOrFail(sectorId));
+    }
+    
+    private Pageable pageableTranslate(Pageable apiPageable){
+        var mapping = Map.of("name", "name");
+        
+        return PageableTranslator.translate(apiPageable, mapping);
     }
 
 }

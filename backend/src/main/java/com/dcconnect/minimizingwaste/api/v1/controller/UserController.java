@@ -6,9 +6,13 @@ import com.dcconnect.minimizingwaste.api.v1.model.UserDetailedModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.PasswordInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.UserInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.UserControllerOpenApi;
+import com.dcconnect.minimizingwaste.core.data.PageWrapper;
+import com.dcconnect.minimizingwaste.core.data.PageableTranslator;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.repository.UserRepository;
+import com.dcconnect.minimizingwaste.domain.repository.filter.UserFilter;
 import com.dcconnect.minimizingwaste.domain.service.UserService;
+import com.dcconnect.minimizingwaste.infrastructure.spec.UserSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/users")
@@ -42,9 +47,15 @@ public class UserController implements UserControllerOpenApi {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public PagedModel<UserDetailedModel> all(@PageableDefault(size = 2) Pageable pageable) {
-        Page<User> users = userRepository.findAll(pageable);
-        return pagedResourcesAssembler.toModel(users, userAssembler);
+    public PagedModel<UserDetailedModel> search(UserFilter userFilter,  @PageableDefault(size = 2) Pageable pageable) {
+
+        Pageable translatedPage = pageableTranslate(pageable);
+
+        Page<User> usersPage = userRepository.findAll(UserSpecs.usingFilter(userFilter), pageable);
+
+        usersPage = new PageWrapper<>(usersPage, translatedPage);
+
+        return pagedResourcesAssembler.toModel(usersPage, userAssembler);
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -77,6 +88,15 @@ public class UserController implements UserControllerOpenApi {
     @PutMapping("/{userId}/password")
     public void changePassword(@PathVariable Long userId, @RequestBody @Valid PasswordInput passwordInput){
         userService.changePassword(userId, passwordInput.getCurrentPassword(), passwordInput.getNewPassword());
+    }
+
+    private Pageable pageableTranslate(Pageable apiPageable){
+        var mapping = Map.of(
+                "name", "name",
+                "cpf", "cpf"
+        );
+
+        return PageableTranslator.translate(apiPageable, mapping);
     }
 
 }

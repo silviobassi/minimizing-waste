@@ -2,6 +2,7 @@ package com.dcconnect.minimizingwaste.api.v1.openapi;
 
 import com.dcconnect.minimizingwaste.api.v1.model.SectorModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SectorInput;
+import com.dcconnect.minimizingwaste.domain.repository.filter.SectorFilter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -16,7 +17,7 @@ import org.springframework.hateoas.PagedModel;
 public interface SectorControllerOpenApi {
 
     @Operation(summary = "Lista os setores")
-    public PagedModel<SectorModel> all(@Parameter(hidden = true) Pageable pageable);
+    public PagedModel<SectorModel> search(SectorFilter sectorFilter, @Parameter(hidden = true) Pageable pageable);
 
     @Operation(summary = "Cria um novo setor")
     public SectorModel create(@RequestBody(description = "Representação de um novo setor", required = true)

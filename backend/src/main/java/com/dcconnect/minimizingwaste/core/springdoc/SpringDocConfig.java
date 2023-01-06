@@ -34,9 +34,9 @@ public class SpringDocConfig {
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("AlgaFood API")
+                        .title("Minimizing Waste API")
                         .version("v1")
-                        .description("REST API do AlgaFood")
+                        .description("REST API do Minimizing Waste")
                         .license(new License()
                                 .name("Apache 2.0")
                                 .url("http://springdoc.com")

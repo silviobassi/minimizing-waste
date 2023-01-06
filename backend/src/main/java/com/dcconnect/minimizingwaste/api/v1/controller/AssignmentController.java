@@ -5,9 +5,13 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.AssignmentModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.AssignmentControllerOpenApi;
+import com.dcconnect.minimizingwaste.core.data.PageWrapper;
+import com.dcconnect.minimizingwaste.core.data.PageableTranslator;
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
 import com.dcconnect.minimizingwaste.domain.repository.AssignmentRepository;
+import com.dcconnect.minimizingwaste.domain.repository.filter.AssignmentFilter;
 import com.dcconnect.minimizingwaste.domain.service.AssignmentService;
+import com.dcconnect.minimizingwaste.infrastructure.spec.AssignmentSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,7 +22,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/assignments")
@@ -41,8 +45,16 @@ public class AssignmentController implements AssignmentControllerOpenApi {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public CollectionModel<AssignmentModel> all(@PageableDefault(size = 2) Pageable pageable){
-        Page<Assignment> assignmentsPage = assignmentRepository.findAll(pageable);
+    public CollectionModel<AssignmentModel> search(AssignmentFilter assignmentFilter,
+                                                   @PageableDefault(size = 10) Pageable pageable){
+
+        Pageable translatedPage = pageableTranslate(pageable);
+
+        Page<Assignment> assignmentsPage = assignmentRepository.findAll(
+                AssignmentSpecs.usingFilter(assignmentFilter), translatedPage);
+
+        assignmentsPage = new PageWrapper<>(assignmentsPage, pageable);
+
         return pagedResourcesAssembler.toModel(assignmentsPage, assignmentAssembler);
     }
 
@@ -77,4 +89,17 @@ public class AssignmentController implements AssignmentControllerOpenApi {
 
         return assignmentAssembler.toModel(assignment);
     }
+    private Pageable pageableTranslate(Pageable apiPageable){
+        var mapping = Map.of(
+                "title", "title",
+                "startDate", "startDate",
+                "endDate", "endDate",
+                "deadline", "deadline",
+                "completed", "completed",
+                "approved", "approved"
+        );
+
+        return PageableTranslator.translate(apiPageable, mapping);
+    }
+
 }

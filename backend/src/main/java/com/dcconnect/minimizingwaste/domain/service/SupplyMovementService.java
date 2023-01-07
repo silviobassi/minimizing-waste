@@ -84,11 +84,6 @@ public class SupplyMovementService {
     @Transactional
     public SupplyMovement giveBackSupply(SupplyMovement supplyMovement){
 
-        /*if(supplyMovement.iDevolvedQuantityGreaterThanAllocatedQuantity()){
-            throw new BusinessException(String.format(DEVOLVED_QUANTITY_GREATER_ALLOCATED,
-                    supplyMovement.getReservedQuantity(), supplyMovement.getAllocatedQuantity()));
-        }*/
-
         Supply supply = supplyService.findOrFail(supplyMovement.getSupply().getId());
         WorkStation workStation = workStationService
                 .findOrFail(supplyMovement.getWorkStation().getId());

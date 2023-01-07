@@ -12,7 +12,6 @@ public class AssignmentNotificationFilter {
 
     private Boolean completed;
     private Boolean approved;
-    private String attach;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private OffsetDateTime currentDate;
 

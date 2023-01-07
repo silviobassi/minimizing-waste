@@ -29,7 +29,7 @@ public class AssignmentNotificationController implements AssignmentNotificationC
     private AssignmentNotificationAssembler assignmentNotificationAssembler;
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping
+    @GetMapping("/available")
     public List<AssignmentNotificationModel> search(AssignmentNotificationFilter assignmentNotificationFilter){
         return assignmentNotificationAssembler
                 .toCollectionModel(assignmentRepository.findAll(

@@ -31,11 +31,6 @@ public class AssignmentNotificationSpecs {
                 predicates.add(criteriaBuilder.lessThan(root.get("deadline"), assignmentNotificationFilter.getCurrentDate()));
             }
 
-            if(assignmentNotificationFilter.getAttach() != null
-                    && assignmentNotificationFilter.getAttach().equals("available")) {
-                predicates.add(criteriaBuilder.isTrue(notificationJoin.isNotNull()));
-            }
-
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
         };
     }

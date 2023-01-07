@@ -3,8 +3,12 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 import com.dcconnect.minimizingwaste.api.v1.model.AssignmentNotificationModel;
 import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentNotificationAssembler;
 import com.dcconnect.minimizingwaste.api.v1.openapi.AssignmentNotificationControllerOpenApi;
+import com.dcconnect.minimizingwaste.core.data.PageableTranslator;
 import com.dcconnect.minimizingwaste.domain.repository.AssignmentRepository;
+import com.dcconnect.minimizingwaste.domain.repository.filter.AssignmentNotificationFilter;
+import com.dcconnect.minimizingwaste.infrastructure.spec.AssignmentNotificationSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/notifications/assignments")
@@ -22,39 +27,22 @@ public class AssignmentNotificationController implements AssignmentNotificationC
 
     @Autowired
     private AssignmentNotificationAssembler assignmentNotificationAssembler;
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/attach")
-    public List<AssignmentNotificationModel> findNotificationByAttachAssignment(){
-        return assignmentNotificationAssembler
-                .toCollectionModel(assignmentRepository.findNotificationByAttachAssignment());
-    }
 
     @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/completed")
-    public List<AssignmentNotificationModel> findNotificationByCompletedAssignment(){
+    @GetMapping
+    public List<AssignmentNotificationModel> search(AssignmentNotificationFilter assignmentNotificationFilter){
         return assignmentNotificationAssembler
-                .toCollectionModel(assignmentRepository.findNotificationByCompletedAssignment());
+                .toCollectionModel(assignmentRepository.findAll(
+                        AssignmentNotificationSpecs.usingFilter(assignmentNotificationFilter)));
     }
+    private Pageable pageableTranslate(Pageable apiPageable){
+        var mapping = Map.of(
+                "completed", "completed",
+                "approved", "approved",
+                "currentDate", "currentDate"
+        );
 
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/approved")
-    public List<AssignmentNotificationModel> findNotificationByApprovedAssignment(){
-        return assignmentNotificationAssembler
-                .toCollectionModel(assignmentRepository.findNotificationByApprovedAssignment());
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/disapproved")
-    public List<AssignmentNotificationModel> findNotificationByDisapprovedAssignment(){
-        return assignmentNotificationAssembler
-                .toCollectionModel(assignmentRepository.findNotificationByDisapprovedAssignment());
-    }
-
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/expired")
-    public List<AssignmentNotificationModel> findNotificationByExpiredAssignment(){
-        return assignmentNotificationAssembler
-                .toCollectionModel(assignmentRepository.findNotificationByExpiredAssignment());
+        return PageableTranslator.translate(apiPageable, mapping);
     }
 
 }

@@ -20,7 +20,7 @@ public class Supply extends BaseEntity{
 
     private String name;
 
-    @OneToOne(optional = false, cascade = CascadeType.ALL)
+    @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "supply_description_id")
     private SupplyDescription supplyDescription;
 

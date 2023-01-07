@@ -27,7 +27,7 @@ public class Assignment extends BaseEntity {
     private Nature nature;
 
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "work_station_id")
     private WorkStation workStation;
 
@@ -37,7 +37,7 @@ public class Assignment extends BaseEntity {
     inverseJoinColumns = @JoinColumn(name = "responsible_employee_id"))
     private Set<User> employeeResponsible = new HashSet<>();
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notification_id")
     private Notification notification;
 

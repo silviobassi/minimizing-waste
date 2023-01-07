@@ -9,8 +9,5 @@ import java.util.Optional;
 
 public interface SectorRepository extends CustomJpaRepository<Sector, Long>, JpaSpecificationExecutor<Sector> {
 
-    @Override
-    List<Sector> findAll();
-
     Optional<Sector> findByName(String name);
 }

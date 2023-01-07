@@ -28,7 +28,7 @@ public class SupplyMovementNotificationController implements SupplyMovementNotif
     @GetMapping("/available")
     public List<SupplyMovementNotificationModel> findNotificationBySuppliesAvailable(){
         return supplyMovementNotificationAssembler
-                .toCollectionModel(supplyMovementRepository.findNotificationBySuppliesAvailable());
+                .toCollectionModel(supplyMovementRepository.findAll());
     }
 
 }

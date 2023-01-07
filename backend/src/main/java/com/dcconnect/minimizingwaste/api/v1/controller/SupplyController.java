@@ -49,7 +49,7 @@ public class SupplyController implements SupplyControllerOpenApi {
 
         Pageable translatedPageable = pageableTranslate(pageable);
 
-        Page<Supply> suppliesPage = supplyRepository.findAll(SupplySpecs.usingFilter(supplyFilter), pageable);
+        Page<Supply> suppliesPage = supplyRepository.findAll(SupplySpecs.usingFilter(supplyFilter), translatedPageable);
 
         suppliesPage = new PageWrapper<>(suppliesPage, pageable);
 

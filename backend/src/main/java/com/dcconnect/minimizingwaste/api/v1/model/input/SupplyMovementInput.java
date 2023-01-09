@@ -1,5 +1,6 @@
 package com.dcconnect.minimizingwaste.api.v1.model.input;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,9 +13,10 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class SupplyMovementInput {
 
+    @Schema(example = "true")
     @NotNull
     private Boolean movable;
-
+    @Schema(example = "3")
     @NotNull
     @Min(1L)
     private Long reservedQuantity;
@@ -22,7 +24,6 @@ public class SupplyMovementInput {
     @Valid
     @NotNull
     private NotificationInput notification;
-
     @Valid
     @NotNull
     private WorkStationIdInput workStation;

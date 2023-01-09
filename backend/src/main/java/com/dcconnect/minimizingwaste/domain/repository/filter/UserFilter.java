@@ -7,7 +7,7 @@ import lombok.Setter;
 @Getter
 public class UserFilter {
 
-    private String name;
-    private String cpf;
+    private String userName;
+    private String userCpf;
 
 }

@@ -13,8 +13,8 @@ public class SupplySpecs {
         return (root, query, criteriaBuilder) -> {
             var predicates = new ArrayList<Predicate>();
 
-            if(supplyFilter.getName() != null) {
-                predicates.add(criteriaBuilder.like(root.get("name"), supplyFilter.getName()+"%"));
+            if(supplyFilter.getSupplyName() != null) {
+                predicates.add(criteriaBuilder.like(root.get("name"), supplyFilter.getSupplyName()+"%"));
             }
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

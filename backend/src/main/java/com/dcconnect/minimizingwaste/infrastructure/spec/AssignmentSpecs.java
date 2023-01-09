@@ -1,9 +1,7 @@
 package com.dcconnect.minimizingwaste.infrastructure.spec;
 
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
-import com.dcconnect.minimizingwaste.domain.model.Sector;
 import com.dcconnect.minimizingwaste.domain.repository.filter.AssignmentFilter;
-import com.dcconnect.minimizingwaste.domain.repository.filter.SectorFilter;
 import org.springframework.data.jpa.domain.Specification;
 
 import javax.persistence.criteria.Predicate;
@@ -15,8 +13,8 @@ public class AssignmentSpecs {
         return (root, query, criteriaBuilder) -> {
             var predicates = new ArrayList<Predicate>();
 
-            if(assignmentFilter.getTitle() != null) {
-                predicates.add(criteriaBuilder.like(root.get("title"), assignmentFilter.getTitle()+"%"));
+            if(assignmentFilter.getAssignmentTitle() != null) {
+                predicates.add(criteriaBuilder.like(root.get("title"), assignmentFilter.getAssignmentTitle()+"%"));
             }
             if(assignmentFilter.getStartDate() != null && assignmentFilter.getEndDate() != null){
                 predicates.add(criteriaBuilder.between(root.get("startDate"),

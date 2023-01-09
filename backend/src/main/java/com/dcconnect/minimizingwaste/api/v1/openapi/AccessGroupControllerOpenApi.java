@@ -16,10 +16,10 @@ import org.springframework.http.ResponseEntity;
 public interface AccessGroupControllerOpenApi {
 
     @Operation(summary = "Lista os grupos de acesso")
-    public CollectionModel<AccessGroupSummaryModel> all();
+    CollectionModel<AccessGroupSummaryModel> all();
 
     @Operation(summary = "Cria um grupo de acesso")
-    public AccessGroupSummaryModel create(
+    AccessGroupSummaryModel create(
             @RequestBody(description = "Representação de um a novo grupo de acesso", required = true)
             AccessGroupInput accessGroupInput);
 
@@ -33,7 +33,7 @@ public interface AccessGroupControllerOpenApi {
                     content = @Content(schema = @Schema(ref = "Problema"))
             )
     })
-    public AccessGroupSummaryModel update(
+    AccessGroupSummaryModel update(
             @Parameter(description = "ID de um grupo de acesso", example = "1", required = true)
             Long accessGroupId, AccessGroupInput accessGroupInput);
 
@@ -47,7 +47,7 @@ public interface AccessGroupControllerOpenApi {
                     content = @Content(schema = @Schema(ref = "Problema"))
             )
     })
-    public ResponseEntity<Void> delete(
+    ResponseEntity<Void> delete(
             @Parameter(description = "ID de um grupo de acesso", example = "1", required = true)
             Long accessGroupId);
 

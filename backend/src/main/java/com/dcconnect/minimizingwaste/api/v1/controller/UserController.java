@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -42,20 +43,13 @@ public class UserController implements UserControllerOpenApi {
     @Autowired
     private UserDisassembler userDisassembler;
 
-    @Autowired
-    private PagedResourcesAssembler<User> pagedResourcesAssembler;
-
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public PagedModel<UserDetailedModel> search(UserFilter userFilter,  @PageableDefault(size = 2) Pageable pageable) {
+    public CollectionModel<UserDetailedModel> search(UserFilter userFilter) {
 
-        Pageable translatedPage = pageableTranslate(pageable);
+        List<User> users = userRepository.findAll(UserSpecs.usingFilter(userFilter));
 
-        Page<User> usersPage = userRepository.findAll(UserSpecs.usingFilter(userFilter), pageable);
-
-        usersPage = new PageWrapper<>(usersPage, translatedPage);
-
-        return pagedResourcesAssembler.toModel(usersPage, userAssembler);
+        return userAssembler.toCollectionModel(users);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

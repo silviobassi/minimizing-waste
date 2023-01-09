@@ -18,11 +18,13 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -41,20 +43,13 @@ public class SectorController implements SectorControllerOpenApi {
     @Autowired
     private SectorDisassembler sectorDisassembler;
 
-    @Autowired
-    private PagedResourcesAssembler<Sector> pagedResourcesAssembler;
-
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public PagedModel<SectorModel> search(SectorFilter sectorFilter, @PageableDefault(size = 10) Pageable pageable){
+    public CollectionModel<SectorModel> search(SectorFilter sectorFilter){
 
-        Pageable translatedPageable = pageableTranslate(pageable);
+        List<Sector> sectors = sectorRepository.findAll(SectorSpecs.usingFilter(sectorFilter));
 
-        Page<Sector> sectorsPage = sectorRepository.findAll(SectorSpecs.usingFilter(sectorFilter), translatedPageable);
-
-        sectorsPage = new PageWrapper<>(sectorsPage, pageable);
-
-        return pagedResourcesAssembler.toModel(sectorsPage, sectorAssembler);
+        return sectorAssembler.toCollectionModel(sectors);
     }
 
     @ResponseStatus(HttpStatus.CREATED)

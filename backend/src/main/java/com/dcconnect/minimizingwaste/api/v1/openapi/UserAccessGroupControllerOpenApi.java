@@ -14,33 +14,25 @@ public interface UserAccessGroupControllerOpenApi {
 
     @Operation(summary = "Lista os grupos de acesso  de cada usuário",  responses = {
             @ApiResponse(responseCode = "400", description = "ID do usuário",
-                    content = @Content(schema = @Schema(ref = "Problema"))),
-
-            @ApiResponse(responseCode = "404", description = "Usuário não encontrado",
-                    content = @Content(schema = @Schema(ref = "Problema")))
+                    content = @Content(schema = @Schema(ref = "Problem"))),
     })
-    public CollectionModel<AccessGroupSummaryModel> all(Long userId);
+    CollectionModel<AccessGroupSummaryModel> all(Long userId);
 
     @Operation(summary = "Disassocia um determinado grupo ao usuário atual", responses = {
             @ApiResponse(responseCode = "204", description = "Disassociação realizada com sucesso"),
 
             @ApiResponse(responseCode = "400", description = "ID do usuário/grupo de acesso inválido",
-                    content = @Content(schema = @Schema(ref = "Problema"))),
-
-            @ApiResponse(responseCode = "404", description = "Usuário/grupo de acesso não encontrado",
-                    content = @Content(schema = @Schema(ref = "Problema")))
+                    content = @Content(schema = @Schema(ref = "Problem"))),
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado",
+                    content = @Content(schema = @Schema(ref = "Problem")))
     })
-
-    public ResponseEntity<Void> disassociate(Long userId, Long accessGroupId);
+    ResponseEntity<Void> disassociate(Long userId, Long accessGroupId);
     @Operation(summary = "Associa um determinado grupo ao usuário atual", responses = {
             @ApiResponse(responseCode = "204", description = "Associação realizada com sucesso"),
 
             @ApiResponse(responseCode = "400", description = "ID do usuário/grupo de acesso inválido",
-                    content = @Content(schema = @Schema(ref = "Problema"))),
-
-            @ApiResponse(responseCode = "404", description = "Usuário/grupo de acesso não encontrado",
-                    content = @Content(schema = @Schema(ref = "Problema")))
+                    content = @Content(schema = @Schema(ref = "Problem"))),
     })
-    public ResponseEntity<Void> associate(Long userId, Long accessGroupId);
+    ResponseEntity<Void> associate(Long userId, Long accessGroupId);
 
 }

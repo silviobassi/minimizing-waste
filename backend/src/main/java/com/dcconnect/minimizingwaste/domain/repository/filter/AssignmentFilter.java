@@ -10,7 +10,7 @@ import java.time.OffsetDateTime;
 @Getter
 public class AssignmentFilter {
 
-    private String title;
+    private String assignmentTitle;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private OffsetDateTime startDate;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)

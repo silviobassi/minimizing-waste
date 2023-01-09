@@ -13,12 +13,12 @@ public class UserSpecs {
         return (root, query, criteriaBuilder) -> {
             var predicates = new ArrayList<Predicate>();
 
-            if(userFilter.getName() != null) {
-                predicates.add(criteriaBuilder.like(root.get("name"), userFilter.getName()+"%"));
+            if(userFilter.getUserName() != null) {
+                predicates.add(criteriaBuilder.like(root.get("name"), userFilter.getUserName()+"%"));
             }
 
-            if(userFilter.getCpf() != null) {
-                predicates.add(criteriaBuilder.like(root.get("cpf"), userFilter.getCpf()));
+            if(userFilter.getUserCpf() != null) {
+                predicates.add(criteriaBuilder.like(root.get("cpf"), userFilter.getUserCpf()));
             }
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

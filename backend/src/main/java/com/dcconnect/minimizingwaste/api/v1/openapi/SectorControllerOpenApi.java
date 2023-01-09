@@ -6,23 +6,31 @@ import com.dcconnect.minimizingwaste.core.springdoc.PageableParameter;
 import com.dcconnect.minimizingwaste.domain.repository.filter.SectorFilter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
 
 @Tag(name = "Sectors")
 public interface SectorControllerOpenApi {
 
     @Operation(summary = "Lista os setores")
-    @PageableParameter
-    public PagedModel<SectorModel> search(SectorFilter sectorFilter, @Parameter(hidden = true) Pageable pageable);
+    @Parameter(
+            in = ParameterIn.QUERY,
+            name = "sectorName",
+            description = "Nome do setor",
+            example = "Acabamento",
+            schema = @Schema(type = "string")
+    )
+    CollectionModel<SectorModel> search(SectorFilter sectorFilter);
 
     @Operation(summary = "Cria um novo setor")
-    public SectorModel create(@RequestBody(description = "Representação de um novo setor", required = true)
+    SectorModel create(@RequestBody(description = "Representação de um novo setor", required = true)
                                   SectorInput sectorInput);
 
     @Operation(summary = "Edita um setor", responses = {
@@ -32,7 +40,7 @@ public interface SectorControllerOpenApi {
             @ApiResponse(responseCode = "404", description = "Setor não encontrado",
                     content = @Content(schema = @Schema(ref = "Problema")))
     })
-    public SectorModel update(@Parameter(description = "ID de um setor" ,example = "1") Long sectorId,
+    SectorModel update(@Parameter(description = "ID de um setor" ,example = "1") Long sectorId,
                               @RequestBody(description = "Representação de um setor editado", required = true)
                               SectorInput sectorInput);
 
@@ -44,7 +52,7 @@ public interface SectorControllerOpenApi {
             @ApiResponse(responseCode = "404", description = "Setor não encontrado",
                     content = @Content(schema = @Schema(ref = "Problema")))
     })
-    public void delete(@Parameter(description = "ID de um setor" ,example = "1") Long sectorId);
+    void delete(@Parameter(description = "ID de um setor" ,example = "1") Long sectorId);
 
     @Operation(summary = "Busca um setor pelo ID",  responses = {
             @ApiResponse(responseCode = "400", description = "ID do setor inválido",
@@ -53,6 +61,6 @@ public interface SectorControllerOpenApi {
             @ApiResponse(responseCode = "404", description = "Setor não encontrado",
                     content = @Content(schema = @Schema(ref = "Problema")))
     })
-    public SectorModel findOrFail(@Parameter(description = "ID de um setor", example = "1") Long sectorId);
+    SectorModel findOrFail(@Parameter(description = "ID de um setor", example = "1") Long sectorId);
 
 }

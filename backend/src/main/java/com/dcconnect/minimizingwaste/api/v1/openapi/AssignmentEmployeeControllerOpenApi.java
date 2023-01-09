@@ -11,11 +11,11 @@ import org.springframework.http.ResponseEntity;
 public interface AssignmentEmployeeControllerOpenApi {
 
     @Operation(summary = "Lista colaboradores atribuídos a respectivas tarefas")
-    public CollectionModel<UserDetailedModel> all(Long assignmentId);
+    CollectionModel<UserDetailedModel> all(Long assignmentId);
     @Operation(summary = "Associa um colaborador a determinada tarefa")
-    public ResponseEntity<Void> attachEmployee(Long assignmentId, Long employeeResponsibleId,
+    ResponseEntity<Void> attachEmployee(Long assignmentId, Long employeeResponsibleId,
                                                AssignmentNotificationInput assignmentNotificationInput);
     @Operation(summary = "Disassocia um colaborador a determinada tarefa")
-    public ResponseEntity<Void> detachEmployee(Long assignmentId, Long employeeResponsibleId,
+    ResponseEntity<Void> detachEmployee(Long assignmentId, Long employeeResponsibleId,
                                                AssignmentNotificationInput assignmentNotificationInput);
 }

@@ -5,14 +5,19 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.WorkStationDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.WorkStationModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.WorkStationInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.WorkStationControllerOpenApi;
+import com.dcconnect.minimizingwaste.domain.model.Sector;
 import com.dcconnect.minimizingwaste.domain.model.WorkStation;
 import com.dcconnect.minimizingwaste.domain.repository.WorkStationRepository;
+import com.dcconnect.minimizingwaste.domain.repository.filter.WorkStationFilter;
 import com.dcconnect.minimizingwaste.domain.service.WorkStationService;
+import com.dcconnect.minimizingwaste.infrastructure.spec.SectorSpecs;
+import com.dcconnect.minimizingwaste.infrastructure.spec.WorkStationSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -36,14 +41,11 @@ public class WorkStationController implements WorkStationControllerOpenApi {
     @Autowired
     private WorkStationDisassembler workStationDisassembler;
 
-    @Autowired
-    private PagedResourcesAssembler<WorkStation> pagedResourcesAssembler;
-
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public PagedModel<WorkStationModel> all(@PageableDefault(size = 10) Pageable pageable) {
-        Page<WorkStation> workStationPage = workStationRepository.findAll(pageable);
-        return pagedResourcesAssembler.toModel(workStationPage, workStationAssembler);
+    public CollectionModel<WorkStationModel> search(WorkStationFilter workStationFilter) {
+        List<WorkStation> workStations = workStationRepository.findAll(WorkStationSpecs.usingFilter(workStationFilter));
+        return workStationAssembler.toCollectionModel(workStations);
     }
 
     @PostMapping

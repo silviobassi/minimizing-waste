@@ -18,7 +18,7 @@ public interface AccessGroupPermissionControllerOpenApi {
             @ApiResponse(responseCode = "404", description = "Grupo de acesso não encontrado",
                     content = @Content(schema = @Schema(ref = "Problema")))
     })
-    public CollectionModel<PermissionDetailedModel> all(Long accessGroupId);
+    CollectionModel<PermissionDetailedModel> all(Long accessGroupId);
 
     @Operation(summary = "Disassocia as permissões relacionadas ao grupo atual",  responses = {
             @ApiResponse(responseCode = "204", description = "Disassociação realizada com sucesso"),
@@ -29,7 +29,7 @@ public interface AccessGroupPermissionControllerOpenApi {
             @ApiResponse(responseCode = "404", description = "Grupo de acesso/permissão não encontrado",
                     content = @Content(schema = @Schema(ref = "Problema")))
     })
-    public ResponseEntity<Void> disassociate(Long accessGroupId, Long permissionId);
+    ResponseEntity<Void> disassociate(Long accessGroupId, Long permissionId);
     @Operation(summary = "Associa as permissões relacionadas ao grupo atual", responses = {
             @ApiResponse(responseCode = "204", description = "Associação realizada com sucesso"),
 
@@ -39,6 +39,6 @@ public interface AccessGroupPermissionControllerOpenApi {
             @ApiResponse(responseCode = "404", description = "Grupo de acesso/permissão não encontrado",
                     content = @Content(schema = @Schema(ref = "Problema")))
     })
-    public void associate(Long accessGroupId, Long permissionId);
+    void associate(Long accessGroupId, Long permissionId);
 
 }

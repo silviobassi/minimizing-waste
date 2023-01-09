@@ -9,6 +9,6 @@ import org.springframework.hateoas.CollectionModel;
 public interface PermissionControllerOpenApi {
 
     @Operation(summary = "Lista as permissões de cada grupo de acesso")
-    public CollectionModel<PermissionDetailedModel> all();
+    CollectionModel<PermissionDetailedModel> all();
 
 }

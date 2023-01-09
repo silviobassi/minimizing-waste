@@ -18,6 +18,5 @@ public class SupplyDescriptionSummaryModel {
     @Schema(example = "100")
     private BigDecimal total;
     @Schema(example = "KG")
-
     private MeasureUnitType measureUnitType;
 }

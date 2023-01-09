@@ -35,10 +35,10 @@ public interface AssignmentNotificationControllerOpenApi {
             in = ParameterIn.QUERY,
             name = "currentDate",
             description = "Data atual.",
-            schema = @Schema(type = "datetime"),
+            schema = @Schema(type = "date-time"),
             example = "2023-01-08T22:30:00Z"
     )
     @Operation(summary = "Lista as notificações enviadas, por tarefas atribuídas")
-    public List<AssignmentNotificationModel> search(@Parameter(hidden = true) AssignmentNotificationFilter assignmentNotificationFilter);
+    List<AssignmentNotificationModel> search(@Parameter(hidden = true) AssignmentNotificationFilter assignmentNotificationFilter);
 
 }

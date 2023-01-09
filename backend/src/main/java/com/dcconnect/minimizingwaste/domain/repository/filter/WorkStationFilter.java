@@ -5,8 +5,7 @@ import lombok.Setter;
 
 @Setter
 @Getter
-public class SectorFilter {
+public class WorkStationFilter {
 
-    private String sectorName;
-
+    private String workStationName;
 }

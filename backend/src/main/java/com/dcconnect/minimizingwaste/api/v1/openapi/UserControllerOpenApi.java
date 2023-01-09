@@ -14,27 +14,28 @@ import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
 
 @Tag(name = "Users")
 public interface UserControllerOpenApi {
 
     @Operation(summary = "Lista os usuários")
-    @PageableParameter
     @Parameter(
             in = ParameterIn.QUERY,
-            name = "name",
-            description = "Nome do usuário (Sil...|Silvio.",
+            name = "userName",
+            description = "Nome do usuário",
+            example = "Pedro",
             schema = @Schema(type = "string")
     )
     @Parameter(
             in = ParameterIn.QUERY,
-            name = "cpf",
-            description = "Cpf do usuário (99999999999).",
+            name = "userCpf",
+            example = "99999999999",
+            description = "Cpf do usuário",
             schema = @Schema(type = "string")
     )
-    public PagedModel<UserDetailedModel> search(@Parameter(hidden = true) UserFilter userFilter,
-                                                @Parameter(hidden = true) Pageable pageable);
+    CollectionModel<UserDetailedModel> search(@Parameter(hidden = true) UserFilter userFilter);
 
     @Operation(summary = "Cria um novo usuário")
     public UserDetailedModel create(@RequestBody(description = "Representação de um novo usuário", required = true)
@@ -44,7 +45,7 @@ public interface UserControllerOpenApi {
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado",
                     content = @Content(schema = @Schema(ref = "Problem")))
     })
-    public UserDetailedModel update(
+    UserDetailedModel update(
             @Parameter(description = "ID de um usuário", example = "1", required = true) Long userId,
             @RequestBody(description = "Representação de um usuário editado", required = true) UserInput userInput);
 
@@ -52,11 +53,14 @@ public interface UserControllerOpenApi {
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado",
                     content = @Content(schema = @Schema(ref = "Problem")))
     })
-    public UserDetailedModel findOrFail(
+    UserDetailedModel findOrFail(
             @Parameter(description = "ID de um usuário", example = "1", required = true) Long userId);
 
-    @Operation(summary = "Altera a Senha do usuário")
-    public void changePassword(
+    @Operation(summary = "Altera a Senha do usuário", responses = {
+            @ApiResponse(responseCode = "404", description = "Usuário não encontrado",
+                    content = @Content(schema = @Schema(ref = "Problem")))
+    })
+    void changePassword(
             @Parameter(description = "ID de um usuário", example = "1", required = true) Long userId,
             @RequestBody(description = "Representação de uma nova senha", required = true) PasswordInput passwordInput);
 

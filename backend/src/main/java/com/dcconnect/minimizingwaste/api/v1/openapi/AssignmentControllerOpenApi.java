@@ -27,12 +27,12 @@ public interface AssignmentControllerOpenApi {
     public CollectionModel<AssignmentModel> search(AssignmentFilter assignmentFilter,
                                                    @Parameter(hidden = true) Pageable pageable);
     @Operation(summary = "Cria uma nova tarefa")
-    public AssignmentModel create(AssignmentInput assignmentInput);
+    AssignmentModel create(AssignmentInput assignmentInput);
     @Operation(summary = "Edita uma tarefa")
-    public AssignmentModel update(Long assignmentId, AssignmentInput assignmentInput);
+    AssignmentModel update(Long assignmentId, AssignmentInput assignmentInput);
     @Operation(summary = "Deleta uma tarefa")
-    public void delete(Long assignmentId);
+    void delete(Long assignmentId);
     @Operation(summary = "Busca uma tarefa por ID")
-    public AssignmentModel findOrFail(Long assignmentId);
+    AssignmentModel findOrFail(Long assignmentId);
 
 }

@@ -13,8 +13,8 @@ public class SectorSpecs {
         return (root, query, criteriaBuilder) -> {
             var predicates = new ArrayList<Predicate>();
 
-            if(sectorFilter.getName() != null) {
-                predicates.add(criteriaBuilder.like(root.get("name"), sectorFilter.getName()+"%"));
+            if(sectorFilter.getSectorName() != null) {
+                predicates.add(criteriaBuilder.like(root.get("name"), sectorFilter.getSectorName()+"%"));
             }
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

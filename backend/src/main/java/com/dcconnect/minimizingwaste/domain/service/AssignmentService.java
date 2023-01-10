@@ -91,10 +91,29 @@ public class AssignmentService {
     }
 
     private List<User> getEmployeeResponsibleMatches(Assignment currentAssignment, User currentEmployeeResponsible) {
-        List<User> employeeResponsibleMatches = currentAssignment.getEmployeeResponsible().stream().filter(
+        return currentAssignment.getEmployeeResponsible().stream().filter(
                 currentEmployee -> currentEmployee.equals(currentEmployeeResponsible)).toList();
-        return employeeResponsibleMatches;
     }
 
+    @Transactional
+    public void completeAssignment(Assignment currentAssignment, boolean completed){
+        currentAssignment.setCompleted(completed);
+    }
 
+    @Transactional
+    public void approveAssignment(Assignment currentAssignment, boolean approved){
+        if(!currentAssignment.getCompleted()){
+            throw new BusinessException(
+                    String.format("A Tarefa com o código %d não pode ser aprovada, pois ainda não foi concluída.",
+                            currentAssignment.getId()));
+        }
+
+        if(!approved){
+            currentAssignment.setApproved(approved);
+            currentAssignment.setCompleted(false);
+        } else {
+            currentAssignment.setApproved(approved);
+        }
+
+    }
 }

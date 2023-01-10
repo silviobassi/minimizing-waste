@@ -89,6 +89,21 @@ public class AssignmentController implements AssignmentControllerOpenApi {
 
         return assignmentAssembler.toModel(assignment);
     }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PutMapping("/{assignmentId}/conclusion/{completed}")
+    public void completeAssignment(@PathVariable Long assignmentId, @PathVariable boolean completed){
+        Assignment currentAssignment =  assignmentService.findOrFail(assignmentId);
+        assignmentService.completeAssignment(currentAssignment, completed);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PutMapping("/{assignmentId}/approval/{approved}")
+    public void approveAssignment(@PathVariable Long assignmentId, @PathVariable boolean approved){
+        Assignment currentAssignment =  assignmentService.findOrFail(assignmentId);
+        assignmentService.approveAssignment(currentAssignment, approved);
+    }
+
     private Pageable pageableTranslate(Pageable apiPageable){
         var mapping = Map.of(
                 "title", "title",

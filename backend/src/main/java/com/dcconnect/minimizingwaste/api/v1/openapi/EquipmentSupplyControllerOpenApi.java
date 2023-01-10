@@ -1,7 +1,6 @@
 package com.dcconnect.minimizingwaste.api.v1.openapi;
 
 import com.dcconnect.minimizingwaste.api.v1.model.EquipmentSupplyModel;
-import com.dcconnect.minimizingwaste.api.v1.model.MaterialSupplyModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyEquipmentInput;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;

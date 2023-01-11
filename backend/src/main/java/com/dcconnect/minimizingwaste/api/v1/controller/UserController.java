@@ -84,13 +84,5 @@ public class UserController implements UserControllerOpenApi {
         userService.changePassword(userId, passwordInput.getCurrentPassword(), passwordInput.getNewPassword());
     }
 
-    private Pageable pageableTranslate(Pageable apiPageable){
-        var mapping = Map.of(
-                "name", "name",
-                "cpf", "cpf"
-        );
-
-        return PageableTranslator.translate(apiPageable, mapping);
-    }
 
 }

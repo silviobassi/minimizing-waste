@@ -3,6 +3,8 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.AssignmentModel;
+import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentApprovedInput;
+import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentCompletedInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.AssignmentControllerOpenApi;
 import com.dcconnect.minimizingwaste.core.data.PageWrapper;
@@ -91,17 +93,21 @@ public class AssignmentController implements AssignmentControllerOpenApi {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PutMapping("/{assignmentId}/conclusion/{completed}")
-    public void completeAssignment(@PathVariable Long assignmentId, @PathVariable boolean completed){
+    @PutMapping("/{assignmentId}/conclusion")
+    public void completeAssignment(@RequestBody @Valid AssignmentCompletedInput assignmentCompletedInput,
+                                   @PathVariable Long assignmentId){
         Assignment currentAssignment =  assignmentService.findOrFail(assignmentId);
-        assignmentService.completeAssignment(currentAssignment, completed);
+        assignmentDisassembler.copyToDomainModel(assignmentCompletedInput, currentAssignment);
+        assignmentService.completeAssignment(currentAssignment);
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PutMapping("/{assignmentId}/approval/{approved}")
-    public void approveAssignment(@PathVariable Long assignmentId, @PathVariable boolean approved){
+    @PutMapping("/{assignmentId}/approval")
+    public void approveAssignment(@RequestBody @Valid AssignmentApprovedInput assignmentApprovedInput,
+                                  @PathVariable Long assignmentId){
         Assignment currentAssignment =  assignmentService.findOrFail(assignmentId);
-        assignmentService.approveAssignment(currentAssignment, approved);
+        assignmentDisassembler.copyToDomainModel(assignmentApprovedInput, currentAssignment);
+        assignmentService.approveAssignment(currentAssignment);
     }
 
     private Pageable pageableTranslate(Pageable apiPageable){

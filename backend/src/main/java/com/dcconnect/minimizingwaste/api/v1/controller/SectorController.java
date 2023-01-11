@@ -80,11 +80,5 @@ public class SectorController implements SectorControllerOpenApi {
     public SectorModel findOrFail(@PathVariable Long sectorId){
         return sectorAssembler.toModel(sectorService.findOrFail(sectorId));
     }
-    
-    private Pageable pageableTranslate(Pageable apiPageable){
-        var mapping = Map.of("name", "name");
-        
-        return PageableTranslator.translate(apiPageable, mapping);
-    }
 
 }

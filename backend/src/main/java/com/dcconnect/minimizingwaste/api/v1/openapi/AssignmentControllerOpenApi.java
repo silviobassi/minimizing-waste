@@ -1,6 +1,8 @@
 package com.dcconnect.minimizingwaste.api.v1.openapi;
 
 import com.dcconnect.minimizingwaste.api.v1.model.AssignmentModel;
+import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentApprovedInput;
+import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentCompletedInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentInput;
 import com.dcconnect.minimizingwaste.core.springdoc.PageableParameter;
 import com.dcconnect.minimizingwaste.domain.repository.filter.AssignmentFilter;
@@ -92,14 +94,16 @@ public interface AssignmentControllerOpenApi {
             @ApiResponse(responseCode = "404", description = "Tarefa não encontrada",
                     content = @Content(schema = @Schema(ref = "Problem")))
     })
-    void completeAssignment(@Parameter(description = "ID de uma tarefa") Long assignmentId,
-                            @Parameter(description = "Status de uma tarefa") boolean completed);
+    void completeAssignment(@Parameter(description = "Representação da Conclusão da Tarefa")
+                            AssignmentCompletedInput assignmentCompletedInput,
+                            @Parameter(description = "ID de uma tarefa") Long assignmentId);
     @Operation(summary = "Aprova ou reprova uma tarefa", responses = {
             @ApiResponse(responseCode = "204", description = "Tarefa aprovada ou reprovada com sucesso"),
             @ApiResponse(responseCode = "404", description = "Tarefa não encontrada",
                     content = @Content(schema = @Schema(ref = "Problem")))
     })
-    void approveAssignment(@Parameter(description = "ID de uma tarefa") Long assignmentId,
-                           @Parameter(description = "Status de uma tarefa") boolean completed);
+    void approveAssignment(@Parameter(description = "Representação da Aprovação da Tarefa")
+                           AssignmentApprovedInput assignmentApprovedInput,
+                           @Parameter(description = "ID de uma tarefa") Long assignmentId);
 
 }

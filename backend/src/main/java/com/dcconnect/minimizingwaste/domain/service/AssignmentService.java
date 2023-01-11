@@ -1,7 +1,6 @@
 package com.dcconnect.minimizingwaste.domain.service;
 
 import com.dcconnect.minimizingwaste.domain.exception.AssignmentNotFoundException;
-
 import com.dcconnect.minimizingwaste.domain.exception.BusinessException;
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
 import com.dcconnect.minimizingwaste.domain.model.Notification;
@@ -13,9 +12,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Service
 public class AssignmentService {
@@ -96,24 +93,23 @@ public class AssignmentService {
     }
 
     @Transactional
-    public void completeAssignment(Assignment currentAssignment, boolean completed){
-        currentAssignment.setCompleted(completed);
+    public void completeAssignment(Assignment currentAssignment){
+        assignmentRepository.save(currentAssignment);
     }
 
     @Transactional
-    public void approveAssignment(Assignment currentAssignment, boolean approved){
-        if(!currentAssignment.getCompleted()){
+    public void approveAssignment(Assignment currentAssignment){
+        if(!currentAssignment.getCompleted() && currentAssignment.getApproved()){
             throw new BusinessException(
                     String.format("A Tarefa com o código %d não pode ser aprovada, pois ainda não foi concluída.",
                             currentAssignment.getId()));
         }
 
-        if(!approved){
-            currentAssignment.setApproved(approved);
+        if(!currentAssignment.getApproved()){
             currentAssignment.setCompleted(false);
-        } else {
-            currentAssignment.setApproved(approved);
         }
+
+        assignmentRepository.save(currentAssignment);
 
     }
 }

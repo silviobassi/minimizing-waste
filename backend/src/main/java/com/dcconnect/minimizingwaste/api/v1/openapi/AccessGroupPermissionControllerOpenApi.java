@@ -2,6 +2,7 @@ package com.dcconnect.minimizingwaste.api.v1.openapi;
 
 import com.dcconnect.minimizingwaste.api.v1.model.PermissionDetailedModel;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -29,7 +30,8 @@ public interface AccessGroupPermissionControllerOpenApi {
             @ApiResponse(responseCode = "404", description = "Grupo de acesso/permissão não encontrado",
                     content = @Content(schema = @Schema(ref = "Problema")))
     })
-    ResponseEntity<Void> disassociate(Long accessGroupId, Long permissionId);
+    ResponseEntity<Void> disassociate(@Parameter(description = "ID do grupo de acesso", required = true) Long accessGroupId,
+                                      @Parameter(description = "ID da permissão", required = true) Long permissionId);
     @Operation(summary = "Associa as permissões relacionadas ao grupo atual", responses = {
             @ApiResponse(responseCode = "204", description = "Associação realizada com sucesso"),
 
@@ -39,6 +41,7 @@ public interface AccessGroupPermissionControllerOpenApi {
             @ApiResponse(responseCode = "404", description = "Grupo de acesso/permissão não encontrado",
                     content = @Content(schema = @Schema(ref = "Problema")))
     })
-    void associate(Long accessGroupId, Long permissionId);
+    void associate(@Parameter(description = "ID do grupo de acesso", required = true) Long accessGroupId,
+                   @Parameter(description = "ID da permissão", required = true) Long permissionId);
 
 }

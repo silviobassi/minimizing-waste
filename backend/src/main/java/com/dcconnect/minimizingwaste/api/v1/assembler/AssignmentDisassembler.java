@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Component
@@ -16,12 +17,12 @@ public class AssignmentDisassembler {
     @Autowired
     private ModelMapper modelMapper;
 
-    public Assignment toDomainObject(AssignmentInput assignmentInput) {
-        return modelMapper.map(assignmentInput, Assignment.class);
+    public Assignment toDomainObject(Object objectInput) {
+        return modelMapper.map(objectInput, Assignment.class);
     }
 
-    public void copyToDomainModel(AssignmentInput assignmentInput, Assignment assignment) {
-        modelMapper.map(assignmentInput, assignment);
+    public void copyToDomainModel(Object objectInput, Assignment assignment) {
+        modelMapper.map(objectInput, assignment);
     }
 
 }

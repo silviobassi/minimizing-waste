@@ -45,7 +45,7 @@ public class SupplyController implements SupplyControllerOpenApi {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public PagedModel<SupplySummaryModel> search(SupplyFilter supplyFilter,
-                                                 @PageableDefault(size = 2) Pageable pageable){
+                                                 @PageableDefault(size = 10) Pageable pageable){
 
         Pageable translatedPageable = pageableTranslate(pageable);
 

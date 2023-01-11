@@ -16,6 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.PagedModel;
 
 @Tag(name = "Assignments")
 public interface AssignmentControllerOpenApi {
@@ -65,8 +66,8 @@ public interface AssignmentControllerOpenApi {
             example = "false",
             schema = @Schema(type = "boolean")
     )
-    CollectionModel<AssignmentModel> search(@Parameter(hidden = true) AssignmentFilter assignmentFilter,
-                                                   @Parameter(hidden = true) Pageable pageable);
+    PagedModel<AssignmentModel> search(@Parameter(hidden = true) AssignmentFilter assignmentFilter,
+                                       @Parameter(hidden = true) Pageable pageable);
     @Operation(summary = "Cria uma nova tarefa")
     AssignmentModel create(@RequestBody(description = "Representação de um nova tarefa", required = true)
                            AssignmentInput assignmentInput);

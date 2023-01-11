@@ -20,6 +20,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,8 +48,8 @@ public class AssignmentController implements AssignmentControllerOpenApi {
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public CollectionModel<AssignmentModel> search(AssignmentFilter assignmentFilter,
-                                                   @PageableDefault(size = 10) Pageable pageable){
+    public PagedModel<AssignmentModel> search(AssignmentFilter assignmentFilter,
+                                              @PageableDefault(size = 10) Pageable pageable){
 
         Pageable translatedPage = pageableTranslate(pageable);
 

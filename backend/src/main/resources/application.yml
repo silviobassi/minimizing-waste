@@ -33,6 +33,10 @@ spring:
     resources:
       add-mappings: false
 
+  servlet:
+    multipart:
+      #max-file-size: 20KB
+
 springdoc:
   packages-to-scan: com.dcconnect.minimizingwaste.api
   paths-to-match: /v1/**

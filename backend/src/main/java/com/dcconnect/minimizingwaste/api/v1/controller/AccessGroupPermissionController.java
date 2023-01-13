@@ -4,14 +4,19 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.PermissionAssembler;
 import com.dcconnect.minimizingwaste.api.v1.model.PermissionDetailedModel;
 import com.dcconnect.minimizingwaste.api.v1.openapi.AccessGroupPermissionControllerOpenApi;
 import com.dcconnect.minimizingwaste.domain.model.AccessGroup;
+import com.dcconnect.minimizingwaste.domain.repository.AccessGroupRepository;
 import com.dcconnect.minimizingwaste.domain.service.AccessGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping("/v1/access-groups/{accessGroupId}/permissions")
@@ -22,6 +27,8 @@ public class AccessGroupPermissionController implements AccessGroupPermissionCon
 
     @Autowired
     private PermissionAssembler permissionAssembler;
+    @Autowired
+    private AccessGroupRepository accessGroupRepository;
 
     @ResponseStatus(HttpStatus.OK)
     @GetMapping

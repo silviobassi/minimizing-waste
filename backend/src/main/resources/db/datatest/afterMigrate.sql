@@ -12,6 +12,7 @@ delete from permissions;
 delete from access_groups;
 delete from groups_permissions;
 delete from assignments_employees;
+delete from users_photos;
 
 
 set foreign_key_checks = 1;

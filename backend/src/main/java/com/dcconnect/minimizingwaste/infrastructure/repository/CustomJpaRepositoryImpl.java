@@ -1,4 +1,4 @@
-package com.dcconnect.minimizingwaste.infrastructure;
+package com.dcconnect.minimizingwaste.infrastructure.repository;
 
 import com.dcconnect.minimizingwaste.domain.repository.CustomJpaRepository;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;

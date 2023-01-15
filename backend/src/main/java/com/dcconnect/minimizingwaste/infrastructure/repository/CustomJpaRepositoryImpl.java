@@ -1,5 +1,6 @@
 package com.dcconnect.minimizingwaste.infrastructure.repository;
 
+import com.dcconnect.minimizingwaste.domain.model.UserPhoto;
 import com.dcconnect.minimizingwaste.domain.repository.CustomJpaRepository;
 import org.springframework.data.jpa.repository.support.JpaEntityInformation;
 import org.springframework.data.jpa.repository.support.SimpleJpaRepository;

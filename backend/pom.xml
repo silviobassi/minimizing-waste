@@ -17,6 +17,8 @@
     <properties>
         <java.version>17</java.version>
         <springdoc.version>2.0.0</springdoc.version>
+        <modelmapper.version>3.0.0</modelmapper.version>
+        <springdoc.hateoas.version>1.6.14</springdoc.hateoas.version>
     </properties>
 
     <dependencies>
@@ -63,7 +65,7 @@
         <dependency>
             <groupId>org.modelmapper</groupId>
             <artifactId>modelmapper</artifactId>
-            <version>3.0.0</version>
+            <version>${modelmapper.version}</version>
         </dependency>
       
 		<dependency>
@@ -89,7 +91,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-hateoas</artifactId>
-            <version>1.6.14</version>
+            <version>${springdoc.hateoas.version}</version>
         </dependency>
         <!--<dependency>
             <groupId>org.springdoc</groupId>

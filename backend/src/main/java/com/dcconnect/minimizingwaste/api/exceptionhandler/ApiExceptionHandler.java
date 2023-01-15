@@ -62,7 +62,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 		return handleValidationInternal(ex, headers, status, request, ex.getBindingResult());
 	}
 
-	private ResponseEntity<Object> handleValidationInternal(Exception ex, HttpHeaders headers,
+	public ResponseEntity<Object> handleValidationInternal(Exception ex, HttpHeaders headers,
 															HttpStatusCode status, WebRequest request, BindingResult bindingResult) {
 		ProblemType problemType = ProblemType.INVALID_DATA;
 		String detail = "Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente.";

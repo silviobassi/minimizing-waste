@@ -11,14 +11,11 @@ import java.util.Optional;
 @Service
 public class UserPhotoService {
 
-    @Autowired
-    private UserRepository userRepository;
-
+    @Autowired UserRepository userRepository;
     @Transactional
     public UserPhoto create(UserPhoto userPhoto){
-
         Optional<UserPhoto> currentUserPhoto = userRepository.findByPhoto(userPhoto.getUser().getId());
-
+        currentUserPhoto.ifPresent(photo -> userRepository.delete(photo));
         return userRepository.save(userPhoto);
     }
 

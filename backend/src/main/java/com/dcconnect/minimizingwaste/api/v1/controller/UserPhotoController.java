@@ -5,6 +5,7 @@ import com.dcconnect.minimizingwaste.api.v1.model.UserPhotoModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.UserPhotoInput;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.model.UserPhoto;
+import com.dcconnect.minimizingwaste.domain.repository.UserRepository;
 import com.dcconnect.minimizingwaste.domain.service.UserPhotoService;
 import com.dcconnect.minimizingwaste.domain.service.UserService;
 import jakarta.validation.Valid;
@@ -27,6 +28,8 @@ public class UserPhotoController {
 
     @Autowired
     private UserPhotoAssembler userPhotoAssembler;
+    @Autowired
+    private UserRepository userRepository;
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UserPhotoModel updatePhoto(@PathVariable Long userId, @Valid UserPhotoInput userPhotoInput)  {

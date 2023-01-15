@@ -4,10 +4,10 @@ import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.*;
 
-import javax.persistence.*;
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import jakarta.persistence.*;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 @Getter
 @Setter

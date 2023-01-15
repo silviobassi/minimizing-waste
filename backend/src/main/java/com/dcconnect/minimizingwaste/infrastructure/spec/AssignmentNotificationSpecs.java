@@ -5,8 +5,8 @@ import com.dcconnect.minimizingwaste.domain.model.Notification;
 import com.dcconnect.minimizingwaste.domain.repository.filter.AssignmentNotificationFilter;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.Join;
-import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.Predicate;
 import java.util.ArrayList;
 
 public class AssignmentNotificationSpecs {

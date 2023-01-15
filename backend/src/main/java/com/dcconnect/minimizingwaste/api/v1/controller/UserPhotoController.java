@@ -7,16 +7,13 @@ import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.model.UserPhoto;
 import com.dcconnect.minimizingwaste.domain.service.UserPhotoService;
 import com.dcconnect.minimizingwaste.domain.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.Valid;
-import java.nio.file.Path;
-import java.util.UUID;
 
 @RestController
 @RequestMapping(value = "/v1/users/{userId}/photo")

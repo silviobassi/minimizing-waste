@@ -6,26 +6,18 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.SectorDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.SectorModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SectorInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.SectorControllerOpenApi;
-import com.dcconnect.minimizingwaste.core.data.PageWrapper;
-import com.dcconnect.minimizingwaste.core.data.PageableTranslator;
-import com.dcconnect.minimizingwaste.domain.repository.filter.SectorFilter;
 import com.dcconnect.minimizingwaste.domain.model.Sector;
 import com.dcconnect.minimizingwaste.domain.repository.SectorRepository;
+import com.dcconnect.minimizingwaste.domain.repository.filter.SectorFilter;
 import com.dcconnect.minimizingwaste.domain.service.SectorService;
 import com.dcconnect.minimizingwaste.infrastructure.spec.SectorSpecs;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
-import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.CollectionModel;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/v1/sectors")

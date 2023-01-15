@@ -4,7 +4,7 @@ import com.dcconnect.minimizingwaste.domain.model.Supply;
 import com.dcconnect.minimizingwaste.domain.repository.filter.SupplyFilter;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Predicate;
 import java.util.ArrayList;
 
 public class SupplySpecs {

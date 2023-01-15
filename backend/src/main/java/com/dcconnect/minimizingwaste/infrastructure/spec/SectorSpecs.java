@@ -4,7 +4,7 @@ import com.dcconnect.minimizingwaste.domain.repository.filter.SectorFilter;
 import com.dcconnect.minimizingwaste.domain.model.Sector;
 import org.springframework.data.jpa.domain.Specification;
 
-import javax.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Predicate;
 import java.util.ArrayList;
 
 public class SectorSpecs {

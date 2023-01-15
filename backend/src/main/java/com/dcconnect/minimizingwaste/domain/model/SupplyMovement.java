@@ -2,7 +2,7 @@ package com.dcconnect.minimizingwaste.domain.model;
 
 import java.time.OffsetDateTime;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 

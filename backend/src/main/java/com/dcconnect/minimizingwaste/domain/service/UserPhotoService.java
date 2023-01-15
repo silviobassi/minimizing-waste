@@ -19,8 +19,6 @@ public class UserPhotoService {
 
         Optional<UserPhoto> currentUserPhoto = userRepository.findByPhoto(userPhoto.getUser().getId());
 
-
-
         return userRepository.save(userPhoto);
     }
 

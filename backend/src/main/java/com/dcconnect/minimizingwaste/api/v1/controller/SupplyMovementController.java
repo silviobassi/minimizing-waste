@@ -1,19 +1,18 @@
 package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.DevolvedSupplyMovementDisassembler;
-import com.dcconnect.minimizingwaste.api.v1.assembler.SupplyMovementAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.SuppliesMovementDisassembler;
+import com.dcconnect.minimizingwaste.api.v1.assembler.SupplyMovementAssembler;
 import com.dcconnect.minimizingwaste.api.v1.model.SupplyMovementModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.DevolvedSupplyMovementInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMovementInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.SupplyMovementControllerOpenApi;
-import com.dcconnect.minimizingwaste.domain.model.Supply;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
 import com.dcconnect.minimizingwaste.domain.repository.SupplyMovementRepository;
 import com.dcconnect.minimizingwaste.domain.service.GiveBackAllocatedSupplyService;
 import com.dcconnect.minimizingwaste.domain.service.SupplyMovementService;
 import com.dcconnect.minimizingwaste.domain.service.SupplyService;
-import org.apache.coyote.Response;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,9 +22,6 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping(path = "/v1/supplies-movements")

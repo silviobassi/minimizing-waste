@@ -1,9 +1,7 @@
 package com.dcconnect.minimizingwaste.domain.service;
 
-import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMovementInput;
 import com.dcconnect.minimizingwaste.domain.exception.BusinessException;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service

@@ -8,8 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.dcconnect.minimizingwaste.domain.model.WorkStation;
 import com.dcconnect.minimizingwaste.domain.repository.WorkStationRepository;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class WorkStationService {

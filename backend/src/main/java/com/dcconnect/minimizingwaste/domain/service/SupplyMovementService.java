@@ -5,7 +5,6 @@ import com.dcconnect.minimizingwaste.domain.model.Notification;
 import com.dcconnect.minimizingwaste.domain.model.Supply;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
 import com.dcconnect.minimizingwaste.domain.model.WorkStation;
-import com.dcconnect.minimizingwaste.domain.repository.SupplyMovementRepository;
 import com.dcconnect.minimizingwaste.domain.repository.SupplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,9 +16,6 @@ public class SupplyMovementService {
 
     public static final String DEVOLVED_QUANTITY_GREATER_ALLOCATED =
             "A quantidade devolvida (%d), não pode ser maior do que a quantidade alocada (%d).";
-
-    @Autowired
-    private SupplyMovementRepository supplyMovementRepository;
 
     @Autowired
     private SupplyRepository supplyRepository;
@@ -81,7 +77,7 @@ public class SupplyMovementService {
     }
 
     public SupplyMovement findOrFail(Long supplyMovementId){
-        return supplyMovementRepository.findById(supplyMovementId)
+        return supplyRepository.findBySupplyMovementById(supplyMovementId)
                 .orElseThrow(() -> new SuppliesMovementNotFoundException(supplyMovementId));
     }
 
@@ -103,7 +99,7 @@ public class SupplyMovementService {
 
     public void vacateSupply(SupplyMovement supplyMovement){
         supplyMovement.vacate();
-        supplyMovementRepository.save(supplyMovement);
+        supplyRepository.create(supplyMovement);
     }
 
     private void setModels(SupplyMovement supplyMovement) {

@@ -8,7 +8,6 @@ import com.dcconnect.minimizingwaste.api.v1.model.input.DevolvedSupplyMovementIn
 import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMovementInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.SupplyMovementControllerOpenApi;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
-import com.dcconnect.minimizingwaste.domain.repository.SupplyMovementRepository;
 import com.dcconnect.minimizingwaste.domain.repository.SupplyRepository;
 import com.dcconnect.minimizingwaste.domain.service.GiveBackAllocatedSupplyService;
 import com.dcconnect.minimizingwaste.domain.service.SupplyMovementService;

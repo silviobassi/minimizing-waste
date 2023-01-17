@@ -9,6 +9,7 @@ import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMovementInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.SupplyMovementControllerOpenApi;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
 import com.dcconnect.minimizingwaste.domain.repository.SupplyMovementRepository;
+import com.dcconnect.minimizingwaste.domain.repository.SupplyRepository;
 import com.dcconnect.minimizingwaste.domain.service.GiveBackAllocatedSupplyService;
 import com.dcconnect.minimizingwaste.domain.service.SupplyMovementService;
 import com.dcconnect.minimizingwaste.domain.service.SupplyService;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.*;
 public class SupplyMovementController implements SupplyMovementControllerOpenApi {
 
     @Autowired
-    private SupplyMovementRepository supplyMovementRepository;
+    private SupplyRepository supplyRepository;
 
     @Autowired
     private SupplyMovementService supplyMovementService;
@@ -54,7 +55,7 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public PagedModel<SupplyMovementModel> all(@PageableDefault(size = 2) Pageable pageable){
-        Page<SupplyMovement> supplyPage = supplyMovementRepository.findAll(pageable);
+        Page<SupplyMovement> supplyPage = supplyRepository.findAllSupplyMovements(pageable);
 
         return pagedResourcesAssembler.toModel(supplyPage, supplyMovementAssembler);
     }
@@ -63,6 +64,7 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
     @PostMapping
     public SupplyMovementModel create(@RequestBody @Valid SupplyMovementInput supplyMovementInput){
         SupplyMovement supplyMovement = suppliesMovementDisassembler.toDomainObject(supplyMovementInput);
+
         supplyMovement = supplyMovementService.create(supplyMovement);
 
         return supplyMovementAssembler.toModel(supplyMovement);

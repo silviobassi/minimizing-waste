@@ -6,6 +6,7 @@ import com.dcconnect.minimizingwaste.domain.model.Supply;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
 import com.dcconnect.minimizingwaste.domain.model.WorkStation;
 import com.dcconnect.minimizingwaste.domain.repository.SupplyMovementRepository;
+import com.dcconnect.minimizingwaste.domain.repository.SupplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,9 @@ public class SupplyMovementService {
 
     @Autowired
     private SupplyMovementRepository supplyMovementRepository;
+
+    @Autowired
+    private SupplyRepository supplyRepository;
 
     @Autowired
     private WorkStationService workStationService;
@@ -38,6 +42,8 @@ public class SupplyMovementService {
         WorkStation workStation =
                 workStationService.findOrFail(supplyMovement.getWorkStation().getId());
 
+        supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());
+
         supplyMovement.setSupply(supply);
 
         supplyMovement.setWorkStation(workStation);
@@ -46,9 +52,8 @@ public class SupplyMovementService {
 
         notificationService.create(notification);
 
-        supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());
         giveBackAllocatedSupplyService.whenCreatingMovement(supplyMovement);
-        return supplyMovementRepository.save(supplyMovement);
+        return supplyRepository.create(supplyMovement);
     }
 
     @Transactional
@@ -61,19 +66,18 @@ public class SupplyMovementService {
         supplyMovement.setSupply(supply);
 
         giveBackAllocatedSupplyService.whenUpdatingMovement(supplyMovement, supplyId);
+        supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());
 
         supplyMovement.setWorkStation(workStation);
 
-        supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());
-
-        return supplyMovementRepository.save(supplyMovement);
+        return supplyRepository.create(supplyMovement);
     }
 
     @Transactional
     public void delete(Long supplyMovementId){
         var supplyMovementCurrent = findOrFail(supplyMovementId);
         giveBackAllocatedSupplyService.whenDeleting(supplyMovementCurrent);
-        supplyMovementRepository.deleteById(supplyMovementId);
+        supplyRepository.delete(supplyMovementCurrent);
     }
 
     public SupplyMovement findOrFail(Long supplyMovementId){
@@ -87,13 +91,13 @@ public class SupplyMovementService {
         Supply supply = supplyService.findOrFail(supplyMovement.getSupply().getId());
         WorkStation workStation = workStationService
                 .findOrFail(supplyMovement.getWorkStation().getId());
-
+        supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());
         supplyMovement.setSupply(supply);
         supplyMovement.setWorkStation(workStation);
 
         supplyMovement.devolveAllocatedQuantity();
 
-        return supplyMovementRepository.save(supplyMovement);
+        return supplyRepository.create(supplyMovement);
 
     }
 
@@ -106,7 +110,7 @@ public class SupplyMovementService {
         Supply supply = supplyService.findOrFail(supplyMovement.getSupply().getId());
         WorkStation workStation =
                 workStationService.findOrFail(supplyMovement.getWorkStation().getId());
-
+        supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());
         supplyMovement.setSupply(supply);
 
         supplyMovement.setWorkStation(workStation);

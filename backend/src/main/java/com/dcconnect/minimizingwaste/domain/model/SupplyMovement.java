@@ -26,26 +26,25 @@ public class SupplyMovement extends BaseEntity{
     @Transient
     private Long reservedQuantity;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notification_id")
     private Notification notification;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "work_station_id")
     private WorkStation workStation;
     
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "supply_id")
     private Supply supply;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "employee_responsible_id")
     private User employeeResponsible;
 
     @PrePersist
     public void prePersist(){
         notBusy = false;
-        allocatedQuantity = reservedQuantity;
     }
 
     public void vacate(){

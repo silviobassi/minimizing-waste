@@ -40,6 +40,10 @@ public class GiveBackAllocatedSupplyService {
             return;
         }
 
+        supplyMovement.getAllocatedQuantity();
+        supplyMovement.getReservedQuantity();
+        supply.getSupplyDescription().getQuantity();
+
         supply.getSupplyDescription().setQuantity(supply.getSupplyDescription().getQuantity()
                 + supplyMovement.getAllocatedQuantity() - supplyMovementReservedQuantity);
 

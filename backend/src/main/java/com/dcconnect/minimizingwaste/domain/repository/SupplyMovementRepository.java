@@ -10,10 +10,6 @@ import java.util.List;
 
 public interface SupplyMovementRepository extends CustomJpaRepository<SupplyMovement, Long> {
 
-    @EntityGraph(attributePaths = {"workStation.sector", "supply.supplyDescription", "employeeResponsible", "notification"})
-    List<SupplyMovement> findAll();
 
-    @EntityGraph(attributePaths = {"workStation", "supply.supplyDescription", "notification"})
-    Page<SupplyMovement> findAll(Pageable pageable);
 
 }

@@ -14,6 +14,6 @@ public interface UserRepository extends UserRepositoryQueries, CustomJpaReposito
     Optional<User> findByEmail(String email);
 
     @Query("select f from UserPhoto f where f.user.id = :userId")
-    Optional<UserPhoto> findByPhoto(@Param("userId") Long userId);
+    Optional<UserPhoto> findPhotoById(@Param("userId") Long userId);
 
 }

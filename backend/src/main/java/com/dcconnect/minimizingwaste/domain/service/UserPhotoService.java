@@ -1,5 +1,6 @@
 package com.dcconnect.minimizingwaste.domain.service;
 
+import com.dcconnect.minimizingwaste.domain.exception.UserPhotoNotFoundException;
 import com.dcconnect.minimizingwaste.domain.model.UserPhoto;
 import com.dcconnect.minimizingwaste.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,7 +9,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.InputStream;
 import java.util.Optional;
-import java.util.UUID;
 
 import static com.dcconnect.minimizingwaste.domain.service.PhotoStorageService.NewPhoto;
 
@@ -24,10 +24,14 @@ public class UserPhotoService {
     public UserPhoto create(UserPhoto userPhoto, InputStream fileData){
 
         String fileName = photoStorageService.generateFileName(userPhoto.getFileName());
+        String oldFileName = null;
 
-        Optional<UserPhoto> currentUserPhoto = userRepository.findByPhoto(userPhoto.getUser().getId());
+        Optional<UserPhoto> currentUserPhoto = userRepository.findPhotoById(userPhoto.getUser().getId());
 
-        currentUserPhoto.ifPresent(photo -> userRepository.delete(photo));
+        if(currentUserPhoto.isPresent()){
+            oldFileName = currentUserPhoto.get().getFileName();
+            userRepository.delete(currentUserPhoto.get());
+        }
 
         userPhoto.setFileName(fileName);
         UserPhoto photo = userRepository.save(userPhoto);
@@ -37,9 +41,14 @@ public class UserPhotoService {
                 .fileName(userPhoto.getFileName())
                 .inputStream(fileData).build();
 
-        photoStorageService.store(newPhoto);
+        photoStorageService.replace(oldFileName, newPhoto);
 
         return photo;
+    }
+
+    public UserPhoto findOrFail(Long userId){
+        return userRepository.findPhotoById(userId)
+                .orElseThrow(() -> new UserPhotoNotFoundException(userId));
     }
 
 }

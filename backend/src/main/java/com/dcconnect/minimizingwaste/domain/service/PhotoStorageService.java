@@ -9,6 +9,18 @@ import java.util.UUID;
 public interface PhotoStorageService {
     void store(NewPhoto newPhoto);
 
+    void remove(String fileName);
+
+    InputStream recover(String fileName);
+
+    default void replace(String oldFileName, NewPhoto newPhoto){
+        this.store(newPhoto);
+
+        if(oldFileName != null){
+            this.remove(oldFileName);
+        }
+    }
+
     default String generateFileName(String originalName){
         return UUID.randomUUID().toString() + "_" + originalName;
     }

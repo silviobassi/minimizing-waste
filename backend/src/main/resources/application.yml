@@ -40,4 +40,9 @@ spring:
 springdoc:
   packages-to-scan: com.dcconnect.minimizingwaste.api
   paths-to-match: /v1/**
+---
+minimizingWaste:
+  storagePhoto:
+    local:
+      directory: /home/silvio/avatar
 

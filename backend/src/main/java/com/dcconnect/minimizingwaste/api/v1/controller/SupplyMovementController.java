@@ -9,7 +9,7 @@ import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMovementInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.SupplyMovementControllerOpenApi;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
 import com.dcconnect.minimizingwaste.domain.repository.SupplyRepository;
-import com.dcconnect.minimizingwaste.domain.service.GiveBackAllocatedSupplyService;
+import com.dcconnect.minimizingwaste.domain.service.CalculateService;
 import com.dcconnect.minimizingwaste.domain.service.SupplyMovementService;
 import com.dcconnect.minimizingwaste.domain.service.SupplyService;
 import jakarta.validation.Valid;
@@ -34,7 +34,7 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
     private SupplyMovementService supplyMovementService;
 
     @Autowired
-    private GiveBackAllocatedSupplyService giveBackAllocatedSupplyService;
+    private CalculateService calculateService;
 
     @Autowired
     private SupplyMovementAssembler supplyMovementAssembler;
@@ -78,7 +78,7 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
 
         Long supplyId = supplyMovementInput.getSupply().getId();
 
-        giveBackAllocatedSupplyService.whenReplaceSupply(currentSupplyMovement, supplyId);
+        calculateService.whenReplaceSupply(currentSupplyMovement, supplyId);
 
         suppliesMovementDisassembler.copyToDomainModel(supplyMovementInput, currentSupplyMovement);
         return supplyMovementAssembler.toModel(supplyMovementService.update(currentSupplyMovement, supplyId));

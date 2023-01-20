@@ -15,6 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.IOException;
 
 @RestController
 @RequestMapping(value = "/v1/users/{userId}/photo")
@@ -32,8 +35,12 @@ public class UserPhotoController {
     private UserRepository userRepository;
 
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public UserPhotoModel updatePhoto(@PathVariable Long userId, @Valid UserPhotoInput userPhotoInput)  {
+    public UserPhotoModel updatePhoto(@PathVariable Long userId, @Valid UserPhotoInput userPhotoInput)
+            throws IOException {
         User user = userService.findOrFail(userId);
+
+        MultipartFile file =  userPhotoInput.getFile();
+
         UserPhoto userPhoto = new UserPhoto();
         userPhoto.setUser(user);
         userPhoto.setDescription(userPhotoInput.getDescription());
@@ -41,6 +48,6 @@ public class UserPhotoController {
         userPhoto.setContentType(userPhotoInput.getFile().getContentType());
         userPhoto.setSize(userPhotoInput.getFile().getSize());
 
-        return userPhotoAssembler.toModel(userPhotoService.create(userPhoto));
+        return userPhotoAssembler.toModel(userPhotoService.create(userPhoto, file.getInputStream()));
     }
 }

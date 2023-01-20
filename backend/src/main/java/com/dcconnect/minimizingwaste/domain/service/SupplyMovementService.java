@@ -30,7 +30,7 @@ public class SupplyMovementService {
     private NotificationService notificationService;
 
     @Autowired
-    private GiveBackAllocatedSupplyService giveBackAllocatedSupplyService;
+    private CalculateService calculateService;
 
     @Transactional
     public SupplyMovement create(SupplyMovement supplyMovement){
@@ -48,7 +48,7 @@ public class SupplyMovementService {
 
         notificationService.create(notification);
 
-        giveBackAllocatedSupplyService.whenCreatingMovement(supplyMovement);
+        calculateService.whenCreatingMovement(supplyMovement);
         return supplyRepository.create(supplyMovement);
     }
 
@@ -61,7 +61,7 @@ public class SupplyMovementService {
 
         supplyMovement.setSupply(supply);
 
-        giveBackAllocatedSupplyService.whenUpdatingMovement(supplyMovement, supplyId);
+        calculateService.whenUpdatingMovement(supplyMovement, supplyId);
         supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());
 
         supplyMovement.setWorkStation(workStation);
@@ -72,7 +72,7 @@ public class SupplyMovementService {
     @Transactional
     public void delete(Long supplyMovementId){
         var supplyMovementCurrent = findOrFail(supplyMovementId);
-        giveBackAllocatedSupplyService.whenDeleting(supplyMovementCurrent);
+        calculateService.whenDeleting(supplyMovementCurrent);
         supplyRepository.delete(supplyMovementCurrent);
     }
 

@@ -39,6 +39,7 @@ public class UserPhotoService {
 
         NewPhoto newPhoto = NewPhoto.builder()
                 .fileName(userPhoto.getFileName())
+                .contentType(userPhoto.getContentType())
                 .inputStream(fileData).build();
 
         photoStorageService.replace(oldFileName, newPhoto);
@@ -49,6 +50,16 @@ public class UserPhotoService {
     public UserPhoto findOrFail(Long userId){
         return userRepository.findPhotoById(userId)
                 .orElseThrow(() -> new UserPhotoNotFoundException(userId));
+    }
+
+    @Transactional
+    public void delete(long userId){
+        UserPhoto userPhoto = userRepository.findPhotoById(userId)
+                .orElseThrow(() -> new UserPhotoNotFoundException(userId));
+        userRepository.delete(userPhoto);
+        userRepository.flush();
+
+        photoStorageService.remove(userPhoto.getFileName());
     }
 
 }

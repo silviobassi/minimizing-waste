@@ -13,6 +13,7 @@ import com.dcconnect.minimizingwaste.domain.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +21,9 @@ import org.springframework.web.HttpMediaTypeNotAcceptableException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import static com.dcconnect.minimizingwaste.domain.service.PhotoStorageService.RecoveredPhoto;
+
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 @RestController
@@ -67,7 +69,7 @@ public class UserPhotoController {
     }
 
     @GetMapping
-    public ResponseEntity<InputStreamResource> servePhoto(
+    public ResponseEntity<?> servePhoto(
             @PathVariable Long userId, @RequestHeader(name = "accept") String acceptHeader)
             throws HttpMediaTypeNotAcceptableException{
         try{
@@ -78,15 +80,30 @@ public class UserPhotoController {
 
             checkMediaTypeCompatibility(mediaTypePhoto, mediaTypesAccept);
 
-            InputStream inputStream = photoStorageService.recover(userPhoto.getFileName());
+            RecoveredPhoto recoveredPhoto = photoStorageService.recover(userPhoto.getFileName());
 
-            return ResponseEntity.ok()
-                    .contentType(mediaTypePhoto)
-                    .body(new InputStreamResource(inputStream));
+            if(recoveredPhoto.isUrl()){
+                System.out.println("entrou na isURL");
+                return ResponseEntity.status(HttpStatus.FOUND)
+                        .header(HttpHeaders.LOCATION, recoveredPhoto.getUrl())
+                        .build();
+            } else {
+                return ResponseEntity.ok()
+                        .contentType(mediaTypePhoto)
+                        .body(new InputStreamResource(recoveredPhoto.getInputStream()));
+            }
+
+
         }catch (EntityNotFoundException e){
             return ResponseEntity.notFound().build();
         }
 
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping
+    public void deletePhoto(@PathVariable Long userId){
+        userPhotoService.delete(userId);
     }
 
     private void checkMediaTypeCompatibility(MediaType mediaTypePhoto, List<MediaType> mediaTypesAccept)

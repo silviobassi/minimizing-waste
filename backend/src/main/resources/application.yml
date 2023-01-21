@@ -41,8 +41,17 @@ springdoc:
   packages-to-scan: com.dcconnect.minimizingwaste.api
   paths-to-match: /v1/**
 ---
-minimizingWaste:
-  storagePhoto:
+minimizing-waste:
+  storage:
     local:
       directory: /home/silvio/avatar
+    s3:
+      #access-key-id:
+      #secret-access-key:
+      bucket: minimizing-waste
+      region: us-east-1
+      directory: user-photo
 
+    #Enable photo storage services type, for example:
+    # - "s3" to PhotoStorageService.class or  "local" to LocalPhotoStorage
+    type: s3

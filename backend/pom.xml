@@ -13,12 +13,12 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>minimizing-waste</name>
     <description>System for minimizing waste and time in civil construction</description>
-
     <properties>
         <java.version>17</java.version>
         <springdoc.version>2.0.0</springdoc.version>
         <modelmapper.version>3.0.0</modelmapper.version>
         <springdoc.hateoas.version>1.6.14</springdoc.hateoas.version>
+        <aws-java-sdk-s3.version>1.12.389</aws-java-sdk-s3.version>
     </properties>
 
     <dependencies>
@@ -93,6 +93,17 @@
             <artifactId>springdoc-openapi-hateoas</artifactId>
             <version>${springdoc.hateoas.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>com.amazonaws</groupId>
+            <artifactId>aws-java-sdk-s3</artifactId>
+            <version>${aws-java-sdk-s3.version}</version>
+        </dependency>
+
         <!--<dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-security</artifactId>

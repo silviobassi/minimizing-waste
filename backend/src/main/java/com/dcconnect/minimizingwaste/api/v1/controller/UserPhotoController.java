@@ -3,6 +3,7 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 import com.dcconnect.minimizingwaste.api.v1.assembler.UserPhotoAssembler;
 import com.dcconnect.minimizingwaste.api.v1.model.UserPhotoModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.UserPhotoInput;
+import com.dcconnect.minimizingwaste.api.v1.openapi.UserPhotoControllerOpenApi;
 import com.dcconnect.minimizingwaste.domain.exception.EntityNotFoundException;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.model.UserPhoto;
@@ -28,7 +29,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(value = "/v1/users/{userId}/photo")
-public class UserPhotoController {
+public class UserPhotoController implements UserPhotoControllerOpenApi {
 
     @Autowired
     private UserPhotoService userPhotoService;

@@ -6,6 +6,7 @@ import com.dcconnect.minimizingwaste.api.v1.model.UserDetailedModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.PasswordInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.UserInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.UserControllerOpenApi;
+import com.dcconnect.minimizingwaste.core.security.CanAccessAll;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.repository.UserRepository;
 import com.dcconnect.minimizingwaste.domain.repository.filter.UserFilter;
@@ -35,6 +36,7 @@ public class UserController implements UserControllerOpenApi {
     @Autowired
     private UserDisassembler userDisassembler;
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public CollectionModel<UserDetailedModel> search(UserFilter userFilter) {
@@ -44,6 +46,7 @@ public class UserController implements UserControllerOpenApi {
         return userAssembler.toCollectionModel(users);
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public UserDetailedModel create(@RequestBody @Valid UserInput userInput){
@@ -52,6 +55,7 @@ public class UserController implements UserControllerOpenApi {
         return userAssembler.toModel(user);
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{userId}")
     public UserDetailedModel update(@PathVariable Long userId, @RequestBody @Valid UserInput userInput){
@@ -62,6 +66,7 @@ public class UserController implements UserControllerOpenApi {
         return userAssembler.toModel(currentUser);
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{userId}")
     public UserDetailedModel findOrFail(@PathVariable Long userId){
@@ -70,6 +75,7 @@ public class UserController implements UserControllerOpenApi {
         return userAssembler.toModel(user);
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{userId}/password")
     public void changePassword(@PathVariable Long userId, @RequestBody @Valid PasswordInput passwordInput){

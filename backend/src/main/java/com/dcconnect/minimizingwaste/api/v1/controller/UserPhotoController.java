@@ -4,6 +4,7 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.UserPhotoAssembler;
 import com.dcconnect.minimizingwaste.api.v1.model.UserPhotoModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.UserPhotoInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.UserPhotoControllerOpenApi;
+import com.dcconnect.minimizingwaste.core.security.CanAccessAll;
 import com.dcconnect.minimizingwaste.domain.exception.EntityNotFoundException;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.model.UserPhoto;
@@ -45,6 +46,7 @@ public class UserPhotoController implements UserPhotoControllerOpenApi {
     @Autowired
     private UserRepository userRepository;
 
+    @CanAccessAll
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UserPhotoModel updatePhoto(@PathVariable Long userId, @Valid UserPhotoInput userPhotoInput)
             throws IOException {
@@ -62,6 +64,7 @@ public class UserPhotoController implements UserPhotoControllerOpenApi {
         return userPhotoAssembler.toModel(userPhotoService.create(userPhoto, file.getInputStream()));
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public UserPhotoModel findByUserPhoto(@PathVariable Long userId){
@@ -69,6 +72,7 @@ public class UserPhotoController implements UserPhotoControllerOpenApi {
         return userPhotoAssembler.toModel(userPhoto);
     }
 
+    @CanAccessAll
     @GetMapping
     public ResponseEntity<?> servePhoto(
             @PathVariable Long userId, @RequestHeader(name = "accept") String acceptHeader)
@@ -101,6 +105,7 @@ public class UserPhotoController implements UserPhotoControllerOpenApi {
 
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping
     public void deletePhoto(@PathVariable Long userId){

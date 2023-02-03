@@ -3,6 +3,7 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 import com.dcconnect.minimizingwaste.api.v1.assembler.PermissionAssembler;
 import com.dcconnect.minimizingwaste.api.v1.model.PermissionDetailedModel;
 import com.dcconnect.minimizingwaste.api.v1.openapi.AccessGroupPermissionControllerOpenApi;
+import com.dcconnect.minimizingwaste.core.security.CanAccessAll;
 import com.dcconnect.minimizingwaste.domain.model.AccessGroup;
 import com.dcconnect.minimizingwaste.domain.repository.AccessGroupRepository;
 import com.dcconnect.minimizingwaste.domain.service.AccessGroupService;
@@ -30,6 +31,7 @@ public class AccessGroupPermissionController implements AccessGroupPermissionCon
     @Autowired
     private AccessGroupRepository accessGroupRepository;
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public CollectionModel<PermissionDetailedModel> all(@PathVariable Long accessGroupId){
@@ -39,6 +41,7 @@ public class AccessGroupPermissionController implements AccessGroupPermissionCon
         return permissionsDetailed;
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{permissionId}")
     public ResponseEntity<Void> disassociate(@PathVariable Long accessGroupId, @PathVariable Long permissionId) {
@@ -46,6 +49,7 @@ public class AccessGroupPermissionController implements AccessGroupPermissionCon
         return ResponseEntity.noContent().build();
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{permissionId}")
     public void associate(@PathVariable Long accessGroupId, @PathVariable Long permissionId){

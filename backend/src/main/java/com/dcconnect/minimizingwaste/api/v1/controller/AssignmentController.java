@@ -9,6 +9,9 @@ import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.AssignmentControllerOpenApi;
 import com.dcconnect.minimizingwaste.core.data.PageWrapper;
 import com.dcconnect.minimizingwaste.core.data.PageableTranslator;
+import com.dcconnect.minimizingwaste.core.security.CanAccessAll;
+import com.dcconnect.minimizingwaste.core.security.CanCompleteAssignment;
+import com.dcconnect.minimizingwaste.core.security.CanApproveAssignment;
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
 import com.dcconnect.minimizingwaste.domain.repository.AssignmentRepository;
 import com.dcconnect.minimizingwaste.domain.repository.filter.AssignmentFilter;
@@ -19,7 +22,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -46,6 +48,7 @@ public class AssignmentController implements AssignmentControllerOpenApi {
     @Autowired
     private PagedResourcesAssembler<Assignment> pagedResourcesAssembler;
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public PagedModel<AssignmentModel> search(AssignmentFilter assignmentFilter,
@@ -61,6 +64,7 @@ public class AssignmentController implements AssignmentControllerOpenApi {
         return pagedResourcesAssembler.toModel(assignmentsPage, assignmentAssembler);
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public AssignmentModel create(@RequestBody @Valid AssignmentInput assignmentInput){
@@ -69,6 +73,7 @@ public class AssignmentController implements AssignmentControllerOpenApi {
         return assignmentAssembler.toModel(assignment);
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{assignmentId}")
     public AssignmentModel update(@PathVariable Long assignmentId, @RequestBody @Valid AssignmentInput assignmentInput){
@@ -79,12 +84,14 @@ public class AssignmentController implements AssignmentControllerOpenApi {
         return assignmentAssembler.toModel(assignment);
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{assignmentId}")
     public void delete(@PathVariable Long assignmentId){
         assignmentService.delete(assignmentId);
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{assignmentId}")
     public AssignmentModel findOrFail(@PathVariable Long assignmentId){
@@ -93,6 +100,7 @@ public class AssignmentController implements AssignmentControllerOpenApi {
         return assignmentAssembler.toModel(assignment);
     }
 
+    @CanCompleteAssignment
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{assignmentId}/conclusion")
     public void completeAssignment(@RequestBody @Valid AssignmentCompletedInput assignmentCompletedInput,
@@ -102,6 +110,7 @@ public class AssignmentController implements AssignmentControllerOpenApi {
         assignmentService.completeAssignment(currentAssignment);
     }
 
+    @CanApproveAssignment
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{assignmentId}/approval")
     public void approveAssignment(@RequestBody @Valid AssignmentApprovedInput assignmentApprovedInput,

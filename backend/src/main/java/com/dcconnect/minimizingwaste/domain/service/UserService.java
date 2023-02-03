@@ -6,6 +6,7 @@ import com.dcconnect.minimizingwaste.domain.model.AccessGroup;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,9 @@ public class UserService {
     @Autowired
     private AccessGroupService accessGroupService;
 
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
     @Transactional
     public User create(User user){
         userRepository.detach(user);
@@ -32,6 +36,10 @@ public class UserService {
                     String.format("Já existe um usuário cadastrado com o e-mail %s", user.getEmail()));
         }
 
+        if(user.isNew()){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
         return userRepository.save(user);
     }
 
@@ -39,11 +47,11 @@ public class UserService {
     public void changePassword(Long userId, String currentPassword, String newPassword){
         User user = findOrFail(userId);
 
-        if(user.passwordDoesNotMatch(currentPassword)){
+        if(!passwordEncoder.matches(currentPassword, user.getPassword())){
             throw new BusinessException("Senha atual informada não coincide com a senha do usuário.");
         }
 
-        user.setPassword(newPassword);
+        user.setPassword(passwordEncoder.encode(newPassword));
     }
 
     @Transactional

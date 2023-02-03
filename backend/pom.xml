@@ -19,6 +19,7 @@
         <modelmapper.version>3.0.0</modelmapper.version>
         <springdoc.hateoas.version>1.6.14</springdoc.hateoas.version>
         <aws-java-sdk-s3.version>1.12.389</aws-java-sdk-s3.version>
+        <authorization-server.version>1.0.0</authorization-server.version>
     </properties>
 
     <dependencies>
@@ -53,6 +54,12 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-oauth2-authorization-server</artifactId>
+            <version>${authorization-server.version}</version>
+        </dependency>
+
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
@@ -104,11 +111,15 @@
             <version>${aws-java-sdk-s3.version}</version>
         </dependency>
 
-        <!--<dependency>
+        <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-security</artifactId>
             <version>1.6.14</version>
-        </dependency>-->
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+        </dependency>
 	
 		<!--<dependency>
 			<groupId>org.springframework.boot</groupId>

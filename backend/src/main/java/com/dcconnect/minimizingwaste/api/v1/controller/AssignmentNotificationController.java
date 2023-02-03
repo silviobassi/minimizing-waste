@@ -4,6 +4,7 @@ import com.dcconnect.minimizingwaste.api.v1.model.AssignmentNotificationModel;
 import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentNotificationAssembler;
 import com.dcconnect.minimizingwaste.api.v1.openapi.AssignmentNotificationControllerOpenApi;
 import com.dcconnect.minimizingwaste.core.data.PageableTranslator;
+import com.dcconnect.minimizingwaste.core.security.CanAccessAll;
 import com.dcconnect.minimizingwaste.domain.repository.AssignmentRepository;
 import com.dcconnect.minimizingwaste.domain.repository.filter.AssignmentNotificationFilter;
 import com.dcconnect.minimizingwaste.infrastructure.spec.AssignmentNotificationSpecs;
@@ -28,6 +29,7 @@ public class AssignmentNotificationController implements AssignmentNotificationC
     @Autowired
     private AssignmentNotificationAssembler assignmentNotificationAssembler;
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/available")
     public List<AssignmentNotificationModel> search(AssignmentNotificationFilter assignmentNotificationFilter){

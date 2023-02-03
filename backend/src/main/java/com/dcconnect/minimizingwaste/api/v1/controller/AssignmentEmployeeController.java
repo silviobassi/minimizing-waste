@@ -5,6 +5,7 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentNotificationDisa
 import com.dcconnect.minimizingwaste.api.v1.model.UserDetailedModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentNotificationInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.AssignmentEmployeeControllerOpenApi;
+import com.dcconnect.minimizingwaste.core.security.CanAccessAll;
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.service.AssignmentService;
@@ -31,6 +32,7 @@ public class AssignmentEmployeeController implements AssignmentEmployeeControlle
     @Autowired
     private AssignmentNotificationDisassembler assignmentNotificationDisassembler;
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public CollectionModel<UserDetailedModel> all(@PathVariable Long assignmentId){
@@ -39,6 +41,7 @@ public class AssignmentEmployeeController implements AssignmentEmployeeControlle
         return assignEmployeeAssembler.toCollectionModel(users, assignmentId);
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{employeeResponsibleId}")
     public ResponseEntity<Void> attachEmployee(@PathVariable Long assignmentId,
@@ -51,6 +54,7 @@ public class AssignmentEmployeeController implements AssignmentEmployeeControlle
         return ResponseEntity.noContent().build();
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{employeeResponsibleId}")
     public ResponseEntity<Void> detachEmployee(@PathVariable Long assignmentId,

@@ -6,6 +6,7 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.SectorDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.SectorModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SectorInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.SectorControllerOpenApi;
+import com.dcconnect.minimizingwaste.core.security.CanAccessAll;
 import com.dcconnect.minimizingwaste.domain.model.Sector;
 import com.dcconnect.minimizingwaste.domain.repository.SectorRepository;
 import com.dcconnect.minimizingwaste.domain.repository.filter.SectorFilter;
@@ -35,6 +36,7 @@ public class SectorController implements SectorControllerOpenApi {
     @Autowired
     private SectorDisassembler sectorDisassembler;
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public CollectionModel<SectorModel> search(SectorFilter sectorFilter){
@@ -44,6 +46,7 @@ public class SectorController implements SectorControllerOpenApi {
         return sectorAssembler.toCollectionModel(sectors);
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public SectorModel create(@RequestBody @Valid SectorInput sectorInput){
@@ -52,7 +55,7 @@ public class SectorController implements SectorControllerOpenApi {
         ResourceUriHelper.addUriInResponseHeader(sector.getId());
         return sectorAssembler.toModel(sector);
     }
-
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{sectorId}")
     public SectorModel update(@PathVariable Long sectorId, @RequestBody @Valid SectorInput sectorInput) {
@@ -61,12 +64,14 @@ public class SectorController implements SectorControllerOpenApi {
         return sectorAssembler.toModel(sectorService.create(sectorCurrent));
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{sectorId}")
     public void delete(@PathVariable Long sectorId){
         sectorService.delete(sectorId);
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{sectorId}")
     public SectorModel findOrFail(@PathVariable Long sectorId){

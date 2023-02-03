@@ -5,6 +5,7 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.AccessGroupDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.AccessGroupSummaryModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.AccessGroupInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.AccessGroupControllerOpenApi;
+import com.dcconnect.minimizingwaste.core.security.CanAccessAll;
 import com.dcconnect.minimizingwaste.domain.model.AccessGroup;
 import com.dcconnect.minimizingwaste.domain.repository.AccessGroupRepository;
 import com.dcconnect.minimizingwaste.domain.service.AccessGroupService;
@@ -33,6 +34,7 @@ public class AccessGroupController implements AccessGroupControllerOpenApi {
     @Autowired
     private AccessGroupService accessGroupService;
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public CollectionModel<AccessGroupSummaryModel> all() {
@@ -40,6 +42,7 @@ public class AccessGroupController implements AccessGroupControllerOpenApi {
         return accessGroupAssembler.toCollectionModel(accessGroups);
     }
 
+    @CanAccessAll
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public AccessGroupSummaryModel create(@RequestBody @Valid AccessGroupInput accessGroupInput){
@@ -48,6 +51,7 @@ public class AccessGroupController implements AccessGroupControllerOpenApi {
         return accessGroupAssembler.toModel(accessGroup);
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{accessGroupId}")
     public AccessGroupSummaryModel update(@PathVariable Long accessGroupId,
@@ -58,6 +62,7 @@ public class AccessGroupController implements AccessGroupControllerOpenApi {
         return accessGroupAssembler.toModel(accessGroupCurrent);
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{accessGroupId}")
     public ResponseEntity<Void> delete(@PathVariable Long accessGroupId){

@@ -5,6 +5,7 @@ import lombok.Getter;
 @Getter
 public enum ProblemType {
 
+	ACCESS_DENIED("/acesso-negado", "Acesso negado"),
 	INVALID_DATA("/dados-invalidos", "Dados inválidos"),
 	SYSTEM_ERROR("/erro-de-sistema", "Erro De sistema"),
 	INVALID_PARAMETER("/parametro-invalido", "Parâmetro Inválido"),
@@ -13,6 +14,7 @@ public enum ProblemType {
 	ENTITY_IN_USE("/entidade-em-uso", "Entidade em uso"),
 	DUPLICATE_ENTITY("/entidade-duplicada", "Entidade Duplicada"),
 	BUSINESS_ERROR("/erro-negocio", "Violação de Regra de Negócio");
+
 	
 	private String title;
 	private String uri;

@@ -3,6 +3,7 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 import com.dcconnect.minimizingwaste.api.v1.assembler.PermissionAssembler;
 import com.dcconnect.minimizingwaste.api.v1.model.PermissionDetailedModel;
 import com.dcconnect.minimizingwaste.api.v1.openapi.PermissionControllerOpenApi;
+import com.dcconnect.minimizingwaste.core.security.CanAccessAll;
 import com.dcconnect.minimizingwaste.domain.model.Permission;
 import com.dcconnect.minimizingwaste.domain.repository.PermissionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ public class PermissionController implements PermissionControllerOpenApi {
     @Autowired
     private PermissionAssembler permissionAssembler;
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public CollectionModel<PermissionDetailedModel> all(){

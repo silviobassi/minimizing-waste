@@ -5,6 +5,7 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.EquipmentSuppliesDisassemb
 import com.dcconnect.minimizingwaste.api.v1.model.EquipmentSupplyModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyEquipmentInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.EquipmentSupplyControllerOpenApi;
+import com.dcconnect.minimizingwaste.core.security.CanAccessAll;
 import com.dcconnect.minimizingwaste.domain.model.Equipment;
 import com.dcconnect.minimizingwaste.domain.service.SupplyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,7 @@ public class EquipmentSupplyController implements EquipmentSupplyControllerOpenA
     @Autowired
     private EquipmentSuppliesDisassembler equipmentSuppliesDisassembler;
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public EquipmentSupplyModel create(@RequestBody @Valid SupplyEquipmentInput supplyEquipmentInput){
@@ -34,6 +36,7 @@ public class EquipmentSupplyController implements EquipmentSupplyControllerOpenA
 
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{supplyEquipmentId}")
     public EquipmentSupplyModel update(

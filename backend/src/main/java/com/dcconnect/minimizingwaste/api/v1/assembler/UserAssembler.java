@@ -1,7 +1,5 @@
 package com.dcconnect.minimizingwaste.api.v1.assembler;
 
-import com.dcconnect.minimizingwaste.api.v1.controller.AccessGroupController;
-import com.dcconnect.minimizingwaste.api.v1.controller.SectorController;
 import com.dcconnect.minimizingwaste.api.v1.controller.UserController;
 import com.dcconnect.minimizingwaste.api.v1.model.UserDetailedModel;
 import com.dcconnect.minimizingwaste.domain.model.User;
@@ -12,11 +10,7 @@ import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
 public class UserAssembler extends RepresentationModelAssemblerSupport<User, UserDetailedModel> {

@@ -11,9 +11,10 @@ delete from assignments;
 delete from permissions;
 delete from access_groups;
 delete from groups_permissions;
+delete from users_access_groups;
 delete from assignments_employees;
 delete from users_photos;
-
+delete from oauth2_registered_client;
 
 set foreign_key_checks = 1;
 
@@ -27,15 +28,16 @@ alter table supplies_movement auto_increment = 1;
 alter table assignments auto_increment = 1;
 alter table permissions auto_increment = 1;
 alter table access_groups auto_increment = 1;
+alter table users_access_groups auto_increment = 1;
 alter table groups_permissions auto_increment = 1;
 alter table assignments_employees auto_increment = 1;
 
 insert into users (name, cpf, email, whats_app, password, office, occupation, literate, created_at) values
-('Silvio Bassi', '25782713801', 'silviobassi2@gmail.com', '17996079654', '123', 'Azulejista', 'Instalador de Porcelanato',
+('Silvio Bassi', '25782713801', 'silviobassi2@gmail.com', '17996079654', '$2a$12$0wznF6KN2P79LF0qgVNsQeVJTkSA.BFl6ZRaUBGvZUqHO1/BdWfoS', 'Azulejista', 'Instalador de Porcelanato',
  'Ensino Médio', utc_timestamp),
-('Pedro Bassi', '99999999999', 'pedrobassi@gmail.com', '99999999999', '123', 'Pedreiro', 'Assentamento de Tijolos',
+('Pedro Bassi', '99999999999', 'pedrobassi@gmail.com', '99999999999', '$2a$12$0wznF6KN2P79LF0qgVNsQeVJTkSA.BFl6ZRaUBGvZUqHO1/BdWfoS', 'Pedreiro', 'Assentamento de Tijolos',
  'Curso Superior Completo', utc_timestamp),
-('Ana Paula Bassi', '99999999999', 'paulaanabassi@hotmail.com', '17997843606', '123', 'Azulejista', 'Rejuntamento de Porcelanato',
+('Ana Paula Bassi', '99999999999', 'paulaanabassi@hotmail.com', '17997843606', '$2a$12$0wznF6KN2P79LF0qgVNsQeVJTkSA.BFl6ZRaUBGvZUqHO1/BdWfoS', 'Azulejista', 'Rejuntamento de Porcelanato',
  'Curso Superior Incompleto', utc_timestamp);
 
 insert into sectors (name) values ('Obras');
@@ -106,17 +108,20 @@ insert into assignments (title, start_date, end_date, deadline, completed, appro
 values ('Organização de Materiais Espalhados', utc_timestamp(), utc_timestamp(), utc_timestamp(), true, true, 'LIMPEZA', 2,
         'Trabalho Coeso e cumprimento das metas técnicas estabelecidas');
 
-insert into permissions (name, description) values ('CONSULT_SUPPLIES', 'Permite Consultar Recursos');
-insert into permissions (name, description) values ('EDIT_SUPPLIES', 'Permite Editar Recursos');
-insert into permissions (name, description) values ('CREATE_SUPPLIES', 'Permite Criar Recursos');
+insert into permissions (name, description) values ('ADMIN', 'Acesso total ao sistema');
+insert into permissions (name, description) values ('COMPLETE_TASK', 'Permite Completar Tarefas');
+insert into permissions (name, description) values ('APPROVE_TASK', 'Permite Finalizar Tarefas');
 
 insert into access_groups (name) values ('Encarregado');
 insert into access_groups (name) values ('Administrador');
 insert into access_groups (name) values ('Colaborador');
 
-insert into groups_permissions (group_id, permission_id) values (1, 1);
-insert into groups_permissions (group_id, permission_id) values (1, 2);
-insert into groups_permissions (group_id, permission_id) values (2, 1);
-insert into groups_permissions (group_id, permission_id) values (2, 2);
-insert into groups_permissions (group_id, permission_id) values (2, 3);
-insert into groups_permissions (group_id, permission_id) values (3, 1);
+insert into users_access_groups (user_id, access_group_id) values (1, 2), (2, 1), (3, 3);
+
+insert into groups_permissions (group_id, permission_id) values (1, 3), (2, 1), (2, 2), (2, 3), (3, 2);
+
+INSERT INTO minimizing_waste.oauth2_registered_client
+(id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name, client_authentication_methods, authorization_grant_types, redirect_uris, scopes, client_settings, token_settings)
+VALUES('1', 'minimizing-web', '2023-02-03 13:36:44', '$2a$10$nuH5YQJrevTT.rsmCMJl1OVH4OmqjZu231f5sf09bMG8pcsWR.MWa', NULL, 'Minimizing Web', 'client_secret_basic', 'refresh_token,authorization_code', 'http://localhost:3000/authorized,https://oidcdebugger.com/debug', 'READ,WRITE', '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":true}', '{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":false,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",900.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat","value":"self-contained"},"settings.token.refresh-token-time-to-live":["java.time.Duration",86400.000000000],"settings.token.authorization-code-time-to-live":["java.time.Duration",300.000000000]}');
+
+

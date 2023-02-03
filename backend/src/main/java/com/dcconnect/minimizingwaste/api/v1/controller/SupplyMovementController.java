@@ -7,6 +7,7 @@ import com.dcconnect.minimizingwaste.api.v1.model.SupplyMovementModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.DevolvedSupplyMovementInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMovementInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.SupplyMovementControllerOpenApi;
+import com.dcconnect.minimizingwaste.core.security.CanAccessAll;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
 import com.dcconnect.minimizingwaste.domain.repository.SupplyRepository;
 import com.dcconnect.minimizingwaste.domain.service.CalculateService;
@@ -51,6 +52,7 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
     @Autowired
     private PagedResourcesAssembler<SupplyMovement> pagedResourcesAssembler;
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public PagedModel<SupplyMovementModel> all(@PageableDefault(size = 2) Pageable pageable){
@@ -59,6 +61,7 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
         return pagedResourcesAssembler.toModel(supplyPage, supplyMovementAssembler);
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public SupplyMovementModel create(@RequestBody @Valid SupplyMovementInput supplyMovementInput){
@@ -69,6 +72,7 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
         return supplyMovementAssembler.toModel(supplyMovement);
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{supplyMovementId}")
     public SupplyMovementModel update(@RequestBody @Valid SupplyMovementInput supplyMovementInput,
@@ -84,18 +88,21 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
         return supplyMovementAssembler.toModel(supplyMovementService.update(currentSupplyMovement, supplyId));
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{supplyMovementId}")
     public void delete(@PathVariable Long supplyMovementId){
         supplyMovementService.delete(supplyMovementId);
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{supplyMovementId}")
     public SupplyMovementModel findById(@PathVariable Long supplyMovementId){
         return supplyMovementAssembler.toModel(supplyMovementService.findOrFail(supplyMovementId));
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/give-back/{supplyMovementId}")
     public SupplyMovementModel giveBackSupply(
@@ -107,6 +114,7 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
         return supplyMovementAssembler.toModel(supplyMovementService.giveBackSupply(supplyMovement));
     }
 
+    @CanAccessAll
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/vacancies/{supplyMovementId}")
     public ResponseEntity<Void> vacateSupply(@PathVariable Long supplyMovementId){

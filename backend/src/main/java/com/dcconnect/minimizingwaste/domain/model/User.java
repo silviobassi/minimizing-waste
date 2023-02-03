@@ -34,19 +34,15 @@ public class User extends BaseEntity{
             inverseJoinColumns = @JoinColumn(name = "access_group_id"))
     private List<AccessGroup> accessGroups = new ArrayList<>();
 
-    public boolean passwordMatches(String password){
-        return getPassword().equals(password);
-    }
-
-    public boolean passwordDoesNotMatch(String password){
-        return !passwordMatches(password);
-    }
-
     public boolean removeAccessGroup(AccessGroup accessGroup){
         return getAccessGroups().remove(accessGroup);
     }
 
     public boolean addAccessGroups(AccessGroup accessGroup){
         return getAccessGroups().add(accessGroup);
+    }
+
+    public boolean isNew(){
+        return getId() == null;
     }
 }

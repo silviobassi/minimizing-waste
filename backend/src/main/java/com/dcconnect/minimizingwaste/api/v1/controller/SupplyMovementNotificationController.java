@@ -4,7 +4,7 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 import com.dcconnect.minimizingwaste.api.v1.assembler.SupplyMovementNotificationAssembler;
 import com.dcconnect.minimizingwaste.api.v1.model.SupplyMovementNotificationModel;
 import com.dcconnect.minimizingwaste.api.v1.openapi.SupplyMovementNotificationControllerOpenApi;
-import com.dcconnect.minimizingwaste.core.security.CanAccessAll;
+import com.dcconnect.minimizingwaste.core.security.CheckSecurity;
 import com.dcconnect.minimizingwaste.domain.repository.SupplyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,7 @@ public class SupplyMovementNotificationController implements SupplyMovementNotif
     @Autowired
     private SupplyMovementNotificationAssembler supplyMovementNotificationAssembler;
 
-    @CanAccessAll
+    @CheckSecurity.Notifications.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/available")
     public List<SupplyMovementNotificationModel> findNotificationBySuppliesAvailable(){

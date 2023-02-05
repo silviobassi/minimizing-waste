@@ -5,7 +5,7 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.WorkStationDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.WorkStationModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.WorkStationInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.WorkStationControllerOpenApi;
-import com.dcconnect.minimizingwaste.core.security.CanAccessAll;
+import com.dcconnect.minimizingwaste.core.security.CheckSecurity;
 import com.dcconnect.minimizingwaste.domain.model.WorkStation;
 import com.dcconnect.minimizingwaste.domain.repository.WorkStationRepository;
 import com.dcconnect.minimizingwaste.domain.repository.filter.WorkStationFilter;
@@ -35,7 +35,7 @@ public class WorkStationController implements WorkStationControllerOpenApi {
     @Autowired
     private WorkStationDisassembler workStationDisassembler;
 
-    @CanAccessAll
+    @CheckSecurity.WorkStations.CanConsult
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public CollectionModel<WorkStationModel> search(WorkStationFilter workStationFilter) {
@@ -43,7 +43,7 @@ public class WorkStationController implements WorkStationControllerOpenApi {
         return workStationAssembler.toCollectionModel(workStations);
     }
 
-    @CanAccessAll
+    @CheckSecurity.WorkStations.CanEdit
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public WorkStationModel create(@RequestBody @Valid WorkStationInput workStationInput){
@@ -52,7 +52,7 @@ public class WorkStationController implements WorkStationControllerOpenApi {
         return workStationAssembler.toModel(workStation);
     }
 
-    @CanAccessAll
+    @CheckSecurity.WorkStations.CanEdit
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{workStationId}")
     public WorkStationModel update(@PathVariable Long workStationId, @RequestBody @Valid WorkStationInput workStationInput) {
@@ -61,14 +61,14 @@ public class WorkStationController implements WorkStationControllerOpenApi {
         return workStationAssembler.toModel(workStationService.create(workStationCurrent));
     }
 
-    @CanAccessAll
+    @CheckSecurity.WorkStations.CanEdit
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{workStationId}")
     public void delete(@PathVariable Long workStationId){
         workStationService.delete(workStationId);
     }
 
-    @CanAccessAll
+    @CheckSecurity.WorkStations.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{workStationId}")
     public WorkStationModel findOrFail(@PathVariable Long workStationId){

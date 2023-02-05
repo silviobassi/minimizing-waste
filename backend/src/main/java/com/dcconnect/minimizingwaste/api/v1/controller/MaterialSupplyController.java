@@ -5,12 +5,11 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.MaterialSupplyDisassembler
 import com.dcconnect.minimizingwaste.api.v1.model.MaterialSupplyModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMaterialInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.MaterialSupplyControllerOpenApi;
-import com.dcconnect.minimizingwaste.core.security.CanAccessAll;
+import com.dcconnect.minimizingwaste.core.security.CheckSecurity;
 import com.dcconnect.minimizingwaste.domain.model.Material;
 import com.dcconnect.minimizingwaste.domain.service.SupplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -28,7 +27,7 @@ public class MaterialSupplyController implements MaterialSupplyControllerOpenApi
     @Autowired
     private MaterialSupplyDisassembler materialSupplyDisassembler;
 
-    @CanAccessAll
+    @CheckSecurity.Supplies.CanEdit
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public MaterialSupplyModel create(@RequestBody @Valid SupplyMaterialInput supplyMaterialInput) {
@@ -37,7 +36,7 @@ public class MaterialSupplyController implements MaterialSupplyControllerOpenApi
 
     }
 
-    @CanAccessAll
+    @CheckSecurity.Supplies.CanEdit
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{supplyMaterialId}")
     public MaterialSupplyModel update(

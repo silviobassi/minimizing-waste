@@ -1,5 +1,6 @@
 package com.dcconnect.minimizingwaste.domain.service;
 
+import com.dcconnect.minimizingwaste.core.security.MinimizingSecurity;
 import com.dcconnect.minimizingwaste.domain.exception.AssignmentNotFoundException;
 import com.dcconnect.minimizingwaste.domain.exception.BusinessException;
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
@@ -94,6 +95,14 @@ public class AssignmentService {
 
     @Transactional
     public void completeAssignment(Assignment currentAssignment){
+
+        boolean isEmptyEmployeeResponsible = currentAssignment.getEmployeeResponsible().isEmpty();
+
+        if(isEmptyEmployeeResponsible){
+            throw new BusinessException(
+                    "Para concluir esta tarefa, a mesma precisa estar atribuída, ao menos, a um colaborador.");
+        }
+
         assignmentRepository.save(currentAssignment);
     }
 
@@ -112,4 +121,5 @@ public class AssignmentService {
         assignmentRepository.save(currentAssignment);
 
     }
+
 }

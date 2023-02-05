@@ -108,9 +108,20 @@ insert into assignments (title, start_date, end_date, deadline, completed, appro
 values ('Organização de Materiais Espalhados', utc_timestamp(), utc_timestamp(), utc_timestamp(), true, true, 'LIMPEZA', 2,
         'Trabalho Coeso e cumprimento das metas técnicas estabelecidas');
 
-insert into permissions (name, description) values ('ADMIN', 'Acesso total ao sistema');
-insert into permissions (name, description) values ('COMPLETE_TASK', 'Permite Completar Tarefas');
-insert into permissions (name, description) values ('APPROVE_TASK', 'Permite Finalizar Tarefas');
+insert into permissions (name, description) values ('EDIT_USER', 'Permite editar usuários');
+insert into permissions (name, description) values ('CONSULT_USER', 'Permite consultar usuários');
+insert into permissions (name, description) values ('EDIT_ASSIGNMENTS', 'Permite editar tarefas');
+insert into permissions (name, description) values ('EDIT_SUPPLIES', 'Permite editar tarefas');
+insert into permissions (name, description) values ('CONSULT_SUPPLIES', 'Permite consultar tarefas');
+insert into permissions (name, description) values ('EDIT_SECTORS', 'Permite editar tarefas');
+insert into permissions (name, description) values ('CONSULT_SECTORS', 'Permite consultar tarefas');
+insert into permissions (name, description) values ('EDIT_WORK_STATIONS', 'Permite editar estações de trabalho');
+insert into permissions (name, description) values ('CONSULT_WORK_STATIONS', 'Permite consultar estações de trabalho');
+insert into permissions (name, description) values ('APPROVE_ASSIGNMENTS', 'Permite aprovar tarefas');
+insert into permissions (name, description) values ('COMPLETE_ASSIGNMENTS', 'Permite completar tarefas');
+insert into permissions (name, description) values ('GIVE_BACK_ASSIGNMENTS', 'Permite devolver recursos');
+insert into permissions (name, description) values ('VACATE_ASSIGNMENTS', 'Permite disponibilizar recursos');
+
 
 insert into access_groups (name) values ('Encarregado');
 insert into access_groups (name) values ('Administrador');
@@ -118,7 +129,9 @@ insert into access_groups (name) values ('Colaborador');
 
 insert into users_access_groups (user_id, access_group_id) values (1, 2), (2, 1), (3, 3);
 
-insert into groups_permissions (group_id, permission_id) values (1, 3), (2, 1), (2, 2), (2, 3), (3, 2);
+insert into groups_permissions (group_id, permission_id) values (1, 5), (1, 7), (1, 9),(1, 10),(1, 12), (1,13),
+(2, 1), (2, 2), (2, 3), (2, 4), (2, 5), (2, 6),(2, 7), (2, 8), (2, 9), (2, 10), (2, 11), (2, 12), (2, 13),
+(3, 11);
 
 INSERT INTO minimizing_waste.oauth2_registered_client
 (id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name, client_authentication_methods, authorization_grant_types, redirect_uris, scopes, client_settings, token_settings)

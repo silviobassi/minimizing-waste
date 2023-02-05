@@ -73,10 +73,7 @@ public class AuthorizationServerConfig {
     @Bean
     public OAuth2AuthorizationService oAuth2AuthorizationService(JdbcOperations jdbcOperations,
                                                                  RegisteredClientRepository registeredClientRepository) {
-        return new JdbcOAuth2AuthorizationService(
-                jdbcOperations,
-                registeredClientRepository
-        );
+        return new JdbcOAuth2AuthorizationService(jdbcOperations, registeredClientRepository);
     }
     @Bean
     public JWKSource<SecurityContext> jwkSource(JwtKeyStoreProperties properties) throws Exception {

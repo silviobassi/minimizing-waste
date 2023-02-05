@@ -3,7 +3,7 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 import com.dcconnect.minimizingwaste.api.v1.assembler.UserAccessGroupAssembler;
 import com.dcconnect.minimizingwaste.api.v1.model.AccessGroupSummaryModel;
 import com.dcconnect.minimizingwaste.api.v1.openapi.UserAccessGroupControllerOpenApi;
-import com.dcconnect.minimizingwaste.core.security.CanAccessAll;
+import com.dcconnect.minimizingwaste.core.security.CheckSecurity;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ public class UserAccessGroupController implements UserAccessGroupControllerOpenA
     @Autowired
     private UserAccessGroupAssembler userAccessGroupAssembler;
 
-    @CanAccessAll
+    @CheckSecurity.Users.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public CollectionModel<AccessGroupSummaryModel> all(@PathVariable Long userId){
@@ -31,7 +31,7 @@ public class UserAccessGroupController implements UserAccessGroupControllerOpenA
         return userAccessGroupAssembler.toCollectionModel(user.getAccessGroups(), userId);
     }
 
-    @CanAccessAll
+    @CheckSecurity.Users.CanEdit
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{accessGroupId}")
     public ResponseEntity<Void> disassociate(@PathVariable Long userId, @PathVariable Long accessGroupId){
@@ -39,7 +39,7 @@ public class UserAccessGroupController implements UserAccessGroupControllerOpenA
         return ResponseEntity.noContent().build();
     }
 
-    @CanAccessAll
+    @CheckSecurity.Users.CanEdit
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{accessGroupId}")
     public ResponseEntity<Void> associate(@PathVariable Long userId, @PathVariable Long accessGroupId){

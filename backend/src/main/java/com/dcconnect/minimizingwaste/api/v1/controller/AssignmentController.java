@@ -9,9 +9,9 @@ import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.AssignmentControllerOpenApi;
 import com.dcconnect.minimizingwaste.core.data.PageWrapper;
 import com.dcconnect.minimizingwaste.core.data.PageableTranslator;
-import com.dcconnect.minimizingwaste.core.security.CanAccessAll;
-import com.dcconnect.minimizingwaste.core.security.CanCompleteAssignment;
-import com.dcconnect.minimizingwaste.core.security.CanApproveAssignment;
+import com.dcconnect.minimizingwaste.core.security.CheckSecurity;
+import com.dcconnect.minimizingwaste.core.security.MinimizingSecurity;
+import com.dcconnect.minimizingwaste.domain.exception.BusinessException;
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
 import com.dcconnect.minimizingwaste.domain.repository.AssignmentRepository;
 import com.dcconnect.minimizingwaste.domain.repository.filter.AssignmentFilter;
@@ -24,6 +24,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
@@ -48,7 +50,7 @@ public class AssignmentController implements AssignmentControllerOpenApi {
     @Autowired
     private PagedResourcesAssembler<Assignment> pagedResourcesAssembler;
 
-    @CanAccessAll
+    @CheckSecurity.Assignments.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public PagedModel<AssignmentModel> search(AssignmentFilter assignmentFilter,
@@ -64,7 +66,7 @@ public class AssignmentController implements AssignmentControllerOpenApi {
         return pagedResourcesAssembler.toModel(assignmentsPage, assignmentAssembler);
     }
 
-    @CanAccessAll
+    @CheckSecurity.Assignments.CanEdit
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public AssignmentModel create(@RequestBody @Valid AssignmentInput assignmentInput){
@@ -73,7 +75,7 @@ public class AssignmentController implements AssignmentControllerOpenApi {
         return assignmentAssembler.toModel(assignment);
     }
 
-    @CanAccessAll
+    @CheckSecurity.Assignments.CanEdit
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{assignmentId}")
     public AssignmentModel update(@PathVariable Long assignmentId, @RequestBody @Valid AssignmentInput assignmentInput){
@@ -84,14 +86,14 @@ public class AssignmentController implements AssignmentControllerOpenApi {
         return assignmentAssembler.toModel(assignment);
     }
 
-    @CanAccessAll
+    @CheckSecurity.Assignments.CanEdit
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{assignmentId}")
     public void delete(@PathVariable Long assignmentId){
         assignmentService.delete(assignmentId);
     }
 
-    @CanAccessAll
+    @CheckSecurity.Assignments.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{assignmentId}")
     public AssignmentModel findOrFail(@PathVariable Long assignmentId){
@@ -100,17 +102,18 @@ public class AssignmentController implements AssignmentControllerOpenApi {
         return assignmentAssembler.toModel(assignment);
     }
 
-    @CanCompleteAssignment
+    @CheckSecurity.Assignments.CanComplete
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{assignmentId}/conclusion")
     public void completeAssignment(@RequestBody @Valid AssignmentCompletedInput assignmentCompletedInput,
                                    @PathVariable Long assignmentId){
+
         Assignment currentAssignment =  assignmentService.findOrFail(assignmentId);
         assignmentDisassembler.copyToDomainModel(assignmentCompletedInput, currentAssignment);
         assignmentService.completeAssignment(currentAssignment);
     }
 
-    @CanApproveAssignment
+    @CheckSecurity.Assignments.CanApprove
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{assignmentId}/approval")
     public void approveAssignment(@RequestBody @Valid AssignmentApprovedInput assignmentApprovedInput,

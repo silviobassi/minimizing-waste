@@ -7,7 +7,7 @@ import com.dcconnect.minimizingwaste.api.v1.model.SupplySummaryModel;
 import com.dcconnect.minimizingwaste.api.v1.openapi.SupplyControllerOpenApi;
 import com.dcconnect.minimizingwaste.core.data.PageWrapper;
 import com.dcconnect.minimizingwaste.core.data.PageableTranslator;
-import com.dcconnect.minimizingwaste.core.security.CanAccessAll;
+import com.dcconnect.minimizingwaste.core.security.CheckSecurity;
 import com.dcconnect.minimizingwaste.domain.model.Supply;
 import com.dcconnect.minimizingwaste.domain.repository.SupplyRepository;
 import com.dcconnect.minimizingwaste.domain.repository.filter.SupplyFilter;
@@ -43,7 +43,7 @@ public class SupplyController implements SupplyControllerOpenApi {
     @Autowired
     private PagedResourcesAssembler<Supply> pagedResourcesAssembler;
 
-    @CanAccessAll
+    @CheckSecurity.Supplies.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public PagedModel<SupplySummaryModel> search(SupplyFilter supplyFilter,
@@ -58,14 +58,14 @@ public class SupplyController implements SupplyControllerOpenApi {
         return pagedResourcesAssembler.toModel(suppliesPage, supplySummaryAssembler);
     }
 
-    @CanAccessAll
+    @CheckSecurity.Supplies.CanEdit
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{supplyId}")
     public void delete(@PathVariable Long supplyId){
         supplyService.delete(supplyId);
     }
 
-    @CanAccessAll
+    @CheckSecurity.Supplies.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{supplyId}")
     public SupplyDetailedModel findById(@PathVariable Long supplyId){

@@ -17,4 +17,8 @@ public interface AssignmentRepository extends CustomJpaRepository<Assignment, Lo
 
     @EntityGraph(attributePaths = {"workStation.sector", "notification"})
     Page<Assignment> findAll(Specification<Assignment> specification, Pageable pageable);
+
+    @Query("select case when count(1) > 0 then true else false end from Assignment at " +
+            "join at.employeeResponsible er where at.id = :assignmentId and er.id = :userId")
+    boolean existsByEmployeeResponsible(Long assignmentId, Long userId);
 }

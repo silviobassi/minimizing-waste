@@ -121,7 +121,7 @@ insert into permissions (name, description) values ('APPROVE_ASSIGNMENTS', 'Perm
 insert into permissions (name, description) values ('COMPLETE_ASSIGNMENTS', 'Permite completar tarefas');
 insert into permissions (name, description) values ('GIVE_BACK_ASSIGNMENTS', 'Permite devolver recursos');
 insert into permissions (name, description) values ('VACATE_ASSIGNMENTS', 'Permite disponibilizar recursos');
-
+insert into permissions (name, description) values ('CONSULT_ASSIGNMENTS', 'Permite consultar tarefas');
 
 insert into access_groups (name) values ('Encarregado');
 insert into access_groups (name) values ('Administrador');
@@ -129,12 +129,15 @@ insert into access_groups (name) values ('Colaborador');
 
 insert into users_access_groups (user_id, access_group_id) values (1, 2), (2, 1), (3, 3);
 
-insert into groups_permissions (group_id, permission_id) values (1, 5), (1, 7), (1, 9),(1, 10),(1, 12), (1,13),
-(2, 1), (2, 2), (2, 3), (2, 4), (2, 5), (2, 6),(2, 7), (2, 8), (2, 9), (2, 10), (2, 11), (2, 12), (2, 13),
-(3, 11);
+insert into groups_permissions (group_id, permission_id) values (1, 5), (1, 7), (1, 9),(1, 10),(1, 12), (1,13), (1, 14),
+(2, 1), (2, 2), (2, 3), (2, 4), (2, 5), (2, 6),(2, 7), (2, 8), (2, 9), (2, 10), (2, 11), (2, 12), (2, 13), (2, 14);
 
 INSERT INTO minimizing_waste.oauth2_registered_client
 (id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name, client_authentication_methods, authorization_grant_types, redirect_uris, scopes, client_settings, token_settings)
-VALUES('1', 'minimizing-web', '2023-02-03 13:36:44', '$2a$10$nuH5YQJrevTT.rsmCMJl1OVH4OmqjZu231f5sf09bMG8pcsWR.MWa', NULL, 'Minimizing Web', 'client_secret_basic', 'refresh_token,authorization_code', 'http://localhost:3000/authorized,https://oidcdebugger.com/debug', 'READ,WRITE', '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":true}', '{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":false,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",900.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat","value":"self-contained"},"settings.token.refresh-token-time-to-live":["java.time.Duration",86400.000000000],"settings.token.authorization-code-time-to-live":["java.time.Duration",300.000000000]}');
+VALUES('1', 'minimizing-web', '2023-02-03 13:36:44', '$2a$10$nuH5YQJrevTT.rsmCMJl1OVH4OmqjZu231f5sf09bMG8pcsWR.MWa', NULL, 'Minimizing Web', 'client_secret_basic', 'refresh_token,authorization_code', 'http://localhost:8080/swagger-ui/oauth2-redirect.html', 'READ,WRITE', '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":true}', '{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":false,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",900.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat","value":"self-contained"},"settings.token.refresh-token-time-to-live":["java.time.Duration",86400.000000000],"settings.token.authorization-code-time-to-live":["java.time.Duration",300.000000000]}');
+
+#INSERT INTO minimizing_waste.oauth2_registered_client
+#(id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name, client_authentication_methods, authorization_grant_types, redirect_uris, scopes, client_settings, token_settings)
+#VALUES('1', 'minimizing-web', '2023-02-03 13:36:44', '$2a$10$nuH5YQJrevTT.rsmCMJl1OVH4OmqjZu231f5sf09bMG8pcsWR.MWa', NULL, 'Minimizing Web', 'client_secret_basic', 'refresh_token,authorization_code', 'http://localhost:3000/authorized,https://oidcdebugger.com/debug', 'READ,WRITE', '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":true}', '{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":false,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",900.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat","value":"self-contained"},"settings.token.refresh-token-time-to-live":["java.time.Duration",86400.000000000],"settings.token.authorization-code-time-to-live":["java.time.Duration",300.000000000]}');
 
 

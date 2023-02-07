@@ -10,8 +10,6 @@ import com.dcconnect.minimizingwaste.api.v1.openapi.AssignmentControllerOpenApi;
 import com.dcconnect.minimizingwaste.core.data.PageWrapper;
 import com.dcconnect.minimizingwaste.core.data.PageableTranslator;
 import com.dcconnect.minimizingwaste.core.security.CheckSecurity;
-import com.dcconnect.minimizingwaste.core.security.MinimizingSecurity;
-import com.dcconnect.minimizingwaste.domain.exception.BusinessException;
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
 import com.dcconnect.minimizingwaste.domain.repository.AssignmentRepository;
 import com.dcconnect.minimizingwaste.domain.repository.filter.AssignmentFilter;
@@ -24,8 +22,6 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;

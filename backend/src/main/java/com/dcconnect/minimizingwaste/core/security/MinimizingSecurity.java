@@ -1,6 +1,5 @@
 package com.dcconnect.minimizingwaste.core.security;
 
-import com.dcconnect.minimizingwaste.domain.model.Assignment;
 import com.dcconnect.minimizingwaste.domain.repository.AssignmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -23,7 +22,23 @@ public class MinimizingSecurity {
         return Long.parseLong(jwt.getClaim("user_id"));
     }
 
-    public boolean assignmentResponsible(Long assignmentId){
+    public boolean hasAuthority(String authorityName) {
+        return getAuthentication().getAuthorities().stream()
+                .anyMatch(authority -> authority.getAuthority().equals(authorityName));
+    }
+
+    public boolean isScopeWrite(){
+        return hasAuthority("SCOPE_WRITE");
+    }
+    public boolean hasAssignmentResponsible(Long assignmentId){
+        if(assignmentId == null) {
+            return false;
+        }
         return assignmentRepository.existsByEmployeeResponsible(assignmentId, getUserId());
+    }
+
+    public boolean canCompleteAssignments(Long assignmentId){
+        return isScopeWrite() && (hasAuthority("COMPLETE_ASSIGNMENTS")
+                || hasAssignmentResponsible(assignmentId));
     }
 }

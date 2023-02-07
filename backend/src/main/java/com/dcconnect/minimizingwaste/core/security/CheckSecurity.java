@@ -37,8 +37,7 @@ public @interface CheckSecurity {
         @Target(ElementType.METHOD)
         @interface CanApprove { }
 
-        @PreAuthorize("hasAuthority('SCOPE_WRITE') and (hasAuthority('COMPLETE_ASSIGNMENTS') " +
-                "or @minimizingSecurity.assignmentResponsible(#assignmentId))")
+        @PreAuthorize("@minimizingSecurity.canCompleteAssignments(#assignmentId)")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         @interface CanComplete { }

@@ -53,6 +53,16 @@ spring:
 springdoc:
   packages-to-scan: com.dcconnect.minimizingwaste.api
   paths-to-match: /v1/**
+  oAuthFlow:
+    authorizationUrl: http://localhost:8080/oauth2/authorize
+    tokenUrl: http://localhost:8080/oauth2/token
+
+  swagger-ui:
+    oauth:
+      client-id: minimizing-web
+      client-secret: web123
+      use-pkce-with-authorization-code-grant: true
+      use-basic-authentication-with-access-code-grant: true
 ---
 minimizing-waste:
   storage:

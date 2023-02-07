@@ -20,6 +20,7 @@
         <springdoc.hateoas.version>1.6.14</springdoc.hateoas.version>
         <aws-java-sdk-s3.version>1.12.389</aws-java-sdk-s3.version>
         <authorization-server.version>1.0.0</authorization-server.version>
+        <springdoc.security.version>1.6.14</springdoc.security.version>
     </properties>
 
     <dependencies>
@@ -114,7 +115,7 @@
         <dependency>
             <groupId>org.springdoc</groupId>
             <artifactId>springdoc-openapi-security</artifactId>
-            <version>1.6.14</version>
+            <version>${springdoc.security.version}</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -9,10 +9,11 @@ import WrapperDefault from '../components/WrapperDefault';
 
 export default function SupplyList() {
   const navigate = useNavigate();
-  const [supplies, setSupplies] = useState<Supply.Summary[]>([]);
+  const [supplies, setSupplies] = useState<Supply.Summary>([]);
 
   useEffect(() => {
     SupplyService.getAllSupplies().then(setSupplies);
+    console.log(supplies)
   }, []);
 
   const columns: ColumnsType<Supply.Summary> = [
@@ -54,41 +55,31 @@ export default function SupplyList() {
       dataIndex: 'actions',
       align: 'center',
       width: 200,
-      render: (_: any, supply: Supply.Summary) => (
+      render: (_: any, supply: any) => (
         <Space size={'middle'}>
           <Tooltip title={'Editar'}>
-            <Button
-              type={'link'}
-              icon={<EditOutlined />}
-              onClick={(_) => navigate(`/recursos/editar/${supply.id}`)}
-            />
+            <Button type={'link'} icon={<EditOutlined />} />
           </Tooltip>
           <Tooltip title={'Excluir'}>
             <Button type={'link'} icon={<DeleteOutlined />} />
           </Tooltip>
 
           <Tooltip title={'Ver Detalhes'}>
-            <Button
-              type={'link'}
-              icon={<EyeOutlined />}
-              onClick={() => navigate(`/recursos/${supply.id}/detalhes`)}
-            />
+            <Button type={'link'} icon={<EyeOutlined />} />
           </Tooltip>
         </Space>
       ),
     },
   ];
 
-  return (
-    <WrapperDefault title="Lista de Recursos">
-      <Table<Supply.Summary>
-        dataSource={supplies}
+  return <WrapperDefault title="Lista de Recursos">
+    <Table<Supply.Summary>
+        dataSource={supplies._embedded.supplies}
         columns={columns}
         rowKey="id"
         pagination={{
           pageSize: 5,
         }}
       />
-    </WrapperDefault>
-  );
+  </WrapperDefault>;
 }

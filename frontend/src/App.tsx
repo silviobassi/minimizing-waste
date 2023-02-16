@@ -1,8 +1,10 @@
-import { Navigate, Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 
 import HomeView from './app/views/Home.view';
 import SectorListView from './app/views/SectorList.view';
 
+import { notification } from 'antd';
+import { useEffect } from 'react';
 import TaskDetailedView from './app/features/TaskDetailed';
 import EmployeeCreateView from './app/views/EmployeeCreate.view';
 import EmployeeDetailedView from './app/views/EmployeeDetailed.view';
@@ -24,11 +26,57 @@ import TaskListView from './app/views/TaskList.view';
 import WorkStationCreateView from './app/views/WorkStationCreate.view';
 import WorkStationEditView from './app/views/WorkStationEdit.view';
 import WorkStationListView from './app/views/WorkStationList.view';
+import AuthService from './auth/Authorization.service';
 
 function App() {
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    async function identify() {
+      const isInAuthorizationRoute = window.location.pathname === '/authorize';
+      const code = new URLSearchParams(window.location.search).get('code');
+
+      const codeVerifier = AuthService.getCodeVerifier();
+      const accessToken = AuthService.getAccessToken();
+
+      if (!accessToken && !isInAuthorizationRoute) {
+        AuthService.imperativelySendToLoginScreen();
+      }
+
+      if (isInAuthorizationRoute) {
+        if (!code) {
+          notification.error({
+            message: 'Código não foi informado',
+          });
+          return;
+        }
+
+        if (!codeVerifier) {
+          // necessario fazer logout
+          return;
+        }
+
+        // busca o primeiro token de acesso
+        const { access_token, refresh_token } =
+          await AuthService.getFirstAccessTokens({
+            code,
+            codeVerifier,
+            redirectUri: 'http://127.0.0.1:5173/authorize',
+          });
+
+        AuthService.setAccessToken(access_token);
+        AuthService.setRefreshToken(refresh_token);
+        
+        navigate('/');
+
+        
+      }
+    }
+
+    identify();
+  }, []);
   return (
     <Routes>
-      
       <Route path={'/'} element={<HomeView />} />
       <Route path={'/home'} element={<HomeView />} />
       <Route path={'/setores'} element={<SectorListView />} />
@@ -72,7 +120,6 @@ function App() {
       />
       <Route path={'/notificacoes'} element={<NotificationListView />} />
       <Route path="/404" element={<NotFound404View />} />
-      <Route path="*" element={<Navigate to={'/404'} />} />
     </Routes>
   );
 }

@@ -1,6 +1,6 @@
 import { MinimizingWaste } from './MinimizingWaste';
 
 export namespace User {
-  export type Detailed = MinimizingWaste.UserDetailed;
-  export type Summary = MinimizingWaste.UserSummary;
+  export type Detailed = MinimizingWaste['schemas']['UserDetailedModel'];
+  export type Summary = MinimizingWaste['schemas']['UserPhotoModel'];
 }

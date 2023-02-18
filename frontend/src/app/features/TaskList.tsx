@@ -28,7 +28,7 @@ export default function TaskList() {
         columns={[
           { title: 'ID', dataIndex: 'id', width: 60 },
           { title: 'Título', dataIndex: 'title' },
-          { title: 'Estação de Trabalho', dataIndex: 'workStation' },
+          { title: 'Estação de Trabalho', dataIndex: ['workStation', 'name'] },
           {
             title: 'Data de Início',
             dataIndex: 'startDate',

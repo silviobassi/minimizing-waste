@@ -22,7 +22,7 @@ export default function MenuLayout() {
       icon: <BankOutlined />,
     },
     {
-      label: <Link to={'/estacoes-de-trabalho'}>Estação de Trabalho</Link>,
+      label: <Link to={'/estacoes-de-trabalho'}>Estações de Trabalho</Link>,
       key: 'work stations',
       icon: <ApartmentOutlined />,
     },

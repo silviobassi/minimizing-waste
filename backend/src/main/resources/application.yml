@@ -1,5 +1,6 @@
 server:
   port: 8080
+
   #servlet:
     #context-path: /api
 
@@ -63,6 +64,7 @@ springdoc:
       client-secret: web123
       use-pkce-with-authorization-code-grant: true
       use-basic-authentication-with-access-code-grant: true
+    oauth2-redirect-url: http://localhost:8080/swagger-ui/oauth2-redirect.html
 ---
 minimizing-waste:
   storage:

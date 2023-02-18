@@ -18,4 +18,6 @@ public class WorkStationModel extends RepresentationModel<WorkStationModel> {
     @Schema(example = "Próximo ao Jardim da Fachada")
     private String localization;
 
+    private SectorModel sector;
+
 }

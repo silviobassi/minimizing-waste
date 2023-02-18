@@ -25,14 +25,12 @@ public class ResourceServerConfig {
 
     @Bean
     public SecurityFilterChain resourceServerFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .requestMatchers("/oauth2/**").authenticated()
-                .and()
+        http.formLogin(Customizer.withDefaults())
                 .csrf().disable()
                 .cors().and()
                 .oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter());
 
-        return http.formLogin(customizer -> customizer.loginPage("/login")).build();
+        return http.build();
     }
 
     private JwtAuthenticationConverter jwtAuthenticationConverter() {
@@ -51,7 +49,7 @@ public class ResourceServerConfig {
             grantedAuthorities.addAll(authorities
                     .stream()
                     .map(SimpleGrantedAuthority::new)
-                    .collect(Collectors.toList()));
+                    .toList());
 
             return grantedAuthorities;
         });

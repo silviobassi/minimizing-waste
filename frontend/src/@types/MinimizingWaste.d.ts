@@ -232,6 +232,16 @@ export interface components {
     Links: {
       [key: string]: components["schemas"]["Link"] | undefined;
     };
+    SectorModel: {
+      /**
+       * Format: int64 
+       * @example 1
+       */
+      id?: number;
+      /** @example Acabamento */
+      name?: string;
+      _links?: components["schemas"]["Links"];
+    };
     WorkStationModel: {
       /**
        * Format: int64 
@@ -242,6 +252,7 @@ export interface components {
       name?: string;
       /** @example Próximo ao Jardim da Fachada */
       localization?: string;
+      sector?: components["schemas"]["SectorModel"];
       _links?: components["schemas"]["Links"];
     };
     UserInput: {
@@ -506,16 +517,6 @@ export interface components {
     };
     SectorInput: {
       name: string;
-    };
-    SectorModel: {
-      /**
-       * Format: int64 
-       * @example 1
-       */
-      id?: number;
-      /** @example Acabamento */
-      name?: string;
-      _links?: components["schemas"]["Links"];
     };
     AssignmentInput: {
       /** @example Revestimento dos Banheiros */

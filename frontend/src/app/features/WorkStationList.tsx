@@ -24,6 +24,7 @@ export default function WorkStationList() {
           { title: 'ID', dataIndex: 'id', width: 60 },
           { title: 'Nome', dataIndex: 'name' },
           { title: 'localização', dataIndex: 'localization' },
+          { title: 'Setor', dataIndex: ['sector', 'name'] },
           {
             title: 'Ações',
             dataIndex: 'actions',

@@ -23,7 +23,7 @@ export default function EmployeeList() {
         dataSource={users?._embedded?.users}
         columns={[
           { title: 'ID', dataIndex: 'id', width: 60 },
-          { title: 'Nome', dataIndex: 'name', responsive: ['sm'] },
+          { title: 'Nome', dataIndex: 'name', width: 450 },
           { title: 'CPF', dataIndex: 'cpf', width: 150 },
           { title: 'WhatsApp', dataIndex: 'whatsApp', width: 270 },
           {

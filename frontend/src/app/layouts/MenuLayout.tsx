@@ -16,7 +16,6 @@ export default function MenuLayout() {
       key: 'home',
       icon: <HomeOutlined />,
     },
-
     {
       label: <Link to={'/setores'}>Setores</Link>,
       key: 'sectors',

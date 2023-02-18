@@ -1,66 +1,57 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Space, Tooltip } from 'antd';
-import Table, { ColumnsType } from 'antd/es/table';
+import Table from 'antd/es/table';
 import { useNavigate } from 'react-router-dom';
+import useWorkStations from '../../core/hooks/useWorkStations';
+import { WorkStation } from '../../@types/WorkStation';
 import WrapperDefault from '../components/WrapperDefault';
-
-interface WorkStationType {
-  key: React.Key;
-  id: number;
-  name: string;
-  localization: string;
-  sector: string;
-}
+import { useEffect } from 'react';
 
 export default function WorkStationList() {
   const navigate = useNavigate();
-  const columns: ColumnsType<WorkStationType> = [
-    { title: 'ID', dataIndex: 'id', width: 60 },
-    { title: 'Nome', dataIndex: 'name' },
-    { title: 'localização', dataIndex: 'localization' },
-    { title: 'Setor', dataIndex: 'sector' },
-    {
-      title: 'Ações',
-      dataIndex: 'actions',
-      align: 'center',
-      width: 200,
-      render: (_: any, workstation) => (
-        <Space size={'middle'}>
-          <Tooltip title={'Editar'}>
-            <Button
-              type={'link'}
-              shape={'circle'}
-              icon={<EditOutlined />}
-              onClick={() =>
-                navigate(`/estacao-de-trabalho/editar/${workstation.id}`)
-              }
-            />
-          </Tooltip>
-          <Tooltip title={'Excluir'}>
-            <Button type={'link'} shape={'circle'} icon={<DeleteOutlined />} />
-          </Tooltip>
-        </Space>
-      ),
-    },
-  ];
+  const {workStations, fetchWorkStations} = useWorkStations()
 
-  const workStations: WorkStationType[] = [];
-
-  for (let i = 1; i < 20; i++) {
-    workStations.push({
-      key: i,
-      id: i,
-      name: 'Revestimento em Banheiros',
-      localization: 'Bloco B17 Apto 123',
-      sector: 'Acabamento',
-    });
-  }
+  useEffect(() => {
+    fetchWorkStations()
+  }, [fetchWorkStations])
 
   return (
     <WrapperDefault title="Lista de Estações de Trabalho">
-      <Table<WorkStationType>
-        dataSource={workStations}
-        columns={columns}
+      <Table<WorkStation.Collection>
+        rowKey="id"
+        dataSource={workStations?._embedded?.workStations}
+        columns={[
+          { title: 'ID', dataIndex: 'id', width: 60 },
+          { title: 'Nome', dataIndex: 'name' },
+          { title: 'localização', dataIndex: 'localization' },
+          {
+            title: 'Ações',
+            dataIndex: 'actions',
+            align: 'center',
+            width: 200,
+            render: (_: any, workstation) => (
+              <Space size={'middle'}>
+                <Tooltip title={'Editar'}>
+                  <Button
+                    type={'link'}
+                    shape={'circle'}
+                    icon={<EditOutlined />}
+                    onClick={() =>
+                      navigate(`/estacao-de-trabalho/editar/${workstation.id}`)
+                    }
+                  />
+                </Tooltip>
+                <Tooltip title={'Excluir'}>
+                  <Button
+                    type={'link'}
+                    shape={'circle'}
+                    icon={<DeleteOutlined />}
+                  />
+                </Tooltip>
+              </Space>
+            ),
+          },
+        ]}
         pagination={{
           pageSize: 5,
         }}

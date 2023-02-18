@@ -1,7 +1,7 @@
 import { Button, Col, Divider, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import usePageTitle from '../../core/usePageTitle';
-import TaskList from '../features/TaskList';
+import AssignmentList from '../features/TaskList';
 
 export default function TaskListView() {
   usePageTitle('Lista de Tarefas');
@@ -27,7 +27,7 @@ export default function TaskListView() {
       </Row>
       <Row justify={'center'}>
         <Col xs={24}>
-          <TaskList />
+          <AssignmentList />
         </Col>
       </Row>
     </>

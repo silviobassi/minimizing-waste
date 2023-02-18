@@ -260,6 +260,16 @@ export interface components {
       /** @example Curso Superior Incompleto */
       literate: string;
     };
+    AccessGroupSummaryModel: {
+      /**
+       * Format: int64 
+       * @example 1
+       */
+      id?: number;
+      /** @example Engenheiro */
+      name?: string;
+      _links?: components["schemas"]["Links"];
+    };
     UserDetailedModel: {
       /**
        * Format: int64 
@@ -285,6 +295,7 @@ export interface components {
        * @example 2023-01-03T22:08:00Z
        */
       createdAt?: string;
+      accessGroups?: (components["schemas"]["AccessGroupSummaryModel"])[];
       _links?: components["schemas"]["Links"];
     };
     UserPhotoInput: {
@@ -541,6 +552,11 @@ export interface components {
        * @example 2023-01-20T13:00:33Z
        */
       deadline?: string;
+      /**
+       * Format: date-time 
+       * @example 2023-01-20T13:00:33Z
+       */
+      endDate?: string;
       /** @example true */
       completed?: boolean;
       /** @example false */
@@ -569,16 +585,6 @@ export interface components {
     AccessGroupInput: {
       /** @example Engenheiro */
       name: string;
-    };
-    AccessGroupSummaryModel: {
-      /**
-       * Format: int64 
-       * @example 1
-       */
-      id?: number;
-      /** @example Engenheiro */
-      name?: string;
-      _links?: components["schemas"]["Links"];
     };
     CollectionModelWorkStationModel: {
       _embedded?: {

@@ -1,7 +1,7 @@
 import { Col, Divider, Row, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Task } from '../../@types/Task';
+import { Task } from '../../@types/Assignment';
 import WrapperDefault from '../components/WrapperDefault';
 
 export default function TaskDetailed() {

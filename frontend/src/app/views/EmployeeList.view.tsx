@@ -1,11 +1,12 @@
 import { Button, Col, Divider, Row } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import usePageTitle from '../../core/usePageTitle';
-import UserList from '../features/EmployeeList';
+import EmployeeList from '../features/EmployeeList';
 export default function EmployeeListView() {
   usePageTitle('Lista de Colaboradores');
 
   const navigate = useNavigate();
+
   return (
     <>
       <Row justify={'center'}>
@@ -26,7 +27,7 @@ export default function EmployeeListView() {
       </Row>
       <Row justify={'center'}>
         <Col xs={24}>
-          <UserList />
+          <EmployeeList />
         </Col>
       </Row>
     </>

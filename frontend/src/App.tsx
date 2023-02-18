@@ -66,10 +66,8 @@ function App() {
 
         AuthService.setAccessToken(access_token);
         AuthService.setRefreshToken(refresh_token);
-        
-        navigate('/');
 
-        
+        navigate('/');
       }
     }
 

@@ -6,7 +6,7 @@ import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
-@Relation(collectionRelation = "supplies-movements")
+@Relation(collectionRelation = "suppliesMovements")
 @Getter
 @Setter
 public class SupplyMovementModel extends RepresentationModel<SupplyMovementModel> {

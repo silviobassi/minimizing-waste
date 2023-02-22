@@ -601,7 +601,7 @@ export interface components {
     };
     CollectionModelAccessGroupSummaryModel: {
       _embedded?: {
-        "access-groups"?: (components["schemas"]["AccessGroupSummaryModel"])[];
+        accessGroups?: (components["schemas"]["AccessGroupSummaryModel"])[];
       };
       _links?: components["schemas"]["Links"];
     };
@@ -662,7 +662,7 @@ export interface components {
     };
     PagedModelSupplyMovementModel: {
       _embedded?: {
-        "supplies-movements"?: (components["schemas"]["SupplyMovementModel"])[];
+        suppliesMovements?: (components["schemas"]["SupplyMovementModel"])[];
       };
       _links?: components["schemas"]["Links"];
       page?: components["schemas"]["PageMetadata"];

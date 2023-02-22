@@ -28,9 +28,21 @@ export default function MenuLayout() {
     },
 
     {
-      label: <Link to={'/recursos'}>Recursos</Link>,
-      key: 'supply',
+      label: 'Gerenciamento de Recursos',
+      key: 'supply-management',
       icon: <PrinterOutlined />,
+      children: [
+        {
+          label: <Link to={'/recursos'}>Recursos</Link>,
+          key: 'supply',
+          icon: <PrinterOutlined />
+        },
+        {
+          label: <Link to={'/movimento-recursos'}>Movimento</Link>,
+          key: 'supply-movement',
+          icon: <PrinterOutlined />
+        }
+      ]
     },
 
     {

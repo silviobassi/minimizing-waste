@@ -19,6 +19,10 @@ import SupplyCreateView from './app/views/SupplyCreate.view';
 import SupplyDetailedView from './app/views/SupplyDetailed.view';
 import SupplyEditView from './app/views/SupplyEdit.view';
 import SupplyListView from './app/views/SupplyList.view';
+import SupplyMovementCreateView from './app/views/SupplyMovementCreate.view';
+import SupplyMovementEditView from './app/views/SupplyMovementEdit.view';
+import SupplyMovementGiveBackForm from './app/views/SupplyMovementGiveBack.view';
+import SupplyMovementListView from './app/views/SupplyMovementList.view';
 import TaskAssignView from './app/views/TaskAssign.view';
 import TaskCreateView from './app/views/TaskCreate.view';
 import TaskEditView from './app/views/TaskEdit.view';
@@ -94,6 +98,22 @@ function App() {
         element={<WorkStationEditView />}
       />
       <Route path={'/recursos'} element={<SupplyListView />} />
+      <Route
+        path={'/movimento-recursos'}
+        element={<SupplyMovementListView />}
+      />
+      <Route
+        path={'/movimento-recursos/criar'}
+        element={<SupplyMovementCreateView />}
+      />
+      <Route
+        path={'/movimento-recursos/editar/:id'}
+        element={<SupplyMovementEditView />}
+      />
+      <Route
+        path={'/movimento-recursos/devolver-recurso/:id'}
+        element={<SupplyMovementGiveBackForm />}
+      />
       <Route path={'/recursos/criar'} element={<SupplyCreateView />} />
       <Route path={'/recursos/editar/:id'} element={<SupplyEditView />} />
       <Route

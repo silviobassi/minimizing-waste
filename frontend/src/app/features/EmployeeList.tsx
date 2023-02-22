@@ -18,7 +18,6 @@ export default function EmployeeList() {
   return (
     <WrapperDefault title="Lista de Colaboradores">
       <Table<User.CollectionDetailed>
-        rowKey="id"
         pagination={false}
         dataSource={users?._embedded?.users}
         columns={[
@@ -72,6 +71,7 @@ export default function EmployeeList() {
             ),
           },
         ]}
+        rowKey="id"
       />
     </WrapperDefault>
   );

@@ -1,17 +1,21 @@
-import { useCallback, useState } from 'react';
-import { User } from '../../@types/User';
-import SupplyService from '../../services/Supply.service';
-import UserService from '../../services/User.service';
+import { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../store';
+import * as UserActions from '../store/User.reducer';
 
 export default function useUsers() {
-  const [users, setUsers] = useState<User.CollectionDetailed[]>([]);
+  const dispatch = useDispatch();
+
+  const users = useSelector((state: RootState) => state.user.list);
+  const fetching = useSelector((state: RootState) => state.user.fetching);
 
   const fetchUsers = useCallback(() => {
-    UserService.getAllUsers().then(setUsers);
-  }, []);
+    dispatch(UserActions.getAllUsers());
+  }, [dispatch]);
 
   return {
     fetchUsers,
     users,
+    fetching,
   };
 }

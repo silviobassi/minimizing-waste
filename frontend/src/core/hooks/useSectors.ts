@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
-import { Sector } from '../../@types/Sector';
-import SectorService from '../../services/Sector.service';
+import { Sector } from '../../sdk/@types';
+import { SectorService } from '../../sdk/services';
 
 export default function useSectors() {
   const [sectors, setSectors] = useState<Sector.Collection[]>([]);

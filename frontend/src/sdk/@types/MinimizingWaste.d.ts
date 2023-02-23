@@ -1109,13 +1109,13 @@ export interface operations {
       /** @description ID do recurso inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
       /** @description Recurso não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
     };
@@ -1144,13 +1144,13 @@ export interface operations {
       /** @description ID do recurso inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
       /** @description Recurso não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
     };
@@ -1274,13 +1274,13 @@ export interface operations {
       /** @description ID do setor inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
       /** @description Setor não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
     };
@@ -1312,13 +1312,13 @@ export interface operations {
       /** @description ID do setor inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
       /** @description Setor não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
     };
@@ -1340,13 +1340,13 @@ export interface operations {
       /** @description ID do setor inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
       /** @description Setor não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
     };
@@ -1534,13 +1534,13 @@ export interface operations {
       /** @description ID do grupo de acesso inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
       /** @description Grupo de acesso não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
     };
@@ -1562,13 +1562,13 @@ export interface operations {
       /** @description ID do grupo de acesso inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
       /** @description Grupo de acesso não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
     };
@@ -1589,13 +1589,13 @@ export interface operations {
       /** @description ID do grupo de acesso/permissão inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
       /** @description Grupo de acesso/permissão não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
     };
@@ -1616,13 +1616,13 @@ export interface operations {
       /** @description ID do grupo de acesso/permissão inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
       /** @description Grupo de acesso/permissão não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
     };
@@ -2087,13 +2087,13 @@ export interface operations {
       /** @description ID do grupo de acesso inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
       /** @description Grupo de acesso não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problema"];
+          "*/*": components["schemas"]["Problem"];
         };
       };
     };

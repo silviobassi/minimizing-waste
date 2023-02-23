@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
-import { Assignment } from '../../@types/Assignment';
-import AssignmentService from '../../services/Assignment.service';
+import { Assignment } from '../../sdk/@types';
+import { AssignmentService } from '../../sdk/services';
 
 export default function useSectors() {
   const [assignments, setAssignments] = useState<

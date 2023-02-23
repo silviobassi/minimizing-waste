@@ -1,7 +1,7 @@
 import { Col, Divider, Row } from 'antd';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { Supply } from '../../@types';
+import { Supply } from '../../sdk/@types';
 import WrapperDefault from '../components/WrapperDefault';
 
 export default function SupplyDetailed() {

@@ -14,7 +14,7 @@ export default function SupplyListView() {
           <Button
             type={'primary'}
             size={'large'}
-            onClick={(_) => navigate('/recurso/criar')}
+            onClick={(_) => navigate('/recursos/criar')}
           >
             CRIAR RECURSO
           </Button>

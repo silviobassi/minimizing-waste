@@ -1,17 +1,21 @@
-import { DeleteOutlined, EditOutlined, ReconciliationOutlined } from '@ant-design/icons';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  ReconciliationOutlined,
+} from '@ant-design/icons';
 import { Button, Space, Table, Tooltip } from 'antd';
-import { useNavigate } from 'react-router-dom';
-import useSectors from '../../core/hooks/useSectors'
-import { Sector } from '../../@types/Sector';
-import WrapperDefault from '../components/WrapperDefault';
 import { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import useSectors from '../../core/hooks/useSectors';
+import { Sector } from '../../sdk/@types';
+import WrapperDefault from '../components/WrapperDefault';
 export default function SectorList() {
   const navigate = useNavigate();
-  const {sectors, fetchSectors} = useSectors()
+  const { sectors, fetchSectors } = useSectors();
 
   useEffect(() => {
-    fetchSectors()
-  }, [fetchSectors])
+    fetchSectors();
+  }, [fetchSectors]);
 
   return (
     <WrapperDefault title="Edição de Setor">
@@ -30,7 +34,7 @@ export default function SectorList() {
               <Space size={'middle'}>
                 <Tooltip title={'Editar'}>
                   <Button
-                     type={'link'}
+                    type={'link'}
                     shape={'circle'}
                     icon={<EditOutlined />}
                     onClick={() => navigate(`/setor/editar/${sector.id}`)}
@@ -38,7 +42,7 @@ export default function SectorList() {
                 </Tooltip>
                 <Tooltip title={'Excluir'}>
                   <Button
-                     type={'link'}
+                    type={'link'}
                     shape={'circle'}
                     icon={<DeleteOutlined />}
                   />
@@ -47,7 +51,9 @@ export default function SectorList() {
                   <Button
                     type={'link'}
                     icon={<ReconciliationOutlined />}
-                    onClick={() => navigate(`/setor/${sector.id}/alocacao/recurso`)}
+                    onClick={() =>
+                      navigate(`/setor/${sector.id}/alocacao/recurso`)
+                    }
                   />
                 </Tooltip>
               </Space>

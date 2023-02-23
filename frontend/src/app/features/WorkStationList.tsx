@@ -1,19 +1,19 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Space, Tooltip } from 'antd';
 import Table from 'antd/es/table';
+import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useWorkStations from '../../core/hooks/useWorkStations';
-import { WorkStation } from '../../@types/WorkStation';
+import { WorkStation } from '../../sdk/@types';
 import WrapperDefault from '../components/WrapperDefault';
-import { useEffect } from 'react';
 
 export default function WorkStationList() {
   const navigate = useNavigate();
-  const {workStations, fetchWorkStations} = useWorkStations()
+  const { workStations, fetchWorkStations } = useWorkStations();
 
   useEffect(() => {
-    fetchWorkStations()
-  }, [fetchWorkStations])
+    fetchWorkStations();
+  }, [fetchWorkStations]);
 
   return (
     <WrapperDefault title="Lista de Estações de Trabalho">

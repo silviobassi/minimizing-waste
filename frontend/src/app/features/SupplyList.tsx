@@ -1,16 +1,14 @@
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Space, Tooltip } from 'antd';
 import Table from 'antd/es/table';
-import { Supply } from '../../@types/Supply';
+import { Supply } from '../../sdk/@types';
 import WrapperDefault from '../components/WrapperDefault';
 
 import { useEffect } from 'react';
 
 import useSupplies from '../../core/hooks/useSupplies';
 
-
 export default function SupplyList() {
-
   const { supplies, fetchSupplies } = useSupplies();
 
   useEffect(() => {
@@ -18,7 +16,6 @@ export default function SupplyList() {
   }, [fetchSupplies]);
 
   return (
-
     <WrapperDefault title="Lista de Recursos">
       <Table<Supply.PagedModelSummary>
         rowKey="id"
@@ -68,10 +65,7 @@ export default function SupplyList() {
                   <Button type={'link'} icon={<EditOutlined />} />
                 </Tooltip>
                 <Tooltip title={'Excluir'}>
-                  <Button
-                    type={'link'}
-                    icon={<DeleteOutlined />}
-                  />
+                  <Button type={'link'} icon={<DeleteOutlined />} />
                 </Tooltip>
 
                 <Tooltip title={'Ver Detalhes'}>

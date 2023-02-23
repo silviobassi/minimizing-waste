@@ -1,16 +1,18 @@
 import { useCallback, useState } from 'react';
-import { Supply } from '../../@types/Supply';
-import SupplyService from '../../services/Supply.service';
+import { Supply } from '../../sdk/@types';
+import { SupplyService } from '../../sdk/services';
 
 export default function useSupplies() {
-  const [supplies, setSupplies] = useState<Supply.PagedModelSummary[]>([]); 
+  const [supplies, setSupplies] = useState<Supply.PagedModelSummary[]>([]);
 
   const fetchSupplies = useCallback(() => {
-    SupplyService.getAllSupplies().then(setSupplies);
+    SupplyService.getAllSupplies({
+      /*sort: ['asc'], page: 0, size: 4*/
+    }).then(setSupplies);
   }, []);
 
   return {
     fetchSupplies,
-    supplies
-  }
+    supplies,
+  };
 }

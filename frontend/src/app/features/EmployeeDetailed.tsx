@@ -1,7 +1,7 @@
 import { Col, Divider, Row, Tag } from 'antd';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { User } from '../../@types/User';
+import { User } from '../../sdk/@types/User';
 import WrapperDefault from '../components/WrapperDefault';
 
 export default function EmployeeDetailed() {

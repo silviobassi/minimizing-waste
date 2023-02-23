@@ -1,10 +1,16 @@
 import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import handleAxiosResponseError from './utils/handleAxiosResponseError';
+import handleAxiosResponseSuccess from './utils/handleAxiosResponseSuccess';
 
 const Http = axios.create({});
 
 class Service {
   protected static Http = Http;
   protected static getData = getData;
+
+  public static setBaseUrl(baseURL: string) {
+    this.Http.defaults.baseURL = baseURL;
+  }
 
   public static setRequestInterceptors(
     onFulfilled: (
@@ -30,5 +36,10 @@ function getData<T>(res: AxiosResponse<T>) {
 }
 
 Http.defaults.baseURL = 'http://localhost:8080/v1';
+
+Http.interceptors.response.use(
+  handleAxiosResponseSuccess,
+  handleAxiosResponseError,
+);
 
 export default Service;

@@ -8,8 +8,8 @@ import {
 import { Button, Checkbox, Space, Table, Tooltip } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Supply } from '../../@types/Supply';
 import useSuppliesMovements from '../../core/hooks/useSuppliesMovements';
+import { Supply } from '../../sdk/@types';
 import WrapperDefault from '../components/WrapperDefault';
 
 export default function SupplyMovementList() {

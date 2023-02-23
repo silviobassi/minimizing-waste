@@ -5,11 +5,11 @@ import {
   ReconciliationOutlined,
 } from '@ant-design/icons';
 import { Button, Checkbox, Space, Table, Tooltip } from 'antd';
+import { format } from 'date-fns';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Assignment } from '../../@types/Assignment';
 import useAssignments from '../../core/hooks/useAssignments';
-import {format} from 'date-fns'
+import { Assignment } from '../../sdk/@types';
 
 import WrapperDefault from '../components/WrapperDefault';
 
@@ -34,27 +34,27 @@ export default function TaskList() {
             dataIndex: 'startDate',
             align: 'center',
             width: 130,
-            render(startDate: string){
-              return format(new Date(startDate), 'dd/MM/yyyy')
-            }
+            render(startDate: string) {
+              return format(new Date(startDate), 'dd/MM/yyyy');
+            },
           },
           {
             title: 'Prazo Para Conclusão',
             dataIndex: 'deadline',
             align: 'center',
             width: 130,
-            render(deadline: string){
-              return format(new Date(deadline), 'dd/MM/yyyy')
-            }
+            render(deadline: string) {
+              return format(new Date(deadline), 'dd/MM/yyyy');
+            },
           },
           {
             title: 'Data do Término',
             dataIndex: 'endDate',
             align: 'center',
             width: 130,
-            render(endDate: string){
-              return format(new Date(endDate), 'dd/MM/yyyy')
-            }
+            render(endDate: string) {
+              return format(new Date(endDate), 'dd/MM/yyyy');
+            },
           },
 
           {
@@ -95,14 +95,18 @@ export default function TaskList() {
                   <Button
                     type={'link'}
                     icon={<ReconciliationOutlined />}
-                    onClick={() => navigate(`/tarefa/${assignment.id}/atribuicao`)}
+                    onClick={() =>
+                      navigate(`/tarefa/${assignment.id}/atribuicao`)
+                    }
                   />
                 </Tooltip>
                 <Tooltip title={'Ver Detalhes'}>
                   <Button
                     type={'link'}
                     icon={<EyeOutlined />}
-                    onClick={() => navigate(`/tarefas/${assignment.id}/detalhes`)}
+                    onClick={() =>
+                      navigate(`/tarefas/${assignment.id}/detalhes`)
+                    }
                   />
                 </Tooltip>
               </Space>

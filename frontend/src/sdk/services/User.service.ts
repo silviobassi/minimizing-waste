@@ -7,9 +7,11 @@ class UserService extends Service {
   }
 
   static fetchUser(userId: number) {
-    return this.Http.get<User.Detailed>(`/users/${userId}`).then(
-      this.getData,
-    );
+    return this.Http.get<User.Detailed>(`/users/${userId}`).then(this.getData);
+  }
+
+  static createUser(user: User.Input) {
+    return this.Http.post<User.Detailed>('/users', user).then(this.getData);
   }
 }
 

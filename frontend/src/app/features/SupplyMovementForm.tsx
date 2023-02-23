@@ -11,6 +11,7 @@ import {
   Space,
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
+import { useNavigate } from 'react-router-dom';
 import WrapperDefault from '../components/WrapperDefault';
 
 interface SupplyMovementFormProps {
@@ -24,6 +25,7 @@ interface SupplyMovementFormProps {
 
 export default function SupplyMovementForm(props: SupplyMovementFormProps) {
   const [form] = Form.useForm();
+  const navigate = useNavigate();
   return (
     <WrapperDefault title={props.title}>
       <Form layout={'vertical'} form={form}>
@@ -126,7 +128,12 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
             <Button type="primary" icon={props.iconButton.register}>
               {props.labelRegister}
             </Button>
-            <Button type="primary" danger icon={props.iconButton.cancel}>
+            <Button
+              type="primary"
+              danger
+              icon={props.iconButton.cancel}
+              onClick={() => navigate('/movimento-recursos')}
+            >
               Cancelar
             </Button>
           </Space>

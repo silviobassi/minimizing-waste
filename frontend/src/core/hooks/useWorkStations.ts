@@ -1,9 +1,11 @@
 import { useCallback, useState } from 'react';
-import { WorkStation } from '../../@types/WorkStation';
-import WorkStationService from '../../services/WorkStation.service';
+import { WorkStation } from '../../sdk/@types';
+import { WorkStationService } from '../../sdk/services';
 
 export default function useWorkStations() {
-  const [workStations, setWorkStations] = useState<WorkStation.Collection[]>([]);
+  const [workStations, setWorkStations] = useState<WorkStation.Collection[]>(
+    [],
+  );
 
   const fetchWorkStations = useCallback(() => {
     WorkStationService.getAllWorkStations().then(setWorkStations);

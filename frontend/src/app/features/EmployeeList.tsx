@@ -3,8 +3,8 @@ import { Button, Space, Table, Tag, Tooltip } from 'antd';
 import { format } from 'date-fns';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User } from '../../@types/User';
 import useUsers from '../../core/hooks/useUsers';
+import { User } from '../../sdk/@types';
 import WrapperDefault from '../components/WrapperDefault';
 
 export default function EmployeeList() {

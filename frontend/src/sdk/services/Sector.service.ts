@@ -11,6 +11,12 @@ class SectorService extends Service {
       this.getData,
     );
   }
+
+  static createSector(sector: Sector.Input) {
+    return this.Http.post<Sector.SectorModel>('/sectors', sector).then(
+      this.getData,
+    );
+  }
 }
 
 export default SectorService;

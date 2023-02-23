@@ -1,5 +1,5 @@
 import axios from 'axios';
-import Service from '../Service';
+import Service from '../sdk/Service';
 import AuthService from './Authorization.service';
 
 Service.setRequestInterceptors(async (request) => {

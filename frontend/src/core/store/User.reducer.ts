@@ -1,6 +1,12 @@
-import { createAsyncThunk, createReducer, isPending, isFulfilled, isRejected } from '@reduxjs/toolkit';
-import { User } from '../../@types/User';
-import UserService from '../../services/User.service';
+import {
+  createAsyncThunk,
+  createReducer,
+  isFulfilled,
+  isPending,
+  isRejected,
+} from '@reduxjs/toolkit';
+import { User } from '../../sdk/@types/User';
+import { UserService } from '../../sdk/services';
 
 interface UserState {
   list: User.CollectionDetailed[];
@@ -23,9 +29,9 @@ export default createReducer(initialState, (builder) => {
   const loading = isPending(getAllUsers);
 
   builder
-  .addCase(getAllUsers.fulfilled, (state, action) => {
-    state.list = action.payload
-  })
+    .addCase(getAllUsers.fulfilled, (state, action) => {
+      state.list = action.payload;
+    })
     .addMatcher(success, (state) => {
       state.fetching = false;
     })

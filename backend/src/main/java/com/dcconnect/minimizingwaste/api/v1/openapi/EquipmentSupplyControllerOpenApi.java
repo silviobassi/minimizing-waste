@@ -21,11 +21,11 @@ public interface EquipmentSupplyControllerOpenApi {
     @Operation(summary = "Edita um Recurso do Tipo Equipamento" ,  responses = {
             @ApiResponse(responseCode = "400",
                     description = "ID do recurso inválido",
-                    content = @Content(schema = @Schema(ref = "Problema"))
+                    content = @Content(schema = @Schema(ref = "Problem"))
             ),
             @ApiResponse(responseCode = "404",
                     description = "Recurso não encontrado",
-                    content = @Content(schema = @Schema(ref = "Problema"))
+                    content = @Content(schema = @Schema(ref = "Problem"))
             )
     })
     EquipmentSupplyModel update(

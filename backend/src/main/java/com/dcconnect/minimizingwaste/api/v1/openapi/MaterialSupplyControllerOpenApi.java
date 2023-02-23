@@ -21,11 +21,11 @@ public interface MaterialSupplyControllerOpenApi {
     @Operation(summary = "Edita um Recurso do Tipo Material" ,  responses = {
             @ApiResponse(responseCode = "400",
                     description = "ID do recurso inválido",
-                    content = @Content(schema = @Schema(ref = "Problema"))
+                    content = @Content(schema = @Schema(ref = "Problem"))
             ),
             @ApiResponse(responseCode = "404",
                     description = "Recurso não encontrado",
-                    content = @Content(schema = @Schema(ref = "Problema"))
+                    content = @Content(schema = @Schema(ref = "Problem"))
             )
     })
     MaterialSupplyModel update(

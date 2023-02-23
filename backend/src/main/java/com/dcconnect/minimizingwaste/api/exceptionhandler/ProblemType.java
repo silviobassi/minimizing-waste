@@ -5,15 +5,15 @@ import lombok.Getter;
 @Getter
 public enum ProblemType {
 
-	ACCESS_DENIED("/acesso-negado", "Acesso negado"),
-	INVALID_DATA("/dados-invalidos", "Dados inválidos"),
-	SYSTEM_ERROR("/erro-de-sistema", "Erro De sistema"),
-	INVALID_PARAMETER("/parametro-invalido", "Parâmetro Inválido"),
-	INCOMPREHENSIBLE_MESSAGE("/mensagem-incompreensivel", "Mensagem Incompreensível"),
-	RESOURCE_NOT_FOUND("/recurso-nao-encontrado", "Recurso Não Encontrado"),
-	ENTITY_IN_USE("/entidade-em-uso", "Entidade em uso"),
-	DUPLICATE_ENTITY("/entidade-duplicada", "Entidade Duplicada"),
-	BUSINESS_ERROR("/erro-negocio", "Violação de Regra de Negócio");
+	ACCESS_DENIED("/access-denied", "Acesso negado"),
+	INVALID_DATA("/invalid-data", "Dados inválidos"),
+	SYSTEM_ERROR("/system-error", "Erro De sistema"),
+	INVALID_PARAMETER("/invalid-parameter", "Parâmetro Inválido"),
+	INCOMPREHENSIBLE_MESSAGE("/incomprehensible-message", "Mensagem Incompreensível"),
+	RESOURCE_NOT_FOUND("/resource-not-found", "Recurso Não Encontrado"),
+	ENTITY_IN_USE("/entity-in-use", "Entidade em uso"),
+	DUPLICATE_ENTITY("/duplicate-entity", "Entidade Duplicada"),
+	BUSINESS_ERROR("/business-error", "Violação de Regra de Negócio");
 
 	
 	private String title;

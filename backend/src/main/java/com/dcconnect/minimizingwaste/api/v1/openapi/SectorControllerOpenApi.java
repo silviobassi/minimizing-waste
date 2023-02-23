@@ -32,10 +32,10 @@ public interface SectorControllerOpenApi {
 
     @Operation(summary = "Edita um setor", responses = {
             @ApiResponse(responseCode = "400", description = "ID do setor inválido",
-                    content = @Content(schema = @Schema(ref = "Problema"))),
+                    content = @Content(schema = @Schema(ref = "Problem"))),
 
             @ApiResponse(responseCode = "404", description = "Setor não encontrado",
-                    content = @Content(schema = @Schema(ref = "Problema")))
+                    content = @Content(schema = @Schema(ref = "Problem")))
     })
     SectorModel update(@Parameter(description = "ID de um setor" ,example = "1") Long sectorId,
                               @RequestBody(description = "Representação de um setor editado", required = true)
@@ -44,19 +44,19 @@ public interface SectorControllerOpenApi {
     @Operation(summary = "Deleta um setor", responses = {
             @ApiResponse(responseCode = "204", description = "Setor deletado com sucesso"),
             @ApiResponse(responseCode = "400", description = "ID do setor inválido",
-                    content = @Content(schema = @Schema(ref = "Problema"))),
+                    content = @Content(schema = @Schema(ref = "Problem"))),
 
             @ApiResponse(responseCode = "404", description = "Setor não encontrado",
-                    content = @Content(schema = @Schema(ref = "Problema")))
+                    content = @Content(schema = @Schema(ref = "Problem")))
     })
     void delete(@Parameter(description = "ID de um setor" ,example = "1") Long sectorId);
 
     @Operation(summary = "Busca um setor pelo ID",  responses = {
             @ApiResponse(responseCode = "400", description = "ID do setor inválido",
-                    content = @Content(schema = @Schema(ref = "Problema"))),
+                    content = @Content(schema = @Schema(ref = "Problem"))),
 
             @ApiResponse(responseCode = "404", description = "Setor não encontrado",
-                    content = @Content(schema = @Schema(ref = "Problema")))
+                    content = @Content(schema = @Schema(ref = "Problem")))
     })
     SectorModel findOrFail(@Parameter(description = "ID de um setor", example = "1") Long sectorId);
 

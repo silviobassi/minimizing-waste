@@ -28,11 +28,11 @@ public interface AccessGroupControllerOpenApi {
     @Operation(summary = "Edita um grupo de acesso",  responses = {
             @ApiResponse(responseCode = "400",
                     description = "ID do grupo de acesso inválido",
-                    content = @Content(schema = @Schema(ref = "Problema"))
+                    content = @Content(schema = @Schema(ref = "Problem"))
             ),
             @ApiResponse(responseCode = "404",
                     description = "Grupo de acesso não encontrado",
-                    content = @Content(schema = @Schema(ref = "Problema"))
+                    content = @Content(schema = @Schema(ref = "Problem"))
             )
     })
     AccessGroupSummaryModel update(
@@ -42,11 +42,11 @@ public interface AccessGroupControllerOpenApi {
     @Operation(summary = "Deleta um grupo de acesso",  responses = {
             @ApiResponse(responseCode = "400",
                     description = "ID do grupo de acesso inválido",
-                    content = @Content(schema = @Schema(ref = "Problema"))
+                    content = @Content(schema = @Schema(ref = "Problem"))
             ),
             @ApiResponse(responseCode = "404",
                     description = "Grupo de acesso não encontrado",
-                    content = @Content(schema = @Schema(ref = "Problema"))
+                    content = @Content(schema = @Schema(ref = "Problem"))
             )
     })
     ResponseEntity<Void> delete(

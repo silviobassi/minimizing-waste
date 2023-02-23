@@ -15,9 +15,9 @@ public interface AccessGroupPermissionControllerOpenApi {
 
     @Operation(summary = "Lista as permissões relacionadas ao grupo atual", responses = {
             @ApiResponse(responseCode = "400", description = "ID do grupo de acesso inválido",
-                    content = @Content(schema = @Schema(ref = "Problema"))),
+                    content = @Content(schema = @Schema(ref = "Problem"))),
             @ApiResponse(responseCode = "404", description = "Grupo de acesso não encontrado",
-                    content = @Content(schema = @Schema(ref = "Problema")))
+                    content = @Content(schema = @Schema(ref = "Problem")))
     })
     CollectionModel<PermissionDetailedModel> all(Long accessGroupId);
 
@@ -25,10 +25,10 @@ public interface AccessGroupPermissionControllerOpenApi {
             @ApiResponse(responseCode = "204", description = "Disassociação realizada com sucesso"),
 
             @ApiResponse(responseCode = "400", description = "ID do grupo de acesso/permissão inválido",
-                    content = @Content(schema = @Schema(ref = "Problema"))),
+                    content = @Content(schema = @Schema(ref = "Problem"))),
 
             @ApiResponse(responseCode = "404", description = "Grupo de acesso/permissão não encontrado",
-                    content = @Content(schema = @Schema(ref = "Problema")))
+                    content = @Content(schema = @Schema(ref = "Problem")))
     })
     ResponseEntity<Void> disassociate(@Parameter(description = "ID do grupo de acesso", required = true) Long accessGroupId,
                                       @Parameter(description = "ID da permissão", required = true) Long permissionId);
@@ -36,10 +36,10 @@ public interface AccessGroupPermissionControllerOpenApi {
             @ApiResponse(responseCode = "204", description = "Associação realizada com sucesso"),
 
             @ApiResponse(responseCode = "400", description = "ID do grupo de acesso/permissão inválido",
-                    content = @Content(schema = @Schema(ref = "Problema"))),
+                    content = @Content(schema = @Schema(ref = "Problem"))),
 
             @ApiResponse(responseCode = "404", description = "Grupo de acesso/permissão não encontrado",
-                    content = @Content(schema = @Schema(ref = "Problema")))
+                    content = @Content(schema = @Schema(ref = "Problem")))
     })
     void associate(@Parameter(description = "ID do grupo de acesso", required = true) Long accessGroupId,
                    @Parameter(description = "ID da permissão", required = true) Long permissionId);

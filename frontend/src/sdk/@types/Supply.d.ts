@@ -8,6 +8,8 @@ export namespace Supply {
   export type PagedModelSupplyMovementModel =
     MinimizingWaste.components['schemas']['PagedModelSupplyMovementModel'];
 
+    export type SummaryModel = MinimizingWaste.components['schemas']['SupplySummaryModel']
+
   export type Query = {
     supplyName?: number;
     page?: number;

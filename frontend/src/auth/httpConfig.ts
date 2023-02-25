@@ -5,6 +5,7 @@ import AuthService from './Authorization.service';
 Service.setRequestInterceptors(async (request) => {
   const accessToken = AuthService.getAccessToken();
 
+  // injeta o token de acesso na requisição
   if (accessToken) {
     request.headers['Authorization'] = `Bearer ${accessToken}`;
   }
@@ -15,12 +16,10 @@ Service.setRequestInterceptors(async (request) => {
 Service.setResponseInterceptors(
   (response) => response,
   async (error) => {
-    console.dir(error);
-
     // recupera informações da requisição
     const originalRequest = error.config;
 
-    // Caso o erro seja de autenticação e ainda não foi feito o retry
+    // caso o erro seja de autenticação e ainda não foi feito o retry
     if (error?.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
@@ -32,29 +31,31 @@ Service.setResponseInterceptors(
 
       const { codeVerifier, refreshToken } = storage;
 
-      // Caso algum não exista, não é possível renovar o token
+      // caso algum não exista, não é possível renovar o token
       if (!refreshToken || !codeVerifier) {
-        window.alert('TODO: IMPLEMENTAR LOGOUT');
+        AuthService.imperativelySendToLogout();
         return;
       }
 
-      // Renova o token
+      // renova o token
       const tokens = await AuthService.renewToken({
         codeVerifier,
         refreshToken,
       });
 
-      // Armazena os tokens para novas requisições
+      // armazena os tokens para novas requisições
       AuthService.setAccessToken(tokens.access_token);
       AuthService.setRefreshToken(tokens.refresh_token);
 
-      // Implementa o token na requisição
+      // implementa o token na requisição
       originalRequest.headers[
         'Authorization'
       ] = `Bearer ${tokens.access_token}`;
 
-      // Retorna uma nova chamada do axios com essa requisição
+      // retorna uma nova chamada do axios com essa requisição
       return axios(originalRequest);
     }
-  },
+
+    throw error;
+  }
 );

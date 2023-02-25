@@ -4,14 +4,14 @@ export type ErrorData = MinimizingWaste.components['schemas']['Problem'];
 export type ErrorType =
   | 'AccessDeniedError'
   | 'BusinessError'
-  | 'EntityInUseError'
   | 'DuplicateEntityError'
+  | 'EntityInUseError'
   | 'GenericError'
   | 'IncomprehensibleMessageError'
-  | 'InvalidParameterError'
   | 'InvalidDataError'
+  | 'InvalidParameterError'
   | 'ResourceNotFoundError'
-  | 'SystemErrorError';
+  | 'SystemError';
 
 class CustomError {
   static type: ErrorType;

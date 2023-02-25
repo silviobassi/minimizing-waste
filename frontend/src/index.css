@@ -12,3 +12,9 @@
   color: '#fff';
   background-color: '#001529';
 }
+
+@media screen and (max-width: 1190px){
+  .ant-table-content {
+    overflow: auto;
+  }
+}

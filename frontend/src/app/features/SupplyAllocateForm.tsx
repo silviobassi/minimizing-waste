@@ -222,7 +222,7 @@ export default function SupplyAllocateForm() {
               )}
             />
           </Card>
-          <Form.Item style={{ marginTop: 20 }}>
+          <Form.Item style={{ marginTop: 40 }}>
             <Space direction="horizontal">
               <Button type="primary" icon={<ReconciliationOutlined />}>
                 Alocar

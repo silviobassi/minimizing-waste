@@ -8,7 +8,7 @@ import { User } from '../../sdk/@types';
 import WrapperDefault from '../components/WrapperDefault';
 
 export default function EmployeeList() {
-  const { users, fetchUsers } = useUsers();
+  const { users, fetchUsers, fetching } = useUsers();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,6 +18,7 @@ export default function EmployeeList() {
   return (
     <WrapperDefault title="Lista de Colaboradores">
       <Table<User.CollectionDetailed>
+        loading={fetching}
         pagination={false}
         dataSource={users?._embedded?.users}
         columns={[

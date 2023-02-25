@@ -241,7 +241,7 @@ export default function TaskAssignForm() {
               )}
             />
           </Card>
-          <Form.Item style={{ marginTop: 20 }}>
+          <Form.Item >
             <Space direction="horizontal">
               <Button type="primary" icon={<ReconciliationOutlined />}>
                 Atribuir

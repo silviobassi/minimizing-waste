@@ -1,9 +1,25 @@
 import axios from 'axios';
+import jwtDecode from 'jwt-decode';
 import pkceChallenge from 'pkce-challenge';
+
+import { Authentication } from './Auth';
+
+const decodedToken: Authentication.AccessTokenDecodedPayload = jwtDecode(
+  'eyJ4NXQjUzI1NiI6ImNHT081RVVxRWxJTHZYeUZaaWN6c1U2ejZyNy10cnY0QWpKVDNFUEsxdjAiLCJraWQiOiJtaW5pbWl6aW5nd2FzdGUiLCJhbGciOiJSUzI1NiJ9.eyJzdWIiOiJzaWx2aW9iYXNzaTJAZ21haWwuY29tIiwiYXVkIjoibWluaW1pemluZy13ZWIiLCJuYmYiOjE2NzczNDg3MDMsInVzZXJfaWQiOiIxIiwic2NvcGUiOlsiUkVBRCIsIldSSVRFIl0sImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsImV4cCI6MTY3NzM0OTYwMywiaWF0IjoxNjc3MzQ4NzAzLCJhdXRob3JpdGllcyI6WyJBUFBST1ZFX0FTU0lHTk1FTlRTIiwiRURJVF9VU0VSIiwiVkFDQVRFX0FTU0lHTk1FTlRTIiwiQ09OU1VMVF9TRUNUT1JTIiwiQ09OU1VMVF9VU0VSIiwiRURJVF9TRUNUT1JTIiwiRURJVF9BU1NJR05NRU5UUyIsIkVESVRfV09SS19TVEFUSU9OUyIsIkNPTlNVTFRfQVNTSUdOTUVOVFMiLCJDT05TVUxUX1NVUFBMSUVTIiwiQ09NUExFVEVfQVNTSUdOTUVOVFMiLCJHSVZFX0JBQ0tfQVNTSUdOTUVOVFMiLCJDT05TVUxUX1dPUktfU1RBVElPTlMiLCJFRElUX1NVUFBMSUVTIl19.CaEiNGLmeOp0dVeaz4WN0l_EDc1COXt5QLoCo9GnCkj0XCjGputVB-gLFjgsKl7MDBQTR7VaA0pJf-1lGWvkXEYzTg9D4svhUvRAb4gkgxQHksBTeIpd7l_6rM3F-lPhJ0ipqsZsfK29adUZd6DRwTe2MBIudRUT5YdsK3NQHdqGS4edPh3dhu2mO3K-9IuwTalfR401ZneXLKkG6NfCNBP2QTHcka3ce9pCdgGGFImJi-8QYOfUCki0ulHnublVrQiFlCaPjdRUvn_lV53T78jFAuRc4mkSdjv4wdQvrB7ban9K6O_gAi5thzGkNOv9bIwxmLdQsNx7HxJfsHLLbg',
+);
+
 import qs from 'qs';
 
 const authServer = axios.create({
   baseURL: 'http://localhost:8080',
+});
+
+authServer.interceptors.response.use(undefined, async (error) => {
+  if (error?.response?.status === 401) {
+    AuthService.imperativelySendToLogout();
+  }
+
+  return Promise.reject(error);
 });
 
 export interface OAuthAuthorizationTokenResponse {
@@ -16,6 +32,11 @@ export interface OAuthAuthorizationTokenResponse {
 }
 
 export default class AuthService {
+  public static imperativelySendToLogout() {
+    window.localStorage.clear();
+    window.location.href = `http://localhost:8080/logout?redirect=http://127.0.0.1/5173`;
+  }
+
   public static async renewToken(config: {
     refreshToken: string;
     codeVerifier: string;

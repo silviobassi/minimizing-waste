@@ -24,10 +24,9 @@ export default function SectorForm(props: SectorFormDefaultProps) {
             const data = await SectorService.createSector(sector);
             notification.success({
               message: 'Sucesso',
-              description: `Setor com o nome ${data?.name} criado com sucesso`,
+              description: `Setor ${data?.name} criado com sucesso`,
             });
           } catch (error) {
-            
             if (error instanceof CustomError) {
               if (error.data?.objects) {
                 form.setFields(
@@ -47,13 +46,19 @@ export default function SectorForm(props: SectorFormDefaultProps) {
           }
         }}
       >
-        <Form.Item label="Nome:*" name={'name'} rules={[{
-          required: false,
-          message: 'o campo é obrigatório'
-        }]}>
+        <Form.Item
+          label="Nome:*"
+          name={'name'}
+          rules={[
+            {
+              required: false,
+              message: 'o campo é obrigatório',
+            },
+          ]}
+        >
           <Input placeholder="ex:nome do setor" size="large" />
         </Form.Item>
-        <Form.Item>
+        <Form.Item style={{marginTop: 40}}>
           <Space direction="horizontal">
             <Button
               type="primary"

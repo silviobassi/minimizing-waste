@@ -43,7 +43,7 @@ export default function WorkStationForm(props: WorkStationFormDefaultProps) {
           </Col>
         </Row>
 
-        <Form.Item>
+        <Form.Item  style={{marginTop: 10}}>
           <Space direction="horizontal">
             <Button type="primary" icon={props.iconButton.register}>
               {props.labelRegister}

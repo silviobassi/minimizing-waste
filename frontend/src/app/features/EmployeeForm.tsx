@@ -114,7 +114,7 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
             </Form.Item>
           </Col>
         </Row>
-        <Form.Item>
+        <Form.Item  style={{marginTop: 40}}>
           <Space direction="horizontal">
             <Button type="primary" icon={props.iconButton.register}>
               {props.labelRegister}

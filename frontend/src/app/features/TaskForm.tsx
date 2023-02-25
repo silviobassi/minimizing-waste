@@ -90,7 +90,7 @@ export default function TaskForm(props: TaskFormDefaultProps) {
           </Col>
         </Row>
 
-        <Form.Item>
+        <Form.Item  style={{marginTop: 10}}>
           <Space direction="horizontal">
             <Button type="primary" icon={props.iconButton.register}>
               {props.labelRegister}

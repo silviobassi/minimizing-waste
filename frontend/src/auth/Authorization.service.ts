@@ -15,7 +15,8 @@ const authServer = axios.create({
 });
 
 authServer.interceptors.response.use(undefined, async (error) => {
-  if (error?.response?.status === 401) {
+  if (error?.response?.status === 403) {
+    console.log('entrou')
     AuthService.imperativelySendToLogout();
   }
 

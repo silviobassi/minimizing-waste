@@ -131,7 +131,7 @@ function App() {
       <Route path={'/tarefa/:id/atribuicao'} element={<TaskAssignView />} />
       <Route path={'/colaboradores'} element={<EmployeeListView />} />
       <Route path={'/colaborador/criar'} element={<EmployeeCreateView />} />
-      <Route path={'/colaborador/editar/:id'} element={<EmployeeEditView />} />
+      <Route path={'/colaborador/editar/:userId'} element={<EmployeeEditView />} />
       <Route
         path={'/colaboradores/:employeeId/detalhes'}
         element={<EmployeeDetailedView />}

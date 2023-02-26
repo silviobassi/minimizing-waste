@@ -1,4 +1,19 @@
-import { Button, Col, DatePicker, Form, Input, Row, Select, Space } from 'antd';
+import {
+  Avatar,
+  Button,
+  Col,
+  DatePicker,
+  Divider,
+  Form,
+  Input,
+  Row,
+  Select,
+  Space,
+  Upload,
+} from 'antd';
+import { useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { User } from '../../sdk/@types';
 import WrapperDefault from '../components/WrapperDefault';
 
 const { RangePicker } = DatePicker;
@@ -12,53 +27,64 @@ interface TaskFormDefaultProps {
 }
 
 export default function EmployeeForm(props: TaskFormDefaultProps) {
-  const [form] = Form.useForm();
+  const [form] = Form.useForm<User.Input>();
+  const navigate = useNavigate();
+
+  const handleAvatarUpload = useCallback((file: File) => {
+    // chamar serviço aqui  
+    return;
+  }, [])
 
   return (
     <WrapperDefault title={props.title}>
       <Form layout={'vertical'} form={form}>
-        <Row justify={'space-between'}>
-          <Col xs={24} xl={7}>
+        <Divider orientation="left">DADOS PESSOAIS</Divider>
+        <Row justify={'space-between'} gutter={24}>
+          <Col xs={24} xl={4}>
+            <Upload
+              beforeUpload={async (file) => await handleAvatarUpload(file)}
+            >
+              <Avatar size={128} />
+            </Upload>
+          </Col>
+          <Col xs={24} xl={10}>
             <Form.Item label="Nome:*">
               <Input size="large" placeholder="ex: João dos Santos" />
             </Form.Item>
-          </Col>
-          <Col xs={24} xl={4}>
             <Form.Item label="CPF:*">
               <Input size="large" placeholder="ex: 999.999.999-99" />
             </Form.Item>
           </Col>
-          <Col xs={24} xl={5}>
+          <Col xs={24} xl={10}>
             <Form.Item label="Email:*">
               <Input size="large" placeholder="ex: joaosantos@email.com" />
             </Form.Item>
-          </Col>
-          <Col xs={24} xl={5}>
             <Form.Item label="WhatsApp:*">
               <Input size="large" placeholder="ex: (17) 99999-9999" />
             </Form.Item>
           </Col>
         </Row>
-        <Row justify={'space-between'}>
+        <Divider orientation="left">DADOS PROFISSIONAIS</Divider>
+        <Row justify={'space-between'} gutter={24}>
           <Col xs={24} xl={8}>
             <Form.Item label="Senha:*">
               <Input size="large" placeholder="ex: hd746¨0^k" />
             </Form.Item>
           </Col>
-          <Col xs={24} xl={7}>
+          <Col xs={24} xl={8}>
             <Form.Item label="Cargo:*">
               <Input size="large" placeholder="ex: Azulejista" />
             </Form.Item>
           </Col>
-          <Col xs={24} xl={7}>
+          <Col xs={24} xl={8}>
             <Form.Item label="Função:*">
               <Input size="large" placeholder="ex: Instalador de gesso" />
             </Form.Item>
           </Col>
         </Row>
-        <Row justify={'space-between'}>
-          <Col xs={24} xl={11}>
-          <Form.Item label="Escolaridade*">
+        <Row justify={'space-between'} gutter={24}>
+          <Col xs={24} xl={12}>
+            <Form.Item label="Escolaridade*">
               <Select
                 size="large"
                 defaultValue="Selecione a Escolaridade"
@@ -114,12 +140,17 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
             </Form.Item>
           </Col>
         </Row>
-        <Form.Item  style={{marginTop: 40}}>
+        <Form.Item style={{ marginTop: 40 }}>
           <Space direction="horizontal">
             <Button type="primary" icon={props.iconButton.register}>
               {props.labelRegister}
             </Button>
-            <Button type="primary" danger icon={props.iconButton.cancel}>
+            <Button
+              type="primary"
+              danger
+              icon={props.iconButton.cancel}
+              onClick={() => navigate('/colaboradores')}
+            >
               Cancelar
             </Button>
           </Space>

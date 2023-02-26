@@ -57,10 +57,14 @@ export default function EmployeeList() {
             dataIndex: 'actions',
             align: 'center',
             width: 200,
-            render: (_: any, employee) => (
+            render: (_: any, user: User.Detailed) => (
               <Space size={'middle'}>
                 <Tooltip title={'Editar'}>
-                  <Button type={'link'} icon={<EditOutlined />} />
+                  <Button
+                    type={'link'}
+                    icon={<EditOutlined />}
+                    onClick={() => navigate(`/colaborador/editar/${user.id}`)}
+                  />
                 </Tooltip>
                 <Tooltip title={'Excluir'}>
                   <Button type={'link'} icon={<DeleteOutlined />} />

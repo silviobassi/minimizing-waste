@@ -258,6 +258,8 @@ export interface components {
     UserInput: {
       /** @example Pedro Oliveira Bassi */
       name: string;
+      /** @example 9585hf7#_ */
+      password: string;
       /** @example 99999999999 */
       cpf: string;
       /** @example pedro@gmail.com */
@@ -1854,11 +1856,11 @@ export interface operations {
         /** @description Critério de ordenação: propriedade(asc|desc). */
       query?: {
         assignmentTitle?: string;
-        "O campo data inicial"?: Record<string, never>;
+        "A data inicial"?: Record<string, never>;
         endDate?: Record<string, never>;
-        "O campo prazo para conclusão"?: Record<string, never>;
-        "O campo conclusão"?: boolean;
-        "O campo aprovação"?: boolean;
+        "O prazo para conclusão"?: Record<string, never>;
+        "A conclusão"?: boolean;
+        "A aprovação"?: boolean;
         page?: number;
         size?: number;
         sort?: string;
@@ -2040,8 +2042,8 @@ export interface operations {
          * @example 2023-01-08T22:30:00Z
          */
       query?: {
-        "O campo conclusão"?: boolean;
-        "O campo aprovação"?: boolean;
+        "A conclusão"?: boolean;
+        "A aprovação"?: boolean;
         currentDate?: Record<string, never>;
       };
     };

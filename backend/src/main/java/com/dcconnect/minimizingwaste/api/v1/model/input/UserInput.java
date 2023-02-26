@@ -13,6 +13,9 @@ public class UserInput {
     @Schema(example = "Pedro Oliveira Bassi")
     @NotBlank
     private String name;
+    @Schema(example = "9585hf7#_")
+    @NotBlank
+    private String password;
     @Schema(example = "99999999999")
     @NotBlank
     private String cpf;

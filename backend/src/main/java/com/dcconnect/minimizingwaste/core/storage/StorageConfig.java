@@ -10,6 +10,7 @@ import com.dcconnect.minimizingwaste.infrastructure.service.storage.S3PhotoStora
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
 import static com.dcconnect.minimizingwaste.core.storage.StorageProperties.*;
 
@@ -18,7 +19,7 @@ public class StorageConfig {
 
     @Autowired
     private StorageProperties storageProperties;
-    @Bean
+
     public AmazonS3 amazonS3() {
         var credentials = new BasicAWSCredentials(
                 storageProperties.getS3().getAccessKeyId(),

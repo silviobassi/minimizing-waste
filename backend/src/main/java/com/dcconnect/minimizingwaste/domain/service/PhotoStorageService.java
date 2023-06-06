@@ -2,9 +2,11 @@ package com.dcconnect.minimizingwaste.domain.service;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.stereotype.Service;
 
 import java.io.InputStream;
 import java.util.UUID;
+
 
 public interface PhotoStorageService {
     void store(NewPhoto newPhoto);
@@ -13,15 +15,15 @@ public interface PhotoStorageService {
 
     RecoveredPhoto recover(String fileName);
 
-    default void replace(String oldFileName, NewPhoto newPhoto){
+    default void replace(String oldFileName, NewPhoto newPhoto) {
         this.store(newPhoto);
 
-        if(oldFileName != null){
+        if (oldFileName != null) {
             this.remove(oldFileName);
         }
     }
 
-    default String generateFileName(String originalName){
+    default String generateFileName(String originalName) {
         return UUID.randomUUID().toString() + "_" + originalName;
     }
 
@@ -39,11 +41,11 @@ public interface PhotoStorageService {
         private InputStream inputStream;
         private String url;
 
-        public boolean isUrl(){
+        public boolean isUrl() {
             return url != null;
         }
 
-        public boolean isInputStream(){
+        public boolean isInputStream() {
             return inputStream != null;
         }
     }

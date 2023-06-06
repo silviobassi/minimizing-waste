@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   Col,
   DatePicker,
@@ -10,13 +9,19 @@ import {
   Select,
   Space,
   Upload,
+  notification
 } from 'antd';
-import { useCallback } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { User } from '../../sdk/@types';
+import { File, User } from '../../sdk/@types';
+import FileService from '../../sdk/services/File.service';
 import WrapperDefault from '../components/WrapperDefault';
-
 const { RangePicker } = DatePicker;
+
+import ImgCrop from 'antd-img-crop';
+import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
+import { UserOutlined } from '@ant-design/icons';
+import CustomError from '../../sdk/CustomError';
 interface TaskFormDefaultProps {
   labelRegister: string;
   iconButton: {
@@ -29,24 +34,79 @@ interface TaskFormDefaultProps {
 export default function EmployeeForm(props: TaskFormDefaultProps) {
   const [form] = Form.useForm<User.Input>();
   const navigate = useNavigate();
+  const [photo, setPhoto] = useState<File>();
 
-  const handleAvatarUpload = useCallback((file: File) => {
-    // chamar serviço aqui  
-    return;
-  }, [])
+  const [fileList, setFileList] = useState<UploadFile[]>([]);
+
+  const onChange: UploadProps['onChange'] = async ({
+    fileList: newFileList,
+  }) => {
+    setFileList(newFileList);
+  };
+
+  const onPreview = async (file: UploadFile) => {
+    let src = file.url as string;
+    if (!src) {
+      src = await new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file.originFileObj as RcFile);
+        reader.onload = () => resolve(reader.result as string);
+      });
+    }
+    const image = new Image();
+    image.src = src;
+    const imgWindow = window.open(src);
+    imgWindow?.document.write(image.outerHTML);
+  };
 
   return (
     <WrapperDefault title={props.title}>
-      <Form layout={'vertical'} form={form}>
+      <Form
+        layout={'vertical'}
+        form={form}
+        onFinish={async () => {
+          try {
+            const data = await FileService.updatePhoto(photo, 1);
+            notification.success({
+              message: 'Sucesso',
+              //description: `Colaborador ${data?.name} criado com sucesso`,
+            });
+          } catch (error) {
+            if (error instanceof CustomError) {
+              if (error.data?.objects) {
+                form.setFields(
+                  error.data.objects.map((error: any) => {
+                    return {
+                      //name: error.name?.split('.') as string[],
+                      errors: [error.userMessage],
+                    };
+                  }),
+                );
+              }
+            } else {
+              notification.error({
+                message: 'Houve um erro',
+              });
+            }
+          }
+        }}
+      >
         <Divider orientation="left">DADOS PESSOAIS</Divider>
         <Row justify={'space-between'} gutter={24}>
-          <Col xs={24} xl={4}>
-            <Upload
-              beforeUpload={async (file) => await handleAvatarUpload(file)}
-            >
-              <Avatar size={128} />
-            </Upload>
+          <Col xs={24} xl={3}>
+            <ImgCrop rotationSlider>
+              <Upload
+                listType="picture-card"
+                fileList={fileList}
+                beforeUpload={async (file: File) => setPhoto(file)}
+                onChange={onChange}
+                onPreview={onPreview}
+              >
+                {fileList.length < 1 && <UserOutlined style={{fontSize: '100px', color: '#001529'}}/>}
+              </Upload>
+            </ImgCrop>
           </Col>
+
           <Col xs={24} xl={10}>
             <Form.Item label="Nome:*">
               <Input size="large" placeholder="ex: João dos Santos" />
@@ -142,7 +202,7 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
         </Row>
         <Form.Item style={{ marginTop: 40 }}>
           <Space direction="horizontal">
-            <Button type="primary" icon={props.iconButton.register}>
+            <Button type="primary" icon={props.iconButton.register} htmlType='submit'>
               {props.labelRegister}
             </Button>
             <Button

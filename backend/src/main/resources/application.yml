@@ -79,7 +79,7 @@ minimizing-waste:
 
     #Enable photo storage services type, for example:
     # - "s3" to PhotoStorageService.class or  "local" to LocalPhotoStorage
-    type: s3
+    type: local
 
   auth:
     provider-url: http://localhost:8080

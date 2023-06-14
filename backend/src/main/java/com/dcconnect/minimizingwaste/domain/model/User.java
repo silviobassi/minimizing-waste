@@ -45,4 +45,8 @@ public class User extends BaseEntity{
     public boolean isNew(){
         return getId() == null;
     }
+
+    public boolean isCurrent(){
+        return getId() != null;
+    }
 }

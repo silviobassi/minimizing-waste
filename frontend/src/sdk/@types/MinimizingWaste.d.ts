@@ -255,11 +255,9 @@ export interface components {
       sector?: components["schemas"]["SectorModel"];
       _links?: components["schemas"]["Links"];
     };
-    UserInput: {
+    UserUpdateInput: {
       /** @example Pedro Oliveira Bassi */
       name: string;
-      /** @example 9585hf7#_ */
-      password: string;
       /** @example 99999999999 */
       cpf: string;
       /** @example pedro@gmail.com */
@@ -589,21 +587,27 @@ export interface components {
       /** @example Engenheiro */
       name: string;
     };
+    UserInput: {
+      /** @example Pedro Oliveira Bassi */
+      name: string;
+      /** @example 9585hf7#_ */
+      password: string;
+      /** @example 99999999999 */
+      cpf: string;
+      /** @example pedro@gmail.com */
+      email: string;
+      /** @example 17996079654 */
+      whatsApp: string;
+      /** @example Azulejista */
+      office: string;
+      /** @example Instalador de Revestimento */
+      occupation: string;
+      /** @example Curso Superior Incompleto */
+      literate: string;
+    };
     CollectionModelWorkStationModel: {
       _embedded?: {
         workStations?: (components["schemas"]["WorkStationModel"])[];
-      };
-      _links?: components["schemas"]["Links"];
-    };
-    CollectionModelUserDetailedModel: {
-      _embedded?: {
-        users?: (components["schemas"]["UserDetailedModel"])[];
-      };
-      _links?: components["schemas"]["Links"];
-    };
-    CollectionModelAccessGroupSummaryModel: {
-      _embedded?: {
-        accessGroups?: (components["schemas"]["AccessGroupSummaryModel"])[];
       };
       _links?: components["schemas"]["Links"];
     };
@@ -616,6 +620,19 @@ export interface components {
       totalPages?: number;
       /** Format: int64 */
       number?: number;
+    };
+    PagedModelUserDetailedModel: {
+      _embedded?: {
+        users?: (components["schemas"]["UserDetailedModel"])[];
+      };
+      _links?: components["schemas"]["Links"];
+      page?: components["schemas"]["PageMetadata"];
+    };
+    CollectionModelAccessGroupSummaryModel: {
+      _embedded?: {
+        accessGroups?: (components["schemas"]["AccessGroupSummaryModel"])[];
+      };
+      _links?: components["schemas"]["Links"];
     };
     PagedModelSupplySummaryModel: {
       _embedded?: {
@@ -748,6 +765,12 @@ export interface components {
       };
       _links?: components["schemas"]["Links"];
       page?: components["schemas"]["PageMetadata"];
+    };
+    CollectionModelUserDetailedModel: {
+      _embedded?: {
+        users?: (components["schemas"]["UserDetailedModel"])[];
+      };
+      _links?: components["schemas"]["Links"];
     };
     Link: {
       href?: string;
@@ -910,7 +933,7 @@ export interface operations {
     /** @description Representação de um usuário editado */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["UserInput"];
+        "application/json": components["schemas"]["UserUpdateInput"];
       };
     };
     responses: {
@@ -1686,7 +1709,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["CollectionModelUserDetailedModel"];
+          "*/*": components["schemas"]["PagedModelUserDetailedModel"];
         };
       };
     };

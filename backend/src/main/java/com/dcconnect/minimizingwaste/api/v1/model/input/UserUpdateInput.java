@@ -9,14 +9,11 @@ import org.hibernate.validator.constraints.br.CPF;
 
 @Getter
 @Setter
-public class UserInput {
+public class UserUpdateInput {
 
     @Schema(example = "Pedro Oliveira Bassi")
     @NotBlank
     private String name;
-    @Schema(example = "9585hf7#_")
-    @NotBlank
-    private String password;
     @Schema(example = "99999999999")
     @NotBlank
     @CPF

@@ -13,6 +13,7 @@ import DefaultLayout from './app/layouts';
 import { store } from './core/store/index';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+
   <ConfigProvider theme={{}}>
     <Router>
       <Provider store={store}>

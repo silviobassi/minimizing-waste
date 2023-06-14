@@ -28,18 +28,10 @@ public class UserService {
     @Transactional
     public User create(User user){
         userRepository.detach(user);
-
-        Optional<User> currentUser = userRepository.findByEmail(user.getEmail());
-
-        if(currentUser.isPresent() && !currentUser.get().equals(user)){
-            throw new BusinessException(
-                    String.format("Já existe um usuário cadastrado com o e-mail %s", user.getEmail()));
-        }
-
-        if(user.isNew()){
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-        }
-
+        Optional<User> currentUserByEmail = userRepository.findByEmail(user.getEmail());
+        Optional<User> currentUserByCpf = userRepository.findByCpf(user.getCpf());
+        existsEmailAndCpf(user, currentUserByEmail, currentUserByCpf);
+        insertOrUpdatePassword(user);
         return userRepository.save(user);
     }
 
@@ -92,6 +84,28 @@ public class UserService {
     public User findOrFail(Long userId){
         return userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(userId));
+    }
+
+    private void insertOrUpdatePassword(User user) {
+        if(user.isNew()){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+
+        if(user.isCurrent()){
+            user.setPassword(user.getPassword());
+        }
+    }
+
+    private void existsEmailAndCpf(User user, Optional<User> currentUserByEmail, Optional<User> currentUserByCpf) {
+        if(currentUserByCpf.isPresent() && !currentUserByCpf.get().equals(user)){
+            throw new BusinessException(
+                    String.format("Já existe um usuário cadastrado com o cpf %s", user.getCpf()));
+        }
+
+        if(currentUserByEmail.isPresent() && !currentUserByEmail.get().equals(user)){
+            throw new BusinessException(
+                    String.format("Já existe um usuário cadastrado com o email %s", user.getEmail()));
+        }
     }
 
 }

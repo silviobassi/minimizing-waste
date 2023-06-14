@@ -1,8 +1,8 @@
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Space, Table, Tag, Tooltip } from 'antd';
 import { format } from 'date-fns';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import useUsers from '../../core/hooks/useUsers';
 import { User } from '../../sdk/@types';
 import WrapperDefault from '../components/WrapperDefault';
@@ -10,16 +10,17 @@ import WrapperDefault from '../components/WrapperDefault';
 export default function EmployeeList() {
   const { users, fetchUsers, fetching } = useUsers();
   const navigate = useNavigate();
+  const [page, setPage] = useState<number>()
 
   useEffect(() => {
-    fetchUsers();
+    fetchUsers(page);
   }, [fetchUsers]);
 
   return (
     <WrapperDefault title="Lista de Colaboradores">
-      <Table<User.CollectionDetailed>
+      <Table<User.PagedModelDetailed>
         loading={fetching}
-        pagination={false}
+        rowKey={'id'}
         dataSource={users?._embedded?.users}
         columns={[
           { title: 'ID', dataIndex: 'id', width: 60 },
@@ -54,17 +55,19 @@ export default function EmployeeList() {
           },
           {
             title: 'Ações',
-            dataIndex: 'actions',
+            dataIndex: 'id',
             align: 'center',
             width: 200,
-            render: (_: any, user: User.Detailed) => (
+            render: (id) => (
               <Space size={'middle'}>
                 <Tooltip title={'Editar'}>
+                  <Link to={`/colaborador/editar/${id}`}>
                   <Button
                     type={'link'}
                     icon={<EditOutlined />}
-                    onClick={() => navigate(`/colaborador/editar/${user.id}`)}
                   />
+                  </Link>
+                  
                 </Tooltip>
                 <Tooltip title={'Excluir'}>
                   <Button type={'link'} icon={<DeleteOutlined />} />
@@ -76,7 +79,11 @@ export default function EmployeeList() {
             ),
           },
         ]}
-        rowKey="id"
+        pagination={{
+          onChange: (page: number) => setPage(page - 1),
+          total: users?.page?.totalElements,
+          pageSize: 5,
+        }}
       />
     </WrapperDefault>
   );

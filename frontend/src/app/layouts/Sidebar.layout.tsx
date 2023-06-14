@@ -10,12 +10,7 @@ export default function SiderBarLayout() {
       theme="light"
       breakpoint="lg"
       collapsedWidth="0"
-      onBreakpoint={(broken) => {
-        console.log(broken);
-      }}
-      onCollapse={(collapsed, type) => {
-        console.log(collapsed, type);
-      }}
+      
     >
       <div style={{ borderRight: '1px solid #d7e2ed' }}>
         <img

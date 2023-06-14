@@ -35,7 +35,7 @@ export default function handleAxiosResponseError(error: AxiosError<ErrorData>) {
     if (type === ERRORS.SYSTEM_ERROR) throw new SystemError(data);
   }
 
-  /*throw new GenericError({
+  throw new GenericError({
     detail: response?.data.detail || error.message || "Erro desconhecido",
     status: response?.status || 500,
     userMessage:
@@ -45,7 +45,7 @@ export default function handleAxiosResponseError(error: AxiosError<ErrorData>) {
     timestamp: response?.data?.timestamp || "",
     title: response?.data?.title || "Erro desconhecido",
     type: "GenericError",
-  });*/
+  });
 
   throw error;
 }

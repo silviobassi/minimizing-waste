@@ -11,31 +11,38 @@ import {
   Upload,
   notification
 } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { File, User } from '../../sdk/@types';
 import FileService from '../../sdk/services/File.service';
 import WrapperDefault from '../components/WrapperDefault';
 const { RangePicker } = DatePicker;
 
-import ImgCrop from 'antd-img-crop';
-import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import { UserOutlined } from '@ant-design/icons';
+import ImgCrop from 'antd-img-crop';
+import { MaskedInput } from 'antd-mask-input';
+import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
 import CustomError from '../../sdk/CustomError';
+import { UserService } from '../../sdk/services';
+
+type UserFormType = User.Detailed
 interface TaskFormDefaultProps {
   labelRegister: string;
   iconButton: {
     register: React.ReactNode;
     cancel: React.ReactNode;
   };
+  isCurrentUser?: boolean
   title: string;
+  user?: UserFormType;
+  onUpdate?: (user: User.UpdateInput) => any
 }
+
 
 export default function EmployeeForm(props: TaskFormDefaultProps) {
   const [form] = Form.useForm<User.Input>();
   const navigate = useNavigate();
   const [photo, setPhoto] = useState<File>();
-
   const [fileList, setFileList] = useState<UploadFile[]>([]);
 
   const onChange: UploadProps['onChange'] = async ({
@@ -62,34 +69,61 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
   return (
     <WrapperDefault title={props.title}>
       <Form
+        initialValues={props.user}
         layout={'vertical'}
+        autoComplete='off'
         form={form}
-        onFinish={async () => {
+        onFinish={async (user: User.Input | User.UpdateInput) => {
+
           try {
-            const data = await FileService.updatePhoto(photo, 1);
+            const userDTO: User.Input | User.UpdateInput = {
+              ...user,
+              whatsApp: user.whatsApp ? user.whatsApp.replace(/\D/g, '') : user.whatsApp,
+              cpf: user.cpf ? user.cpf.replace(/\D/g, '') : user.cpf,
+            };
+
+            if(props.user)
+              return props.onUpdate && props.onUpdate(userDTO)
+
+            const dataUser = await UserService.createUser(userDTO)
+            if(photo) {
+              await FileService.updatePhoto(photo, dataUser.id);
+            }
+          
             notification.success({
               message: 'Sucesso',
-              //description: `Colaborador ${data?.name} criado com sucesso`,
+              description: `Colaborador ${user?.name} criado com sucesso`,
             });
           } catch (error) {
+            
             if (error instanceof CustomError) {
               if (error.data?.objects) {
                 form.setFields(
                   error.data.objects.map((error: any) => {
                     return {
-                      //name: error.name?.split('.') as string[],
+                      name: error.name?.split('.') as string[],
                       errors: [error.userMessage],
                     };
                   }),
                 );
+
+          
+              } else {
+                
+                notification.error({
+                  message: error.message,
+                  description: error.data?.detail === 'Network Error' ? 'Erro de Rede' : error.data?.detail
+                })
+
               }
             } else {
               notification.error({
-                message: 'Houve um erro',
+                message: `Houve um erro: ${error.message}`,
               });
             }
           }
         }}
+
       >
         <Divider orientation="left">DADOS PESSOAIS</Divider>
         <Row justify={'space-between'} gutter={24}>
@@ -98,7 +132,19 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
               <Upload
                 listType="picture-card"
                 fileList={fileList}
-                beforeUpload={async (file: File) => setPhoto(file)}
+                onRemove={() => {
+                  if(photo){
+                    setPhoto('')
+                  }
+                }}
+                beforeUpload={async (file: File) =>{
+                  if(file){
+                    setPhoto(file)
+                  } else {
+                    setPhoto('')
+                  }
+                  return false
+                }}
                 onChange={onChange}
                 onPreview={onPreview}
               >
@@ -107,44 +153,55 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
             </ImgCrop>
           </Col>
 
-          <Col xs={24} xl={10}>
-            <Form.Item label="Nome:*">
+          <Col xs={24} xl={11}>
+            <Form.Item label="Nome:*" name={'name'}>
               <Input size="large" placeholder="ex: João dos Santos" />
             </Form.Item>
-            <Form.Item label="CPF:*">
-              <Input size="large" placeholder="ex: 999.999.999-99" />
-            </Form.Item>
           </Col>
           <Col xs={24} xl={10}>
-            <Form.Item label="Email:*">
-              <Input size="large" placeholder="ex: joaosantos@email.com" />
-            </Form.Item>
-            <Form.Item label="WhatsApp:*">
-              <Input size="large" placeholder="ex: (17) 99999-9999" />
+          <Form.Item label="CPF:*"  name={'cpf'}>
+              <MaskedInput size="large" mask={'000.000.000-00'} placeholder="e.g.: 000.000.000-00"
+               />
             </Form.Item>
           </Col>
+        
         </Row>
-        <Divider orientation="left">DADOS PROFISSIONAIS</Divider>
-        <Row justify={'space-between'} gutter={24}>
-          <Col xs={24} xl={8}>
-            <Form.Item label="Senha:*">
+        <Row  justify={'space-between'} gutter={24}>
+          <Col xs={24} xl={props.isCurrentUser ? 12 : 8}> 
+            <Form.Item label="Email:*"  name={'email'}>
+              <Input size="large" placeholder="ex: joaosantos@email.com" />
+            </Form.Item>
+          </Col>
+          <Col xs={24} xl={props.isCurrentUser ? 12 : 8}>
+            <Form.Item label="WhatsApp:*"  name={'whatsApp'}>
+              <MaskedInput size='large' mask='(00) 00000-0000' placeholder={'(00) 00000-0000'}
+             />
+            </Form.Item>
+          </Col>
+          {!props.isCurrentUser && 
+            <Col xs={24} xl={8}> 
+            <Form.Item label="Senha:*"  name={'password'}>
               <Input size="large" placeholder="ex: hd746¨0^k" />
             </Form.Item>
           </Col>
+          }
+         
+        </Row>
+        <Divider orientation="left">DADOS PROFISSIONAIS</Divider>
+        <Row justify={'space-between'} gutter={24}>
+         
           <Col xs={24} xl={8}>
-            <Form.Item label="Cargo:*">
+            <Form.Item label="Cargo:*"  name={'office'}>
               <Input size="large" placeholder="ex: Azulejista" />
             </Form.Item>
           </Col>
           <Col xs={24} xl={8}>
-            <Form.Item label="Função:*">
+            <Form.Item label="Função:*"  name={'occupation'}>
               <Input size="large" placeholder="ex: Instalador de gesso" />
             </Form.Item>
           </Col>
-        </Row>
-        <Row justify={'space-between'} gutter={24}>
-          <Col xs={24} xl={12}>
-            <Form.Item label="Escolaridade*">
+          <Col xs={24} xl={8}>
+            <Form.Item label="Escolaridade*"  name={'literate'}>
               <Select
                 size="large"
                 defaultValue="Selecione a Escolaridade"
@@ -172,28 +229,6 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
                   {
                     label: 'Não Alfabetizado',
                     value: 'Não Alfabetizado',
-                  },
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} xl={12}>
-            <Form.Item label="Grupo de Usuários*">
-              <Select
-                size="large"
-                defaultValue="Selecione o Grupo do Colaborador"
-                options={[
-                  {
-                    label: 'ADMINISTRADOR',
-                    value: 'ADMINISTRADOR',
-                  },
-                  {
-                    label: 'ENCARREGADO',
-                    value: 'ENCARREGADO',
-                  },
-                  {
-                    label: 'OPERÁRIO',
-                    value: 'OPERÁRIO',
                   },
                 ]}
               />

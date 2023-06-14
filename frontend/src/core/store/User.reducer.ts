@@ -3,13 +3,13 @@ import {
   createReducer,
   isFulfilled,
   isPending,
-  isRejected,
+  isRejected
 } from '@reduxjs/toolkit';
+import { UserService } from '../../sdk';
 import { User } from '../../sdk/@types/User';
-import { UserService } from '../../sdk/services';
 
 interface UserState {
-  list: User.CollectionDetailed[];
+  list: User.PagedModelDetailed[];
   fetching: boolean;
 }
 
@@ -18,9 +18,13 @@ const initialState: UserState = {
   list: [],
 };
 
-export const getAllUsers: User.CollectionDetailed = createAsyncThunk(
+export const getAllUsers: User.PagedModelDetailed = createAsyncThunk(
   'user/getAllUsers',
-  async () => UserService.getAllUsers(),
+  async (page: number) => UserService.getAllUsers({
+    sort: ['asc'],
+    page: page,
+    size: 4,
+  })
 );
 
 export default createReducer(initialState, (builder) => {
@@ -35,7 +39,7 @@ export default createReducer(initialState, (builder) => {
     .addMatcher(success, (state) => {
       state.fetching = false;
     })
-    .addMatcher(error, (state) => {
+    .addMatcher(error, (state, action) => {
       state.fetching = false;
     })
     .addMatcher(loading, (state) => {

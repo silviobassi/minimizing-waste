@@ -43,7 +43,7 @@ export default function  Routes(){
             })
         } else {
           notification.error({
-            message: reason.message,
+            message: reason.message === reason.data.detail ? '' : reason.message,
             description: reason.data?.detail === 'Network Error' ? 'Erro de Rede' : reason.data?.detail
           })
         }
@@ -53,6 +53,7 @@ export default function  Routes(){
         });
       }
     }
+
 
     return () => {
       window.onunhandledrejection = null

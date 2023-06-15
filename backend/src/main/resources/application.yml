@@ -71,15 +71,15 @@ minimizing-waste:
     local:
       directory: /home/silvio/avatar
     s3:
-      #access-key-id:
-      #secret-access-key:
+      #access-key-id: AKIAQYMZXVGOTMX4X5VT
+      #secret-access-key: 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
       bucket: minimizing-waste
       region: us-east-1
       directory: user-photo
 
     #Enable photo storage services type, for example:
     # - "s3" to PhotoStorageService.class or  "local" to LocalPhotoStorage
-    type: local
+    type: s3
 
   auth:
     provider-url: http://localhost:8080

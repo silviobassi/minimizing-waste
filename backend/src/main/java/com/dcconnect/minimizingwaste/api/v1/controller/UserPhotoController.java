@@ -88,7 +88,6 @@ public class UserPhotoController implements UserPhotoControllerOpenApi {
             RecoveredPhoto recoveredPhoto = photoStorageService.recover(userPhoto.getFileName());
 
             if(recoveredPhoto.isUrl()){
-                System.out.println("entrou na isURL");
                 return ResponseEntity.status(HttpStatus.FOUND)
                         .header(HttpHeaders.LOCATION, recoveredPhoto.getUrl())
                         .build();

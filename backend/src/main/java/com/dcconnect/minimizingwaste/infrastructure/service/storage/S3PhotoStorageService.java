@@ -12,6 +12,7 @@ import com.dcconnect.minimizingwaste.core.storage.StorageConfig;
 import com.dcconnect.minimizingwaste.core.storage.StorageProperties;
 import com.dcconnect.minimizingwaste.domain.service.PhotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 
 import java.net.URL;
 
@@ -19,21 +20,11 @@ import java.net.URL;
 public class S3PhotoStorageService implements PhotoStorageService {
 
     @Autowired
-    private StorageConfig storageConfig;
+    private AmazonS3 amazonS3;
 
     @Autowired
     private StorageProperties storageProperties;
 
-    public AmazonS3 amazonS3() {
-        var credentials = new BasicAWSCredentials(
-                storageProperties.getS3().getAccessKeyId(),
-                storageProperties.getS3().getSecretAccessKey());
-
-        return AmazonS3ClientBuilder.standard()
-                .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                .withRegion(storageProperties.getS3().getRegion())
-                .build();
-    }
     @Override
     public void store(NewPhoto newPhoto) {
 
@@ -50,7 +41,7 @@ public class S3PhotoStorageService implements PhotoStorageService {
                     objectMetadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead);
 
-            storageConfig.amazonS3().putObject(putObjectRequest);
+            amazonS3.putObject(putObjectRequest);
         }catch (Exception e){
             throw new StorageException("Não foi possível enviar arquivo para a Amazon S3.", e);
         }
@@ -65,7 +56,7 @@ public class S3PhotoStorageService implements PhotoStorageService {
                     storageProperties.getS3().getBucket(),
                     filePath
         );
-            storageConfig.amazonS3().deleteObject(deleteObjectRequest);
+            amazonS3.deleteObject(deleteObjectRequest);
 
         }catch (Exception e){
             throw new StorageException("Não foi possível excluir o arquivo na Amazon S3.", e);
@@ -76,7 +67,7 @@ public class S3PhotoStorageService implements PhotoStorageService {
     public RecoveredPhoto recover(String fileName) {
         try {
         String filePath = getFilePath(fileName);
-        URL s3Url = this.amazonS3().getUrl(storageProperties.getS3().getBucket(), filePath);
+        URL s3Url = amazonS3.getUrl(storageProperties.getS3().getBucket(), filePath);
 
         return RecoveredPhoto.builder()
                 .url(s3Url.toString()).build();

@@ -8,6 +8,7 @@ import com.dcconnect.minimizingwaste.domain.service.PhotoStorageService;
 import com.dcconnect.minimizingwaste.infrastructure.service.storage.LocalPhotoStorageService;
 import com.dcconnect.minimizingwaste.infrastructure.service.storage.S3PhotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -20,6 +21,8 @@ public class StorageConfig {
     @Autowired
     private StorageProperties storageProperties;
 
+    @Bean
+    @ConditionalOnProperty(name = "minimizing-waste.storage.type", havingValue = "s3")
     public AmazonS3 amazonS3() {
         var credentials = new BasicAWSCredentials(
                 storageProperties.getS3().getAccessKeyId(),

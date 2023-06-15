@@ -71,8 +71,8 @@ minimizing-waste:
     local:
       directory: /home/silvio/avatar
     s3:
-      #access-key-id: AKIAQYMZXVGOTMX4X5VT
-      #secret-access-key: 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
+      #access-key-id:
+      #secret-access-key:
       bucket: minimizing-waste
       region: us-east-1
       directory: user-photo

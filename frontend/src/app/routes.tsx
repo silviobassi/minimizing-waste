@@ -32,93 +32,100 @@ import WorkStationCreateView from './views/WorkStationCreate.view';
 import WorkStationEditView from './views/WorkStationEdit.view';
 import WorkStationListView from './views/WorkStationList.view';
 
-export default function  Routes(){
-
+export default function Routes() {
   useEffect(() => {
-    window.onunhandledrejection = ({reason}) => {
+    window.onunhandledrejection = ({ reason }) => {
       if (reason instanceof CustomError) {
         if (reason.data?.objects) {
-            reason.data.objects.forEach((error: any) => {
-              message.error(error.userMessage)
-            })
+          reason.data.objects.forEach((error: any) => {
+            message.error(error.userMessage);
+          });
         } else {
           notification.error({
-            message: reason.message === reason.data.detail ? '' : reason.message,
-            description: reason.data?.detail === 'Network Error' ? 'Erro de Rede' : reason.data?.detail
-          })
+            message:
+              reason.message === reason.data.detail ? '' : reason.message,
+            description:
+              reason.data?.detail === 'Network Error'
+                ? 'Erro de Rede'
+                : reason.data?.detail,
+          });
         }
       } else {
         notification.error({
           message: `Houve um erro: ${reason.message}`,
         });
       }
-    }
-
+    };
 
     return () => {
-      window.onunhandledrejection = null
-    }
-  }, [])
+      window.onunhandledrejection = null;
+    };
+  }, []);
 
-  return (<MainRoutes>
-    <Route path={'/'} element={<HomeView />} />
-    <Route path={'/home'} element={<HomeView />} />
-    <Route path={'/setores'} element={<SectorListView />} />
-    <Route path={'/setor/criar'} element={<SectorCreateView />} />
-    <Route path={'/setor/editar/:id'} element={<SectorEditView />} />
-    <Route
-      path={'/setor/:id/alocacao/recurso'}
-      element={<SupplyAllocateView />}
-    />
-    <Route path={'/estacoes-de-trabalho'} element={<WorkStationListView />} />
-    <Route
-      path={'/estacao-de-trabalho/criar'}
-      element={<WorkStationCreateView />}
-    />
-    <Route
-      path={'/estacao-de-trabalho/editar/:id'}
-      element={<WorkStationEditView />}
-    />
-    <Route path={'/recursos'} element={<SupplyListView />} />
-    <Route
-      path={'/movimento-recursos'}
-      element={<SupplyMovementListView />}
-    />
-    <Route
-      path={'/movimento-recursos/criar'}
-      element={<SupplyMovementCreateView />}
-    />
-    <Route
-      path={'/movimento-recursos/editar/:id'}
-      element={<SupplyMovementEditView />}
-    />
-    <Route
-      path={'/movimento-recursos/devolver-recurso/:id'}
-      element={<SupplyMovementGiveBackForm />}
-    />
-    <Route path={'/recursos/criar'} element={<SupplyCreateView />} />
-    <Route path={'/recursos/editar/:id'} element={<SupplyEditView />} />
-    <Route
-      path={'/recursos/:supplyId/detalhes'}
-      element={<SupplyDetailedView />}
-    />
+  return (
+    <MainRoutes>
+      <Route path={'/'} element={<HomeView />} />
+      <Route path={'/home'} element={<HomeView />} />
+      <Route path={'/setores'} element={<SectorListView />} />
+      <Route path={'/setor/criar'} element={<SectorCreateView />} />
+      <Route path={'/setor/editar/:id'} element={<SectorEditView />} />
+      <Route
+        path={'/setor/:id/alocacao/recurso'}
+        element={<SupplyAllocateView />}
+      />
+      <Route path={'/estacoes-de-trabalho'} element={<WorkStationListView />} />
+      <Route
+        path={'/estacao-de-trabalho/criar'}
+        element={<WorkStationCreateView />}
+      />
+      <Route
+        path={'/estacao-de-trabalho/editar/:id'}
+        element={<WorkStationEditView />}
+      />
+      <Route path={'/recursos'} element={<SupplyListView />} />
+      <Route
+        path={'/movimento-recursos'}
+        element={<SupplyMovementListView />}
+      />
+      <Route
+        path={'/movimento-recursos/criar'}
+        element={<SupplyMovementCreateView />}
+      />
+      <Route
+        path={'/movimento-recursos/editar/:id'}
+        element={<SupplyMovementEditView />}
+      />
+      <Route
+        path={'/movimento-recursos/devolver-recurso/:id'}
+        element={<SupplyMovementGiveBackForm />}
+      />
+      <Route path={'/recursos/criar'} element={<SupplyCreateView />} />
+      <Route path={'/recursos/editar/:id'} element={<SupplyEditView />} />
+      <Route
+        path={'/recursos/:supplyId/detalhes'}
+        element={<SupplyDetailedView />}
+      />
 
-    <Route path={'/tarefas'} element={<TaskListView />} />
-    <Route path={'/tarefa/criar'} element={<TaskCreateView />} />
-    <Route path={'/tarefa/editar/:id'} element={<TaskEditView />} />
-    <Route
-      path={'/tarefas/:taskId/detalhes'}
-      element={<TaskDetailedView />}
-    />
-    <Route path={'/tarefa/:id/atribuicao'} element={<TaskAssignView />} />
-    <Route path={'/colaboradores'} element={<EmployeeListView />} />
-    <Route path={'/colaborador/criar'} element={<EmployeeCreateView />} />
-    <Route path={'/colaborador/editar/:userId'} element={<EmployeeEditView />} />
-    <Route
-      path={'/colaboradores/:employeeId/detalhes'}
-      element={<EmployeeDetailedView />}
-    />
-    <Route path={'/notificacoes'} element={<NotificationListView />} />
-    <Route path="/404" element={<NotFound404View />} />
-  </MainRoutes>)
+      <Route path={'/tarefas'} element={<TaskListView />} />
+      <Route path={'/tarefa/criar'} element={<TaskCreateView />} />
+      <Route path={'/tarefa/editar/:id'} element={<TaskEditView />} />
+      <Route
+        path={'/tarefas/:taskId/detalhes'}
+        element={<TaskDetailedView />}
+      />
+      <Route path={'/tarefa/:id/atribuicao'} element={<TaskAssignView />} />
+      <Route path={'/colaboradores'} element={<EmployeeListView />} />
+      <Route path={'/colaborador/criar'} element={<EmployeeCreateView />} />
+      <Route
+        path={'/colaborador/editar/:userId'}
+        element={<EmployeeEditView />}
+      />
+      <Route
+        path={'/colaborador/:employeeId/detalhes'}
+        element={<EmployeeDetailedView />}
+      />
+      <Route path={'/notificacoes'} element={<NotificationListView />} />
+      <Route path="/404" element={<NotFound404View />} />
+    </MainRoutes>
+  );
 }

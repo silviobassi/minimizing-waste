@@ -36,15 +36,15 @@ export default function handleAxiosResponseError(error: AxiosError<ErrorData>) {
   }
 
   throw new GenericError({
-    detail: response?.data.detail || error.message || "Erro desconhecido",
+    detail: response?.data.detail || error.message || 'Erro desconhecido',
     status: response?.status || 500,
     userMessage:
       response?.data?.userMessage ||
       response?.data?.detail ||
-      "Erro desconhecido",
-    timestamp: response?.data?.timestamp || "",
-    title: response?.data?.title || "Erro desconhecido",
-    type: "GenericError",
+      'Erro desconhecido',
+    timestamp: response?.data?.timestamp || '',
+    title: response?.data?.title || 'Erro desconhecido',
+    type: 'GenericError',
   });
 
   throw error;

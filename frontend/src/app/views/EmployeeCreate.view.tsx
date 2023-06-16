@@ -1,10 +1,9 @@
 import { SaveOutlined, StopOutlined } from '@ant-design/icons';
 import usePageTitle from '../../core/usePageTitle';
-import EmployeeForm from '../features/EmployeeForm'
+import EmployeeForm from '../features/EmployeeForm';
 
 export default function EmployeeCreateView() {
-
-  usePageTitle('Criação de Colaborador')
+  usePageTitle('Criação de Colaborador');
 
   return (
     <EmployeeForm

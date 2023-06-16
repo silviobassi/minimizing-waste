@@ -10,10 +10,10 @@ import WrapperDefault from '../components/WrapperDefault';
 export default function EmployeeList() {
   const { users, fetchUsers, fetching } = useUsers();
   const navigate = useNavigate();
-  const [page, setPage] = useState<number>()
+  const [page, setPage] = useState<number>();
 
   useEffect(() => {
-    fetchUsers(page);
+    fetchUsers();
   }, [fetchUsers]);
 
   return (
@@ -62,18 +62,16 @@ export default function EmployeeList() {
               <Space size={'middle'}>
                 <Tooltip title={'Editar'}>
                   <Link to={`/colaborador/editar/${id}`}>
-                  <Button
-                    type={'link'}
-                    icon={<EditOutlined />}
-                  />
+                    <Button type={'link'} icon={<EditOutlined />} />
                   </Link>
-                  
                 </Tooltip>
                 <Tooltip title={'Excluir'}>
                   <Button type={'link'} icon={<DeleteOutlined />} />
                 </Tooltip>
                 <Tooltip title={'Ver Detalhes'}>
-                  <Button type={'link'} icon={<EyeOutlined />} />
+                  <Link to={`/colaborador/${id}/detalhes`}>
+                    <Button type={'link'} icon={<EyeOutlined />} />
+                  </Link>
                 </Tooltip>
               </Space>
             ),

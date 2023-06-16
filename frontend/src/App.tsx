@@ -1,6 +1,5 @@
 import Routes from './app/routes';
 
-
 import { notification } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -50,11 +49,8 @@ function App() {
     }
 
     identify();
-
   }, []);
-  return (
-    <Routes />
-  );
+  return <Routes />;
 }
 
 export default App;

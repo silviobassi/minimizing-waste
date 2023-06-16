@@ -56,6 +56,7 @@ public class UserPhotoService {
     public void delete(long userId){
         UserPhoto userPhoto = userRepository.findPhotoById(userId)
                 .orElseThrow(() -> new UserPhotoNotFoundException(userId));
+        System.out.println(userPhoto.getFileName());
         userRepository.delete(userPhoto);
         userRepository.flush();
 

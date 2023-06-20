@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Tag(name = "Users")
 public interface UserControllerOpenApi {
@@ -58,6 +59,16 @@ public interface UserControllerOpenApi {
     })
     UserDetailedModel findOrFail(
             @Parameter(description = "ID de um usuário", example = "1", required = true) Long userId);
+
+    @Operation(summary = "Deleta um usuário", responses = {
+            @ApiResponse(responseCode = "204", description = "Colaborador deletado com sucesso"),
+            @ApiResponse(responseCode = "400", description = "ID do colaborador inválido",
+                    content = @Content(schema = @Schema(ref = "Problem"))),
+
+            @ApiResponse(responseCode = "404", description = "Colaborador não encontrado",
+                    content = @Content(schema = @Schema(ref = "Problem")))
+    })
+    void delete(@Parameter(description = "ID de um setor" ,example = "1") Long userId);
 
     @Operation(summary = "Altera a Senha do usuário", responses = {
             @ApiResponse(responseCode = "404", description = "Usuário não encontrado",

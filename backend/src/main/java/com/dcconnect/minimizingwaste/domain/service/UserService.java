@@ -1,11 +1,15 @@
 package com.dcconnect.minimizingwaste.domain.service;
 
 import com.dcconnect.minimizingwaste.domain.exception.BusinessException;
+import com.dcconnect.minimizingwaste.domain.exception.EntityInUseException;
+import com.dcconnect.minimizingwaste.domain.exception.SectorNotFoundException;
 import com.dcconnect.minimizingwaste.domain.exception.UserNotFoundException;
 import com.dcconnect.minimizingwaste.domain.model.AccessGroup;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,6 +29,7 @@ public class UserService {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    public static final String USER_IN_USE = "Colaborador de código %d não pode ser removido, pois está em uso";
     @Transactional
     public User create(User user){
         userRepository.detach(user);
@@ -33,6 +38,21 @@ public class UserService {
         existsEmailAndCpf(user, currentUserByEmail, currentUserByCpf);
         insertOrUpdatePassword(user);
         return userRepository.save(user);
+    }
+
+    @Transactional
+    public void delete(Long userId){
+        try {
+            userRepository.deleteById(userId);
+            userRepository.flush();
+
+        } catch (EmptyResultDataAccessException e){
+            throw new UserNotFoundException(userId);
+
+        } catch (DataIntegrityViolationException e){
+            throw new EntityInUseException(
+                    String.format(USER_IN_USE, userId));
+        }
     }
 
     @Transactional

@@ -27,6 +27,7 @@ import static com.dcconnect.minimizingwaste.domain.service.PhotoStorageService.R
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/v1/users/{userId}/photo")
@@ -73,7 +74,7 @@ public class UserPhotoController implements UserPhotoControllerOpenApi {
     }
 
     @CheckSecurity.Users.CanConsult
-    @GetMapping
+    @GetMapping("/recovered")
     public ResponseEntity<?> servePhoto(
             @PathVariable Long userId, @RequestHeader(name = "accept") String acceptHeader)
             throws HttpMediaTypeNotAcceptableException{
@@ -88,9 +89,9 @@ public class UserPhotoController implements UserPhotoControllerOpenApi {
             RecoveredPhoto recoveredPhoto = photoStorageService.recover(userPhoto.getFileName());
 
             if(recoveredPhoto.isUrl()){
-                return ResponseEntity.status(HttpStatus.FOUND)
-                        .header(HttpHeaders.LOCATION, recoveredPhoto.getUrl())
-                        .build();
+                var imageUrl = Map.of("imageUrl", recoveredPhoto.getUrl());
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(imageUrl);
             } else {
                 return ResponseEntity.ok()
                         .contentType(mediaTypePhoto)

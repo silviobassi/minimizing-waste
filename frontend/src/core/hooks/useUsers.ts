@@ -9,9 +9,14 @@ export default function useUsers() {
   const users = useSelector((state: RootState) => state.user.list);
   const fetching = useSelector((state: RootState) => state.user.fetching);
 
-  const fetchUsers = useCallback(() => {
-    dispatch(UserActions.getAllUsers());
-  }, [dispatch]);
+  const fetchUsers = useCallback(
+    async (page: number) => {
+      dispatch(
+        UserActions.getAllUsers(page),
+      );
+    },
+    [dispatch],
+  );
 
   return {
     fetchUsers,

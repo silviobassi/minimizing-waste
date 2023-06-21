@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Button,
   Col,
   DatePicker,
@@ -11,9 +12,9 @@ import {
   Upload,
   notification,
 } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { File, User } from '../../sdk/@types';
+import { User } from '../../sdk/@types';
 import FileService from '../../sdk/services/File.service';
 import WrapperDefault from '../components/WrapperDefault';
 const { RangePicker } = DatePicker;
@@ -21,7 +22,12 @@ const { RangePicker } = DatePicker;
 import { UserOutlined } from '@ant-design/icons';
 import ImgCrop from 'antd-img-crop';
 import { MaskedInput } from 'antd-mask-input';
-import type { RcFile, UploadFile, UploadProps } from 'antd/es/upload/interface';
+import type {
+  RcFile,
+  UploadChangeParam,
+  UploadFile,
+  UploadProps,
+} from 'antd/es/upload/interface';
 import CustomError from '../../sdk/CustomError';
 import { UserService } from '../../sdk/services';
 
@@ -35,34 +41,38 @@ interface TaskFormDefaultProps {
   isCurrentUser?: boolean;
   title: string;
   user?: UserFormType;
-  onUpdate?: (user: User.UpdateInput) => any;
+  imageUrl?: string;
+  onUpdate?: (user: User.UpdateInput, file: RcFile) => any;
 }
 
 export default function EmployeeForm(props: TaskFormDefaultProps) {
   const [form] = Form.useForm<User.Input>();
   const navigate = useNavigate();
-  const [photo, setPhoto] = useState<File>();
-  const [fileList, setFileList] = useState<UploadFile[]>([]);
+  const [imageUrl, setImageUrl] = useState<string>();
+  const [photo, setPhoto] = useState<RcFile>();
 
-  const onChange: UploadProps['onChange'] = async ({
-    fileList: newFileList,
-  }) => {
-    setFileList(newFileList);
+  useEffect(() => {
+    console.log(photo);
+  }, [photo]);
+
+  const beforeUpload = (file: RcFile) => {
+    setPhoto(file);
+    return true;
   };
 
-  const onPreview = async (file: UploadFile) => {
-    let src = file.url as string;
-    if (!src) {
-      src = await new Promise((resolve) => {
-        const reader = new FileReader();
-        reader.readAsDataURL(file.originFileObj as RcFile);
-        reader.onload = () => resolve(reader.result as string);
-      });
-    }
-    const image = new Image();
-    image.src = src;
-    const imgWindow = window.open(src);
-    imgWindow?.document.write(image.outerHTML);
+  const getBase64 = (img: RcFile, callback: (url: string) => void) => {
+    const reader = new FileReader();
+    reader.addEventListener('load', () => callback(reader.result as string));
+    reader.readAsDataURL(img);
+  };
+
+  const handleChange: UploadProps['onChange'] = (
+    info: UploadChangeParam<UploadFile>,
+  ) => {
+    // Get this url from response in real world.
+    getBase64(info.file.originFileObj as RcFile, (url) => {
+      setImageUrl(url);
+    });
   };
 
   return (
@@ -82,13 +92,14 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
               cpf: user.cpf ? user.cpf.replace(/\D/g, '') : user.cpf,
             };
 
-            if (props.user) return props.onUpdate && props.onUpdate(userDTO);
+            if (props.user)
+              return props.onUpdate && props.onUpdate(userDTO, photo);
 
             const dataUser = await UserService.createUser(userDTO);
             if (photo) {
               await FileService.updatePhoto(photo, dataUser.id);
             }
-          
+
             notification.success({
               message: 'Sucesso',
               description: `Colaborador ${user?.name} criado com sucesso`,
@@ -124,31 +135,23 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
         <Divider orientation="left">DADOS PESSOAIS</Divider>
         <Row justify={'space-between'} gutter={24}>
           <Col xs={24} xl={3}>
-            <ImgCrop rotationSlider>
+            <ImgCrop rotationSlider cropShape={'round'} showGrid aspect={1}>
               <Upload
-                listType="picture-card"
-                fileList={fileList}
-                onRemove={() => {
-                  if (photo) {
-                    setPhoto('');
-                  }
-                }}
-                beforeUpload={async (file: File) => {
-                  if (file) {
-                    setPhoto(file);
-                  } else {
-                    setPhoto('');
-                  }
-                  return false;
-                }}
-                onChange={onChange}
-                onPreview={onPreview}
+                name="avatar"
+                showUploadList={false}
+                maxCount={1}
+                beforeUpload={beforeUpload}
+                //action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
+                onChange={handleChange}
               >
-                {fileList.length < 1 && (
-                  <UserOutlined
-                    style={{ fontSize: '100px', color: '#001529' }}
-                  />
-                )}
+                <Avatar
+                  src={
+                    props.imageUrl ? props.imageUrl : imageUrl ? imageUrl : ''
+                  }
+                  size={128}
+                  style={{ cursor: 'pointer' }}
+                  icon={<UserOutlined />}
+                />
               </Upload>
             </ImgCrop>
           </Col>

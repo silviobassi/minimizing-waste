@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { Assignment } from '../../sdk/@types';
 import { AssignmentService } from '../../sdk/services';
 
-export default function useSectors() {
+export default function useAssignments() {
   const [assignments, setAssignments] = useState<
     Assignment.PagedModelAssignment[]
   >([]);

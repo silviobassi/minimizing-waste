@@ -12,6 +12,8 @@ export namespace User {
   export type UpdateInput =
     MinimizingWaste.components['schemas']['UserUpdateInput'];
 
+  export type Avatar = MinimizingWaste.components['schemas']['AvatarModel'];
+
   export type Query = {
     supplyName?: number;
     page?: number;

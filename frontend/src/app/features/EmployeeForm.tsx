@@ -41,7 +41,7 @@ interface TaskFormDefaultProps {
   isCurrentUser?: boolean;
   title: string;
   user?: UserFormType;
-  imageUrl?: string;
+  avatarUrl?: string;
   onUpdate?: (user: User.UpdateInput, file: RcFile) => any;
 }
 
@@ -51,9 +51,7 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
   const [imageUrl, setImageUrl] = useState<string>();
   const [photo, setPhoto] = useState<RcFile>();
 
-  useEffect(() => {
-    console.log(photo);
-  }, [photo]);
+  useEffect(() => {}, [photo]);
 
   const beforeUpload = (file: RcFile) => {
     setPhoto(file);
@@ -96,9 +94,7 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
               return props.onUpdate && props.onUpdate(userDTO, photo);
 
             const dataUser = await UserService.createUser(userDTO);
-            if (photo) {
-              await FileService.updatePhoto(photo, dataUser.id);
-            }
+            if (photo) await FileService.updatePhoto(photo, dataUser.id);
 
             notification.success({
               message: 'Sucesso',
@@ -141,13 +137,10 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
                 showUploadList={false}
                 maxCount={1}
                 beforeUpload={beforeUpload}
-                //action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                 onChange={handleChange}
               >
                 <Avatar
-                  src={
-                    props.imageUrl ? props.imageUrl : imageUrl ? imageUrl : ''
-                  }
+                  src={photo ? imageUrl : (props.avatarUrl ? props.avatarUrl : imageUrl)}
                   size={128}
                   style={{ cursor: 'pointer' }}
                   icon={<UserOutlined />}

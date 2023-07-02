@@ -69,7 +69,7 @@ springdoc:
 minimizing-waste:
   storage:
     local:
-      directory: /home/silvio/avatar
+      directory: /avatar
     s3:
       #access-key-id:
       #secret-access-key:

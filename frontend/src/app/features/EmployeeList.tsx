@@ -1,43 +1,49 @@
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { Avatar, Button, Space, Table, Tag, Tooltip } from 'antd';
+import { Button, Space, Table, Tag, Tooltip } from 'antd';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import useUserPhoto from '../../core/hooks/useUserPhoto';
+import { Link } from 'react-router-dom';
 import useUsers from '../../core/hooks/useUsers';
 import { User } from '../../sdk/@types';
+import {
+  cpfToFormat,
+  phoneToFormat,
+} from '../../sdk/utils/generateFormatterData';
 import WrapperDefault from '../components/WrapperDefault';
 
 export default function EmployeeList() {
   const { users, fetchUsers, fetching } = useUsers();
-  const { userPhoto, fetchUserPhoto } = useUserPhoto();
-  const navigate = useNavigate();
   const [page, setPage] = useState<number>(0);
 
   useEffect(() => {
     fetchUsers(page);
-  }, [fetchUsers, page, fetchUserPhoto]);
+  }, [fetchUsers, page]);
 
   return (
     <WrapperDefault title="Lista de Colaboradores">
       <Table<User.PagedModelDetailed>
         loading={fetching}
-        rowKey={'id'}
         dataSource={users?._embedded?.users}
+        rowKey="id"
         columns={[
           { title: 'ID', dataIndex: 'id', width: 60 },
+          { title: 'Nome', dataIndex: 'name', width: 450 },
           {
-            title: 'Foto',
-            dataIndex: 'id',
-            width: 60,
-            render(id: number) {
-              fetchUserPhoto(id)
-              return <Avatar src={userPhoto?.imageUrl} size={50}/>;
+            title: 'CPF',
+            dataIndex: 'cpf',
+            width: 150,
+            render(cpf: string) {
+              return cpfToFormat(cpf);
             },
           },
-          { title: 'Nome', dataIndex: 'name', width: 450 },
-          { title: 'CPF', dataIndex: 'cpf', width: 150 },
-          { title: 'WhatsApp', dataIndex: 'whatsApp', width: 270 },
+          {
+            title: 'WhatsApp',
+            dataIndex: 'whatsApp',
+            width: 270,
+            render(whatsApp: string) {
+              return phoneToFormat(whatsApp);
+            },
+          },
           {
             title: 'Criação',
             dataIndex: 'createdAt',

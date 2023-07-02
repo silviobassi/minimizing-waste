@@ -333,6 +333,8 @@ export interface components {
        * @example 74697
        */
       size?: number;
+      /** @example http://server.com/dlkflwi9fi94kegje0gk9gj0hgk09gk.jpeg */
+      avatarUrl?: string;
       _links?: components['schemas']['Links'];
     };
     PasswordInput: {
@@ -374,6 +376,9 @@ export interface components {
        */
       manipulation: 'TRANSMUTÁVEL' | 'IMUTÁVEL';
     };
+    AvatarModel: {
+      avatarUrl?: string
+    }
     MaterialSupplyModel: {
       /**
        * Format: int64
@@ -834,14 +839,14 @@ export interface components {
 export type external = Record<string, never>;
 
 export interface operations {
+  /** Deleta uma estação de trabalho */
   findOrFail: {
-    /** Deleta uma estação de trabalho */
     parameters: {
-      /**
-       * @description ID de um usuário
-       * @example 1
-       */
       path: {
+        /**
+         * @description ID de um usuário
+         * @example 1
+         */
         workStationId: number;
       };
     };
@@ -860,14 +865,14 @@ export interface operations {
       };
     };
   };
+  /** Edita uma estação de trabalho */
   update: {
-    /** Edita uma estação de trabalho */
     parameters: {
-      /**
-       * @description ID de uma estação de trabalho
-       * @example 1
-       */
       path: {
+        /**
+         * @description ID de uma estação de trabalho
+         * @example 1
+         */
         workStationId: number;
       };
     };
@@ -892,14 +897,14 @@ export interface operations {
       };
     };
   };
+  /** Deleta uma estação de trabalho */
   delete: {
-    /** Deleta uma estação de trabalho */
     parameters: {
-      /**
-       * @description ID de uma estação de trabalho
-       * @example 1
-       */
       path: {
+        /**
+         * @description ID de uma estação de trabalho
+         * @example 1
+         */
         workStationId: number;
       };
     };
@@ -914,14 +919,14 @@ export interface operations {
       };
     };
   };
+  /** Busca um usuário pelo ID */
   findOrFail_1: {
-    /** Busca um usuário pelo ID */
     parameters: {
-      /**
-       * @description ID de um usuário
-       * @example 1
-       */
       path: {
+        /**
+         * @description ID de um usuário
+         * @example 1
+         */
         userId: number;
       };
     };
@@ -940,14 +945,14 @@ export interface operations {
       };
     };
   };
+  /** Edita um usuário */
   update_1: {
-    /** Edita um usuário */
     parameters: {
-      /**
-       * @description ID de um usuário
-       * @example 1
-       */
       path: {
+        /**
+         * @description ID de um usuário
+         * @example 1
+         */
         userId: number;
       };
     };
@@ -972,14 +977,14 @@ export interface operations {
       };
     };
   };
+  /** Deleta um usuário */
   delete_1: {
-    /** Deleta um usuário */
     parameters: {
-      /**
-       * @description ID de um setor
-       * @example 1
-       */
       path: {
+        /**
+         * @description ID de um setor
+         * @example 1
+         */
         userId: number;
       };
     };
@@ -1000,14 +1005,14 @@ export interface operations {
       };
     };
   };
+  /** Busca a foto do usuário */
   findByUserPhoto: {
-    /** Busca a foto do usuário */
     parameters: {
-      /**
-       * @description Id do usuário
-       * @example 1
-       */
       path: {
+        /**
+         * @description Id do usuário
+         * @example 1
+         */
         userId: number;
       };
     };
@@ -1034,14 +1039,14 @@ export interface operations {
       };
     };
   };
+  /** Atualiza a foto do usuário */
   updatePhoto: {
-    /** Atualiza a foto do usuário */
     parameters: {
-      /**
-       * @description Id do usuário
-       * @example 1
-       */
       path: {
+        /**
+         * @description Id do usuário
+         * @example 1
+         */
         userId: number;
       };
     };
@@ -1059,14 +1064,14 @@ export interface operations {
       };
     };
   };
+  /** Exclui a foto do usuário */
   deletePhoto: {
-    /** Exclui a foto do usuário */
     parameters: {
-      /**
-       * @description Id do usuário
-       * @example 1
-       */
       path: {
+        /**
+         * @description Id do usuário
+         * @example 1
+         */
         userId: number;
       };
     };
@@ -1087,14 +1092,14 @@ export interface operations {
       };
     };
   };
+  /** Altera a Senha do usuário */
   changePassword: {
-    /** Altera a Senha do usuário */
     parameters: {
-      /**
-       * @description ID de um usuário
-       * @example 1
-       */
       path: {
+        /**
+         * @description ID de um usuário
+         * @example 1
+         */
         userId: number;
       };
     };
@@ -1115,8 +1120,8 @@ export interface operations {
       };
     };
   };
+  /** Associa um determinado grupo ao usuário atual */
   associate: {
-    /** Associa um determinado grupo ao usuário atual */
     parameters: {
       path: {
         userId: number;
@@ -1134,8 +1139,8 @@ export interface operations {
       };
     };
   };
+  /** Disassocia um determinado grupo ao usuário atual */
   disassociate: {
-    /** Disassocia um determinado grupo ao usuário atual */
     parameters: {
       path: {
         userId: number;
@@ -1159,11 +1164,11 @@ export interface operations {
       };
     };
   };
+  /** Edita um Recurso do Tipo Material */
   update_2: {
-    /** Edita um Recurso do Tipo Material */
     parameters: {
-      /** @description ID de um recurso do tipo material */
       path: {
+        /** @description ID de um recurso do tipo material */
         supplyMaterialId: number;
       };
     };
@@ -1194,11 +1199,11 @@ export interface operations {
       };
     };
   };
+  /** Edita um Recurso do Tipo Equipamento */
   update_3: {
-    /** Edita um Recurso do Tipo Equipamento */
     parameters: {
-      /** @description ID de um recurso do tipo equipamento */
       path: {
+        /** @description ID de um recurso do tipo equipamento */
         supplyEquipmentId: number;
       };
     };
@@ -1229,8 +1234,8 @@ export interface operations {
       };
     };
   };
+  /** Deleta um movimento de recurso */
   findById_1: {
-    /** Deleta um movimento de recurso */
     parameters: {
       path: {
         supplyMovementId: number;
@@ -1251,14 +1256,14 @@ export interface operations {
       };
     };
   };
+  /** Edita um movimento de recurso */
   update_4: {
-    /** Edita um movimento de recurso */
     parameters: {
-      /**
-       * @description ID de um movimento de recurso
-       * @example 1
-       */
       path: {
+        /**
+         * @description ID de um movimento de recurso
+         * @example 1
+         */
         supplyMovementId: number;
       };
     };
@@ -1283,8 +1288,8 @@ export interface operations {
       };
     };
   };
+  /** Deleta um movimento de recurso */
   delete_3: {
-    /** Deleta um movimento de recurso */
     parameters: {
       path: {
         supplyMovementId: number;
@@ -1301,14 +1306,14 @@ export interface operations {
       };
     };
   };
+  /** Devolve uma quantia de recurso */
   giveBackSupply: {
-    /** Devolve uma quantia de recurso */
     parameters: {
-      /**
-       * @description ID de um movimento de recurso
-       * @example 1
-       */
       path: {
+        /**
+         * @description ID de um movimento de recurso
+         * @example 1
+         */
         supplyMovementId: number;
       };
     };
@@ -1327,14 +1332,14 @@ export interface operations {
       };
     };
   };
+  /** Busca um setor pelo ID */
   findOrFail_2: {
-    /** Busca um setor pelo ID */
     parameters: {
-      /**
-       * @description ID de um setor
-       * @example 1
-       */
       path: {
+        /**
+         * @description ID de um setor
+         * @example 1
+         */
         sectorId: number;
       };
     };
@@ -1359,14 +1364,14 @@ export interface operations {
       };
     };
   };
+  /** Edita um setor */
   update_5: {
-    /** Edita um setor */
     parameters: {
-      /**
-       * @description ID de um setor
-       * @example 1
-       */
       path: {
+        /**
+         * @description ID de um setor
+         * @example 1
+         */
         sectorId: number;
       };
     };
@@ -1397,14 +1402,14 @@ export interface operations {
       };
     };
   };
+  /** Deleta um setor */
   delete_4: {
-    /** Deleta um setor */
     parameters: {
-      /**
-       * @description ID de um setor
-       * @example 1
-       */
       path: {
+        /**
+         * @description ID de um setor
+         * @example 1
+         */
         sectorId: number;
       };
     };
@@ -1425,11 +1430,11 @@ export interface operations {
       };
     };
   };
+  /** Busca uma taerfa pelo ID */
   findOrFail_3: {
-    /** Busca uma taerfa pelo ID */
     parameters: {
-      /** @description ID de iuma tarefa */
       path: {
+        /** @description ID de iuma tarefa */
         assignmentId: number;
       };
     };
@@ -1448,14 +1453,14 @@ export interface operations {
       };
     };
   };
+  /** Edita uma tarefa */
   update_6: {
-    /** Edita uma tarefa */
     parameters: {
-      /**
-       * @description ID de uma tarefa
-       * @example 1
-       */
       path: {
+        /**
+         * @description ID de uma tarefa
+         * @example 1
+         */
         assignmentId: number;
       };
     };
@@ -1480,8 +1485,8 @@ export interface operations {
       };
     };
   };
+  /** Deleta uma tarefa */
   delete_5: {
-    /** Deleta uma tarefa */
     parameters: {
       path: {
         assignmentId: number;
@@ -1498,8 +1503,8 @@ export interface operations {
       };
     };
   };
+  /** Associa um colaborador a determinada tarefa */
   attachEmployee: {
-    /** Associa um colaborador a determinada tarefa */
     parameters: {
       path: {
         assignmentId: number;
@@ -1516,8 +1521,8 @@ export interface operations {
       204: never;
     };
   };
+  /** Disassocia um colaborador a determinada tarefa */
   detachEmployee: {
-    /** Disassocia um colaborador a determinada tarefa */
     parameters: {
       path: {
         assignmentId: number;
@@ -1534,11 +1539,11 @@ export interface operations {
       204: never;
     };
   };
+  /** Conclui ou não uma tarefa */
   completeAssignment: {
-    /** Conclui ou não uma tarefa */
     parameters: {
-      /** @description ID de uma tarefa */
       path: {
+        /** @description ID de uma tarefa */
         assignmentId: number;
       };
     };
@@ -1558,11 +1563,11 @@ export interface operations {
       };
     };
   };
+  /** Aprova ou reprova uma tarefa */
   approveAssignment: {
-    /** Aprova ou reprova uma tarefa */
     parameters: {
-      /** @description ID de uma tarefa */
       path: {
+        /** @description ID de uma tarefa */
         assignmentId: number;
       };
     };
@@ -1582,14 +1587,14 @@ export interface operations {
       };
     };
   };
+  /** Edita um grupo de acesso */
   update_7: {
-    /** Edita um grupo de acesso */
     parameters: {
-      /**
-       * @description ID de um grupo de acesso
-       * @example 1
-       */
       path: {
+        /**
+         * @description ID de um grupo de acesso
+         * @example 1
+         */
         accessGroupId: number;
       };
     };
@@ -1619,14 +1624,14 @@ export interface operations {
       };
     };
   };
+  /** Deleta um grupo de acesso */
   delete_6: {
-    /** Deleta um grupo de acesso */
     parameters: {
-      /**
-       * @description ID de um grupo de acesso
-       * @example 1
-       */
       path: {
+        /**
+         * @description ID de um grupo de acesso
+         * @example 1
+         */
         accessGroupId: number;
       };
     };
@@ -1647,13 +1652,13 @@ export interface operations {
       };
     };
   };
+  /** Associa as permissões relacionadas ao grupo atual */
   associate_1: {
-    /** Associa as permissões relacionadas ao grupo atual */
     parameters: {
-      /** @description ID do grupo de acesso */
-      /** @description ID da permissão */
       path: {
+        /** @description ID do grupo de acesso */
         accessGroupId: number;
+        /** @description ID da permissão */
         permissionId: number;
       };
     };
@@ -1674,13 +1679,13 @@ export interface operations {
       };
     };
   };
+  /** Disassocia as permissões relacionadas ao grupo atual */
   disassociate_1: {
-    /** Disassocia as permissões relacionadas ao grupo atual */
     parameters: {
-      /** @description ID do grupo de acesso */
-      /** @description ID da permissão */
       path: {
+        /** @description ID do grupo de acesso */
         accessGroupId: number;
+        /** @description ID da permissão */
         permissionId: number;
       };
     };
@@ -1701,14 +1706,14 @@ export interface operations {
       };
     };
   };
+  /** Lista as estações de trabalho */
   search: {
-    /** Lista as estações de trabalho */
-    parameters?: {
-      /**
-       * @description Nome da Estação de Trabalho
-       * @example Bloco B Apto 178
-       */
+    parameters: {
       query?: {
+        /**
+         * @description Nome da Estação de Trabalho
+         * @example Bloco B Apto 178
+         */
         workStationName?: string;
       };
     };
@@ -1721,8 +1726,8 @@ export interface operations {
       };
     };
   };
+  /** Cria uma nova estação de trabalho */
   create: {
-    /** Cria uma nova estação de trabalho */
     /** @description Representação de uma nova estação de trabalho */
     requestBody: {
       content: {
@@ -1738,19 +1743,19 @@ export interface operations {
       };
     };
   };
+  /** Lista os usuários */
   search_1: {
-    /** Lista os usuários */
-    parameters?: {
-      /**
-       * @description Nome do usuário
-       * @example Pedro
-       */
-      /**
-       * @description Cpf do usuário
-       * @example 99999999999
-       */
+    parameters: {
       query?: {
+        /**
+         * @description Nome do usuário
+         * @example Pedro
+         */
         userName?: string;
+        /**
+         * @description Cpf do usuário
+         * @example 99999999999
+         */
         userCpf?: string;
       };
     };
@@ -1763,8 +1768,8 @@ export interface operations {
       };
     };
   };
+  /** Cria um novo usuário */
   create_1: {
-    /** Cria um novo usuário */
     /** @description Representação de um novo usuário */
     requestBody: {
       content: {
@@ -1780,8 +1785,8 @@ export interface operations {
       };
     };
   };
+  /** Cria um Recurso do Tipo Material */
   create_2: {
-    /** Cria um Recurso do Tipo Material */
     /** @description Representação de um novo Recurso do Tipo Material */
     requestBody: {
       content: {
@@ -1797,8 +1802,8 @@ export interface operations {
       };
     };
   };
+  /** Cria um Recurso do Tipo Equipamento */
   create_3: {
-    /** Cria um Recurso do Tipo Equipamento */
     /** @description Representação de um novo Recurso do Tipo Equipamento */
     requestBody: {
       content: {
@@ -1814,15 +1819,15 @@ export interface operations {
       };
     };
   };
+  /** Lista os movimentos de recursos */
   all_1: {
-    /** Lista os movimentos de recursos */
-    parameters?: {
-      /** @description Número da página (0..N). */
-      /** @description Quantidade de elementos por página */
-      /** @description Critério de ordenação: propriedade(asc|desc). */
+    parameters: {
       query?: {
+        /** @description Número da página (0..N). */
         page?: number;
+        /** @description Quantidade de elementos por página */
         size?: number;
+        /** @description Critério de ordenação: propriedade(asc|desc). */
         sort?: string;
       };
     };
@@ -1835,8 +1840,8 @@ export interface operations {
       };
     };
   };
+  /** Cria um novo movimento de recurso */
   create_4: {
-    /** Cria um novo movimento de recurso */
     /** @description Representação de uma novo movimento de recurso */
     requestBody: {
       content: {
@@ -1858,15 +1863,15 @@ export interface operations {
       };
     };
   };
+  /** Lista os setores */
   search_3: {
-    /** Lista os setores */
     parameters: {
-      /**
-       * @description Nome do setor
-       * @example Acabamento
-       */
       query: {
         sectorFilter: components['schemas']['SectorFilter'];
+        /**
+         * @description Nome do setor
+         * @example Acabamento
+         */
         sectorName?: string;
       };
     };
@@ -1879,8 +1884,8 @@ export interface operations {
       };
     };
   };
+  /** Cria um novo setor */
   create_5: {
-    /** Cria um novo setor */
     /** @description Representação de um novo setor */
     requestBody: {
       content: {
@@ -1896,45 +1901,45 @@ export interface operations {
       };
     };
   };
+  /** Lista as Tarefas */
   search_5: {
-    /** Lista as Tarefas */
-    parameters?: {
-      /**
-       * @description Título da Tarefa
-       * @example Revestir Banheiros
-       */
-      /**
-       * @description Data de Início
-       * @example 2023-01-10T15:00:00Z
-       */
-      /**
-       * @description Data de Finalização
-       * @example 2023-01-21T14:00:00Z
-       */
-      /**
-       * @description Data final para conclusão
-       * @example 2023-01-22T11:07:00Z
-       */
-      /**
-       * @description Status de Finalização
-       * @example true
-       */
-      /**
-       * @description Status de Aprovação
-       * @example false
-       */
-      /** @description Número da página (0..N). */
-      /** @description Quantidade de elementos por página */
-      /** @description Critério de ordenação: propriedade(asc|desc). */
+    parameters: {
       query?: {
+        /**
+         * @description Título da Tarefa
+         * @example Revestir Banheiros
+         */
         assignmentTitle?: string;
+        /**
+         * @description Data de Início
+         * @example 2023-01-10T15:00:00Z
+         */
         'A data inicial'?: Record<string, never>;
+        /**
+         * @description Data de Finalização
+         * @example 2023-01-21T14:00:00Z
+         */
         endDate?: Record<string, never>;
+        /**
+         * @description Data final para conclusão
+         * @example 2023-01-22T11:07:00Z
+         */
         'O prazo para conclusão'?: Record<string, never>;
+        /**
+         * @description Status de Finalização
+         * @example true
+         */
         'A conclusão'?: boolean;
+        /**
+         * @description Status de Aprovação
+         * @example false
+         */
         'A aprovação'?: boolean;
+        /** @description Número da página (0..N). */
         page?: number;
+        /** @description Quantidade de elementos por página */
         size?: number;
+        /** @description Critério de ordenação: propriedade(asc|desc). */
         sort?: string;
       };
     };
@@ -1947,8 +1952,8 @@ export interface operations {
       };
     };
   };
+  /** Cria uma nova tarefa */
   create_6: {
-    /** Cria uma nova tarefa */
     /** @description Representação de um nova tarefa */
     requestBody: {
       content: {
@@ -1964,8 +1969,8 @@ export interface operations {
       };
     };
   };
+  /** Lista os grupos de acesso */
   all_4: {
-    /** Lista os grupos de acesso */
     responses: {
       /** @description OK */
       200: {
@@ -1975,8 +1980,8 @@ export interface operations {
       };
     };
   };
+  /** Cria um grupo de acesso */
   create_7: {
-    /** Cria um grupo de acesso */
     /** @description Representação de um a novo grupo de acesso */
     requestBody: {
       content: {
@@ -1992,8 +1997,8 @@ export interface operations {
       };
     };
   };
+  /** Lista os grupos de acesso  de cada usuário */
   all: {
-    /** Lista os grupos de acesso  de cada usuário */
     parameters: {
       path: {
         userId: number;
@@ -2014,20 +2019,20 @@ export interface operations {
       };
     };
   };
+  /** Lista recursos */
   search_2: {
-    /** Lista recursos */
-    parameters?: {
-      /**
-       * @description Nome do recurso
-       * @example Cimento
-       */
-      /** @description Número da página (0..N). */
-      /** @description Quantidade de elementos por página */
-      /** @description Critério de ordenação: propriedade(asc|desc). */
+    parameters: {
       query?: {
+        /**
+         * @description Nome do recurso
+         * @example Cimento
+         */
         supplyName?: string;
+        /** @description Número da página (0..N). */
         page?: number;
+        /** @description Quantidade de elementos por página */
         size?: number;
+        /** @description Critério de ordenação: propriedade(asc|desc). */
         sort?: string;
       };
     };
@@ -2040,11 +2045,11 @@ export interface operations {
       };
     };
   };
+  /** Busca um recurso por ID */
   findById: {
-    /** Busca um recurso por ID */
     parameters: {
-      /** @description ID de um recurso */
       path: {
+        /** @description ID de um recurso */
         supplyId: number;
       };
     };
@@ -2063,11 +2068,11 @@ export interface operations {
       };
     };
   };
+  /** Deleta um recurso */
   delete_2: {
-    /** Deleta um recurso */
     parameters: {
-      /** @description ID de um recurso */
       path: {
+        /** @description ID de um recurso */
         supplyId: number;
       };
     };
@@ -2082,8 +2087,8 @@ export interface operations {
       };
     };
   };
+  /** Lista as notificações enviadas, por recursos atribuídos */
   findNotificationBySuppliesAvailable: {
-    /** Lista as notificações enviadas, por recursos atribuídos */
     responses: {
       /** @description OK */
       200: {
@@ -2093,8 +2098,8 @@ export interface operations {
       };
     };
   };
+  /** Lista as permissões de cada grupo de acesso */
   all_2: {
-    /** Lista as permissões de cada grupo de acesso */
     responses: {
       /** @description OK */
       200: {
@@ -2104,18 +2109,18 @@ export interface operations {
       };
     };
   };
+  /** Lista as notificações enviadas, por tarefas atribuídas */
   search_4: {
-    /** Lista as notificações enviadas, por tarefas atribuídas */
-    parameters?: {
-      /** @description Estado da tarefa completa (true|false). */
-      /** @description Estado da tarefa aprovada (true|false). */
-      /**
-       * @description Data atual.
-       * @example 2023-01-08T22:30:00Z
-       */
+    parameters: {
       query?: {
+        /** @description Estado da tarefa completa (true|false). */
         'A conclusão'?: boolean;
+        /** @description Estado da tarefa aprovada (true|false). */
         'A aprovação'?: boolean;
+        /**
+         * @description Data atual.
+         * @example 2023-01-08T22:30:00Z
+         */
         currentDate?: Record<string, never>;
       };
     };
@@ -2128,8 +2133,8 @@ export interface operations {
       };
     };
   };
+  /** Lista colaboradores atribuídos a respectivas tarefas */
   all_3: {
-    /** Lista colaboradores atribuídos a respectivas tarefas */
     parameters: {
       path: {
         assignmentId: number;
@@ -2144,8 +2149,8 @@ export interface operations {
       };
     };
   };
+  /** Lista as permissões relacionadas ao grupo atual */
   all_5: {
-    /** Lista as permissões relacionadas ao grupo atual */
     parameters: {
       path: {
         accessGroupId: number;
@@ -2172,14 +2177,14 @@ export interface operations {
       };
     };
   };
+  /** Disponibiliza um movimento de recurso em estado ocioso */
   vacateSupply: {
-    /** Disponibiliza um movimento de recurso em estado ocioso */
     parameters: {
-      /**
-       * @description ID de um movimento de recurso
-       * @example 1
-       */
       path: {
+        /**
+         * @description ID de um movimento de recurso
+         * @example 1
+         */
         supplyMovementId: number;
       };
     };

@@ -1,4 +1,9 @@
-import { DeleteOutlined, EditOutlined, WarningFilled } from '@ant-design/icons';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  UserOutlined,
+  WarningFilled,
+} from '@ant-design/icons';
 import {
   Avatar,
   Button,
@@ -22,6 +27,7 @@ import usePageTitle from '../../core/usePageTitle';
 import WrapperDefault from '../components/WrapperDefault';
 
 import { format } from 'date-fns';
+import useUserPhoto from '../../core/hooks/useUserPhoto';
 import { User } from '../../sdk';
 import {
   cpfToFormat,
@@ -34,10 +40,14 @@ export default function EmployeeDetailedView() {
   const params = useParams<{ employeeId: string }>();
 
   const { user, fetchUser, removeUser, notFound, entityInUse } = useUser();
+  const { userPhoto, fetchUserPhoto } = useUserPhoto();
 
   useEffect(() => {
-    if (!isNaN(Number(params.employeeId))) fetchUser(Number(params.employeeId));
-  }, [fetchUser, params.employeeId, entityInUse]);
+    if (!isNaN(Number(params.employeeId))) {
+      fetchUser(Number(params.employeeId));
+      fetchUserPhoto(Number(params.employeeId));
+    }
+  }, [fetchUser, fetchUserPhoto, params.employeeId, entityInUse]);
 
   if (isNaN(Number(params.employeeId)))
     return <Navigate to={'/colaboradores'} />;
@@ -53,7 +63,11 @@ export default function EmployeeDetailedView() {
       <Row justify={'start'} gutter={24}>
         <Col xs={24} lg={4}>
           <Row justify={'center'}>
-            <Avatar size={120} src={''} />
+            <Avatar
+              size={120}
+              src={userPhoto?.avatarUrl}
+              icon={<UserOutlined />}
+            />
           </Row>
         </Col>
         <Col xs={24} lg={8} style={{ marginBottom: '30px' }}>

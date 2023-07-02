@@ -36,12 +36,12 @@ export default function EmployeeEditView() {
     });
   }
 
-  if (!user || !userPhoto) return <Skeleton />;
+  if (!user) return <Skeleton />;
 
   return (
     <EmployeeForm
       user={user}
-      imageUrl={userPhoto?.imageUrl}
+      avatarUrl={userPhoto?.avatarUrl}
       onUpdate={handleUserUpdate}
       isCurrentUser={true}
       title="Edição de Colaborador"

@@ -2,6 +2,7 @@ package com.dcconnect.minimizingwaste.api.v1.assembler;
 
 import com.dcconnect.minimizingwaste.api.v1.controller.UserPhotoController;
 import com.dcconnect.minimizingwaste.api.v1.model.UserPhotoModel;
+import com.dcconnect.minimizingwaste.core.storage.StorageProperties;
 import com.dcconnect.minimizingwaste.domain.model.UserPhoto;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class UserPhotoAssembler extends RepresentationModelAssemblerSupport<User
     @Autowired
     private ModelMapper modelMapper;
 
+    @Autowired
+    private StorageProperties storageProperties;
+
     public UserPhotoAssembler() {
         super(UserPhotoController.class, UserPhotoModel.class);
     }
@@ -24,7 +28,6 @@ public class UserPhotoAssembler extends RepresentationModelAssemblerSupport<User
     public UserPhotoModel toModel(UserPhoto userPhoto){
 
         UserPhotoModel userPhotoModel = new UserPhotoModel();
-
         modelMapper.map(userPhoto, userPhotoModel);
 
         return userPhotoModel;

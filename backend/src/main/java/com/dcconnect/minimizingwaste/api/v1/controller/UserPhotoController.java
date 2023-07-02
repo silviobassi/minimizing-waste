@@ -1,6 +1,9 @@
 package com.dcconnect.minimizingwaste.api.v1.controller;
 
+import com.dcconnect.minimizingwaste.api.v1.assembler.AvatarAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.UserPhotoAssembler;
+import com.dcconnect.minimizingwaste.api.v1.model.Avatar;
+import com.dcconnect.minimizingwaste.api.v1.model.AvatarModel;
 import com.dcconnect.minimizingwaste.api.v1.model.UserPhotoModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.UserPhotoInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.UserPhotoControllerOpenApi;
@@ -15,7 +18,6 @@ import com.dcconnect.minimizingwaste.domain.service.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +29,6 @@ import static com.dcconnect.minimizingwaste.domain.service.PhotoStorageService.R
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/v1/users/{userId}/photo")
@@ -44,6 +45,9 @@ public class UserPhotoController implements UserPhotoControllerOpenApi {
 
     @Autowired
     private UserPhotoAssembler userPhotoAssembler;
+
+    @Autowired
+    private AvatarAssembler avatarAssembler;
     @Autowired
     private UserRepository userRepository;
 
@@ -89,9 +93,11 @@ public class UserPhotoController implements UserPhotoControllerOpenApi {
             RecoveredPhoto recoveredPhoto = photoStorageService.recover(userPhoto.getFileName());
 
             if(recoveredPhoto.isUrl()){
-                var imageUrl = Map.of("imageUrl", recoveredPhoto.getUrl());
+
+                Avatar avatar = new Avatar();
+                avatar.setAvatarUrl(recoveredPhoto.getUrl());
                 return ResponseEntity.status(HttpStatus.OK)
-                        .body(imageUrl);
+                        .body(avatarAssembler.toModel(avatar));
             } else {
                 return ResponseEntity.ok()
                         .contentType(mediaTypePhoto)

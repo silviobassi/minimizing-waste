@@ -5,6 +5,7 @@ import com.dcconnect.minimizingwaste.domain.service.PhotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FileCopyUtils;
 
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 

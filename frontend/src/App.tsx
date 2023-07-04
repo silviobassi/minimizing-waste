@@ -1,12 +1,19 @@
 import Routes from './app/routes';
 
 import { notification } from 'antd';
+import jwtDecode from 'jwt-decode';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { Authentication } from './auth/Auth';
 import AuthService from './auth/Authorization.service';
+import useAuth from './core/hooks/useAuth';
 
 function App() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const { fetchUser } = useAuth();
 
   useEffect(() => {
     async function identify() {
@@ -44,12 +51,22 @@ function App() {
         AuthService.setAccessToken(access_token);
         AuthService.setRefreshToken(refresh_token);
 
+        const decodedToken: Authentication.AccessTokenDecodedPayload =
+          jwtDecode(access_token);
+        fetchUser(decodedToken.user_id);
+
         navigate('/');
+      }
+
+      if (accessToken) {
+        const decodedToken: Authentication.AccessTokenDecodedPayload =
+          jwtDecode(accessToken);
+        fetchUser(decodedToken.user_id);
       }
     }
 
     identify();
-  }, []);
+  }, [dispatch, navigate]);
   return <Routes />;
 }
 

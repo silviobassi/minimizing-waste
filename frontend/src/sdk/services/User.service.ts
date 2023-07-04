@@ -10,7 +10,7 @@ class UserService extends Service {
     ).then(this.getData);
   }
 
-  static getDetailedUser(userId: number) {
+  static getDetailedUser(userId: number): Promise<User.Detailed> {
     return this.Http.get<User.Detailed>(`/users/${userId}`).then(this.getData);
   }
 

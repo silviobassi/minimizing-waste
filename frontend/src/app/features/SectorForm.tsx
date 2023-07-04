@@ -1,4 +1,5 @@
 import { Button, Form, Input, notification, Space } from 'antd';
+import { useState } from 'react';
 import { Sector, SectorService } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
 import WrapperDefault from '../components/WrapperDefault';
@@ -14,6 +15,8 @@ interface SectorFormDefaultProps {
 
 export default function SectorForm(props: SectorFormDefaultProps) {
   const [form] = Form.useForm<Sector.Input>();
+  const [accessDeniedError, setAccessDeniedError] = useState(false);
+
   return (
     <WrapperDefault title={props.title}>
       <Form
@@ -22,6 +25,7 @@ export default function SectorForm(props: SectorFormDefaultProps) {
         onFinish={async (sector: Sector.Input) => {
           try {
             const data = await SectorService.createSector(sector);
+
             notification.success({
               message: 'Sucesso',
               description: `Setor ${data?.name} criado com sucesso`,
@@ -58,7 +62,7 @@ export default function SectorForm(props: SectorFormDefaultProps) {
         >
           <Input placeholder="ex:nome do setor" size="large" />
         </Form.Item>
-        <Form.Item style={{marginTop: 40}}>
+        <Form.Item style={{ marginTop: 40 }}>
           <Space direction="horizontal">
             <Button
               type="primary"

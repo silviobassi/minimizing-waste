@@ -39,7 +39,7 @@ export default function EmployeeDetailedView() {
   const { lg, xs } = useBreakpoint();
   const params = useParams<{ employeeId: string }>();
 
-  const { user, fetchUser, removeUser, notFound, entityInUse } = useUser();
+  const { user, fetchUser, removeUser, notFound } = useUser();
   const { userPhoto, fetchUserPhoto } = useUserPhoto();
 
   useEffect(() => {
@@ -47,7 +47,7 @@ export default function EmployeeDetailedView() {
       fetchUser(Number(params.employeeId));
       fetchUserPhoto(Number(params.employeeId));
     }
-  }, [fetchUser, fetchUserPhoto, params.employeeId, entityInUse]);
+  }, [fetchUser, fetchUserPhoto, params.employeeId]);
 
   if (isNaN(Number(params.employeeId)))
     return <Navigate to={'/colaboradores'} />;

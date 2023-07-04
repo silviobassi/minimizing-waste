@@ -10,15 +10,19 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useSuppliesMovements from '../../core/hooks/useSuppliesMovements';
 import { Supply } from '../../sdk/@types';
+import AccessDenied from '../components/AccessDenied';
 import WrapperDefault from '../components/WrapperDefault';
 
 export default function SupplyMovementList() {
   const navigate = useNavigate();
 
-  const { suppliesMovements, fetchSuppliesMovements } = useSuppliesMovements();
+  const { suppliesMovements, fetchSuppliesMovements, accessDeniedError } =
+    useSuppliesMovements();
   useEffect(() => {
     fetchSuppliesMovements();
   }, [fetchSuppliesMovements]);
+
+  if (accessDeniedError) return <AccessDenied />;
 
   return (
     <WrapperDefault title="Lista de Movimento de Recursos">

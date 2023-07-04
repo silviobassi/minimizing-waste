@@ -16,7 +16,7 @@ const authServer = axios.create({
 
 authServer.interceptors.response.use(undefined, async (error) => {
   if (error?.response?.status === 403) {
-    console.log('entrou')
+    console.log('entrou');
     AuthService.imperativelySendToLogout();
   }
 
@@ -35,7 +35,7 @@ export interface OAuthAuthorizationTokenResponse {
 export default class AuthService {
   public static imperativelySendToLogout() {
     window.localStorage.clear();
-    window.location.href = `http://localhost:8080/logout?redirect=http://127.0.0.1/5173`;
+    window.location.href = `http://localhost:8080/logout?redirect=http://127.0.0.1:5173/`;
   }
 
   public static async renewToken(config: {
@@ -73,7 +73,7 @@ export default class AuthService {
     const encodedData = qs.stringify(data);
 
     return authServer
-      .post<OAuthAuthorizationTokenResponse>('/oauth2/token', data, {
+      .post<OAuthAuthorizationTokenResponse>('/oauth2/token', encodedData, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
           Authorization: `Basic ${btoa('minimizing-web:web123')}`,
@@ -101,7 +101,7 @@ export default class AuthService {
     this.setCodeVerifier(code_verifier);
 
     const loginUrl = this.getLoginScreenUrl(code_challenge);
-
+    console.log(loginUrl);
     // imperativo
     // gera efeito colateral
     window.location.href = loginUrl;

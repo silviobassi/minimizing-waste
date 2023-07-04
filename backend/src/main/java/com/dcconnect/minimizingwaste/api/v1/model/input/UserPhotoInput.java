@@ -3,6 +3,8 @@ package com.dcconnect.minimizingwaste.api.v1.model.input;
 import com.dcconnect.minimizingwaste.core.validation.FileContentType;
 import com.dcconnect.minimizingwaste.core.validation.FileSize;
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.http.MediaType;
@@ -22,6 +24,7 @@ public class UserPhotoInput {
     private MultipartFile file;
 
     @Schema(description = "descrição da foto do usuário")
+    @Size(max = 150)
     @NotBlank
     private String description;
 }

@@ -54,8 +54,6 @@ export default function EmployeeDetailedView() {
 
   if (notFound) return <Card>usuário não encontrado</Card>;
 
-  if (entityInUse) return <Card>usuário em uso</Card>;
-
   if (!user) return <Skeleton />;
 
   return (
@@ -132,7 +130,7 @@ export default function EmployeeDetailedView() {
                 group.name === 'Administrador' ? (
                   <Tag color="blue">{group.name.toUpperCase()}</Tag>
                 ) : (
-                  <Tag color="red">{group.name.toUpperCase()}</Tag>
+                  <Tag color="green">{group.name.toUpperCase()}</Tag>
                 ),
               )}
             </Descriptions.Item>

@@ -11,15 +11,18 @@ import { useNavigate } from 'react-router-dom';
 import useAssignments from '../../core/hooks/useAssignments';
 import { Assignment } from '../../sdk/@types';
 
+import AccessDenied from '../components/AccessDenied';
 import WrapperDefault from '../components/WrapperDefault';
 
 export default function TaskList() {
   const navigate = useNavigate();
-  const { assignments, fetchAssignments } = useAssignments();
+  const { assignments, fetchAssignments, accessDeniedError } = useAssignments();
 
   useEffect(() => {
     fetchAssignments();
   }, [fetchAssignments]);
+
+  if (accessDeniedError) return <AccessDenied />;
 
   return (
     <WrapperDefault title="Lista de Tarefas">

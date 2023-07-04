@@ -20,12 +20,17 @@ const initialState: UserState = {
 
 export const getAllUsers: User.PagedModelDetailed = createAsyncThunk(
   'user/getAllUsers',
-  async (page: number) =>
-    UserService.getAllUsers({
-      sort: ['asc'],
-      page: page,
-      size: 4,
-    }),
+  async (page: number, { rejectWithValue }) => {
+    try {
+      return await UserService.getAllUsers({
+        sort: ['asc'],
+        page: page,
+        size: 4,
+      });
+    } catch (error: any ) {
+      return rejectWithValue({ ...error });
+    }
+  },
 );
 
 export default createReducer(initialState, (builder) => {

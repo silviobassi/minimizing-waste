@@ -53,15 +53,11 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
 
   useEffect(() => {}, [photo]);
 
-  const beforeUpload = (file: RcFile) => {
-    setPhoto(file);
-    return true;
-  };
-
   const getBase64 = (img: RcFile, callback: (url: string) => void) => {
     const reader = new FileReader();
     reader.addEventListener('load', () => callback(reader.result as string));
     reader.readAsDataURL(img);
+    setPhoto(img);
   };
 
   const handleChange: UploadProps['onChange'] = (
@@ -76,7 +72,6 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
   return (
     <WrapperDefault title={props.title}>
       <Form
-        initialValues={props.user}
         layout={'vertical'}
         autoComplete="off"
         form={form}
@@ -90,11 +85,18 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
               cpf: user.cpf ? user.cpf.replace(/\D/g, '') : user.cpf,
             };
 
+            if (!photo) {
+              notification.error({
+                message: 'A foto do usuário é obrigatória!',
+              });
+              return;
+            }
+
             if (props.user)
               return props.onUpdate && props.onUpdate(userDTO, photo);
 
             const dataUser = await UserService.createUser(userDTO);
-            if (photo) await FileService.updatePhoto(photo, dataUser.id);
+            await FileService.updatePhoto(photo, dataUser.id);
 
             notification.success({
               message: 'Sucesso',
@@ -103,10 +105,22 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
           } catch (error) {
             if (error instanceof CustomError) {
               if (error.data?.objects) {
+                
                 form.setFields(
                   error.data.objects.map((error: any) => {
                     return {
-                      name: error.name?.split('.') as string[],
+                      name: error.name
+                        ?.split(/(\.|\[|\])/gi)
+                        .filter(
+                          (str: string) =>
+                            str !== '.' &&
+                            str !== '[' &&
+                            str !== ']' &&
+                            str !== '',
+                        )
+                        .map((str: string) =>
+                          isNaN(Number(str)) ? str : Number(str),
+                        ) as string[],
                       errors: [error.userMessage],
                     };
                   }),
@@ -126,7 +140,9 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
               });
             }
           }
+
         }}
+        initialValues={props.user}
       >
         <Divider orientation="left">DADOS PESSOAIS</Divider>
         <Row justify={'space-between'} gutter={24}>
@@ -136,11 +152,10 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
                 name="avatar"
                 showUploadList={false}
                 maxCount={1}
-                beforeUpload={beforeUpload}
                 onChange={handleChange}
               >
                 <Avatar
-                  src={photo ? imageUrl : (props.avatarUrl ? props.avatarUrl : imageUrl)}
+                  src={photo ? imageUrl : props.avatarUrl}
                   size={128}
                   style={{ cursor: 'pointer' }}
                   icon={<UserOutlined />}

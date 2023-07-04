@@ -5,15 +5,19 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useWorkStations from '../../core/hooks/useWorkStations';
 import { WorkStation } from '../../sdk/@types';
+import AccessDenied from '../components/AccessDenied';
 import WrapperDefault from '../components/WrapperDefault';
 
 export default function WorkStationList() {
   const navigate = useNavigate();
-  const { workStations, fetchWorkStations } = useWorkStations();
+  const { workStations, fetchWorkStations, accessDeniedError } =
+    useWorkStations();
 
   useEffect(() => {
     fetchWorkStations();
   }, [fetchWorkStations]);
+
+  if (accessDeniedError) return <AccessDenied />;
 
   return (
     <WrapperDefault title="Lista de Estações de Trabalho">

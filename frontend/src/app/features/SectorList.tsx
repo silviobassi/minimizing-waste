@@ -8,14 +8,17 @@ import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useSectors from '../../core/hooks/useSectors';
 import { Sector } from '../../sdk/@types';
+import AccessDenied from '../components/AccessDenied';
 import WrapperDefault from '../components/WrapperDefault';
 export default function SectorList() {
   const navigate = useNavigate();
-  const { sectors, fetchSectors } = useSectors();
+  const { sectors, fetchSectors, accessDeniedError } = useSectors();
 
   useEffect(() => {
     fetchSectors();
   }, [fetchSectors]);
+
+  if (accessDeniedError) return <AccessDenied />;
 
   return (
     <WrapperDefault title="Edição de Setor">

@@ -4,9 +4,15 @@ import UserReducer from './User.reducer';
 
 const observeActions: Middleware = () => (next) => (action) => {
   if(isRejected(action)){
-    notification.error({
-      message: action.error.message
-    })
+    const ignoredActions = ['user/getAllUsers/rejected'];
+
+    const shouldNotify = !ignoredActions.includes(action.type);
+  
+    if (shouldNotify) {
+      notification.error({
+        message: action.error.message,
+      });
+    }
   }
 
   next(action)

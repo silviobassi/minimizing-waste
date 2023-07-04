@@ -5,19 +5,31 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useUsers from '../../core/hooks/useUsers';
 import { User } from '../../sdk/@types';
+import { AccessDeniedError } from '../../sdk/errors';
 import {
   cpfToFormat,
   phoneToFormat,
 } from '../../sdk/utils/generateFormatterData';
 import WrapperDefault from '../components/WrapperDefault';
+import AccessDenied from '../components/AccessDenied';
 
 export default function EmployeeList() {
   const { users, fetchUsers, fetching } = useUsers();
   const [page, setPage] = useState<number>(0);
+  const [accessDeniedError, setAccessDeniedError] = useState(false);
 
   useEffect(() => {
-    fetchUsers(page);
+    fetchUsers(page).catch((err) => {
+      if (err?.data?.status === 403) {
+        setAccessDeniedError(true);
+        return;
+      }
+
+      throw err;
+    });
   }, [fetchUsers, page]);
+
+  if(accessDeniedError) return <AccessDenied />
 
   return (
     <WrapperDefault title="Lista de Colaboradores">
@@ -61,7 +73,7 @@ export default function EmployeeList() {
                 <>
                   {accessGroups.map((group: User.AccessGroupSummary) => (
                     <Tag
-                      color={group.name === 'Administrador' ? 'red' : 'blue'}
+                      color={group.name === 'Administrador' ? 'blue' : 'green'}
                     >
                       {group.name}
                     </Tag>

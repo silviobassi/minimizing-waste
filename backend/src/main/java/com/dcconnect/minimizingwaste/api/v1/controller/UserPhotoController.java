@@ -62,7 +62,7 @@ public class UserPhotoController implements UserPhotoControllerOpenApi {
         UserPhoto userPhoto = new UserPhoto();
         userPhoto.setUser(user);
         userPhoto.setDescription(userPhotoInput.getDescription());
-        userPhoto.setFileName(userPhotoInput.getFile().getOriginalFilename());
+        userPhoto.setFileName(userPhotoInput.getFile().getName());
         userPhoto.setContentType(userPhotoInput.getFile().getContentType());
         userPhoto.setSize(userPhotoInput.getFile().getSize());
 

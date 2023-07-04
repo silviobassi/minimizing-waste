@@ -1,19 +1,21 @@
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
 import { Button, Descriptions, Space, Tooltip } from 'antd';
 import Table from 'antd/es/table';
-import { Supply } from '../../sdk/@types';
-import WrapperDefault from '../components/WrapperDefault';
-
 import { useEffect, useState } from 'react';
+import { Supply } from '../../sdk/@types';
+import AccessDenied from '../components/AccessDenied';
+import WrapperDefault from '../components/WrapperDefault';
 
 import useSupplies from '../../core/hooks/useSupplies';
 
 export default function SupplyList() {
-  const { supplies, fetchSupplies } = useSupplies();
+  const { supplies, fetchSupplies, accessDeniedError } = useSupplies();
   const [page, setPage] = useState<number>(0);
   useEffect(() => {
     fetchSupplies(page);
   }, [fetchSupplies, page]);
+
+  if (accessDeniedError) return <AccessDenied />;
 
   return (
     <WrapperDefault title="Lista de Recursos">

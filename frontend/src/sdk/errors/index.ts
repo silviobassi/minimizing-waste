@@ -1,5 +1,5 @@
 export const ERRORS = {
-  ACCESS_DENIED: 'https://enfatiza7.com/acess-denied',
+  ACCESS_DENIED: 'https://enfatiza7.com/access-denied',
   INVALID_DATA: 'https://enfatiza7.com/invalid-data',
   SYSTEM_ERROR: 'https://enfatiza7.com/system-error',
   INVALID_PARAMETER: 'https://enfatiza7.com/invalid-parameter',

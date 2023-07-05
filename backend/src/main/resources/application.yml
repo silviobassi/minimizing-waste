@@ -71,8 +71,8 @@ minimizing-waste:
     local:
       directory: /avatar
     s3:
-      #access-key-id:
-      #secret-access-key:
+      access-key-id: AKIAQYMZXVGOUDLE4AFZ
+      secret-access-key: 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
       bucket: minimizing-waste
       region: us-east-1
       directory: user-photo

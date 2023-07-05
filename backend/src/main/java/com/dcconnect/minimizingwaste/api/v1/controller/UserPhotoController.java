@@ -77,7 +77,7 @@ public class UserPhotoController implements UserPhotoControllerOpenApi {
         return userPhotoAssembler.toModel(userPhoto);
     }
 
-    @CheckSecurity.Users.CanConsult
+    @CheckSecurity.Users.CanPhotoConsult
     @GetMapping("/recovered")
     public ResponseEntity<?> servePhoto(
             @PathVariable Long userId, @RequestHeader(name = "accept") String acceptHeader)

@@ -333,8 +333,6 @@ export interface components {
        * @example 74697
        */
       size?: number;
-      /** @example http://server.com/dlkflwi9fi94kegje0gk9gj0hgk09gk.jpeg */
-      avatarUrl?: string;
       _links?: components['schemas']['Links'];
     };
     PasswordInput: {
@@ -376,9 +374,6 @@ export interface components {
        */
       manipulation: 'TRANSMUTÁVEL' | 'IMUTÁVEL';
     };
-    AvatarModel: {
-      avatarUrl?: string
-    }
     MaterialSupplyModel: {
       /**
        * Format: int64
@@ -720,7 +715,6 @@ export interface components {
        */
       id?: number;
       supply?: components['schemas']['SupplySummaryModel'];
-      supplyDescription?: components['schemas']['SupplyDescriptionSummaryModel'];
       workStation?: components['schemas']['WorkStationDetailedModel'];
       notification?: components['schemas']['NotificationModel'];
     };

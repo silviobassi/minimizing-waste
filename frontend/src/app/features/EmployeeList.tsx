@@ -1,22 +1,25 @@
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { Button, Space, Table, Tag, Tooltip } from 'antd';
+import { Button, Popconfirm, Space, Table, Tag, Tooltip } from 'antd';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import useUser from '../../core/hooks/useUser';
+import useUserPhoto from '../../core/hooks/useUserPhoto';
 import useUsers from '../../core/hooks/useUsers';
 import { User } from '../../sdk/@types';
-import { AccessDeniedError } from '../../sdk/errors';
 import {
   cpfToFormat,
   phoneToFormat,
 } from '../../sdk/utils/generateFormatterData';
-import WrapperDefault from '../components/WrapperDefault';
 import AccessDenied from '../components/AccessDenied';
+import WrapperDefault from '../components/WrapperDefault';
 
 export default function EmployeeList() {
   const { users, fetchUsers, fetching } = useUsers();
   const [page, setPage] = useState<number>(0);
   const [accessDeniedError, setAccessDeniedError] = useState(false);
+  const { removeUser } = useUser();
+  const { deletePhoto } = useUserPhoto();
 
   useEffect(() => {
     fetchUsers(page).catch((err) => {
@@ -29,7 +32,7 @@ export default function EmployeeList() {
     });
   }, [fetchUsers, page]);
 
-  if(accessDeniedError) return <AccessDenied />
+  if (accessDeniedError) return <AccessDenied />;
 
   return (
     <WrapperDefault title="Lista de Colaboradores">
@@ -95,7 +98,19 @@ export default function EmployeeList() {
                   </Link>
                 </Tooltip>
                 <Tooltip title={'Excluir'}>
-                  <Button type={'link'} icon={<DeleteOutlined />} />
+                  <Popconfirm
+                    placement="left"
+                    title="Remover o Usuário?"
+                    onConfirm={() => {
+                      deletePhoto(Number(id));
+                      removeUser(id);
+                    }}
+                    onCancel={() => null}
+                    okText="Excluir"
+                    cancelText="Cancelar"
+                  >
+                    <Button type={'link'} icon={<DeleteOutlined />} />
+                  </Popconfirm>
                 </Tooltip>
                 <Tooltip title={'Ver Detalhes'}>
                   <Link to={`/colaborador/${id}/detalhes`}>

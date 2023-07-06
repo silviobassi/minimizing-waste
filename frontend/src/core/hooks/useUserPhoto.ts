@@ -9,8 +9,13 @@ export default function useUserPhoto() {
     await FileService.getUserPhoto(userId).then(setUserPhoto);
   }, []);
 
+  const deletePhoto = async (userId: number) => {
+    await FileService.deletePhotoExists(userId);
+  };
+
   return {
     userPhoto,
     fetchUserPhoto,
+    deletePhoto,
   };
 }

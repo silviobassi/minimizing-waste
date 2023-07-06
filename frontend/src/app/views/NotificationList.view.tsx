@@ -1,5 +1,5 @@
 import { Col, Divider, Form, Row, Select } from 'antd';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import usePageTitle from '../../core/usePageTitle';
 import ApprovedTasksNotification from '../features/ApprovedTasksNotification';
 import CompletionOfTasksNotification from '../features/CompletionOfTasksNotification';
@@ -10,6 +10,11 @@ import SupplyAvailableNotification from '../features/SupplyAvailableNotification
 export default function NotificationListView() {
   usePageTitle('Listas de Notificações');
   const [notificationType, setNotificationType] = useState<any>('available');
+  const [accessDeniedError, setAccessDeniedError] = useState(false);
+
+  useEffect(() => {
+    // implementar o component de acesso negado
+  });
 
   const notifications: any = {
     available: <SupplyAvailableNotification />,
@@ -21,7 +26,6 @@ export default function NotificationListView() {
 
   const handleChange = (value: string) => {
     setNotificationType(value);
-    console.log(notifications[notificationType]);
   };
 
   return (

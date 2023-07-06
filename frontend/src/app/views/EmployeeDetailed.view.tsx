@@ -40,7 +40,7 @@ export default function EmployeeDetailedView() {
   const params = useParams<{ employeeId: string }>();
 
   const { user, fetchUser, removeUser, notFound } = useUser();
-  const { userPhoto, fetchUserPhoto } = useUserPhoto();
+  const { userPhoto, fetchUserPhoto, deletePhoto } = useUserPhoto();
 
   useEffect(() => {
     if (!isNaN(Number(params.employeeId))) {
@@ -87,6 +87,7 @@ export default function EmployeeDetailedView() {
                 onConfirm={() => {
                   confirm({
                     onOk() {
+                      deletePhoto(user?.id);
                       removeUser(user?.id);
                     },
                     icon: <WarningFilled style={{ color: '#1677FF' }} />,

@@ -10,6 +10,4 @@ public interface SupplyRepositoryQueries {
 
     void delete(SupplyMovement supplyMovement);
 
-
-
 }

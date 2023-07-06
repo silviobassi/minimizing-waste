@@ -1,6 +1,11 @@
-import { ExportOutlined, UserOutlined } from '@ant-design/icons';
-import { Avatar, Button, Layout, theme } from 'antd';
-import confirm from 'antd/lib/modal/confirm';
+import {
+  ExportOutlined,
+  InfoCircleFilled,
+  InfoCircleOutlined,
+  UserOutlined,
+  WarningTwoTone,
+} from '@ant-design/icons';
+import { Avatar, Button, Layout, Modal, theme } from 'antd';
 import { Link } from 'react-router-dom';
 import AuthService from '../../auth/Authorization.service';
 import useAuth from '../../core/hooks/useAuth';
@@ -15,6 +20,8 @@ export default function HeaderLayout() {
 
   const { user } = useAuth();
   const { photo } = useAuthPhoto();
+
+  const [modal, contextHolder] = Modal.useModal();
 
   return (
     <Header
@@ -51,13 +58,20 @@ export default function HeaderLayout() {
         </div>
         <Button
           onClick={() =>
-            confirm({
+            modal.confirm({
+              icon: <InfoCircleFilled style={{color: '#4096FF'}}/>,
               title: 'Fazer Logout',
               content:
                 'Deseja realmente fazer o logout? Será necessário inserir as credenciais novamente!',
               onOk() {
                 AuthService.imperativelySendToLogout();
               },
+              onCancel() {},
+              closable: true,
+              okButtonProps: { danger: true },
+              cancelButtonProps: {color: '#001529'},
+              okText: 'Fazer Logout',
+              cancelText: 'Permanecer Logado',
             })
           }
           size="large"
@@ -69,6 +83,8 @@ export default function HeaderLayout() {
             border: 'none',
           }}
         />
+
+        <div>{contextHolder}</div>
       </div>
     </Header>
   );

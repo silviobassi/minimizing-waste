@@ -10,9 +10,7 @@ public class SupplyMovementNotificationModel {
 
     @Schema(example = "1")
     private Long id;
-
     private SupplySummaryModel supply;
-    private SupplyDescriptionSummaryModel supplyDescription;
     private WorkStationDetailedModel workStation;
     private NotificationModel notification;
 }

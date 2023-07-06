@@ -69,7 +69,7 @@ function App() {
     }
 
     identify();
-  }, [dispatch, navigate, fetchUser]);
+  }, [dispatch, navigate, fetchUser, fetchUserPhoto]);
   return <Routes />;
 }
 

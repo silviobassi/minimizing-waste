@@ -24,8 +24,8 @@ public interface SupplyRepository extends CustomJpaRepository<Supply, Long>, Sup
             "join w.sector join  sm.supply s join s.supplyDescription  join  sm.notification")
     Page<SupplyMovement> findAllSupplyMovements(Pageable pageable);
 
-    @Query("from SupplyMovement sm join fetch sm.supply s join fetch s.supplyDescription join fetch sm.workStation w " +
-            "join fetch w.sector join fetch sm.notification")
+    @Query("from SupplyMovement sm join fetch sm.supply s  join fetch sm.workStation w " +
+            "join fetch w.sector join fetch sm.notification where sm.notBusy = true")
     List<SupplyMovement> findNotificationBySuppliesAvailable();
 
     @Query("from SupplyMovement sm where sm.id = :supplyMovementId")

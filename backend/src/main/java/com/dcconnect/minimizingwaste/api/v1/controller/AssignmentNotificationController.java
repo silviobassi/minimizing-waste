@@ -37,14 +37,5 @@ public class AssignmentNotificationController implements AssignmentNotificationC
                 .toCollectionModel(assignmentRepository.findAll(
                         AssignmentNotificationSpecs.usingFilter(assignmentNotificationFilter)));
     }
-    private Pageable pageableTranslate(Pageable apiPageable){
-        var mapping = Map.of(
-                "completed", "completed",
-                "approved", "approved",
-                "currentDate", "currentDate"
-        );
-
-        return PageableTranslator.translate(apiPageable, mapping);
-    }
 
 }

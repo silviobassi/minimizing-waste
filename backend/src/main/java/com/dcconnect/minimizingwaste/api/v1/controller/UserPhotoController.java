@@ -55,12 +55,11 @@ public class UserPhotoController implements UserPhotoControllerOpenApi {
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UserPhotoModel updatePhoto(@PathVariable Long userId, @Valid UserPhotoInput userPhotoInput)
             throws IOException {
-        User user = userService.findOrFail(userId);
 
         MultipartFile file =  userPhotoInput.getFile();
 
         UserPhoto userPhoto = new UserPhoto();
-        userPhoto.setUser(user);
+        userPhoto.setId(userId);
         userPhoto.setDescription(userPhotoInput.getDescription());
         userPhoto.setFileName(userPhotoInput.getFile().getName());
         userPhoto.setContentType(userPhotoInput.getFile().getContentType());

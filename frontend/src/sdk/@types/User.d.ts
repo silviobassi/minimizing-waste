@@ -13,6 +13,7 @@ export namespace User {
     MinimizingWaste.components['schemas']['UserUpdateInput'];
 
   export type Avatar = MinimizingWaste.components['schemas']['AvatarModel'];
+  export type UserAssignment = MinimizingWaste.components['schemas']['UserAssignmentModel']
 
   export type Query = {
     supplyName?: number;

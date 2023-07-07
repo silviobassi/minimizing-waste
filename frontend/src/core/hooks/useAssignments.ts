@@ -10,8 +10,8 @@ export default function useAssignments() {
 
   const [accessDeniedError, setAccessDeniedError] = useState(false);
 
-  const fetchAssignments = useCallback(() => {
-    AssignmentService.getAllAssignments()
+  const fetchAssignments = useCallback(async () => {
+    await AssignmentService.getAllAssignments()
       .then(setAssignments)
       .catch((err: any) => {
         if (err instanceof AccessDeniedError) {

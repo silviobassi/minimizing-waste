@@ -1,0 +1,1 @@
+alter table users_photos drop constraint fk_users_photos_users;

@@ -15,11 +15,8 @@ public class UserPhoto {
 
     @EqualsAndHashCode.Include
     @Id
-    @Column(name = "photo_id")
+    @Column(name = "user_id")
     private Long id;
-    @OneToOne(fetch = FetchType.LAZY)
-    @MapsId
-    private User user;
     private String fileName;
     private String description;
     private String contentType;

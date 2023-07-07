@@ -102,8 +102,7 @@ export default function EmployeeList() {
                     placement="left"
                     title="Remover o Usuário?"
                     onConfirm={() => {
-                      deletePhoto(Number(id));
-                      removeUser(id);
+                      removeUser(Number(id));
                     }}
                     onCancel={() => null}
                     okText="Excluir"

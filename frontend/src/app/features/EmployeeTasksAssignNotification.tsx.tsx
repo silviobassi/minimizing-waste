@@ -1,130 +1,117 @@
-import { Card, Col, List, Row } from 'antd';
-import { useEffect, useState } from 'react';
+import { Card, Col, Descriptions, List, Row, Tag, Typography } from 'antd';
 
-interface EmployeeTasksAssignNotification {
-  title: string;
-  notificationDate: string;
-  reason: string;
-  goal: string;
-  sector: string;
-  workStation: string;
-  employeeName: string;
-  office: string;
-  occupation: string;
-  taskTitle: string;
-  taskType: string;
-  deadline: string;
-}
+import { format } from 'date-fns';
+import { useEffect } from 'react';
+import useCommunications from '../../core/hooks/useCommunications';
+import { User } from '../../sdk';
+import { phoneToFormat } from '../../sdk/utils/generateFormatterData';
 
 export default function EmployeeTasksAssignNotification() {
-  const [employeeTasksAssignNotification, setEmployeeTasksAssignNotification] =
-    useState<EmployeeTasksAssignNotification[]>([]);
-
-  const handleChange = (value: string) => {
-    console.log(`selected ${value}`);
-  };
-
-  const loadMoreData = () => {
-    const data: EmployeeTasksAssignNotification[] = [];
-    for (let i: number = 1; i < 20; i++) {
-      data.push({
-        title: `Cimento não usado - ${i}`,
-        notificationDate: '22/03/2022',
-        reason: `Mudança de Cronograma - ${i}`,
-        goal: `Concluir contrapiso no Bloco B${i} Apto 1${i}`,
-        sector: 'Acabamento',
-        workStation: `Bloco B${i} Apto 27${i}`,
-        employeeName: 'Pedro Bassi',
-        office: 'Azulejista',
-        occupation: 'Instalador de Revestimento',
-        taskTitle: 'Revestimento de Banheiros',
-        taskType: 'Obras',
-        deadline: '22/01/2023 à 26/03/2023',
-      });
-    }
-
-    setEmployeeTasksAssignNotification(data);
-  };
+  const { availableAssignments, fetchAvailableAssignments } =
+    useCommunications();
 
   useEffect(() => {
-    loadMoreData();
-  }, []);
+    fetchAvailableAssignments();
+  }, [fetchAvailableAssignments]);
 
   return (
     <>
       <Row>
         <Col xs={24}>
-          <Card type="inner" title="Atribuição de Tarefas aos Colaboradores">
+          <Card type="inner" title="Recursos Disponìveis">
             <List
-              dataSource={employeeTasksAssignNotification}
-              pagination={{
-                onChange: (page) => {
-                  console.log(page);
-                },
-                pageSize: 2,
-              }}
+              dataSource={availableAssignments}
+              rowKey={'id'}
               renderItem={(item) => (
                 <List.Item>
-                  <List.Item.Meta
-                    description={
-                      <>
-                        <Row justify={'start'}>
-                          <Col xs={24} xl={7}>
-                            <p>
-                              <strong>Título:</strong> {item.taskTitle}
-                            </p>
-                            <p>
-                              <strong>Data da Notificação:</strong>{' '}
-                              {item.notificationDate}
-                            </p>
-                            <p>
-                              <strong>Motivo:</strong> {item.reason}
-                            </p>
-                            <p>
-                              <strong>Objetivo: </strong>
-                              {item.goal}
-                            </p>
+                  <Row justify={'space-between'} gutter={60}>
+                    <Col xs={24}>
+                      <Typography.Title level={3}>
+                        {item.title}
+                      </Typography.Title>
+
+                      <Typography.Title level={5}>
+                        Prazo Para Conclusão:
+                        <Typography.Text
+                          type="danger"
+                          style={{ marginLeft: 10 }}
+                        >
+                          {format(new Date(item.deadline), 'dd/MM/yyyy')}
+                        </Typography.Text>
+                      </Typography.Title>
+                    </Col>
+
+                    {item.employeeResponsible?.map(
+                      (employee: User.UserAssignment) => {
+                        return (
+                          <>
+                            <Col xs={24} lg={12}>
+                              <Descriptions
+                                column={1}
+                                bordered
+                                size="small"
+                                style={{ marginTop: 40 }}
+                              >
+                                <Descriptions.Item label={'Colaborador'}>
+                                  {employee?.name}
+                                </Descriptions.Item>
+                                <Descriptions.Item label={'WhatsApp'}>
+                                  {phoneToFormat(employee?.whatsApp)}
+                                </Descriptions.Item>
+                                <Descriptions.Item label={'Cargo'}>
+                                  <Tag color="blue">{employee?.office}</Tag>
+                                </Descriptions.Item>
+                                <Descriptions.Item label={'Função'}>
+                                  <Tag color="green">
+                                    {employee?.occupation}
+                                  </Tag>
+                                </Descriptions.Item>
+                              </Descriptions>
+                            </Col>
+                          </>
+                        );
+                      },
+                    )}
+
+                    <Col xs={24}>
+                      <Row gutter={60}>
+                        <Col xs={24} lg={12} style={{ marginTop: 40 }}>
+                          <Descriptions column={1} size="small" bordered>
+                            <Descriptions.Item label="Estação de Trabalho">
+                              {item.workStation?.name}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Localização">
+                              {item.workStation?.localization}
+                            </Descriptions.Item>
+                            <Descriptions.Item label="Setor">
+                              {item.workStation?.sector?.name}
+                            </Descriptions.Item>
+                          </Descriptions>
+                        </Col>
+
+                        {item.notification && (
+                          <Col xs={24} lg={12} style={{ marginTop: 40 }}>
+                            <Tag color="red">
+                              <Typography.Title level={3}>
+                                Observação:
+                              </Typography.Title>
+                              <Descriptions column={1} size="small">
+                                <Descriptions.Item label={'Título'}>
+                                  {item.notification?.title}
+                                </Descriptions.Item>
+                                <Descriptions.Item label={'Motivo'}>
+                                  {item.notification?.reason}
+                                </Descriptions.Item>
+                                <Descriptions.Item label={'Objetivo'}>
+                                  {item.notification?.goal}
+                                </Descriptions.Item>
+                              </Descriptions>
+                            </Tag>
                           </Col>
-                          <Col xs={24} xl={7}>
-                            <p>
-                              <strong>Setor: </strong>
-                              {item.sector}
-                            </p>
-                            <p>
-                              <strong>Estação de Trabalho: </strong>
-                              {item.workStation}
-                            </p>
-                            <p>
-                              <strong>Nome do Responsável: </strong>
-                              {item.employeeName}
-                            </p>
-                            <p>
-                              <strong>Cargo: </strong>
-                              {item.office}
-                            </p>
-                          </Col>
-                          <Col xs={24} xl={7}>
-                            <p>
-                              <strong>Função: </strong>
-                              {item.occupation}
-                            </p>
-                            <p>
-                              <strong>Título da Tarefa: </strong>
-                              {item.taskTitle}
-                            </p>
-                            <p>
-                              <strong>Tipo da Tarefa: </strong>
-                              {item.taskType}
-                            </p>
-                            <p>
-                              <strong>Data de Finalização: </strong>
-                              {item.deadline}
-                            </p>
-                          </Col>
-                        </Row>
-                      </>
-                    }
-                  />
+                        )}
+                      </Row>
+                    </Col>
+                  </Row>
                 </List.Item>
               )}
             />

@@ -10,6 +10,7 @@ export namespace Supply {
 
     export type SummaryModel = MinimizingWaste.components['schemas']['SupplySummaryModel']
 
+
   export type Query = {
     supplyName?: number;
     page?: number;

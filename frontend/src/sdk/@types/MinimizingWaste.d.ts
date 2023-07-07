@@ -761,24 +761,26 @@ export interface components {
       /** @example Início de Tarefa */
       title?: string;
       /** Format: date-time */
-      startDate?: string;
-      /** Format: date-time */
-      endDate?: string;
-      /** Format: date-time */
       deadline?: string;
-      /** @example true */
-      completed?: boolean;
-      /** @example false */
-      approved?: boolean;
-      /** @example Tarefa reprovada, poir os rejuntamento está mal feito */
-      approvalDescription?: string;
-      /**
-       * @example OBRAS
-       * @enum {string}
-       */
-      nature?: 'LIMPEZA' | 'OBRAS';
       workStation?: components['schemas']['WorkStationDetailedModel'];
       notification?: components['schemas']['NotificationModel'];
+      employeeResponsible?: components['schemas']['UserAssignmentModel'][];
+    };
+    UserAssignmentModel: {
+      /**
+       * Format: int64
+       * @example 1
+       */
+      id?: number;
+      /** @example Pedro Oliveira Bassi */
+      name?: string;
+      /** @example 17996079654 */
+      whatsApp?: string;
+      /** @example Azulejista */
+      office?: string;
+      /** @example Instalador de Revestimento */
+      occupation?: string;
+      _links?: components['schemas']['Links'];
     };
     PagedModelAssignmentModel: {
       _embedded?: {

@@ -6,7 +6,7 @@ import { UserService } from '../../sdk/services';
 export default function useUser() {
   const [user, setUser] = useState<User.Detailed>();
   const [notFound, setNotFound] = useState(false);
-  const [entityInUse, setEntityInUse] = useState(false);
+  const [error, setError] = useState(false);
 
   const fetchUser = useCallback(async (userId: number) => {
     try {

@@ -15,7 +15,7 @@ delete from users_access_groups;
 delete from assignments_employees;
 delete from users_photos;
 delete from oauth2_registered_client;
-
+delete from assignments_employees;
 set foreign_key_checks = 1;
 
 alter table users auto_increment = 1;
@@ -105,6 +105,8 @@ values ('Instalação de Porcelanato', utc_timestamp(), null, utc_timestamp(), f
 insert into assignments (title, start_date, end_date, deadline, completed, approved, nature, work_station_id, approval_description)
 values ('Organização de Materiais Espalhados', utc_timestamp(), utc_timestamp(), utc_timestamp(), true, true, 'LIMPEZA', 2,
         'Trabalho Coeso e cumprimento das metas técnicas estabelecidas');
+
+insert into assignments_employees (assignment_id, responsible_employee_id) VALUES (1, 1), (2, 1), (3, 2), (3, 3), (2, 3), (1, 3);
 
 insert into permissions (name, description) values ('EDIT_USER', 'Permite editar usuários');
 insert into permissions (name, description) values ('CONSULT_USER', 'Permite consultar usuários');

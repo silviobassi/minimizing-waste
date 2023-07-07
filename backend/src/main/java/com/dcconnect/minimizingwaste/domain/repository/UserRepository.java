@@ -22,7 +22,4 @@ public interface UserRepository extends UserRepositoryQueries, CustomJpaReposito
     Optional<User> findByEmail(String email);
     Optional<User> findByCpf(String cpf);
 
-    @Query("select f from UserPhoto f where f.user.id = :userId")
-    Optional<UserPhoto> findPhotoById(@Param("userId") Long userId);
-
 }

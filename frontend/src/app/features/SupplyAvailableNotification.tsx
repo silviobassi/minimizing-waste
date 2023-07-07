@@ -1,101 +1,94 @@
-import { Card, Col, List, Row } from 'antd';
-import { useEffect, useState } from 'react';
-interface SupplyAvailableNotification {
-  title: string;
-  notificationDate: string;
-  reason: string;
-  goal: string;
-  sector: string;
-  workStation: string;
-  supplyName: string;
-  supplyType: string;
-  allocatedQuantity: string;
-}
+import {
+  Card,
+  Col,
+  Descriptions,
+  List,
+  Row,
+  Space,
+  Tag,
+  Typography,
+} from 'antd';
+
+import { format } from 'date-fns';
+
+import { useEffect } from 'react';
+import useCommunications from '../../core/hooks/useCommunications';
 
 export default function SupplyAvailableNotification() {
-  const [supplyAvailableNotification, setSupplyAvailableNotification] =
-    useState<SupplyAvailableNotification[]>([]);
-
-  const loadMoreData = () => {
-    const data: SupplyAvailableNotification[] = [];
-    for (let i: number = 1; i < 20; i++) {
-      data.push({
-        title: `Cimento não Usado - ${i}`,
-        notificationDate: '22/12/2022',
-        reason: `Mudança no Cronograma`,
-        goal: `Concluir contrapiso no Bloco B${i} Apto 27${i}`,
-        sector: 'Acabamento',
-        workStation: `Bloco B1${i} Apto 23${i}`,
-        supplyName: 'Cimento',
-        supplyType: 'Material',
-        allocatedQuantity: `${i} saco (s)`,
-      });
-    }
-
-    setSupplyAvailableNotification(data);
-  };
+  const { availableSupplies, fetchAvailableSupplies } = useCommunications();
 
   useEffect(() => {
-    loadMoreData();
-  }, []);
+    fetchAvailableSupplies();
+  }, [fetchAvailableSupplies]);
 
   return (
     <>
       <Row>
         <Col xs={24}>
-          <Card type="inner" title="Disponibilidade de Recursos">
+          <Card type="inner" title="Recursos Disponìveis">
             <List
-              dataSource={supplyAvailableNotification}
-              pagination={{
-                onChange: (page) => {
-                  console.log(page);
-                },
-                pageSize: 2,
-              }}
+              dataSource={availableSupplies}
+              rowKey={'id'}
               renderItem={(item) => (
                 <List.Item>
-                  <List.Item.Meta
-                    description={
-                      <>
-                        <Row justify={'start'}>
-                          <Col xs={24} xl={12}>
-                            <p>
-                              <strong>Título:</strong> {item.title}
-                            </p>
-                            <p>
-                              <strong>Data da Notificação:</strong>{' '}
-                              {item.notificationDate}
-                            </p>
-                            <p>
-                              <strong>Motivo:</strong> {item.reason}
-                            </p>
-                            <p>
-                              <strong>Objetivo: </strong>
-                              {item.goal}
-                            </p>
-                          </Col>
-                          <Col xs={24} xl={12}>
-                            <p>
-                              <strong>Setor: </strong>
-                              {item.sector}
-                            </p>
-                            <p>
-                              <strong>Estação de Trabalho: </strong>
-                              {item.workStation}
-                            </p>
-                            <p>
-                              <strong>Nome do Recurso: </strong>
-                              {item.supplyName}
-                            </p>
-                            <p>
-                              <strong>Quantidade Alocada: </strong>
-                              {item.allocatedQuantity}
-                            </p>
-                          </Col>
-                        </Row>
-                      </>
-                    }
-                  />
+                  <Row justify={'space-between'} gutter={60}>
+                    <Col xs={24} lg={7}>
+                      <Typography.Title level={3}>
+                        {item.supply?.name}
+                      </Typography.Title>
+                      <Descriptions column={1} bordered size="small">
+                        <Descriptions.Item label={'Quantidade'}>
+                          <Space direction="horizontal">
+                            {`${item.supply?.supplyDescription?.total}`}
+                            <Tag color="green">
+                              {item.supply?.supplyDescription?.measureUnitType}
+                            </Tag>
+                          </Space>
+                        </Descriptions.Item>
+                      </Descriptions>
+                    </Col>
+                    <Col xs={24} lg={8}>
+                      <Descriptions column={1} size="small" bordered>
+                        <Descriptions.Item label={'Estação de Trabalho'}>
+                          {item.workStation?.name}
+                        </Descriptions.Item>
+                        <Descriptions.Item label={'Localização'}>
+                          {item.workStation?.localization}
+                        </Descriptions.Item>
+                        <Descriptions.Item label={'Setor'}>
+                          {item.workStation?.sector?.name}
+                        </Descriptions.Item>
+                      </Descriptions>
+                    </Col>
+                    {item.notification && (
+                      <Col xs={24} lg={9}>
+                        <Tag color="red">
+                          <Typography.Title level={3}>
+                            Observação:
+                          </Typography.Title>
+                          <Descriptions column={1} size="small">
+                            <Descriptions.Item label={'Título'}>
+                              {item.notification?.title}
+                            </Descriptions.Item>
+                            <Descriptions.Item
+                              label={'Data da Disponibilização'}
+                            >
+                              {format(
+                                new Date(item.notification?.createdAt),
+                                'dd/MM/yyyy',
+                              )}
+                            </Descriptions.Item>
+                            <Descriptions.Item label={'Motivo'}>
+                              {item.notification?.reason}
+                            </Descriptions.Item>
+                            <Descriptions.Item label={'Objetivo'}>
+                              {item.notification?.goal}
+                            </Descriptions.Item>
+                          </Descriptions>
+                        </Tag>
+                      </Col>
+                    )}
+                  </Row>
                 </List.Item>
               )}
             />

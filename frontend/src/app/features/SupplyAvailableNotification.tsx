@@ -71,7 +71,7 @@ export default function SupplyAvailableNotification() {
                               {item.notification?.title}
                             </Descriptions.Item>
                             <Descriptions.Item
-                              label={'Data da Disponibilização'}
+                              label={'Data da Notificação'}
                             >
                               {format(
                                 new Date(item.notification?.createdAt),

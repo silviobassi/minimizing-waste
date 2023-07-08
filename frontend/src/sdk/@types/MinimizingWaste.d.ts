@@ -764,7 +764,6 @@ export interface components {
       deadline?: string;
       workStation?: components['schemas']['WorkStationDetailedModel'];
       notification?: components['schemas']['NotificationModel'];
-      employeeResponsible?: components['schemas']['UserAssignmentModel'][];
     };
     UserAssignmentModel: {
       /**

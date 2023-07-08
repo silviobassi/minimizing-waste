@@ -22,6 +22,5 @@ public class AssignmentNotificationModel {
     private WorkStationDetailedModel workStation;
     private NotificationModel notification;
 
-    private List<UserAssignmentModel> employeeResponsible;
 
 }

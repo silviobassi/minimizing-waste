@@ -27,6 +27,9 @@ public class UserService {
     private AccessGroupService accessGroupService;
 
     @Autowired
+    private UserPhotoService userPhotoService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public static final String USER_IN_USE = "Colaborador de código %d não pode ser removido, pois está em uso";
@@ -45,7 +48,6 @@ public class UserService {
         try {
             userRepository.deleteById(userId);
             userRepository.flush();
-
         } catch (EmptyResultDataAccessException e){
             throw new UserNotFoundException(userId);
 
@@ -88,10 +90,10 @@ public class UserService {
         List<AccessGroup> accessGroupsMatches = getAccessGroupsMatches(user, accessGroup);
 
         if(!accessGroupsMatches.isEmpty()){
-                throw new BusinessException(
-                        String.format("O Grupo de Acesso já está associado ao usuário %s", user.getName()));
+            throw new BusinessException(
+                    String.format("O Grupo de Acesso já está associado ao usuário %s", user.getName()));
         }
-     
+
         user.addAccessGroups(accessGroup);
     }
 

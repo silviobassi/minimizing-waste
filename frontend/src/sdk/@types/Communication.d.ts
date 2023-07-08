@@ -5,4 +5,5 @@ export namespace Communication {
     MinimizingWaste.components['schemas']['SupplyMovementNotificationModel'];
   export type AssignmentNotification =
     MinimizingWaste.components['schemas']['AssignmentNotificationModel'];
+
 }

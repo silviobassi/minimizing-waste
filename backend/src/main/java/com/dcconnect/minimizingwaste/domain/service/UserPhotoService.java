@@ -2,7 +2,6 @@ package com.dcconnect.minimizingwaste.domain.service;
 
 import com.dcconnect.minimizingwaste.domain.exception.UserPhotoNotFoundException;
 import com.dcconnect.minimizingwaste.domain.model.UserPhoto;
-import com.dcconnect.minimizingwaste.domain.repository.UserPhotoRepository;
 import com.dcconnect.minimizingwaste.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,9 +18,6 @@ public class UserPhotoService {
     @Autowired UserRepository userRepository;
 
     @Autowired
-    UserPhotoRepository userPhotoRepository;
-
-    @Autowired
     private PhotoStorageService photoStorageService;
 
     @Transactional
@@ -30,7 +26,7 @@ public class UserPhotoService {
         String fileName = photoStorageService.generateFileName(userPhoto.getFileName());
         String oldFileName = null;
 
-        Optional<UserPhoto> currentUserPhoto = userPhotoRepository.findById(userPhoto.getId());
+        Optional<UserPhoto> currentUserPhoto = userRepository.findPhotoById(userPhoto.getUser().getId());
 
         if(currentUserPhoto.isPresent()){
             oldFileName = currentUserPhoto.get().getFileName();
@@ -52,13 +48,13 @@ public class UserPhotoService {
     }
 
     public UserPhoto findOrFail(Long userId){
-        return userPhotoRepository.findById(userId)
+        return userRepository.findPhotoById(userId)
                 .orElseThrow(() -> new UserPhotoNotFoundException(userId));
     }
 
     @Transactional
     public void delete(long userId){
-        UserPhoto userPhoto = userPhotoRepository.findById(userId)
+        UserPhoto userPhoto = userRepository.findPhotoById(userId)
                 .orElseThrow(() -> new UserPhotoNotFoundException(userId));
         System.out.println(userPhoto.getFileName());
         userRepository.delete(userPhoto);

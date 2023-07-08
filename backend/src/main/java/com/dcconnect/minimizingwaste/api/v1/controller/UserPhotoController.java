@@ -55,11 +55,12 @@ public class UserPhotoController implements UserPhotoControllerOpenApi {
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public UserPhotoModel updatePhoto(@PathVariable Long userId, @Valid UserPhotoInput userPhotoInput)
             throws IOException {
+        User user = userService.findOrFail(userId);
 
         MultipartFile file =  userPhotoInput.getFile();
 
         UserPhoto userPhoto = new UserPhoto();
-        userPhoto.setId(userId);
+        userPhoto.setUser(user);
         userPhoto.setDescription(userPhotoInput.getDescription());
         userPhoto.setFileName(userPhotoInput.getFile().getName());
         userPhoto.setContentType(userPhotoInput.getFile().getContentType());
@@ -76,7 +77,7 @@ public class UserPhotoController implements UserPhotoControllerOpenApi {
         return userPhotoAssembler.toModel(userPhoto);
     }
 
-    @CheckSecurity.Users.CanPhotoConsult
+    @CheckSecurity.Users.CanConsult
     @GetMapping("/recovered")
     public ResponseEntity<?> servePhoto(
             @PathVariable Long userId, @RequestHeader(name = "accept") String acceptHeader)

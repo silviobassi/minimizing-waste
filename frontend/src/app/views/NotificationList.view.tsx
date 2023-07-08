@@ -40,23 +40,23 @@ export default function NotificationListView() {
                 onChange={handleChange}
                 options={[
                   {
-                    label: 'Disponibilidade de Recursos',
+                    label: 'Disponibilidade de recursos',
                     value: 'available',
                   },
                   {
-                    label: 'Conclusão de Tarefas',
+                    label: 'Tarefas concluídas',
                     value: 'taskCompleted',
                   },
                   {
-                    label: 'Tarefas Aprovadas',
+                    label: 'Tarefas aprovadas',
                     value: 'approvedTasks',
                   },
                   {
-                    label: 'Tarefas com Prazos Expirados',
+                    label: 'Tarefas expiradas',
                     value: 'expiredTasks',
                   },
                   {
-                    label: 'Atribuição de Tarefas aos Colaboradores',
+                    label: 'Tarefas atribuídas aos colaboradores',
                     value: 'tasksAssign',
                   },
                 ]}

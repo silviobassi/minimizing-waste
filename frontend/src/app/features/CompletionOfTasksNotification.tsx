@@ -1,34 +1,20 @@
-import { Card, Col, List, Row } from 'antd';
+import { useEffect } from 'react';
+import useCommunications from '../../core/hooks/useCommunications';
+
+import NotificationAssignments from '../components/NotificationAssignments';
 
 export default function CompletionOfTasksNotification() {
+  const { assignmentsCompleted, fetchAssignmentsCompleted } =
+    useCommunications();
+
+  useEffect(() => {
+    fetchAssignmentsCompleted();
+  }, [fetchAssignmentsCompleted]);
+
   return (
-    <>
-      <Row>
-        <Col xs={24}>
-          <Card type="inner" title="Conclusão de Tarefas">
-            <List
-              //dataSource={}
-              pagination={{
-                onChange: (page) => {
-                  console.log(page);
-                },
-                pageSize: 2,
-              }}
-              renderItem={(item) => (
-                <List.Item>
-                  <List.Item.Meta
-                    description={
-                      <>
-                        <h1>Notificação de Tarefas Completas</h1>
-                      </>
-                    }
-                  />
-                </List.Item>
-              )}
-            />
-          </Card>
-        </Col>
-      </Row>
-    </>
+    <NotificationAssignments
+      title="Tarefas Concluídas"
+      assignments={assignmentsCompleted}
+    />
   );
 }

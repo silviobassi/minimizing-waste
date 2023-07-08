@@ -96,15 +96,15 @@ values (utc_timestamp(), false, true, 1, 1, 2, 3,2);
 insert into supplies_movement (create_at, not_busy, movable, allocated_quantity, notification_id, work_station_id, supply_id, employee_responsible_id)
 values (utc_timestamp(), true, true, 1, 5, 2, 2, 1);
 
-insert into assignments (title, start_date, end_date, deadline, completed, approved, nature, work_station_id, approval_description)
+insert into assignments (title, start_date, end_date, deadline, completed, approved, nature, work_station_id, approval_description, notification_id)
 values ('Revestimento de Banheiros', utc_timestamp(), utc_timestamp(), utc_timestamp(), true, false, 'OBRAS', 1,
-        'Rejuntar novamente os banheiros, pois estão mau rejuntados. Trocar um revestimento que estã descascado em uma das pontas');
-insert into assignments (title, start_date, end_date, deadline, completed, approved, nature, work_station_id, approval_description)
+        'Rejuntar novamente os banheiros, pois estão mau rejuntados. Trocar um revestimento que estã descascado em uma das pontas', 1);
+insert into assignments (title, start_date, end_date, deadline, completed, approved, nature, work_station_id, approval_description, notification_id)
 values ('Instalação de Porcelanato', utc_timestamp(), null, utc_timestamp(), false, false, 'OBRAS', 2,
-        '3 Porcelanatos marcados devem ser trocados, pois estão sem argamassa');
-insert into assignments (title, start_date, end_date, deadline, completed, approved, nature, work_station_id, approval_description)
+        '3 Porcelanatos marcados devem ser trocados, pois estão sem argamassa', 2);
+insert into assignments (title, start_date, end_date, deadline, completed, approved, nature, work_station_id, approval_description, notification_id)
 values ('Organização de Materiais Espalhados', utc_timestamp(), utc_timestamp(), utc_timestamp(), true, true, 'LIMPEZA', 2,
-        'Trabalho Coeso e cumprimento das metas técnicas estabelecidas');
+        'Trabalho Coeso e cumprimento das metas técnicas estabelecidas', 3);
 
 insert into assignments_employees (assignment_id, responsible_employee_id) VALUES (1, 1), (2, 1), (3, 2), (3, 3), (2, 3), (1, 3);
 

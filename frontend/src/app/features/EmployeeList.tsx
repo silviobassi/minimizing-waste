@@ -74,8 +74,9 @@ export default function EmployeeList() {
             render(accessGroups: User.AccessGroupSummary[]) {
               return (
                 <>
-                  {accessGroups.map((group: User.AccessGroupSummary) => (
+                  {accessGroups.map((group: User.AccessGroupSummary, index) => (
                     <Tag
+                      key={index}
                       color={group.name === 'Administrador' ? 'blue' : 'green'}
                     >
                       {group.name}

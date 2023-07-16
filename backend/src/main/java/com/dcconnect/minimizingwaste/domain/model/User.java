@@ -28,11 +28,11 @@ public class User extends BaseEntity{
 
     @CreationTimestamp
     private OffsetDateTime createdAt;
-
     @ManyToMany
     @JoinTable(name = "users_access_groups", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "access_group_id"))
     private List<AccessGroup> accessGroups = new ArrayList<>();
+
 
     public boolean removeAccessGroup(AccessGroup accessGroup){
         return getAccessGroups().remove(accessGroup);

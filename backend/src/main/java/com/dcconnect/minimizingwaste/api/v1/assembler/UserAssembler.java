@@ -2,6 +2,7 @@ package com.dcconnect.minimizingwaste.api.v1.assembler;
 
 import com.dcconnect.minimizingwaste.api.v1.controller.UserController;
 import com.dcconnect.minimizingwaste.api.v1.model.UserDetailedModel;
+import com.dcconnect.minimizingwaste.core.storage.StorageProperties;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,7 @@ public class UserAssembler extends RepresentationModelAssemblerSupport<User, Use
     public UserDetailedModel toModel(User user){
         UserDetailedModel userDetailedModel = createModelWithId(user.getId(), user);
         modelMapper.map(user, userDetailedModel);
+
 
         return userDetailedModel;
     }

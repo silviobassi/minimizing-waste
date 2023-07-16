@@ -113,7 +113,7 @@ export default function Routes() {
         path={'/tarefas/:taskId/detalhes'}
         element={<TaskDetailedView />}
       />
-      <Route path={'/tarefa/:id/atribuicao'} element={<TaskAssignView />} />
+      <Route path={'/tarefa/:assignmentId/atribuicao'} element={<TaskAssignView />} />
       <Route path={'/colaboradores'} element={<EmployeeListView />} />
       <Route path={'/colaborador/criar'} element={<EmployeeCreateView />} />
       <Route

@@ -583,6 +583,23 @@ export interface components {
        */
       nature?: 'LIMPEZA' | 'OBRAS';
       workStation?: components['schemas']['WorkStationModel'];
+      employeesResponsible?: components['schemas']['UserAssignmentModel'][];
+      _links?: components['schemas']['Links'];
+    };
+    UserAssignmentModel: {
+      /**
+       * Format: int64
+       * @example 1
+       */
+      id?: number;
+      /** @example Pedro Oliveira Bassi */
+      name?: string;
+      /** @example 17996079654 */
+      whatsApp?: string;
+      /** @example Azulejista */
+      office?: string;
+      /** @example Instalador de Revestimento */
+      occupation?: string;
       _links?: components['schemas']['Links'];
     };
     AssignmentNotificationInput: {
@@ -764,22 +781,6 @@ export interface components {
       deadline?: string;
       workStation?: components['schemas']['WorkStationDetailedModel'];
       notification?: components['schemas']['NotificationModel'];
-    };
-    UserAssignmentModel: {
-      /**
-       * Format: int64
-       * @example 1
-       */
-      id?: number;
-      /** @example Pedro Oliveira Bassi */
-      name?: string;
-      /** @example 17996079654 */
-      whatsApp?: string;
-      /** @example Azulejista */
-      office?: string;
-      /** @example Instalador de Revestimento */
-      occupation?: string;
-      _links?: components['schemas']['Links'];
     };
     PagedModelAssignmentModel: {
       _embedded?: {

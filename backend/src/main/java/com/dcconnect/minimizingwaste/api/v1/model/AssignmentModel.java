@@ -8,6 +8,7 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
 import java.time.OffsetDateTime;
+import java.util.List;
 
 @Relation(collectionRelation = "assignments")
 @Getter
@@ -32,4 +33,7 @@ public class AssignmentModel extends RepresentationModel<AssignmentModel> {
     private Nature nature;
 
     private WorkStationModel workStation;
+
+    @Schema(example = "")
+    private List<UserAssignmentModel> employeesResponsible;
 }

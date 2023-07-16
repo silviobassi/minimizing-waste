@@ -109,7 +109,7 @@ export default function SupplyAllocateForm() {
               <List
                 itemLayout="horizontal"
                 dataSource={supplies}
-                renderItem={(supply) => (
+                renderItem={(supply, key) => (
                   <List.Item>
                     <List.Item.Meta
                       title={supply.title}

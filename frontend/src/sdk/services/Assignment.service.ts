@@ -6,7 +6,7 @@ class AssignmentService extends Service {
     return this.Http.get<Assignment.PagedModelAssignment>('/assignments').then(this.getData);
   }
 
-  static fetchAssignments(assignmentId: number) {
+  static getAssignment(assignmentId: number) {
     return this.Http.get<Assignment.AssignmentModel>(`/assignments/${assignmentId}`).then(
       this.getData,
     );

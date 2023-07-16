@@ -89,14 +89,14 @@ public class AssignmentService {
     }
 
     private List<User> getEmployeeResponsibleMatches(Assignment currentAssignment, User currentEmployeeResponsible) {
-        return currentAssignment.getEmployeeResponsible().stream().filter(
+        return currentAssignment.getEmployeesResponsible().stream().filter(
                 currentEmployee -> currentEmployee.equals(currentEmployeeResponsible)).toList();
     }
 
     @Transactional
     public void completeAssignment(Assignment currentAssignment){
 
-        boolean isEmptyEmployeeResponsible = currentAssignment.getEmployeeResponsible().isEmpty();
+        boolean isEmptyEmployeeResponsible = currentAssignment.getEmployeesResponsible().isEmpty();
 
         if(isEmptyEmployeeResponsible){
             throw new BusinessException(

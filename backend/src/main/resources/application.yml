@@ -48,8 +48,8 @@ spring:
           jwk-set-uri: http://localhost:8080/oauth2/jwks
         opaquetoken:
           introspection-uri: http://localhost:8080/oauth2/introspect
-          client-id: minimizing-web
-          client-secret: 123
+          client-id: ${CLIENT_ID}
+          client-secret: ${CLIENT_SECRET}
 
 springdoc:
   packages-to-scan: com.dcconnect.minimizingwaste.api
@@ -71,8 +71,8 @@ minimizing-waste:
     local:
       directory: /avatar
     s3:
-      #access-key-id:
-      #secret-access-key:
+      access-key-id: ${ACCESS_KEY_ID}
+      secret-access-key: ${SECRET_ACCESS_KEY}
       bucket: minimizing-waste
       region: us-east-1
       directory: user-photo

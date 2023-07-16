@@ -35,18 +35,18 @@ public class Assignment extends BaseEntity {
     @JoinTable(name = "assignments_employees",
     joinColumns = @JoinColumn(name = "assignment_id"),
     inverseJoinColumns = @JoinColumn(name = "responsible_employee_id"))
-    private Set<User> employeeResponsible = new HashSet<>();
+    private Set<User> employeesResponsible = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notification_id")
     private Notification notification;
 
     public void addEmployeeResponsible(User employeeResponsible){
-        getEmployeeResponsible().add(employeeResponsible);
+        getEmployeesResponsible().add(employeeResponsible);
     }
 
     public void removeEmployeeResponsible(User employeeResponsible){
-        getEmployeeResponsible().remove(employeeResponsible);
+        getEmployeesResponsible().remove(employeeResponsible);
     }
     @PrePersist
     public void persist(){

@@ -37,7 +37,7 @@ public class AssignmentEmployeeController implements AssignmentEmployeeControlle
     @GetMapping
     public CollectionModel<UserDetailedModel> all(@PathVariable Long assignmentId){
         Assignment assignment = assignmentService.findOrFail(assignmentId);
-        List<User> users = assignment.getEmployeeResponsible().stream().collect(Collectors.toList());
+        List<User> users = assignment.getEmployeesResponsible().stream().collect(Collectors.toList());
         return assignEmployeeAssembler.toCollectionModel(users, assignmentId);
     }
 

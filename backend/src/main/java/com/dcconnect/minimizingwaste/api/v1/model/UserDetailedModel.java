@@ -1,5 +1,6 @@
 package com.dcconnect.minimizingwaste.api.v1.model;
 
+import com.dcconnect.minimizingwaste.domain.model.UserPhoto;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,7 +34,6 @@ public class UserDetailedModel extends RepresentationModel<UserDetailedModel> {
     private String literate;
     @Schema(example = "2023-01-03T22:08Z")
     private OffsetDateTime createdAt;
-
     private List<AccessGroupSummaryModel> accessGroups;
 
 }

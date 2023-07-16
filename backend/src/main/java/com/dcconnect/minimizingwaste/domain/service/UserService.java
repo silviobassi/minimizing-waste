@@ -27,9 +27,6 @@ public class UserService {
     private AccessGroupService accessGroupService;
 
     @Autowired
-    private UserPhotoService userPhotoService;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public static final String USER_IN_USE = "Colaborador de código %d não pode ser removido, pois está em uso";
@@ -109,6 +106,7 @@ public class UserService {
     }
 
     private void insertOrUpdatePassword(User user) {
+
         if(user.isNew()){
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }

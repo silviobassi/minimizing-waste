@@ -53,13 +53,18 @@ public class AssignmentService {
     @Transactional
     public void attachEmployee(Long employeeResponsibleId, Assignment assignment){
         User currentEmployeeResponsible = userService.findOrFail(employeeResponsibleId);
+        Long employeesTotal = assignmentRepository.countExistsEmployeesAssignments(employeeResponsibleId);
+        var assignmentsAllowed = 3L;
 
-        List<User> employeeResponsibleMatches = getEmployeeResponsibleMatches(
-                assignment, currentEmployeeResponsible);
-
-        if(!employeeResponsibleMatches.isEmpty()){
+        if(employeesTotal >= assignmentsAllowed){
             throw new BusinessException(String.format(
-                    "O Colaborador com o nome: %s já está atribuído à tarefa", currentEmployeeResponsible.getName()));
+                    "O Colaborador %s só pode ser atribuído a %d tarefas",
+                    currentEmployeeResponsible.getName(), assignmentsAllowed));
+        }
+
+        if(assignment.getEmployeesResponsible().contains(currentEmployeeResponsible)){
+            throw new BusinessException(String.format(
+                    "O Colaborador %s já está atribuído a esta tarefa", currentEmployeeResponsible.getName()));
         }
 
         Notification notification = notificationService.create(assignment.getNotification());
@@ -71,12 +76,9 @@ public class AssignmentService {
     public void detachEmployee(Long employeeResponsibleId, Assignment assignment){
         User currentEmployeeResponsible = userService.findOrFail(employeeResponsibleId);
 
-        List<User> employeeResponsibleMatches = getEmployeeResponsibleMatches(
-                assignment, currentEmployeeResponsible);
-
-        if(employeeResponsibleMatches.isEmpty()){
+        if(!assignment.getEmployeesResponsible().contains(currentEmployeeResponsible)){
             throw new BusinessException(String.format(
-                    "O Colaborador com o nome: %s não está atribuído à tarefa", currentEmployeeResponsible.getName()));
+                    "O Colaborador com o nome: %s não está atribuído a esta tarefa", currentEmployeeResponsible.getName()));
         }
         Notification notification = notificationService.create(assignment.getNotification());
         assignment.setNotification(notification);
@@ -87,12 +89,6 @@ public class AssignmentService {
         return assignmentRepository.findById(assignmentId)
                 .orElseThrow(() -> new AssignmentNotFoundException(assignmentId));
     }
-
-    private List<User> getEmployeeResponsibleMatches(Assignment currentAssignment, User currentEmployeeResponsible) {
-        return currentAssignment.getEmployeesResponsible().stream().filter(
-                currentEmployee -> currentEmployee.equals(currentEmployeeResponsible)).toList();
-    }
-
     @Transactional
     public void completeAssignment(Assignment currentAssignment){
 

@@ -105,7 +105,6 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
           } catch (error) {
             if (error instanceof CustomError) {
               if (error.data?.objects) {
-                
                 form.setFields(
                   error.data.objects.map((error: any) => {
                     return {
@@ -140,7 +139,6 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
               });
             }
           }
-
         }}
         initialValues={props.user}
       >

@@ -4,11 +4,15 @@ import {
   Col,
   Descriptions,
   Divider,
+  Form,
+  Input,
   List,
+  Modal,
   Row,
   Skeleton,
   Space,
   Tag,
+  notification
 } from 'antd';
 
 import { format } from 'date-fns';
@@ -18,7 +22,8 @@ import { Navigate, useParams } from 'react-router-dom';
 import useAssignment from '../../core/hooks/useAssignment';
 import useUsers from '../../core/hooks/useUsers';
 import usePageTitle from '../../core/usePageTitle';
-import { Assignment, User } from '../../sdk';
+import { Assignment, AssignmentService, User } from '../../sdk';
+import CustomError from '../../sdk/CustomError';
 import { phoneToFormat } from '../../sdk/utils/generateFormatterData';
 import AccessDenied from '../components/AccessDenied';
 import WrapperDefault from '../components/WrapperDefault';
@@ -32,6 +37,8 @@ export default function TaskAssignView() {
   const { users, fetchUsers } = useUsers();
   const [page, setPage] = useState<number>(0);
   const [accessDeniedError, setAccessDeniedError] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
+  const [form] = Form.useForm<Assignment.AssignmentNotificationInput>();
 
   useEffect(() => {
     if (!isNaN(Number(params.assignmentId))) {
@@ -113,7 +120,6 @@ export default function TaskAssignView() {
           <List
             itemLayout="horizontal"
             dataSource={users?._embedded?.users}
-            
             renderItem={(user: User.Detailed) => (
               <>
                 <List.Item>
@@ -128,8 +134,98 @@ export default function TaskAssignView() {
                       {user?.occupation}
                     </Descriptions.Item>
                   </Descriptions>
-                  <Button type="primary">ASSOCIAR</Button>
+                  <Button type="primary" onClick={() => setOpen(true)}>
+                    ASSOCIAR
+                  </Button>
                 </List.Item>
+                <Modal title="Notificação" open={open}>
+                  <Form
+                    layout="vertical"
+                    autoComplete="off"
+                    form={form}
+                    onFinish={async (
+                      notice: Assignment.AssignmentNotificationInput,
+                    ) => {
+                      try {
+                        await AssignmentService.associateEmployee(
+                          notice,
+                          Number(params.assignmentId),
+                          Number(user?.id),
+                        );
+
+                        notification.success({
+                          message: 'Sucesso',
+                          description: `Colaborador ${user?.name} associado com sucesso`,
+                        });
+                      } catch (error: any) {
+                        if (error instanceof CustomError) {
+                          if (error.data?.objects) {
+                            form.setFields(
+                              error.data.objects.map((error: any) => {
+                                return {
+                                  name: error.name
+                                    ?.split(/(\.|\[|\])/gi)
+                                    .filter(
+                                      (str: string) =>
+                                        str !== '.' &&
+                                        str !== '[' &&
+                                        str !== ']' &&
+                                        str !== '',
+                                    )
+                                    .map((str: string) =>
+                                      isNaN(Number(str)) ? str : Number(str),
+                                    ) as string[],
+                                  errors: [error.userMessage],
+                                };
+                              }),
+                            );
+                          } else {
+                            notification.error({
+                              message: error.message,
+                              description:
+                                error.data?.detail === 'Network Error'
+                                  ? 'Erro de Rede'
+                                  : error.data?.detail,
+                            });
+                          }
+                        } else {
+                          notification.error({
+                            message: `Houve um erro: ${error.message}`,
+                          });
+                        }
+                      }
+                    }}
+                  >
+                    <Form.Item
+                      label="Título:*"
+                      name={['notification', 'title']}
+                    >
+                      <Input size="large" placeholder="eg.: Seu Título" />
+                    </Form.Item>
+                    <Form.Item
+                      label="Motivo:*"
+                      name={['notification', 'reason']}
+                    >
+                      <Input size="large" placeholder="eg.: Seu motivo" />
+                    </Form.Item>
+                    <Form.Item
+                      label="Objetivo:*"
+                      name={['notification', 'goal']}
+                    >
+                      <Input size="large" placeholder="eg.: Seu objetivo" />
+                    </Form.Item>
+                    <Form.Item style={{ marginTop: 40 }}>
+                      <Space direction="horizontal">
+                        <Button type="primary" htmlType="submit">
+                          ASSOCIAR
+                        </Button>
+                        <Button type="primary" onClick={() => setOpen(false)}>
+                          CANCELAR
+                        </Button>
+                      </Space>
+                    </Form.Item>
+                  </Form>
+                </Modal>
               </>
             )}
             pagination={{

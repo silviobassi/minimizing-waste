@@ -105,8 +105,11 @@ values ('Instalação de Porcelanato', utc_timestamp(), null, utc_timestamp(), f
 insert into assignments (title, start_date, end_date, deadline, completed, approved, nature, work_station_id, approval_description, notification_id)
 values ('Organização de Materiais Espalhados', utc_timestamp(), utc_timestamp(), utc_timestamp(), true, true, 'LIMPEZA', 2,
         'Trabalho Coeso e cumprimento das metas técnicas estabelecidas', 3);
+insert into assignments (title, start_date, end_date, deadline, completed, approved, nature, work_station_id, approval_description, notification_id)
+values ('Organização de Materiais Espalhados', utc_timestamp(), utc_timestamp(), utc_timestamp(), true, true, 'LIMPEZA', 2,
+        'Trabalho Coeso e cumprimento das metas técnicas estabelecidas', 4);
 
-insert into assignments_employees (assignment_id, responsible_employee_id) VALUES (1, 1), (2, 1), (3, 2), (3, 3), (2, 3), (1, 3);
+insert into assignments_employees (assignment_id, responsible_employee_id) VALUES (1, 1), (2, 1), (3, 2);
 
 insert into permissions (name, description) values ('EDIT_USER', 'Permite editar usuários');
 insert into permissions (name, description) values ('CONSULT_USER', 'Permite consultar usuários');

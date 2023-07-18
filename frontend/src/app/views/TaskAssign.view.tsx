@@ -12,7 +12,7 @@ import {
   Skeleton,
   Space,
   Tag,
-  notification
+  notification,
 } from 'antd';
 
 import { format } from 'date-fns';
@@ -34,7 +34,7 @@ export default function TaskAssignView() {
   const params = useParams<{ assignmentId: string }>();
 
   const { assignment, fetchAssignment, notFound } = useAssignment();
-  const { users, fetchUsers } = useUsers();
+  const { usersAssignmentsAssigned, fetchUserAssignmentsAssigned } = useUsers();
   const [page, setPage] = useState<number>(0);
   const [accessDeniedError, setAccessDeniedError] = useState(false);
   const [open, setOpen] = useState<boolean>(false);
@@ -45,7 +45,11 @@ export default function TaskAssignView() {
       fetchAssignment(Number(params.assignmentId));
     }
 
-    fetchUsers(page).catch((err) => {
+    fetchUserAssignmentsAssigned(
+      page,
+      false,
+      Number(params.assignmentId),
+    ).catch((err) => {
       if (err?.data?.status === 403) {
         setAccessDeniedError(true);
         return;
@@ -53,7 +57,12 @@ export default function TaskAssignView() {
 
       throw err;
     });
-  }, [fetchAssignment, params.assignmentId, fetchUsers, page]);
+  }, [
+    fetchAssignment,
+    params.assignmentId,
+    fetchUserAssignmentsAssigned,
+    page,
+  ]);
 
   if (accessDeniedError) return <AccessDenied />;
 
@@ -119,8 +128,8 @@ export default function TaskAssignView() {
 
           <List
             itemLayout="horizontal"
-            dataSource={users?._embedded?.users}
-            renderItem={(user: User.Detailed) => (
+            dataSource={usersAssignmentsAssigned?._embedded?.users}
+            renderItem={(user: User.Assigned) => (
               <>
                 <List.Item>
                   <Descriptions column={1} bordered size="small">
@@ -230,7 +239,7 @@ export default function TaskAssignView() {
             )}
             pagination={{
               onChange: (page: number) => setPage(page - 1),
-              total: users?.page?.totalElements,
+              total: usersAssignmentsAssigned?.page?.totalElements,
               pageSize: 4,
             }}
           />

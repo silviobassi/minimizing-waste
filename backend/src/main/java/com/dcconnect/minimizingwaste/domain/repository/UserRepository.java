@@ -18,12 +18,14 @@ public interface UserRepository extends UserRepositoryQueries, CustomJpaReposito
     Page<User> findAll(Specification<User> specification, Pageable pageable);
 
     @Query(value = "select u.* from users u where u.id " +
-            "not in (select ae.responsible_employee_id from assignments_employees ae);", nativeQuery = true)
-    Page<User> findAllUserAssignments(Pageable pageable);
+            "not in (select ae.responsible_employee_id from " +
+            "assignments_employees ae where ae.assignment_id = :assignmentId);", nativeQuery = true)
+    Page<User> findAllUserAssignmentsAssigned(Pageable pageable, @Param("assignmentId") Long assignmentId);
 
     @Query(value = "select u.* from users u where u.id " +
-            "in (select ae.responsible_employee_id from assignments_employees ae);", nativeQuery = true)
-    Page<User> findAllUserNotAssignments(Pageable pageable);
+            "in (select ae.responsible_employee_id from " +
+            "assignments_employees ae where ae.assignment_id = :assignmentId);", nativeQuery = true)
+    Page<User> findAllUserNotAssignmentsAssigned(Pageable pageable, @Param("assignmentId") Long assignmentId);
 
     Optional<User> findByEmail(String email);
     Optional<User> findByCpf(String cpf);

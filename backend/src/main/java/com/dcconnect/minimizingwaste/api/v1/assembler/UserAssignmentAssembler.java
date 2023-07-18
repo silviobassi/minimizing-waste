@@ -1,8 +1,7 @@
 package com.dcconnect.minimizingwaste.api.v1.assembler;
 
 import com.dcconnect.minimizingwaste.api.v1.controller.UserController;
-import com.dcconnect.minimizingwaste.api.v1.model.UserAssignmentModel;
-import com.dcconnect.minimizingwaste.api.v1.model.UserDetailedModel;
+import com.dcconnect.minimizingwaste.api.v1.model.UserAssignedModel;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,24 +13,24 @@ import org.springframework.stereotype.Component;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @Component
-public class UserAssignmentAssembler extends RepresentationModelAssemblerSupport<User, UserAssignmentModel> {
+public class UserAssignmentAssembler extends RepresentationModelAssemblerSupport<User, UserAssignedModel> {
 
     @Autowired
     private ModelMapper modelMapper;
 
     public UserAssignmentAssembler() {
-        super(UserController.class, UserAssignmentModel.class);
+        super(UserController.class, UserAssignedModel.class);
     }
 
-    public UserAssignmentModel toModel(User user){
-        UserAssignmentModel userAssignmentModel = createModelWithId(user.getId(), user);
-        modelMapper.map(user, userAssignmentModel);
+    public UserAssignedModel toModel(User user){
+        UserAssignedModel userAssignedModel = createModelWithId(user.getId(), user);
+        modelMapper.map(user, userAssignedModel);
 
 
-        return userAssignmentModel;
+        return userAssignedModel;
     }
 
-    public CollectionModel<UserAssignmentModel> toCollectionModel(Iterable<? extends User> entities){
+    public CollectionModel<UserAssignedModel> toCollectionModel(Iterable<? extends User> entities){
         return super.toCollectionModel(entities)
                 .add(linkTo(UserController.class).withRel(IanaLinkRelations.SELF.value()));
     }

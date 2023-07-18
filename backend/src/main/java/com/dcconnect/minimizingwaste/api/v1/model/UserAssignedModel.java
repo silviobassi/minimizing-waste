@@ -10,7 +10,7 @@ import org.springframework.hateoas.server.core.Relation;
 @Getter
 @Setter
 
-public class UserAssignmentModel extends RepresentationModel<UserAssignmentModel> {
+public class UserAssignedModel extends RepresentationModel<UserAssignedModel> {
 
     @Schema(example = "1")
     private Long id;

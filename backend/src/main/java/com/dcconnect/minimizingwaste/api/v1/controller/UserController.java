@@ -4,7 +4,6 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.UserAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.UserAssignmentAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.UserDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.UserUpdateDisassembler;
-import com.dcconnect.minimizingwaste.api.v1.model.UserAssignmentModel;
 import com.dcconnect.minimizingwaste.api.v1.model.UserDetailedModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.PasswordInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.UserInput;
@@ -16,22 +15,19 @@ import com.dcconnect.minimizingwaste.core.security.CheckSecurity;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.repository.UserRepository;
 import com.dcconnect.minimizingwaste.domain.repository.filter.UserFilter;
+import com.dcconnect.minimizingwaste.domain.service.AssignmentService;
 import com.dcconnect.minimizingwaste.domain.service.UserService;
 import com.dcconnect.minimizingwaste.infrastructure.spec.UserSpecs;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.repository.query.Param;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -43,6 +39,9 @@ public class UserController implements UserControllerOpenApi {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private AssignmentService assignmentService;
 
     @Autowired
     private UserAssembler userAssembler;
@@ -71,24 +70,6 @@ public class UserController implements UserControllerOpenApi {
         usersPage = new PageWrapper<>(usersPage, pageable);
 
         return pagedResourcesAssembler.toModel(usersPage, userAssembler);
-    }
-
-    @CheckSecurity.Users.CanConsult
-    @ResponseStatus(HttpStatus.OK)
-    @GetMapping("/assignments")
-    public PagedModel<UserAssignmentModel> all(@PageableDefault(size = 10) Pageable pageable,
-                                               @RequestParam(required = true) Boolean userAssignment){
-
-        Page<User> usersPage = null;
-
-        if(userAssignment == false){
-            usersPage = userRepository.findAllUserAssignments(pageable);
-            return pagedResourcesAssembler.toModel(usersPage, userAssignmentAssembler);
-        }
-
-        usersPage = userRepository.findAllUserNotAssignments(pageable);
-        return pagedResourcesAssembler.toModel(usersPage, userAssignmentAssembler);
-
     }
 
     @CheckSecurity.Users.CanEdit

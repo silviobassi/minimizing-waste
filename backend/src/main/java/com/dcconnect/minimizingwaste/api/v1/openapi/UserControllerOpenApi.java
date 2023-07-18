@@ -15,9 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
-import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
-import org.springframework.web.bind.annotation.PathVariable;
 
 @Tag(name = "Users")
 public interface UserControllerOpenApi {
@@ -40,6 +38,7 @@ public interface UserControllerOpenApi {
     PagedModel<UserDetailedModel> search(
             @Parameter(hidden = true) UserFilter userFilter,
             @Parameter(hidden = true) @PageableDefault(size = 10) Pageable pageable);
+
 
     @Operation(summary = "Cria um novo usuário")
     public UserDetailedModel create(@RequestBody(description = "Representação de um novo usuário", required = true)

@@ -53,18 +53,11 @@ public class AssignmentService {
     @Transactional
     public void attachEmployee(Long employeeResponsibleId, Assignment assignment){
         User currentEmployeeResponsible = userService.findOrFail(employeeResponsibleId);
-        Long employeesTotal = assignmentRepository.countExistsEmployeesAssignments(employeeResponsibleId);
-        var assignmentsAllowed = 3L;
-
-        if(employeesTotal >= assignmentsAllowed){
-            throw new BusinessException(String.format(
-                    "O Colaborador %s só pode ser atribuído a %d tarefas",
-                    currentEmployeeResponsible.getName(), assignmentsAllowed));
-        }
 
         if(assignment.getEmployeesResponsible().contains(currentEmployeeResponsible)){
             throw new BusinessException(String.format(
-                    "O Colaborador %s já está atribuído a esta tarefa", currentEmployeeResponsible.getName()));
+                    "O Colaborador %s já está atribuído à tarefa %s",
+                    currentEmployeeResponsible.getName(), assignment.getTitle()));
         }
 
         Notification notification = notificationService.create(assignment.getNotification());

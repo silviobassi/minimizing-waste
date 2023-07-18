@@ -10,6 +10,18 @@ class UserService extends Service {
     ).then(this.getData);
   }
 
+  static getAllUsersAssigned(
+    search: User.Query,
+    assigned: boolean,
+    assignmentId: number,
+  ): User.PagedModelDetailed {
+    const queryString = generateQueryString(search);
+    return this.Http.get<User.PagedModelDetailed[]>(
+      `/users/${assignmentId}/assignments`.concat(queryString) +
+        `assigned=${assigned}`,
+    ).then(this.getData);
+  }
+
   static getDetailedUser(userId: number): Promise<User.Detailed> {
     return this.Http.get<User.Detailed>(`/users/${userId}`).then(this.getData);
   }

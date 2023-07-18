@@ -23,7 +23,4 @@ public interface AssignmentRepository extends CustomJpaRepository<Assignment, Lo
             "join at.employeesResponsible er where at.id = :assignmentId and er.id = :userId")
     boolean existsByEmployeeResponsible(Long assignmentId, Long userId);
 
-    @Query("select count(er.id) from Assignment a join  a.employeesResponsible er " +
-            "where er.id = :employeeResponsibleId")
-    Long countExistsEmployeesAssignments(Long employeeResponsibleId);
 }

@@ -15,24 +15,24 @@ class AssignmentService extends Service {
   }
 
   static associateEmployee(
-    notification: Assignment.AssignmentNotificationInput,
+    notice: Assignment.AssignmentNotificationInput,
     assignmentId: number,
     employeeResponsibleId: number,
   ) {
     return this.Http.put<void>(
-      `/assignments/${assignmentId}/employee-responsible/${employeeResponsibleId}`,
-      notification,
+      `/assignments/${assignmentId}/employee-responsible/${employeeResponsibleId}/associate`,
+      notice,
     ).then(this.getData);
   }
 
   static disassociateEmployee(
-    notification: Assignment.AssignmentNotificationInput,
+    notice: Assignment.AssignmentNotificationInput,
     assignmentId: number,
     employeeResponsibleId: number,
   ) {
-    return this.Http.delete<void>(
-      `/assignments/${assignmentId}/employee-responsible/${employeeResponsibleId}`,
-      notification,
+    return this.Http.put<void>(
+      `/assignments/${assignmentId}/employee-responsible/${employeeResponsibleId}/disassociate`,
+      notice,
     ).then(this.getData);
   }
 }

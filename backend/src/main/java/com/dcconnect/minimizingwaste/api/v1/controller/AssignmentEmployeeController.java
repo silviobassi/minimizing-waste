@@ -43,7 +43,7 @@ public class AssignmentEmployeeController implements AssignmentEmployeeControlle
 
     @CheckSecurity.Assignments.CanEdit
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PutMapping("/{employeeResponsibleId}")
+    @PutMapping("/{employeeResponsibleId}/associate")
     public ResponseEntity<Void> attachEmployee(@PathVariable Long assignmentId,
                         @PathVariable Long employeeResponsibleId,
                         @RequestBody @Valid AssignmentNotificationInput assignmentNotificationInput){
@@ -56,7 +56,7 @@ public class AssignmentEmployeeController implements AssignmentEmployeeControlle
 
     @CheckSecurity.Assignments.CanEdit
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @DeleteMapping("/{employeeResponsibleId}")
+    @PutMapping("/{employeeResponsibleId}/disassociate")
     public ResponseEntity<Void> detachEmployee(@PathVariable Long assignmentId,
                                                  @PathVariable Long employeeResponsibleId,
                                                  @RequestBody @Valid AssignmentNotificationInput assignmentNotificationInput){

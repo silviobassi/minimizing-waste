@@ -103,6 +103,15 @@ export default function TaskList() {
                     }
                   />
                 </Tooltip>
+                <Tooltip title={'Desatribuir Tarefa'}>
+                  <Button
+                    type={'link'}
+                    icon={<ReconciliationOutlined />}
+                    onClick={() =>
+                      navigate(`/tarefa/${assignment.id}/desatribuicao`)
+                    }
+                  />
+                </Tooltip>
                 <Tooltip title={'Ver Detalhes'}>
                   <Button
                     type={'link'}

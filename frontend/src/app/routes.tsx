@@ -31,6 +31,7 @@ import TaskListView from './views/TaskList.view';
 import WorkStationCreateView from './views/WorkStationCreate.view';
 import WorkStationEditView from './views/WorkStationEdit.view';
 import WorkStationListView from './views/WorkStationList.view';
+import TaskUnassignView from './views/TaskUnassign.view';
 
 export default function Routes() {
   useEffect(() => {
@@ -114,6 +115,7 @@ export default function Routes() {
         element={<TaskDetailedView />}
       />
       <Route path={'/tarefa/:assignmentId/atribuicao'} element={<TaskAssignView />} />
+      <Route path={'/tarefa/:assignmentId/desatribuicao'} element={<TaskUnassignView />} />
       <Route path={'/colaboradores'} element={<EmployeeListView />} />
       <Route path={'/colaborador/criar'} element={<EmployeeCreateView />} />
       <Route

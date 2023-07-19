@@ -9,8 +9,8 @@ import { Assignment, AssignmentService } from '../../sdk';
 import AccessDenied from '../components/AccessDenied';
 import AssignmentAssigned from '../features/AssignmentAssigned';
 
-export default function TaskAssignView() {
-  usePageTitle('Atribuição de Tarefas');
+export default function TaskUnassignView() {
+  usePageTitle('Desatribuição de Tarefas');
 
   const params = useParams<{ assignmentId: string }>();
 
@@ -24,18 +24,16 @@ export default function TaskAssignView() {
       fetchAssignment(Number(params.assignmentId));
     }
 
-    fetchUserAssignmentsAssigned(
-      page,
-      false,
-      Number(params.assignmentId),
-    ).catch((err) => {
-      if (err?.data?.status === 403) {
-        setAccessDeniedError(true);
-        return;
-      }
+    fetchUserAssignmentsAssigned(page, true, Number(params.assignmentId)).catch(
+      (err) => {
+        if (err?.data?.status === 403) {
+          setAccessDeniedError(true);
+          return;
+        }
 
-      throw err;
-    });
+        throw err;
+      },
+    );
   }, [
     fetchAssignment,
     params.assignmentId,
@@ -43,11 +41,11 @@ export default function TaskAssignView() {
     page,
   ]);
 
-  function handleAssignmentAssign(
+  function handleAssignmentUnassign(
     notice: Assignment.AssignmentNotificationInput,
     employeeId: number,
   ) {
-    AssignmentService.associateEmployee(
+    AssignmentService.disassociateEmployee(
       notice,
       Number(params.assignmentId),
       Number(employeeId),
@@ -66,9 +64,9 @@ export default function TaskAssignView() {
     <AssignmentAssigned
       users={usersAssignmentsAssigned}
       assignment={assignment}
-      onAssigned={handleAssignmentAssign}
+      onAssigned={handleAssignmentUnassign}
       onPage={(page: number) => setPage(page - 1)}
-      assign={true}
+      assign={false}
     />
   );
 }

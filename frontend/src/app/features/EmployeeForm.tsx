@@ -41,7 +41,6 @@ interface TaskFormDefaultProps {
   isCurrentUser?: boolean;
   title: string;
   user?: UserFormType;
-  avatarUrl?: string;
   onUpdate?: (user: User.UpdateInput, file: RcFile) => any;
 }
 
@@ -102,7 +101,7 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
               message: 'Sucesso',
               description: `Colaborador ${user?.name} criado com sucesso`,
             });
-          } catch (error) {
+          } catch (error: any) {
             if (error instanceof CustomError) {
               if (error.data?.objects) {
                 form.setFields(
@@ -153,7 +152,7 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
                 onChange={handleChange}
               >
                 <Avatar
-                  src={photo ? imageUrl : props.avatarUrl}
+                  src={photo ? imageUrl : props.user?.userPhoto?.url}
                   size={128}
                   style={{ cursor: 'pointer' }}
                   icon={<UserOutlined />}

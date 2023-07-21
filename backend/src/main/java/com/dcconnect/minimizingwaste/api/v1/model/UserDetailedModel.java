@@ -1,6 +1,7 @@
 package com.dcconnect.minimizingwaste.api.v1.model;
 
 import com.dcconnect.minimizingwaste.domain.model.UserPhoto;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,7 @@ import java.util.List;
 @Relation(collectionRelation = "users")
 @Getter
 @Setter
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class UserDetailedModel extends RepresentationModel<UserDetailedModel> {
 
     @Schema(example = "1")
@@ -32,6 +33,9 @@ public class UserDetailedModel extends RepresentationModel<UserDetailedModel> {
     private String occupation;
     @Schema(example = "Curso Superior Incompleto")
     private String literate;
+
+    private UserPhotoModel userPhoto;
+
     @Schema(example = "2023-01-03T22:08Z")
     private OffsetDateTime createdAt;
     private List<AccessGroupSummaryModel> accessGroups;

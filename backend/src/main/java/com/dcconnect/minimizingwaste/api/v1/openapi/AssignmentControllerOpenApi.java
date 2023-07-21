@@ -1,5 +1,6 @@
 package com.dcconnect.minimizingwaste.api.v1.openapi;
 
+import com.dcconnect.minimizingwaste.api.v1.model.AssignmentDefaultModel;
 import com.dcconnect.minimizingwaste.api.v1.model.AssignmentModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentApprovedInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentCompletedInput;
@@ -66,8 +67,8 @@ public interface AssignmentControllerOpenApi {
             example = "false",
             schema = @Schema(type = "boolean")
     )
-    PagedModel<AssignmentModel> search(@Parameter(hidden = true) AssignmentFilter assignmentFilter,
-                                       @Parameter(hidden = true) Pageable pageable);
+    PagedModel<AssignmentDefaultModel> search(@Parameter(hidden = true) AssignmentFilter assignmentFilter,
+                                              @Parameter(hidden = true) Pageable pageable);
     @Operation(summary = "Cria uma nova tarefa")
     AssignmentModel create(@RequestBody(description = "Representação de um nova tarefa", required = true)
                            AssignmentInput assignmentInput);

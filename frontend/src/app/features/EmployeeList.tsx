@@ -1,10 +1,14 @@
-import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { Button, Popconfirm, Space, Table, Tag, Tooltip } from 'antd';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  EyeOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import { Avatar, Button, Popconfirm, Space, Table, Tag, Tooltip } from 'antd';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useUser from '../../core/hooks/useUser';
-import useUserPhoto from '../../core/hooks/useUserPhoto';
 import useUsers from '../../core/hooks/useUsers';
 import { User } from '../../sdk/@types';
 import {
@@ -19,7 +23,6 @@ export default function EmployeeList() {
   const [page, setPage] = useState<number>(0);
   const [accessDeniedError, setAccessDeniedError] = useState(false);
   const { removeUser } = useUser();
-  const { deletePhoto } = useUserPhoto();
 
   useEffect(() => {
     fetchUsers(page).catch((err) => {
@@ -42,6 +45,16 @@ export default function EmployeeList() {
         rowKey="id"
         columns={[
           { title: 'ID', dataIndex: 'id', width: 60 },
+          {
+            title: 'Foto',
+            dataIndex: ['userPhoto', 'url'],
+            width: 60,
+            render(url) {
+              return (
+                <Avatar src={url} icon={<UserOutlined />} size={'large'} />
+              );
+            },
+          },
           { title: 'Nome', dataIndex: 'name', width: 450 },
           {
             title: 'CPF',

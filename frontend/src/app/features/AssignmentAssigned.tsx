@@ -1,5 +1,7 @@
 import {
+  Avatar,
   Button,
+  Card,
   Col,
   Descriptions,
   Divider,
@@ -15,6 +17,7 @@ import {
 
 import { format } from 'date-fns';
 
+import { UserOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { Assignment, User } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
@@ -69,23 +72,35 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
           {props?.assignment?.employeesResponsible.map(
             (employeeResponsible: Assignment.AssignmentModel) => (
               <>
-                <Tag color="blue">
-                  <Descriptions column={1} size="small">
-                    <Descriptions.Item label={'Nome'}>
-                      {employeeResponsible?.name}
-                    </Descriptions.Item>
-
-                    <Descriptions.Item label={'Cargo'}>
-                      {employeeResponsible?.office}
-                    </Descriptions.Item>
-                    <Descriptions.Item label={'Função'}>
-                      {employeeResponsible?.occupation}
-                    </Descriptions.Item>
-                    <Descriptions.Item label={'Função'}>
-                      {phoneToFormat(employeeResponsible?.whatsApp)}
-                    </Descriptions.Item>
-                  </Descriptions>
-                </Tag>
+                <List>
+                  <List.Item>
+                    <Card style={{ width: '100%', backgroundColor: '#E6F4FF' }}>
+                      <List.Item.Meta
+                        avatar={
+                          <Avatar
+                            src={employeeResponsible?.userPhoto?.url}
+                            size={50}
+                            icon={<UserOutlined />}
+                          />
+                        }
+                        title={<a href="#">{employeeResponsible?.name}</a>}
+                        description={
+                          <>
+                            <span>
+                              <strong>Cargo: </strong>
+                              {employeeResponsible?.office} |{' '}
+                              <strong>Função: </strong>
+                              {employeeResponsible?.office}
+                            </span>
+                            <br />
+                            <strong>WhatsApp: </strong>
+                            {phoneToFormat(employeeResponsible?.whatsApp)}
+                          </>
+                        }
+                      />
+                    </Card>
+                  </List.Item>
+                </List>
               </>
             ),
           )}
@@ -98,48 +113,61 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
           </Divider>
 
           <List
+            className="demo-loadmore-list"
             itemLayout="horizontal"
             dataSource={props?.users?._embedded?.users}
             renderItem={(user: User.Assigned) => (
               <>
-                <List.Item>
-                  <Descriptions column={1} bordered size="small">
-                    <Descriptions.Item label={'Nome'}>
-                      {user?.name}
-                    </Descriptions.Item>
-
-                    <Descriptions.Item label={'Cargo'}>
-                      {user?.office}
-                    </Descriptions.Item>
-                    <Descriptions.Item label={'Função'}>
-                      {user?.occupation}
-                    </Descriptions.Item>
-                  </Descriptions>
-                  {props.assign ? (
-                    <Button
-                      type="primary"
-                      onClick={() => {
-                        setOpen(true);
-                        setUserId(user?.id);
-                        setUserName(user?.name);
-                      }}
-                    >
-                      ATRIBUIR
-                    </Button>
-                  ) : (
-                    <Button
-                      type="primary"
-                      danger
-                      onClick={() => {
-                        setOpen(true);
-                        setUserId(user?.id);
-                        setUserName(user?.name);
-                      
-                      }}
-                    >
-                      DESATRIBUIR
-                    </Button>
-                  )}
+                <List.Item
+                  actions={[
+                    props.assign ? (
+                      <Button
+                        type="primary"
+                        onClick={() => {
+                          setOpen(true);
+                          setUserId(user?.id);
+                          setUserName(user?.name);
+                        }}
+                      >
+                        ATRIBUIR
+                      </Button>
+                    ) : (
+                      <Button
+                        type="primary"
+                        danger
+                        onClick={() => {
+                          setOpen(true);
+                          setUserId(user?.id);
+                          setUserName(user?.name);
+                        }}
+                      >
+                        DESATRIBUIR
+                      </Button>
+                    ),
+                  ]}
+                >
+                  <List.Item.Meta
+                    avatar={
+                      <Avatar
+                        src={user?.userPhoto?.url}
+                        size={50}
+                        icon={<UserOutlined />}
+                      />
+                    }
+                    title={<a href="#">{user?.name}</a>}
+                    description={
+                      <>
+                        <span>
+                          <strong>Cargo: </strong>
+                          {user?.office} | <strong>Função: </strong>
+                          {user?.office}
+                        </span>
+                        <br />
+                        <strong>WhatsApp: </strong>
+                        {phoneToFormat(user?.whatsApp)}
+                      </>
+                    }
+                  />
                 </List.Item>
                 <Modal title="Notificação" open={open}>
                   <Form
@@ -151,7 +179,7 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
                     ) => {
                       try {
                         await props.onAssigned(notice, Number(userId));
-                        
+
                         notification.success({
                           message: 'Sucesso',
                           description: `Colaborador ${userName} ${

@@ -27,7 +27,6 @@ import usePageTitle from '../../core/usePageTitle';
 import WrapperDefault from '../components/WrapperDefault';
 
 import { format } from 'date-fns';
-import useUserPhoto from '../../core/hooks/useUserPhoto';
 import { User } from '../../sdk';
 import {
   cpfToFormat,
@@ -40,14 +39,13 @@ export default function EmployeeDetailedView() {
   const params = useParams<{ employeeId: string }>();
 
   const { user, fetchUser, removeUser, notFound } = useUser();
-  const { userPhoto, fetchUserPhoto, deletePhoto } = useUserPhoto();
 
   useEffect(() => {
     if (!isNaN(Number(params.employeeId))) {
       fetchUser(Number(params.employeeId));
-      fetchUserPhoto(Number(params.employeeId));
+     
     }
-  }, [fetchUser, fetchUserPhoto, params.employeeId]);
+  }, [fetchUser, params.employeeId]);
 
   if (isNaN(Number(params.employeeId)))
     return <Navigate to={'/colaboradores'} />;
@@ -63,7 +61,7 @@ export default function EmployeeDetailedView() {
           <Row justify={'center'}>
             <Avatar
               size={120}
-              src={userPhoto?.avatarUrl}
+              src={user?.userPhoto?.url}
               icon={<UserOutlined />}
             />
           </Row>

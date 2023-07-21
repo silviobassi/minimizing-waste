@@ -1,5 +1,7 @@
 package com.dcconnect.minimizingwaste.api.v1.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -22,6 +24,6 @@ public class UserAssignedModel extends RepresentationModel<UserAssignedModel> {
     private String office;
     @Schema(example = "Instalador de Revestimento")
     private String occupation;
-
+    private UserPhotoModel userPhoto;
 
 }

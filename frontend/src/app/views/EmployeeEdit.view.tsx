@@ -15,13 +15,13 @@ export default function EmployeeEditView() {
   usePageTitle('Edição de Colaborador');
   const params = useParams<{ userId: string }>();
   const { user, fetchUser, notFound } = useUser();
-  const { userPhoto, fetchUserPhoto } = useUserPhoto();
+
 
   useEffect(() => {
     if (params.userId && !isNaN(Number(params.userId)))
       fetchUser(Number(params.userId));
-    fetchUserPhoto(Number(params.userId));
-  }, [fetchUser, fetchUserPhoto, params.userId]);
+   
+  }, [fetchUser, params.userId]);
 
   if (isNaN(Number(params.userId))) return <Navigate to={'/colaboradores'} />;
 
@@ -41,7 +41,6 @@ export default function EmployeeEditView() {
   return (
     <EmployeeForm
       user={user}
-      avatarUrl={userPhoto?.avatarUrl}
       onUpdate={handleUserUpdate}
       isCurrentUser={true}
       title="Edição de Colaborador"

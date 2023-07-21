@@ -75,11 +75,13 @@ export interface paths {
     /** Deleta uma tarefa */
     delete: operations["delete_5"];
   };
-  "/v1/assignments/{assignmentId}/employee-responsible/{employeeResponsibleId}": {
+  "/v1/assignments/{assignmentId}/employee-responsible/{employeeResponsibleId}/disassociate": {
+    /** Disassocia um colaborador a determinada tarefa */
+    put: operations["detachEmployee"];
+  };
+  "/v1/assignments/{assignmentId}/employee-responsible/{employeeResponsibleId}/associate": {
     /** Associa um colaborador a determinada tarefa */
     put: operations["attachEmployee"];
-    /** Disassocia um colaborador a determinada tarefa */
-    delete: operations["detachEmployee"];
   };
   "/v1/assignments/{assignmentId}/conclusion": {
     /** Conclui ou não uma tarefa */
@@ -149,8 +151,9 @@ export interface paths {
     /** Lista os grupos de acesso  de cada usuário */
     get: operations["all"];
   };
-  "/v1/users/assignments": {
-    get: operations["allUsersAssignmentsAssigned"];
+  "/v1/users/{assignmentId}/assignments": {
+    /** Lista os usuários atribuídos ou não a tarefa atual */
+    get: operations["allAssigned"];
   };
   "/v1/supplies": {
     /** Lista recursos */
@@ -200,7 +203,7 @@ export interface components {
     };
     Problem: {
       /**
-       * Format: int32 
+       * Format: int32
        * @example 400
        */
       status?: number;
@@ -213,16 +216,16 @@ export interface components {
       /** @example Um ou mais campos estão inválidos. Faça o preenchimento correto e tente novamente. */
       userMessage?: string;
       /**
-       * Format: date-time 
+       * Format: date-time
        * @example 2022-07-15T11:21:50.902245498Z
        */
       timestamp?: string;
       /** @description Lista de objetos ou campos que geraram o erro */
-      objects?: (components["schemas"]["ProblemObject"])[];
+      objects?: components["schemas"]["ProblemObject"][];
     };
     SectorIdInput: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 1
        */
       id: number;
@@ -239,7 +242,7 @@ export interface components {
     };
     SectorModel: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 1
        */
       id?: number;
@@ -249,7 +252,7 @@ export interface components {
     };
     WorkStationModel: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 1
        */
       id?: number;
@@ -278,7 +281,7 @@ export interface components {
     };
     AccessGroupSummaryModel: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 1
        */
       id?: number;
@@ -288,7 +291,7 @@ export interface components {
     };
     UserDetailedModel: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 1
        */
       id?: number;
@@ -306,23 +309,18 @@ export interface components {
       occupation?: string;
       /** @example Curso Superior Incompleto */
       literate?: string;
+      userPhoto?: components["schemas"]["UserPhotoModel"];
       /**
-       * Format: date-time 
+       * Format: date-time
        * @example 2023-01-03T22:08:00Z
        */
       createdAt?: string;
-      accessGroups?: (components["schemas"]["AccessGroupSummaryModel"])[];
+      accessGroups?: components["schemas"]["AccessGroupSummaryModel"][];
       _links?: components["schemas"]["Links"];
-    };
-    UserPhotoInput: {
-      /** Format: binary */
-      file: string;
-      /** @description descrição da foto do usuário */
-      description: string;
     };
     UserPhotoModel: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 1
        */
       id?: number;
@@ -333,11 +331,19 @@ export interface components {
       /** @example image/jpeg */
       contentType?: string;
       /**
-       * Format: int64 
+       * Format: int64
        * @example 74697
        */
       size?: number;
+      /** @example https://server.com/lkfnlkflkfjlakfalkfjalkfjalkfjaslkfjaslf.jpeg */
+      url?: string;
       _links?: components["schemas"]["Links"];
+    };
+    UserPhotoInput: {
+      /** Format: binary */
+      file: string;
+      /** @description descrição da foto do usuário */
+      description: string;
     };
     PasswordInput: {
       /** @example 12k43jd8#* */
@@ -349,14 +355,14 @@ export interface components {
       /** @example Caixa de Papel */
       packing: string;
       /**
-       * Format: int64 
+       * Format: int64
        * @example 1
        */
       quantity: number;
       /** @example 50 */
       measure?: number;
       /**
-       * @example KG 
+       * @example KG
        * @enum {string}
        */
       measureUnitType: "UNIDADE" | "ML" | "LITRO" | "M2" | "M3" | "KG" | "TONELADA";
@@ -366,14 +372,14 @@ export interface components {
       name: string;
       supplyDescription: components["schemas"]["SupplyDescriptionInput"];
       /**
-       * @example TRANSMUTÁVEL 
+       * @example TRANSMUTÁVEL
        * @enum {string}
        */
       manipulation: "TRANSMUTÁVEL" | "IMUTÁVEL";
     };
     MaterialSupplyModel: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 1
        */
       id?: number;
@@ -381,7 +387,7 @@ export interface components {
       name?: string;
       supplyDescription?: components["schemas"]["SupplyDescriptionSummaryModel"];
       /**
-       * @example TRANSMUTÁVEL 
+       * @example TRANSMUTÁVEL
        * @enum {string}
        */
       manipulation?: "TRANSMUTÁVEL" | "IMUTÁVEL";
@@ -389,7 +395,7 @@ export interface components {
     };
     SupplyDescriptionSummaryModel: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 2
        */
       quantity?: number;
@@ -398,7 +404,7 @@ export interface components {
       /** @example 100 */
       total?: number;
       /**
-       * @example KG 
+       * @example KG
        * @enum {string}
        */
       measureUnitType?: "UNIDADE" | "ML" | "LITRO" | "M2" | "M3" | "KG" | "TONELADA";
@@ -412,7 +418,7 @@ export interface components {
     };
     EquipmentSupplyModel: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 1
        */
       id?: number;
@@ -420,7 +426,7 @@ export interface components {
       name?: string;
       supplyDescription?: components["schemas"]["SupplyDescriptionSummaryModel"];
       /**
-       * @example MÉDIO 
+       * @example MÉDIO
        * @enum {string}
        */
       bulk?: "PEQUENO" | "MÉDIO" | "GRANDE";
@@ -436,7 +442,7 @@ export interface components {
     };
     SupplyIdInput: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 1
        */
       id: number;
@@ -445,7 +451,7 @@ export interface components {
       /** @example true */
       movable: boolean;
       /**
-       * Format: int64 
+       * Format: int64
        * @example 3
        */
       reservedQuantity: number;
@@ -456,21 +462,21 @@ export interface components {
     };
     UserIdInput: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 2
        */
       id: number;
     };
     WorkStationIdInput: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 1
        */
       id: number;
     };
     NotificationModel: {
       /**
-       * Format: date-time 
+       * Format: date-time
        * @example 2023-01-07T22:50:00Z
        */
       createdAt?: string;
@@ -483,7 +489,7 @@ export interface components {
     };
     SupplyMovementModel: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 1
        */
       id?: number;
@@ -492,7 +498,7 @@ export interface components {
       /** @example false */
       movable?: boolean;
       /**
-       * Format: int64 
+       * Format: int64
        * @example 20
        */
       allocatedQuantity?: number;
@@ -504,7 +510,7 @@ export interface components {
     /** @example 1 */
     SupplySummaryModel: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 1
        */
       id?: number;
@@ -515,7 +521,7 @@ export interface components {
     };
     DevolvedSupplyMovementInput: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 2
        */
       reservedQuantity: number;
@@ -527,12 +533,12 @@ export interface components {
       /** @example Revestimento dos Banheiros */
       title: string;
       /**
-       * Format: date-time 
+       * Format: date-time
        * @example 2022-12-28T13:00:33Z
        */
       startDate: string;
       /**
-       * Format: date-time 
+       * Format: date-time
        * @example 2023-01-20T13:00:33Z
        */
       deadline: string;
@@ -542,24 +548,24 @@ export interface components {
     };
     AssignmentModel: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 1
        */
       id?: number;
       /** @example Revestimento dos Banheiros */
       title?: string;
       /**
-       * Format: date-time 
+       * Format: date-time
        * @example 2022-12-28T13:00:33Z
        */
       startDate?: string;
       /**
-       * Format: date-time 
+       * Format: date-time
        * @example 2023-01-20T13:00:33Z
        */
       deadline?: string;
       /**
-       * Format: date-time 
+       * Format: date-time
        * @example 2023-01-20T13:00:33Z
        */
       endDate?: string;
@@ -568,17 +574,17 @@ export interface components {
       /** @example false */
       approved?: boolean;
       /**
-       * @example OBRAS 
+       * @example OBRAS
        * @enum {string}
        */
       nature?: "LIMPEZA" | "OBRAS";
       workStation?: components["schemas"]["WorkStationModel"];
-      employeesResponsible?: (components["schemas"]["UserAssignedModel"])[];
+      employeesResponsible?: components["schemas"]["UserAssignedModel"][];
       _links?: components["schemas"]["Links"];
     };
     UserAssignedModel: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 1
        */
       id?: number;
@@ -590,6 +596,7 @@ export interface components {
       office?: string;
       /** @example Instalador de Revestimento */
       occupation?: string;
+      userPhoto?: components["schemas"]["UserPhotoModel"];
       _links?: components["schemas"]["Links"];
     };
     AssignmentNotificationInput: {
@@ -629,7 +636,7 @@ export interface components {
     };
     CollectionModelWorkStationModel: {
       _embedded?: {
-        workStations?: (components["schemas"]["WorkStationModel"])[];
+        workStations?: components["schemas"]["WorkStationModel"][];
       };
       _links?: components["schemas"]["Links"];
     };
@@ -645,27 +652,27 @@ export interface components {
     };
     PagedModelUserDetailedModel: {
       _embedded?: {
-        users?: (components["schemas"]["UserDetailedModel"])[];
+        users?: components["schemas"]["UserDetailedModel"][];
       };
       _links?: components["schemas"]["Links"];
       page?: components["schemas"]["PageMetadata"];
     };
     CollectionModelAccessGroupSummaryModel: {
       _embedded?: {
-        accessGroups?: (components["schemas"]["AccessGroupSummaryModel"])[];
+        accessGroups?: components["schemas"]["AccessGroupSummaryModel"][];
       };
       _links?: components["schemas"]["Links"];
     };
     PagedModelUserAssignedModel: {
       _embedded?: {
-        users?: (components["schemas"]["UserAssignedModel"])[];
+        users?: components["schemas"]["UserAssignedModel"][];
       };
       _links?: components["schemas"]["Links"];
       page?: components["schemas"]["PageMetadata"];
     };
     PagedModelSupplySummaryModel: {
       _embedded?: {
-        supplies?: (components["schemas"]["SupplySummaryModel"])[];
+        supplies?: components["schemas"]["SupplySummaryModel"][];
       };
       _links?: components["schemas"]["Links"];
       page?: components["schemas"]["PageMetadata"];
@@ -674,7 +681,7 @@ export interface components {
       /** @example Saco plástico */
       packing?: string;
       /**
-       * Format: int64 
+       * Format: int64
        * @example 3
        */
       quantity?: number;
@@ -683,26 +690,26 @@ export interface components {
       /** @example 120 */
       total?: number;
       /**
-       * @example KG 
+       * @example KG
        * @enum {string}
        */
       measureUnitType?: "UNIDADE" | "ML" | "LITRO" | "M2" | "M3" | "KG" | "TONELADA";
     };
     SupplyDetailedModel: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 1
        */
       id?: number;
       /** @example Cimento */
       name?: string;
       /**
-       * @example TRANSMUTÁVEL 
+       * @example TRANSMUTÁVEL
        * @enum {string}
        */
       manipulation?: "TRANSMUTÁVEL" | "IMUTÁVEL";
       /**
-       * @example PEQUENO 
+       * @example PEQUENO
        * @enum {string}
        */
       bulk?: "PEQUENO" | "MÉDIO" | "GRANDE";
@@ -710,14 +717,14 @@ export interface components {
     };
     PagedModelSupplyMovementModel: {
       _embedded?: {
-        suppliesMovements?: (components["schemas"]["SupplyMovementModel"])[];
+        suppliesMovements?: components["schemas"]["SupplyMovementModel"][];
       };
       _links?: components["schemas"]["Links"];
       page?: components["schemas"]["PageMetadata"];
     };
     SupplyMovementNotificationModel: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 1
        */
       id?: number;
@@ -727,7 +734,7 @@ export interface components {
     };
     WorkStationDetailedModel: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 1
        */
       id?: number;
@@ -742,19 +749,19 @@ export interface components {
     };
     CollectionModelSectorModel: {
       _embedded?: {
-        sectors?: (components["schemas"]["SectorModel"])[];
+        sectors?: components["schemas"]["SectorModel"][];
       };
       _links?: components["schemas"]["Links"];
     };
     CollectionModelPermissionDetailedModel: {
       _embedded?: {
-        permissions?: (components["schemas"]["PermissionDetailedModel"])[];
+        permissions?: components["schemas"]["PermissionDetailedModel"][];
       };
       _links?: components["schemas"]["Links"];
     };
     PermissionDetailedModel: {
       /**
-       * Format: int64 
+       * Format: int64
        * @example 1
        */
       id?: number;
@@ -772,16 +779,51 @@ export interface components {
       workStation?: components["schemas"]["WorkStationDetailedModel"];
       notification?: components["schemas"]["NotificationModel"];
     };
-    PagedModelAssignmentModel: {
+    AssignmentDefaultModel: {
+      /**
+       * Format: int64
+       * @example 1
+       */
+      id?: number;
+      /** @example Revestimento dos Banheiros */
+      title?: string;
+      /**
+       * Format: date-time
+       * @example 2022-12-28T13:00:33Z
+       */
+      startDate?: string;
+      /**
+       * Format: date-time
+       * @example 2023-01-20T13:00:33Z
+       */
+      deadline?: string;
+      /**
+       * Format: date-time
+       * @example 2023-01-20T13:00:33Z
+       */
+      endDate?: string;
+      /** @example true */
+      completed?: boolean;
+      /** @example false */
+      approved?: boolean;
+      /**
+       * @example OBRAS
+       * @enum {string}
+       */
+      nature?: "LIMPEZA" | "OBRAS";
+      workStation?: components["schemas"]["WorkStationModel"];
+      _links?: components["schemas"]["Links"];
+    };
+    PagedModelAssignmentDefaultModel: {
       _embedded?: {
-        assignments?: (components["schemas"]["AssignmentModel"])[];
+        assignments?: components["schemas"]["AssignmentDefaultModel"][];
       };
       _links?: components["schemas"]["Links"];
       page?: components["schemas"]["PageMetadata"];
     };
     CollectionModelUserDetailedModel: {
       _embedded?: {
-        users?: (components["schemas"]["UserDetailedModel"])[];
+        users?: components["schemas"]["UserDetailedModel"][];
       };
       _links?: components["schemas"]["Links"];
     };
@@ -831,7 +873,7 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description ID de um usuário 
+         * @description ID de um usuário
          * @example 1
          */
         workStationId: number;
@@ -857,7 +899,7 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description ID de uma estação de trabalho 
+         * @description ID de uma estação de trabalho
          * @example 1
          */
         workStationId: number;
@@ -889,7 +931,7 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description ID de uma estação de trabalho 
+         * @description ID de uma estação de trabalho
          * @example 1
          */
         workStationId: number;
@@ -911,7 +953,7 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description ID de um usuário 
+         * @description ID de um usuário
          * @example 1
          */
         userId: number;
@@ -937,7 +979,7 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description ID de um usuário 
+         * @description ID de um usuário
          * @example 1
          */
         userId: number;
@@ -969,7 +1011,7 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description ID de um setor 
+         * @description ID de um setor
          * @example 1
          */
         userId: number;
@@ -997,7 +1039,7 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description Id do usuário 
+         * @description Id do usuário
          * @example 1
          */
         userId: number;
@@ -1031,7 +1073,7 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description Id do usuário 
+         * @description Id do usuário
          * @example 1
          */
         userId: number;
@@ -1056,7 +1098,7 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description Id do usuário 
+         * @description Id do usuário
          * @example 1
          */
         userId: number;
@@ -1084,7 +1126,7 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description ID de um usuário 
+         * @description ID de um usuário
          * @example 1
          */
         userId: number;
@@ -1248,7 +1290,7 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description ID de um movimento de recurso 
+         * @description ID de um movimento de recurso
          * @example 1
          */
         supplyMovementId: number;
@@ -1298,7 +1340,7 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description ID de um movimento de recurso 
+         * @description ID de um movimento de recurso
          * @example 1
          */
         supplyMovementId: number;
@@ -1324,7 +1366,7 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description ID de um setor 
+         * @description ID de um setor
          * @example 1
          */
         sectorId: number;
@@ -1356,7 +1398,7 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description ID de um setor 
+         * @description ID de um setor
          * @example 1
          */
         sectorId: number;
@@ -1394,7 +1436,7 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description ID de um setor 
+         * @description ID de um setor
          * @example 1
          */
         sectorId: number;
@@ -1445,7 +1487,7 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description ID de uma tarefa 
+         * @description ID de uma tarefa
          * @example 1
          */
         assignmentId: number;
@@ -1490,8 +1532,8 @@ export interface operations {
       };
     };
   };
-  /** Associa um colaborador a determinada tarefa */
-  attachEmployee: {
+  /** Disassocia um colaborador a determinada tarefa */
+  detachEmployee: {
     parameters: {
       path: {
         assignmentId: number;
@@ -1508,8 +1550,8 @@ export interface operations {
       204: never;
     };
   };
-  /** Disassocia um colaborador a determinada tarefa */
-  detachEmployee: {
+  /** Associa um colaborador a determinada tarefa */
+  attachEmployee: {
     parameters: {
       path: {
         assignmentId: number;
@@ -1579,7 +1621,7 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description ID de um grupo de acesso 
+         * @description ID de um grupo de acesso
          * @example 1
          */
         accessGroupId: number;
@@ -1616,7 +1658,7 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description ID de um grupo de acesso 
+         * @description ID de um grupo de acesso
          * @example 1
          */
         accessGroupId: number;
@@ -1698,7 +1740,7 @@ export interface operations {
     parameters: {
       query?: {
         /**
-         * @description Nome da Estação de Trabalho 
+         * @description Nome da Estação de Trabalho
          * @example Bloco B Apto 178
          */
         workStationName?: string;
@@ -1735,12 +1777,12 @@ export interface operations {
     parameters: {
       query?: {
         /**
-         * @description Nome do usuário 
+         * @description Nome do usuário
          * @example Pedro
          */
         userName?: string;
         /**
-         * @description Cpf do usuário 
+         * @description Cpf do usuário
          * @example 99999999999
          */
         userCpf?: string;
@@ -1856,7 +1898,7 @@ export interface operations {
       query: {
         sectorFilter: components["schemas"]["SectorFilter"];
         /**
-         * @description Nome do setor 
+         * @description Nome do setor
          * @example Acabamento
          */
         sectorName?: string;
@@ -1893,32 +1935,32 @@ export interface operations {
     parameters: {
       query?: {
         /**
-         * @description Título da Tarefa 
+         * @description Título da Tarefa
          * @example Revestir Banheiros
          */
         assignmentTitle?: string;
         /**
-         * @description Data de Início 
+         * @description Data de Início
          * @example 2023-01-10T15:00:00Z
          */
         "A data inicial"?: Record<string, never>;
         /**
-         * @description Data de Finalização 
+         * @description Data de Finalização
          * @example 2023-01-21T14:00:00Z
          */
         endDate?: Record<string, never>;
         /**
-         * @description Data final para conclusão 
+         * @description Data final para conclusão
          * @example 2023-01-22T11:07:00Z
          */
         "O prazo para conclusão"?: Record<string, never>;
         /**
-         * @description Status de Finalização 
+         * @description Status de Finalização
          * @example true
          */
         "A conclusão"?: boolean;
         /**
-         * @description Status de Aprovação 
+         * @description Status de Aprovação
          * @example false
          */
         "A aprovação"?: boolean;
@@ -1934,7 +1976,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["PagedModelAssignmentModel"];
+          "*/*": components["schemas"]["PagedModelAssignmentDefaultModel"];
         };
       };
     };
@@ -2006,14 +2048,18 @@ export interface operations {
       };
     };
   };
-  allUsersAssignmentsAssigned: {
+  /** Lista os usuários atribuídos ou não a tarefa atual */
+  allAssigned: {
     parameters: {
-      query: {
+      query?: {
         /**
-         * @description Tarefas Atribuídas 
+         * @description Natureza das consulta
          * @example true
          */
-        assigned: boolean;
+        assigned?: boolean;
+      };
+      path: {
+        assignmentId: number;
       };
     };
     responses: {
@@ -2023,6 +2069,18 @@ export interface operations {
           "*/*": components["schemas"]["PagedModelUserAssignedModel"];
         };
       };
+      /** @description ID da tarefa inválido */
+      400: {
+        content: {
+          "*/*": components["schemas"]["Problem"];
+        };
+      };
+      /** @description Tarefa não encontrada */
+      404: {
+        content: {
+          "*/*": components["schemas"]["Problem"];
+        };
+      };
     };
   };
   /** Lista recursos */
@@ -2030,7 +2088,7 @@ export interface operations {
     parameters: {
       query?: {
         /**
-         * @description Nome do recurso 
+         * @description Nome do recurso
          * @example Cimento
          */
         supplyName?: string;
@@ -2099,7 +2157,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": (components["schemas"]["SupplyMovementNotificationModel"])[];
+          "*/*": components["schemas"]["SupplyMovementNotificationModel"][];
         };
       };
     };
@@ -2124,7 +2182,7 @@ export interface operations {
         /** @description Estado da tarefa aprovada (true|false). */
         "A aprovação"?: boolean;
         /**
-         * @description Data atual. 
+         * @description Data atual.
          * @example 2023-01-08T22:30:00Z
          */
         currentDate?: Record<string, never>;
@@ -2134,7 +2192,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": (components["schemas"]["AssignmentNotificationModel"])[];
+          "*/*": components["schemas"]["AssignmentNotificationModel"][];
         };
       };
     };
@@ -2188,7 +2246,7 @@ export interface operations {
     parameters: {
       path: {
         /**
-         * @description ID de um movimento de recurso 
+         * @description ID de um movimento de recurso
          * @example 1
          */
         supplyMovementId: number;

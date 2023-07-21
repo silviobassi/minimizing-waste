@@ -1,0 +1,1 @@
+alter table users_photos add column url varchar(255) not null;

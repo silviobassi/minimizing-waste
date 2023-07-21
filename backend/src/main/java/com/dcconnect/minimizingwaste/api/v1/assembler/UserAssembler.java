@@ -26,8 +26,6 @@ public class UserAssembler extends RepresentationModelAssemblerSupport<User, Use
     public UserDetailedModel toModel(User user){
         UserDetailedModel userDetailedModel = createModelWithId(user.getId(), user);
         modelMapper.map(user, userDetailedModel);
-
-
         return userDetailedModel;
     }
 

@@ -1,5 +1,6 @@
 package com.dcconnect.minimizingwaste.domain.service;
 
+import com.dcconnect.minimizingwaste.core.storage.StorageProperties;
 import com.dcconnect.minimizingwaste.domain.exception.UserPhotoNotFoundException;
 import com.dcconnect.minimizingwaste.domain.model.UserPhoto;
 import com.dcconnect.minimizingwaste.domain.repository.UserRepository;
@@ -20,6 +21,9 @@ public class UserPhotoService {
     @Autowired
     private PhotoStorageService photoStorageService;
 
+    @Autowired
+    private StorageProperties storageProperties;
+
     @Transactional
     public UserPhoto create(UserPhoto userPhoto, InputStream fileData){
 
@@ -34,6 +38,18 @@ public class UserPhotoService {
         }
 
         userPhoto.setFileName(fileName);
+
+        if(storageProperties.getType().equals(StorageProperties.StorageType.S3)){
+            userPhoto.setUrl(("https://"+storageProperties.getS3().getBucket()+".s3.amazonaws.com/"
+                    +storageProperties.getS3().getDirectory()+"/"+fileName));
+
+        }
+
+        if(storageProperties.getType().equals(StorageProperties.StorageType.LOCAL)){
+            userPhoto.setUrl((storageProperties.getLocal().getDirectory() + "/" +fileName));
+
+        }
+
         UserPhoto photo = userRepository.save(userPhoto);
         userRepository.flush();
 

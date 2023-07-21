@@ -9,7 +9,6 @@ import { Avatar, Button, Layout, Modal, theme } from 'antd';
 import { Link } from 'react-router-dom';
 import AuthService from '../../auth/Authorization.service';
 import useAuth from '../../core/hooks/useAuth';
-import useAuthPhoto from '../../core/hooks/useAuthPhoto';
 import BreadcrumbLayout from './BreadcrumbLayout';
 const { Header } = Layout;
 
@@ -19,7 +18,6 @@ export default function HeaderLayout() {
   } = theme.useToken();
 
   const { user } = useAuth();
-  const { photo } = useAuthPhoto();
 
   const [modal, contextHolder] = Modal.useModal();
 
@@ -52,7 +50,7 @@ export default function HeaderLayout() {
                 cursor: 'pointer',
               }}
               icon={<UserOutlined />}
-              src={photo?.avatarUrl}
+              src={user?.userPhoto?.url}
             />
           </Link>
         </div>

@@ -1,7 +1,9 @@
 package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentAssembler;
+import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentDefaultAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentDisassembler;
+import com.dcconnect.minimizingwaste.api.v1.model.AssignmentDefaultModel;
 import com.dcconnect.minimizingwaste.api.v1.model.AssignmentModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentApprovedInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentCompletedInput;
@@ -15,6 +17,7 @@ import com.dcconnect.minimizingwaste.domain.repository.AssignmentRepository;
 import com.dcconnect.minimizingwaste.domain.repository.filter.AssignmentFilter;
 import com.dcconnect.minimizingwaste.domain.service.AssignmentService;
 import com.dcconnect.minimizingwaste.infrastructure.spec.AssignmentSpecs;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -24,7 +27,6 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import jakarta.validation.Valid;
 import java.util.Map;
 
 @RestController
@@ -38,6 +40,9 @@ public class AssignmentController implements AssignmentControllerOpenApi {
     private AssignmentAssembler assignmentAssembler;
 
     @Autowired
+    private AssignmentDefaultAssembler assignmentDefaultAssembler;
+
+    @Autowired
     private AssignmentDisassembler assignmentDisassembler;
 
     @Autowired
@@ -49,8 +54,8 @@ public class AssignmentController implements AssignmentControllerOpenApi {
     @CheckSecurity.Assignments.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public PagedModel<AssignmentModel> search(AssignmentFilter assignmentFilter,
-                                              @PageableDefault(size = 10) Pageable pageable){
+    public PagedModel<AssignmentDefaultModel> search(AssignmentFilter assignmentFilter,
+                                                     @PageableDefault(size = 10) Pageable pageable){
 
         Pageable translatedPage = pageableTranslate(pageable);
 
@@ -59,7 +64,7 @@ public class AssignmentController implements AssignmentControllerOpenApi {
 
         assignmentsPage = new PageWrapper<>(assignmentsPage, pageable);
 
-        return pagedResourcesAssembler.toModel(assignmentsPage, assignmentAssembler);
+        return pagedResourcesAssembler.toModel(assignmentsPage, assignmentDefaultAssembler);
     }
 
     @CheckSecurity.Assignments.CanEdit

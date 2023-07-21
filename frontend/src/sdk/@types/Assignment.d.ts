@@ -4,7 +4,7 @@ export namespace Assignment {
   export type AssignmentModel =
     MinimizingWaste.components['schemas']['AssignmentModel'];
   export type PagedModelAssignment =
-    MinimizingWaste.components['schemas']['PagedModelAssignmentModel'];
+    MinimizingWaste.components['schemas']['PagedModelAssignmentDefaultModel'];
   export type AssignmentNotificationInput =
     MinimizingWaste.components['schemas']['AssignmentNotificationInput'];
 }

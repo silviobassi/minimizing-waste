@@ -1,5 +1,6 @@
 package com.dcconnect.minimizingwaste.domain.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,13 +27,14 @@ public class User extends BaseEntity{
 
     private String literate;
 
+    @OneToOne(mappedBy = "user", orphanRemoval = true)
+    private UserPhoto userPhoto;
     @CreationTimestamp
     private OffsetDateTime createdAt;
     @ManyToMany
     @JoinTable(name = "users_access_groups", joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "access_group_id"))
     private List<AccessGroup> accessGroups = new ArrayList<>();
-
 
     public boolean removeAccessGroup(AccessGroup accessGroup){
         return getAccessGroups().remove(accessGroup);

@@ -6,6 +6,7 @@ import com.dcconnect.minimizingwaste.domain.exception.SectorNotFoundException;
 import com.dcconnect.minimizingwaste.domain.exception.UserNotFoundException;
 import com.dcconnect.minimizingwaste.domain.model.AccessGroup;
 import com.dcconnect.minimizingwaste.domain.model.User;
+import com.dcconnect.minimizingwaste.domain.model.UserPhoto;
 import com.dcconnect.minimizingwaste.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -36,7 +37,9 @@ public class UserService {
         Optional<User> currentUserByEmail = userRepository.findByEmail(user.getEmail());
         Optional<User> currentUserByCpf = userRepository.findByCpf(user.getCpf());
         existsEmailAndCpf(user, currentUserByEmail, currentUserByCpf);
+
         insertOrUpdatePassword(user);
+
         return userRepository.save(user);
     }
 

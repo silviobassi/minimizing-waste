@@ -8,14 +8,14 @@ import { useNavigate } from 'react-router-dom';
 import { Authentication } from './auth/Auth';
 import AuthService from './auth/Authorization.service';
 import useAuth from './core/hooks/useAuth';
-import useAuthPhoto from './core/hooks/useAuthPhoto';
+
 
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { fetchUser } = useAuth();
-  const { fetchUserPhoto } = useAuthPhoto();
+
 
   useEffect(() => {
     async function identify() {
@@ -56,7 +56,6 @@ function App() {
         const decodedToken: Authentication.AccessTokenDecodedPayload =
           jwtDecode(access_token);
         fetchUser(decodedToken.user_id);
-          fetchUserPhoto(decodedToken.user_id)
         navigate('/');
       }
 
@@ -64,12 +63,12 @@ function App() {
         const decodedToken: Authentication.AccessTokenDecodedPayload =
           jwtDecode(accessToken);
         fetchUser(decodedToken.user_id);
-        fetchUserPhoto(decodedToken.user_id)
+      
       }
     }
 
     identify();
-  }, [dispatch, navigate, fetchUser, fetchUserPhoto]);
+  }, [dispatch, navigate, fetchUser]);
   return <Routes />;
 }
 

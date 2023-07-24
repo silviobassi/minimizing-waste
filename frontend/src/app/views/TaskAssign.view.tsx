@@ -36,6 +36,8 @@ export default function TaskAssignView() {
 
       throw err;
     });
+
+    console.log(usersAssignmentsAssigned)
   }, [
     fetchAssignment,
     params.assignmentId,

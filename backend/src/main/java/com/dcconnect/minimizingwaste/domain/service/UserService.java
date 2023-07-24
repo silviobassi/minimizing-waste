@@ -33,7 +33,7 @@ public class UserService {
     public static final String USER_IN_USE = "Colaborador de código %d não pode ser removido, pois está em uso";
     @Transactional
     public User create(User user){
-        userRepository.detach(user);
+        //userRepository.detach(user);
         Optional<User> currentUserByEmail = userRepository.findByEmail(user.getEmail());
         Optional<User> currentUserByCpf = userRepository.findByCpf(user.getCpf());
         existsEmailAndCpf(user, currentUserByEmail, currentUserByCpf);

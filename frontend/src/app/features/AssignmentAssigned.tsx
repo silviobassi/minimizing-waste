@@ -1,7 +1,6 @@
 import {
   Avatar,
   Button,
-  Card,
   Col,
   Descriptions,
   Divider,
@@ -22,6 +21,7 @@ import { useState } from 'react';
 import { Assignment, User } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
 import { phoneToFormat } from '../../sdk/utils/generateFormatterData';
+import EmployeesResponsible from '../components/EmployeesResponsible';
 import WrapperDefault from '../components/WrapperDefault';
 
 type UserAssignedType = User.PagedModelUserAssigned;
@@ -49,6 +49,7 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
       <Row justify={'space-between'}>
         <Col xs={24} xl={9}>
           <Divider orientation="left">TAREFA A ATRIBUIR</Divider>
+
           <Descriptions column={1} bordered size="small">
             <Descriptions.Item label={'Prazo para Conclusão'}>
               <Space direction="horizontal">
@@ -68,41 +69,10 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
             </Descriptions.Item>
           </Descriptions>
           <Divider orientation="left">Responsáveis pela Tarefa</Divider>
-
           {props?.assignment?.employeesResponsible.map(
-            (employeeResponsible: Assignment.AssignmentModel) => (
-              <>
-                <List>
-                  <List.Item>
-                    <Card style={{ width: '100%', backgroundColor: '#E6F4FF' }}>
-                      <List.Item.Meta
-                        avatar={
-                          <Avatar
-                            src={employeeResponsible?.userPhoto?.url}
-                            size={50}
-                            icon={<UserOutlined />}
-                          />
-                        }
-                        title={<a href="#">{employeeResponsible?.name}</a>}
-                        description={
-                          <>
-                            <span>
-                              <strong>Cargo: </strong>
-                              {employeeResponsible?.office} |{' '}
-                              <strong>Função: </strong>
-                              {employeeResponsible?.office}
-                            </span>
-                            <br />
-                            <strong>WhatsApp: </strong>
-                            {phoneToFormat(employeeResponsible?.whatsApp)}
-                          </>
-                        }
-                      />
-                    </Card>
-                  </List.Item>
-                </List>
-              </>
-            ),
+            (employee: User.Assigned) => {
+              return <EmployeesResponsible employeeResponsible={employee} />;
+            },
           )}
         </Col>
         <Col xs={24} xl={12}>
@@ -116,7 +86,7 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
             className="demo-loadmore-list"
             itemLayout="horizontal"
             dataSource={props?.users?._embedded?.users}
-            renderItem={(user: User.Assigned) => (
+            renderItem={(employee: User.Assigned) => (
               <>
                 <List.Item
                   actions={[
@@ -125,8 +95,8 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
                         type="primary"
                         onClick={() => {
                           setOpen(true);
-                          setUserId(user?.id);
-                          setUserName(user?.name);
+                          setUserId(employee?.id);
+                          setUserName(employee?.name);
                         }}
                       >
                         ATRIBUIR
@@ -137,8 +107,8 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
                         danger
                         onClick={() => {
                           setOpen(true);
-                          setUserId(user?.id);
-                          setUserName(user?.name);
+                          setUserId(employee?.id);
+                          setUserName(employee?.name);
                         }}
                       >
                         DESATRIBUIR
@@ -149,22 +119,22 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
                   <List.Item.Meta
                     avatar={
                       <Avatar
-                        src={user?.userPhoto?.url}
+                        src={employee?.userPhoto?.url}
                         size={50}
                         icon={<UserOutlined />}
                       />
                     }
-                    title={<a href="#">{user?.name}</a>}
+                    title={<a href="#">{employee?.name}</a>}
                     description={
                       <>
                         <span>
                           <strong>Cargo: </strong>
-                          {user?.office} | <strong>Função: </strong>
-                          {user?.office}
+                          {employee?.office} | <strong>Função: </strong>
+                          {employee?.office}
                         </span>
                         <br />
                         <strong>WhatsApp: </strong>
-                        {phoneToFormat(user?.whatsApp)}
+                        {phoneToFormat(employee?.whatsApp)}
                       </>
                     }
                   />

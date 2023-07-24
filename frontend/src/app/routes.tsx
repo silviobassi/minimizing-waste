@@ -6,7 +6,6 @@ import SectorListView from './views/SectorList.view';
 import { message, notification } from 'antd';
 import { useEffect } from 'react';
 import CustomError from '../sdk/CustomError';
-import TaskDetailedView from './features/TaskDetailed';
 import EmployeeCreateView from './views/EmployeeCreate.view';
 import EmployeeDetailedView from './views/EmployeeDetailed.view';
 import EmployeeEditView from './views/EmployeeEdit.view';
@@ -26,12 +25,13 @@ import SupplyMovementGiveBackForm from './views/SupplyMovementGiveBack.view';
 import SupplyMovementListView from './views/SupplyMovementList.view';
 import TaskAssignView from './views/TaskAssign.view';
 import TaskCreateView from './views/TaskCreate.view';
+import TaskDetailedView from './views/TaskDetailed.view';
 import TaskEditView from './views/TaskEdit.view';
 import TaskListView from './views/TaskList.view';
+import TaskUnassignView from './views/TaskUnassign.view';
 import WorkStationCreateView from './views/WorkStationCreate.view';
 import WorkStationEditView from './views/WorkStationEdit.view';
 import WorkStationListView from './views/WorkStationList.view';
-import TaskUnassignView from './views/TaskUnassign.view';
 
 export default function Routes() {
   useEffect(() => {
@@ -111,11 +111,17 @@ export default function Routes() {
       <Route path={'/tarefa/criar'} element={<TaskCreateView />} />
       <Route path={'/tarefa/editar/:id'} element={<TaskEditView />} />
       <Route
-        path={'/tarefas/:taskId/detalhes'}
+        path={'/tarefas/:assignmentId/detalhes'}
         element={<TaskDetailedView />}
       />
-      <Route path={'/tarefa/:assignmentId/atribuicao'} element={<TaskAssignView />} />
-      <Route path={'/tarefa/:assignmentId/desatribuicao'} element={<TaskUnassignView />} />
+      <Route
+        path={'/tarefa/:assignmentId/atribuicao'}
+        element={<TaskAssignView />}
+      />
+      <Route
+        path={'/tarefa/:assignmentId/desatribuicao'}
+        element={<TaskUnassignView />}
+      />
       <Route path={'/colaboradores'} element={<EmployeeListView />} />
       <Route path={'/colaborador/criar'} element={<EmployeeCreateView />} />
       <Route

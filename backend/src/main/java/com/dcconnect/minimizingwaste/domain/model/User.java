@@ -8,14 +8,16 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
 
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity{
+public class User extends BaseEntity {
 
     private String name;
     private String cpf;
@@ -29,6 +31,11 @@ public class User extends BaseEntity{
 
     @OneToOne(mappedBy = "user", orphanRemoval = true)
     private UserPhoto userPhoto;
+
+    @JsonBackReference
+    @ManyToMany(mappedBy = "employeesResponsible")
+    private Set<Assignment> assignments = new HashSet<>();
+
     @CreationTimestamp
     private OffsetDateTime createdAt;
     @ManyToMany
@@ -36,19 +43,19 @@ public class User extends BaseEntity{
             inverseJoinColumns = @JoinColumn(name = "access_group_id"))
     private List<AccessGroup> accessGroups = new ArrayList<>();
 
-    public boolean removeAccessGroup(AccessGroup accessGroup){
+    public boolean removeAccessGroup(AccessGroup accessGroup) {
         return getAccessGroups().remove(accessGroup);
     }
 
-    public boolean addAccessGroups(AccessGroup accessGroup){
+    public boolean addAccessGroups(AccessGroup accessGroup) {
         return getAccessGroups().add(accessGroup);
     }
 
-    public boolean isNew(){
+    public boolean isNew() {
         return getId() == null;
     }
 
-    public boolean isCurrent(){
+    public boolean isCurrent() {
         return getId() != null;
     }
 }

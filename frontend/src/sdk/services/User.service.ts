@@ -16,7 +16,7 @@ class UserService extends Service {
     assignmentId: number,
   ): User.PagedModelDetailed {
     const queryString = generateQueryString(search);
-    return this.Http.get<User.PagedModelDetailed[]>(
+    return this.Http.get<User.PagedModelUserAssigned[]>(
       `/users/${assignmentId}/assignments`.concat(queryString) +
         `assigned=${assigned}`,
     ).then(this.getData);

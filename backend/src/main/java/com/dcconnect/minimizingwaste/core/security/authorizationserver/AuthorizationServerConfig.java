@@ -1,11 +1,13 @@
 package com.dcconnect.minimizingwaste.core.security.authorizationserver;
 
+import com.dcconnect.minimizingwaste.core.security.SecurityRedirectProperties;
 import com.dcconnect.minimizingwaste.domain.repository.UserRepository;
 import com.nimbusds.jose.jwk.JWKSet;
 import com.nimbusds.jose.jwk.RSAKey;
 import com.nimbusds.jose.jwk.source.ImmutableJWKSet;
 import com.nimbusds.jose.jwk.source.JWKSource;
 import com.nimbusds.jose.proc.SecurityContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
@@ -40,6 +42,8 @@ import java.util.Set;
 @EnableWebSecurity
 public class AuthorizationServerConfig {
 
+    @Autowired
+    private SecurityRedirectProperties redirectProperties;
     @Bean
     @Order(Ordered.HIGHEST_PRECEDENCE)
     public SecurityFilterChain authFilterChain(HttpSecurity http) throws Exception {
@@ -55,7 +59,11 @@ public class AuthorizationServerConfig {
             csrf.ignoringRequestMatchers(new RequestMatcher[]{endpointsMatcher});
         }).apply(authorizationServerConfigurer);
 
-        return http.formLogin(customizer -> customizer.loginPage("/login")).build();
+        //return http.formLogin(customizer -> customizer.loginPage("/login")).build();
+        return  http.formLogin(customizer -> customizer.loginPage("/login")
+                .defaultSuccessUrl(redirectProperties.getClient(), true)
+
+        ).build();
     }
 
     @Bean

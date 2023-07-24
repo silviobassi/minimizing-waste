@@ -11,6 +11,7 @@ import org.springframework.hateoas.server.core.Relation;
 @Relation(collectionRelation = "users")
 @Getter
 @Setter
+@JsonInclude(JsonInclude.Include.NON_NULL)
 
 public class UserAssignedModel extends RepresentationModel<UserAssignedModel> {
 

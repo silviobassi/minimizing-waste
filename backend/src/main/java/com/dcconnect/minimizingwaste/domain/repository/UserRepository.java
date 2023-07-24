@@ -17,14 +17,14 @@ public interface UserRepository extends UserRepositoryQueries, CustomJpaReposito
     @EntityGraph(attributePaths = {"accessGroups", "userPhoto"})
     Page<User> findAll(Specification<User> specification, Pageable pageable);
 
-    @Query(value = "select u.* from users u where u.id " +
-            "not in (select ae.responsible_employee_id from " +
-            "assignments_employees ae where ae.assignment_id = :assignmentId);", nativeQuery = true)
+
+    @EntityGraph(attributePaths = {"userPhoto"})
+    @Query("from User u where u not in (select ae.employeesResponsible from Assignment ae where ae.id = :assignmentId)")
     Page<User> findAllUserAssignmentsAssigned(Pageable pageable, @Param("assignmentId") Long assignmentId);
 
-    @Query(value = "select u.* from users u where u.id " +
-            "in (select ae.responsible_employee_id from " +
-            "assignments_employees ae where ae.assignment_id = :assignmentId);", nativeQuery = true)
+
+    @EntityGraph(attributePaths = {"userPhoto"})
+    @Query("from User u where u in (select ae.employeesResponsible from Assignment ae where ae.id = :assignmentId)")
     Page<User> findAllUserNotAssignmentsAssigned(Pageable pageable, @Param("assignmentId") Long assignmentId);
 
     Optional<User> findByEmail(String email);

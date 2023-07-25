@@ -1,103 +1,206 @@
-import { Button, Col, DatePicker, Form, Input, Row, Select, Space } from 'antd';
+import {
+  Button,
+  Col,
+  DatePicker,
+  Form,
+  Input,
+  Row,
+  Select,
+  Space,
+  notification,
+} from 'antd';
 import locale from 'antd/es/date-picker/locale/pt_BR';
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
+import useWorkStations from '../../core/hooks/useWorkStations';
+import { Assignment, AssignmentService, WorkStation } from '../../sdk';
+import CustomError from '../../sdk/CustomError';
 import WrapperDefault from '../components/WrapperDefault';
-
-const { RangePicker } = DatePicker;
-interface TaskFormDefaultProps {
+type AssignmentFormType = Assignment.AssignmentModel;
+interface AssignmentFormDefaultProps {
   labelRegister: string;
   iconButton: {
     register: React.ReactNode;
     cancel: React.ReactNode;
   };
+  isCurrentAssignment?: boolean;
   title: string;
+  assignment?: AssignmentFormType;
+  onUpdate?: (user: Assignment.AssignmentInput) => AssignmentFormType;
 }
 
-export default function TaskForm(props: TaskFormDefaultProps) {
+export default function TaskForm(props: AssignmentFormDefaultProps) {
   const [form] = Form.useForm();
   const dateFormat = 'DD/MM/YYYY';
+  const { fetchWorkStations, workStations } = useWorkStations();
 
-  useEffect(() => {
-    console.log(RangePicker);
-  }, []);
+  function fetchOptions() {
+    const options: any = [];
+    workStations?._embedded?.workStations.map(
+      (workStation: WorkStation.WorkStationModel) => {
+        options.push({
+          label: `${workStation.name} - ${workStation.localization}`,
+          value: workStation.id,
+        });
+      },
+    );
+    return options;
+  }
+
+  useEffect(() => {}, [fetchWorkStations]);
 
   return (
     <WrapperDefault title={props.title}>
-      <Form layout={'vertical'} form={form}>
+      <Form
+        layout={'vertical'}
+        form={form}
+        onFinish={async (assignment: Assignment.AssignmentInput) => {
+          try {
+            const assignmentDTO: Assignment.AssignmentInput = {
+              ...assignment,
+              nature: assignment.nature?.toUpperCase(),
+              startDate: assignment.startDate
+                ? new Date(assignment.startDate).toISOString()
+                : '',
+              deadline: assignment.deadline
+                ? new Date(assignment.deadline).toISOString()
+                : '',
+            };
+
+            if (props.assignment) {
+              return props.onUpdate && props.onUpdate(assignmentDTO);
+            }
+
+            const assignmentResponse = await AssignmentService.createAssignment(
+              assignmentDTO,
+            );
+
+            notification.success({
+              message: 'Sucesso',
+              description: `Tarefa ${assignmentResponse?.title}  criada com sucesso`,
+            });
+          } catch (error: any) {
+            if (error instanceof CustomError) {
+              if (error.data?.objects) {
+                form.setFields(
+                  error.data.objects.map((error: any) => {
+                    return {
+                      name: error.name
+                        ?.split(/(\.|\[|\])/gi)
+                        .filter(
+                          (str: string) =>
+                            str !== '.' &&
+                            str !== '[' &&
+                            str !== ']' &&
+                            str !== '',
+                        )
+                        .map((str: string) =>
+                          isNaN(Number(str)) ? str : Number(str),
+                        ) as string[],
+                      errors: [error.userMessage],
+                    };
+                  }),
+                );
+              } else {
+                notification.error({
+                  message: error.message,
+                  description:
+                    error.data?.detail === 'Network Error'
+                      ? 'Erro de Rede'
+                      : error.data?.detail,
+                });
+              }
+            } else {
+              notification.error({
+                message: `Houve um erro: ${error.message}`,
+              });
+            }
+          }
+        }}
+        initialValues={props.assignment}
+      >
         <Row justify={'space-between'}>
           <Col xs={24} xl={15}>
-            <Form.Item label="Título:*">
-              <Input size="large" placeholder="ex: Título" />
+            <Form.Item label="Título:*" name="title">
+              <Input size="large" placeholder="ex: Título" name="title" />
             </Form.Item>
           </Col>
           <Col xs={24} xl={8}>
-            <Form.Item label="Período de Conclusão:*">
-              <RangePicker
+            <Form.Item label="Data de Início:*" name="startDate">
+              <DatePicker
                 style={{ width: '100%' }}
                 locale={locale}
                 format={dateFormat}
                 size="large"
-                onCalendarChange={(dates) => console.log(dates)}
               />
             </Form.Item>
           </Col>
         </Row>
 
         <Row justify={'space-between'}>
-          <Col xs={24} xl={7}>
-            <Form.Item label="Tipo da Tarefa*">
-              <Select
-                size="large"
-                defaultValue="Selecione o Tipo da Tarefa"
-                options={[
-                  { label: 'Obras', value: 'OBRAS' },
-                  { label: 'Limpeza', value: 'LIMPEZA' },
-                ]}
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} xl={7}>
-            <Form.Item label="Estação de Trabalho*">
-              <Select
-                size="large"
-                defaultValue="Selecione a Estação de Trabalho"
-                options={[
-                  { label: 'BLOCO B5 APTO 05', value: 'BLOCO B5 APTO 05' },
-                  { label: 'BLOCO B57 APTO 29', value: 'BLOCO B57 APTO 29' },
-                  { label: 'BLOCO G7 APTO 129', value: 'BLOCO G7 APTO 129' },
-                ]}
-              />
-            </Form.Item>
-          </Col>
           <Col xs={24} xl={8}>
-            <Form.Item label="Colaborador Responsável*">
+            <Form.Item label="Data de Início:*" name="deadline">
+              <DatePicker
+                style={{ width: '100%' }}
+                locale={locale}
+                format={dateFormat}
+                size="large"
+              />
+            </Form.Item>
+          </Col>
+          <Col xs={24} xl={7}>
+            <Form.Item label="Tipo da Tarefa*" name="nature">
               <Select
                 size="large"
-                defaultValue="Selecione o Colaborador Responsável"
+                placeholder="Selecione o Tipo da Tarefa"
                 options={[
                   {
-                    label: 'Pedro Oliveira Bassi',
-                    value: 'Pedro Oliveira Bassi',
+                    label: 'Obras',
+                    value: 'Obras',
                   },
-                  {
-                    label: 'Ana Paula S. O. Bassi',
-                    value: 'Ana Paula S. O. Bassi',
-                  },
-                  { label: 'Jorge dos Santos', value: 'Jorge dos Santos' },
+                  { label: 'Limpeza', value: 'Limpeza' },
                 ]}
+              />
+            </Form.Item>
+          </Col>
+          <Col xs={24} xl={7}>
+            <Form.Item
+              label="Estação de Trabalho*"
+              name={['workStation', 'id']}
+            >
+              <Select
+                size="large"
+                labelInValue
+                showSearch
+                placeholder="Selecione a Estação de Trabalho"
+                optionFilterProp="children"
+                onMouseDown={fetchWorkStations}
+                filterOption={(input, option: any) =>
+                  (option?.label ?? '')
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                options={fetchOptions()}
               />
             </Form.Item>
           </Col>
         </Row>
 
-        <Form.Item  style={{marginTop: 10}}>
+        <Form.Item style={{ marginTop: 10 }}>
           <Space direction="horizontal">
-            <Button type="primary" icon={props.iconButton.register}>
+            <Button
+              type="primary"
+              htmlType="submit"
+              icon={props.iconButton.register}
+            >
               {props.labelRegister}
             </Button>
-            <Button type="primary" danger icon={props.iconButton.cancel}>
-              Cancelar
-            </Button>
+            <Link to={'/tarefas'}>
+              {' '}
+              <Button type="primary" danger icon={props.iconButton.cancel}>
+                Cancelar
+              </Button>
+            </Link>
           </Space>
         </Form.Item>
       </Form>

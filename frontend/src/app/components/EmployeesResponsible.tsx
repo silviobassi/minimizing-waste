@@ -7,17 +7,17 @@ type EmployeeResponsibleType = User.Assigned;
 
 interface EmployeesResponsibleProps {
   employeeResponsible: EmployeeResponsibleType;
+  color?: string;
+  isAssignScreen: boolean;
 }
 
 export default function EmployeesResponsible(props: EmployeesResponsibleProps) {
   return (
     <>
-      <List>
-        <List.Item>
-          <Card style={{ width: '100%', backgroundColor: '#E6F4FF' }}>
-      
+      <List style={{ marginBottom: 20 }}>
+        <Card style={{ width: '100%', backgroundColor: props.color }}>
+          <List.Item>
             <List.Item.Meta
-            
               avatar={
                 <Avatar
                   src={props?.employeeResponsible?.userPhoto?.url}
@@ -32,7 +32,7 @@ export default function EmployeesResponsible(props: EmployeesResponsibleProps) {
                     <strong>Cargo: </strong>
                     {props?.employeeResponsible?.office} |{' '}
                     <strong>Função: </strong>
-                    {props?.employeeResponsible?.office}
+                    {props?.employeeResponsible?.occupation}
                   </span>
                   <br />
                   <strong>WhatsApp: </strong>
@@ -40,8 +40,8 @@ export default function EmployeesResponsible(props: EmployeesResponsibleProps) {
                 </>
               }
             />
-          </Card>
-        </List.Item>
+          </List.Item>
+        </Card>
       </List>
     </>
   );

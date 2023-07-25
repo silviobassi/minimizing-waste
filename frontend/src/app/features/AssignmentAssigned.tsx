@@ -70,8 +70,14 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
           </Descriptions>
           <Divider orientation="left">Responsáveis pela Tarefa</Divider>
           {props?.assignment?.employeesResponsible.map(
-            (employee: User.Assigned) => {
-              return <EmployeesResponsible employeeResponsible={employee} />;
+            (employee: User.Assigned, key: number) => {
+              return (
+                <EmployeesResponsible
+                  key={key}
+                  isAssignScreen={true}
+                  employeeResponsible={employee}
+                />
+              );
             },
           )}
         </Col>

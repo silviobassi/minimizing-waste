@@ -319,22 +319,6 @@ export interface components {
       _links?: components["schemas"]["Links"];
     };
     UserPhotoModel: {
-      /**
-       * Format: int64
-       * @example 1
-       */
-      id?: number;
-      /** @example 055a87c9-46fc-47c4-b093-dfe5d31f7a6e_avatar_test.jpg */
-      fileName?: string;
-      /** @example Silvio Bassi */
-      description?: string;
-      /** @example image/jpeg */
-      contentType?: string;
-      /**
-       * Format: int64
-       * @example 74697
-       */
-      size?: number;
       /** @example https://server.com/lkfnlkflkfjlakfalkfjalkfjalkfjaslkfjaslf.jpeg */
       url?: string;
       _links?: components["schemas"]["Links"];
@@ -772,6 +756,8 @@ export interface components {
       _links?: components["schemas"]["Links"];
     };
     AssignmentNotificationModel: {
+      /** Format: int64 */
+      id?: number;
       /** @example Início de Tarefa */
       title?: string;
       /** Format: date-time */

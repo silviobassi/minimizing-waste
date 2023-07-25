@@ -14,6 +14,25 @@ class AssignmentService extends Service {
     ).then(this.getData);
   }
 
+  static createAssignment(
+    assignment: Assignment.AssignmentInput,
+  ): Assignment.AssignmentModel {
+    return this.Http.post<Assignment.AssignmentModel>(
+      '/assignments',
+      assignment,
+    ).then(this.getData);
+  }
+
+  static updateExistingAssignment(
+    assignment: Assignment.AssignmentInput,
+    assignmentId: number,
+  ): Assignment.AssignmentInput {
+    return this.Http.put<Assignment.AssignmentInput>(
+      `/assignments/${assignmentId}`,
+      assignment,
+    ).then(this.getData);
+  }
+
   static associateEmployee(
     notice: Assignment.AssignmentNotificationInput,
     assignmentId: number,

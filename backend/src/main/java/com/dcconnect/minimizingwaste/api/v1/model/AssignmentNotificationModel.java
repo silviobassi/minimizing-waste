@@ -14,6 +14,9 @@ import java.util.List;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class AssignmentNotificationModel {
 
+    @Schema(example = "ID da tarefa")
+    private Long id;
+
     @Schema(example = "Início de Tarefa")
     private String title;
     @Schema(example = "20230121T12:00:00Z")

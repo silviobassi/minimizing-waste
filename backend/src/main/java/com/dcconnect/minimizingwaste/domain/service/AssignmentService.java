@@ -92,11 +92,16 @@ public class AssignmentService {
                     "Para concluir esta tarefa, a mesma precisa estar atribuída, ao menos, a um colaborador.");
         }
 
+        if(currentAssignment.getApproved())
+            throw new BusinessException(
+                    "O status da tarefa não pode ser alterado, pois esta já foi aprovada.");
+
         assignmentRepository.save(currentAssignment);
     }
 
     @Transactional
     public void approveAssignment(Assignment currentAssignment){
+
         if(!currentAssignment.getCompleted() && currentAssignment.getApproved()){
             throw new BusinessException(
                     String.format("A Tarefa com o código %d não pode ser aprovada, pois ainda não foi concluída.",

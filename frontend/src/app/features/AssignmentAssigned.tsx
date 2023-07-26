@@ -16,7 +16,11 @@ import {
 
 import { format } from 'date-fns';
 
-import { UserOutlined } from '@ant-design/icons';
+import {
+  UserAddOutlined,
+  UserDeleteOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { useState } from 'react';
 import { Assignment, User } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
@@ -136,7 +140,7 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
                         <span>
                           <strong>Cargo: </strong>
                           {employee?.office} | <strong>Função: </strong>
-                          {employee?.office}
+                          {employee?.occupation}
                         </span>
                         <br />
                         <strong>WhatsApp: </strong>
@@ -145,7 +149,12 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
                     }
                   />
                 </List.Item>
-                <Modal title="Notificação" open={open}>
+                <Modal
+                  title="Notificação"
+                  open={open}
+                  footer={null}
+                  closable={false}
+                >
                   <Form
                     layout="vertical"
                     autoComplete="off"
@@ -204,27 +213,61 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
                     <Form.Item
                       label="Título:*"
                       name={['notification', 'title']}
+                      rules={[
+                        {
+                          required: true,
+                          message: 'O título é obrigatório',
+                        },
+                      ]}
                     >
                       <Input size="large" placeholder="eg.: Seu Título" />
                     </Form.Item>
                     <Form.Item
                       label="Motivo:*"
                       name={['notification', 'reason']}
+                      rules={[
+                        {
+                          required: true,
+                          message: 'O motivo é obrigatório',
+                        },
+                      ]}
                     >
                       <Input size="large" placeholder="eg.: Seu motivo" />
                     </Form.Item>
                     <Form.Item
                       label="Objetivo:*"
                       name={['notification', 'goal']}
+                      rules={[
+                        {
+                          required: true,
+                          message: 'O título é obrigatório',
+                        },
+                      ]}
                     >
                       <Input size="large" placeholder="eg.: Seu objetivo" />
                     </Form.Item>
                     <Form.Item style={{ marginTop: 40 }}>
                       <Space direction="horizontal">
-                        <Button type="primary" htmlType="submit">
-                          ASSOCIAR
-                        </Button>
-                        <Button type="primary" onClick={() => setOpen(false)}>
+                        {props.assign ? (
+                          <Button
+                            type="primary"
+                            htmlType="submit"
+                            icon={<UserAddOutlined />}
+                          >
+                            ASSOCIAR
+                          </Button>
+                        ) : (
+                          <Button
+                            type="primary"
+                            danger
+                            htmlType="submit"
+                            icon={<UserDeleteOutlined />}
+                          >
+                            DESASSOCIAR
+                          </Button>
+                        )}
+
+                        <Button danger onClick={() => setOpen(false)}>
                           CANCELAR
                         </Button>
                       </Space>

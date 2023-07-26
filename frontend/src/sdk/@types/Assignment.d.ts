@@ -7,7 +7,12 @@ export namespace Assignment {
     MinimizingWaste.components['schemas']['PagedModelAssignmentDefaultModel'];
   export type AssignmentNotificationInput =
     MinimizingWaste.components['schemas']['AssignmentNotificationInput'];
-  export type AssignmentInput = MinimizingWaste.components['schemas']['AssignmentInput']
+  export type AssignmentInput =
+    MinimizingWaste.components['schemas']['AssignmentInput'];
+  export type CompletedInput =
+    MinimizingWaste.components['schemas']['AssignmentCompletedInput'];
+  export type ApprovedInput =
+    MinimizingWaste.components['schemas']['AssignmentApprovedInput'];
 
   export type Query = {
     page?: number;

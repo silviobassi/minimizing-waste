@@ -1,6 +1,7 @@
 package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentAssembler;
+import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentCompletedApprovedDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentDefaultAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.AssignmentDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.AssignmentDefaultModel;
@@ -44,6 +45,9 @@ public class AssignmentController implements AssignmentControllerOpenApi {
 
     @Autowired
     private AssignmentDisassembler assignmentDisassembler;
+
+    @Autowired
+    private AssignmentCompletedApprovedDisassembler assignmentCompletedApprovedDisassembler;
 
     @Autowired
     private AssignmentService assignmentService;
@@ -110,7 +114,7 @@ public class AssignmentController implements AssignmentControllerOpenApi {
                                    @PathVariable Long assignmentId){
 
         Assignment currentAssignment =  assignmentService.findOrFail(assignmentId);
-        assignmentDisassembler.copyToDomainModel(assignmentCompletedInput, currentAssignment);
+        assignmentCompletedApprovedDisassembler.copyToDomainModel(assignmentCompletedInput, currentAssignment);
         assignmentService.completeAssignment(currentAssignment);
     }
 
@@ -120,7 +124,7 @@ public class AssignmentController implements AssignmentControllerOpenApi {
     public void approveAssignment(@RequestBody @Valid AssignmentApprovedInput assignmentApprovedInput,
                                   @PathVariable Long assignmentId){
         Assignment currentAssignment =  assignmentService.findOrFail(assignmentId);
-        assignmentDisassembler.copyToDomainModel(assignmentApprovedInput, currentAssignment);
+        assignmentCompletedApprovedDisassembler.copyToDomainModel(assignmentApprovedInput, currentAssignment);
         assignmentService.approveAssignment(currentAssignment);
     }
 

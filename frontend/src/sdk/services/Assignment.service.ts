@@ -60,6 +60,25 @@ class AssignmentService extends Service {
       notice,
     ).then(this.getData);
   }
+
+  static completeAssignment(
+    assignment: Assignment.CompletedInput,
+    assignmentId: number,
+  ) {
+    return this.Http.put<{}>(
+      `/assignments/${assignmentId}/conclusion`,
+      assignment,
+    ).then(this.getData);
+  }
+  static approveAssignment(
+    assignment: Assignment.ApprovedInput,
+    assignmentId: number,
+  ) {
+    return this.Http.put<{}>(
+      `/assignments/${assignmentId}/approval`,
+      assignment,
+    ).then(this.getData);
+  }
 }
 
 export default AssignmentService;

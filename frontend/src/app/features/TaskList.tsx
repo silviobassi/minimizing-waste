@@ -12,6 +12,7 @@ import useAssignments from '../../core/hooks/useAssignments';
 import { Assignment } from '../../sdk/@types';
 
 import useAssignment from '../../core/hooks/useAssignment';
+import { AssignmentService } from '../../sdk';
 import AccessDenied from '../components/AccessDenied';
 import DoubleConfirm from '../components/DoubleConfirm';
 import WrapperDefault from '../components/WrapperDefault';
@@ -21,10 +22,11 @@ export default function TaskList() {
   const { assignments, fetchAssignments, accessDeniedError } = useAssignments();
   const { removeAssignment } = useAssignment();
   const [page, setPage] = useState<number>(0);
+  const [checked, setChecked] = useState(true);
 
   useEffect(() => {
     fetchAssignments(page);
-  }, [fetchAssignments, page]);
+  }, [fetchAssignments, page, checked]);
 
   if (accessDeniedError) return <AccessDenied />;
 
@@ -68,16 +70,38 @@ export default function TaskList() {
             title: 'Finalização',
             dataIndex: 'completed',
             align: 'center',
-            render(completed) {
-              return <Checkbox checked={completed}>FINALIZADA</Checkbox>;
+            render(_: any, assignment) {
+              return <Checkbox checked={assignment?.completed}
+              onChange={async () => {
+                await AssignmentService.completeAssignment(
+                  {completed: !assignment?.completed},
+                  assignment.id,
+                );
+                fetchAssignments(page);
+                console.log(assignment?.completed);
+              }}>{assignment?.completed ? 'FINALIZADA' : 'PENDENTE'}</Checkbox>;
             },
           },
           {
             title: 'Verificação',
             dataIndex: 'approved',
             align: 'center',
-            render(approved: boolean) {
-              return <Checkbox checked={approved}>APROVADA</Checkbox>;
+            render(_: any, assignment) {
+              return (
+                <Checkbox
+                  checked={assignment?.approved}
+                  onChange={async () => {
+                    await AssignmentService.approveAssignment(
+                      {approved: !assignment?.approved},
+                      assignment.id,
+                    );
+                    fetchAssignments(page);
+                    console.log(assignment?.approved);
+                  }}
+                >
+                  {assignment?.approved ? 'APROVADA' : 'PENDENTE'}
+                </Checkbox>
+              );
             },
           },
 
@@ -102,7 +126,7 @@ export default function TaskList() {
                     onConfirm={async () => {
                       try {
                         await removeAssignment(Number(assignment.id));
-                        fetchAssignments(page)
+                        fetchAssignments(page);
                         notification.success({
                           message: 'Sucesso',
                           description: `Tarefa ${assignment.title}  removida com sucesso`,

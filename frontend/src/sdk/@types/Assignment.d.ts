@@ -8,4 +8,10 @@ export namespace Assignment {
   export type AssignmentNotificationInput =
     MinimizingWaste.components['schemas']['AssignmentNotificationInput'];
   export type AssignmentInput = MinimizingWaste.components['schemas']['AssignmentInput']
+
+  export type Query = {
+    page?: number;
+    size?: number;
+    sort?: ['asc' | 'desc'];
+  };
 }

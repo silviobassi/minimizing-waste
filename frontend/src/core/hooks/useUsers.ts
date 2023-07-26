@@ -15,7 +15,11 @@ export default function useUsers() {
 
   const fetchUsers = useCallback(
     async (page: number) => {
-      return dispatch(UserActions.getAllUsers(page)).unwrap();
+      return dispatch(UserActions.getAllUsers({
+        sort: ['asc'],
+        page: page,
+        size: 4,
+      })).unwrap();
     },
     [dispatch],
   );

@@ -6,7 +6,7 @@ import {
 } from '@ant-design/icons';
 import { Button, Checkbox, Space, Table, Tooltip } from 'antd';
 import { format } from 'date-fns';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAssignments from '../../core/hooks/useAssignments';
 import { Assignment } from '../../sdk/@types';
@@ -17,10 +17,10 @@ import WrapperDefault from '../components/WrapperDefault';
 export default function TaskList() {
   const navigate = useNavigate();
   const { assignments, fetchAssignments, accessDeniedError } = useAssignments();
-
+  const [page, setPage] = useState<number>(0);
   useEffect(() => {
-    fetchAssignments();
-  }, [fetchAssignments]);
+    fetchAssignments(page);
+  }, [fetchAssignments, page]);
 
   if (accessDeniedError) return <AccessDenied />;
 
@@ -126,7 +126,9 @@ export default function TaskList() {
           },
         ]}
         pagination={{
-          pageSize: 5,
+          onChange: (page: number) => setPage(page - 1),
+          total: assignments?.page?.totalElements,
+          pageSize: 4,
         }}
         rowKey="id"
       />

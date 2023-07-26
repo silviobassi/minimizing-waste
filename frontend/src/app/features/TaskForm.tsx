@@ -47,7 +47,9 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
     return options;
   }
 
-  useEffect(() => {}, [fetchWorkStations]);
+  useEffect(() => {
+    fetchWorkStations();
+  }, [fetchWorkStations]);
 
   return (
     <WrapperDefault title={props.title}>
@@ -121,12 +123,12 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
       >
         <Row justify={'space-between'}>
           <Col xs={24} xl={15}>
-            <Form.Item label="Título:*" name="title">
+            <Form.Item label="Título" name="title">
               <Input size="large" placeholder="ex: Título" name="title" />
             </Form.Item>
           </Col>
           <Col xs={24} xl={8}>
-            <Form.Item label="Data de Início:*" name="startDate">
+            <Form.Item label="Data de Início" name="startDate">
               <DatePicker
                 style={{ width: '100%' }}
                 locale={locale}
@@ -139,7 +141,7 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
 
         <Row justify={'space-between'}>
           <Col xs={24} xl={8}>
-            <Form.Item label="Data de Início:*" name="deadline">
+            <Form.Item label="Data de Início" name="deadline">
               <DatePicker
                 style={{ width: '100%' }}
                 locale={locale}
@@ -149,7 +151,7 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
             </Form.Item>
           </Col>
           <Col xs={24} xl={7}>
-            <Form.Item label="Tipo da Tarefa*" name="nature">
+            <Form.Item label="Tipo da Tarefa" name="nature">
               <Select
                 size="large"
                 placeholder="Selecione o Tipo da Tarefa"
@@ -164,17 +166,12 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
             </Form.Item>
           </Col>
           <Col xs={24} xl={7}>
-            <Form.Item
-              label="Estação de Trabalho*"
-              name={['workStation', 'id']}
-            >
+            <Form.Item label="Estação de Trabalho" name={['workStation', 'id']}>
               <Select
                 size="large"
-                labelInValue
                 showSearch
                 placeholder="Selecione a Estação de Trabalho"
                 optionFilterProp="children"
-                onMouseDown={fetchWorkStations}
                 filterOption={(input, option: any) =>
                   (option?.label ?? '')
                     .toLowerCase()

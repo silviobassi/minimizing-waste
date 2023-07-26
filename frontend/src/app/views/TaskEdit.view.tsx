@@ -52,7 +52,7 @@ export default function TaskEditView() {
 
   return (
     <TaskForm
-      labelRegister="CRIAR"
+      labelRegister="EDITAR"
       iconButton={{
         register: <EditOutlined />,
         cancel: <StopOutlined />,

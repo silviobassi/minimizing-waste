@@ -21,7 +21,6 @@ export namespace User {
     MinimizingWaste.components['schemas']['UserAssignmentModel'];
 
   export type Query = {
-    supplyName?: number;
     page?: number;
     size?: number;
     sort?: ['asc' | 'desc'];

@@ -1,11 +1,13 @@
 import { Assignment } from '../@types/Assignment';
 import Service from '../Service';
+import { generateQueryString } from '../utils';
 
 class AssignmentService extends Service {
-  static getAllAssignments() {
-    return this.Http.get<Assignment.PagedModelAssignment>('/assignments').then(
-      this.getData,
-    );
+  static getAllAssignments(search: Assignment.Query) {
+    const queryString = generateQueryString(search);
+    return this.Http.get<Assignment.PagedModelAssignment>(
+      '/assignments'.concat(queryString),
+    ).then(this.getData);
   }
 
   static getAssignment(assignmentId: number) {

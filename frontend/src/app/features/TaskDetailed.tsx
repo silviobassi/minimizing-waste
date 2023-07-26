@@ -81,17 +81,7 @@ export default function TaskDetailed(props: AssignmentProps) {
         </Col>
         <Col xs={24} lg={12}>
           <Divider orientation="left">RESPONSÁVEIS PELA TAREFA</Divider>
-          <Space direction="horizontal">
-            <Link to={`/tarefa/${params.assignmentId}/atribuicao`}>
-              <Button type="primary">Atribuir</Button>
-            </Link>
-            <Link to={`/tarefa/${params.assignmentId}/desatribuicao`}>
-              <Button type="primary" danger>
-                Desatribuir
-              </Button>
-            </Link>
-          </Space>
-          <Divider />
+
           {props?.assignment?.employeesResponsible.length ? (
             props?.assignment?.employeesResponsible.map(
               (employee: User.Assigned, key: number) => {

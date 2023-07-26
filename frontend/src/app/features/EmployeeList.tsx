@@ -4,7 +4,7 @@ import {
   EyeOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Avatar, Button, Popconfirm, Space, Table, Tag, Tooltip } from 'antd';
+import { Avatar, Button, Space, Table, Tag, Tooltip, notification } from 'antd';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -16,6 +16,7 @@ import {
   phoneToFormat,
 } from '../../sdk/utils/generateFormatterData';
 import AccessDenied from '../components/AccessDenied';
+import DoubleConfirm from '../components/DoubleConfirm';
 import WrapperDefault from '../components/WrapperDefault';
 
 export default function EmployeeList() {
@@ -104,29 +105,39 @@ export default function EmployeeList() {
             dataIndex: 'id',
             align: 'center',
             width: 200,
-            render: (id) => (
+            render: (_: any, user) => (
               <Space size={'middle'}>
                 <Tooltip title={'Editar'}>
-                  <Link to={`/colaborador/editar/${id}`}>
+                  <Link to={`/colaborador/editar/${user.id}`}>
                     <Button type={'link'} icon={<EditOutlined />} />
                   </Link>
                 </Tooltip>
                 <Tooltip title={'Excluir'}>
-                  <Popconfirm
-                    placement="left"
-                    title="Remover o Usuário?"
-                    onConfirm={() => {
-                      removeUser(Number(id));
+                  <DoubleConfirm
+                    popConfirmTitle="Remover Colaborador?"
+                    popConfirmContent="Deseja mesmo remover este colaborador?"
+                    onConfirm={async () => {
+                      try {
+                        await removeUser(Number(user.id));
+                        fetchUsers(page)
+                        notification.success({
+                          message: 'Sucesso',
+                          description: `Tarefa ${user.name}  removida com sucesso`,
+                        });
+                      } catch (error: any) {
+                        notification.error({
+                          message: `Houve um erro: ${error.message}`,
+                        });
+                      }
                     }}
-                    onCancel={() => null}
-                    okText="Excluir"
-                    cancelText="Cancelar"
                   >
-                    <Button type={'link'} icon={<DeleteOutlined />} />
-                  </Popconfirm>
+                    <Button type="link">
+                      <DeleteOutlined />
+                    </Button>
+                  </DoubleConfirm>
                 </Tooltip>
                 <Tooltip title={'Ver Detalhes'}>
-                  <Link to={`/colaborador/${id}/detalhes`}>
+                  <Link to={`/colaborador/${user.id}/detalhes`}>
                     <Button type={'link'} icon={<EyeOutlined />} />
                   </Link>
                 </Tooltip>

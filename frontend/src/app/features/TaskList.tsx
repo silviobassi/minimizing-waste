@@ -4,20 +4,24 @@ import {
   EyeOutlined,
   ReconciliationOutlined,
 } from '@ant-design/icons';
-import { Button, Checkbox, Space, Table, Tooltip } from 'antd';
+import { Button, Checkbox, Space, Table, Tooltip, notification } from 'antd';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAssignments from '../../core/hooks/useAssignments';
 import { Assignment } from '../../sdk/@types';
 
+import useAssignment from '../../core/hooks/useAssignment';
 import AccessDenied from '../components/AccessDenied';
+import DoubleConfirm from '../components/DoubleConfirm';
 import WrapperDefault from '../components/WrapperDefault';
 
 export default function TaskList() {
   const navigate = useNavigate();
   const { assignments, fetchAssignments, accessDeniedError } = useAssignments();
+  const { removeAssignment } = useAssignment();
   const [page, setPage] = useState<number>(0);
+
   useEffect(() => {
     fetchAssignments(page);
   }, [fetchAssignments, page]);
@@ -92,7 +96,28 @@ export default function TaskList() {
                   />
                 </Tooltip>
                 <Tooltip title={'Excluir'}>
-                  <Button type={'link'} icon={<DeleteOutlined />} />
+                  <DoubleConfirm
+                    popConfirmTitle="Remover Tarefa?"
+                    popConfirmContent="Deseja mesmo remover esta tarefa?"
+                    onConfirm={async () => {
+                      try {
+                        await removeAssignment(Number(assignment.id));
+                        fetchAssignments(page)
+                        notification.success({
+                          message: 'Sucesso',
+                          description: `Tarefa ${assignment.title}  removida com sucesso`,
+                        });
+                      } catch (error: any) {
+                        notification.error({
+                          message: `Houve um erro: ${error.message}`,
+                        });
+                      }
+                    }}
+                  >
+                    <Button type="link">
+                      <DeleteOutlined />
+                    </Button>
+                  </DoubleConfirm>
                 </Tooltip>
                 <Tooltip title={'Atribuir Tarefa'}>
                   <Button

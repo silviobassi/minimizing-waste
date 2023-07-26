@@ -35,6 +35,10 @@ class AssignmentService extends Service {
     ).then(this.getData);
   }
 
+  static deleteExistingAssignment(assignmentId: number) {
+    return this.Http.delete(`/assignments/${assignmentId}`).then(this.getData);
+  }
+
   static associateEmployee(
     notice: Assignment.AssignmentNotificationInput,
     assignmentId: number,

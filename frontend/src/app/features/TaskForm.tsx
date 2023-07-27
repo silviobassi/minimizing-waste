@@ -73,14 +73,14 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
               return props.onUpdate && props.onUpdate(assignmentDTO);
             }
 
-            const assignmentResponse = await AssignmentService.createAssignment(
+            await AssignmentService.createAssignment(
               assignmentDTO,
-            );
-
-            notification.success({
+            ).then((assignment: Assignment.AssignmentModel) =>  notification.success({
               message: 'Sucesso',
-              description: `Tarefa ${assignmentResponse?.title}  criada com sucesso`,
-            });
+              description: `Tarefa ${assignment?.title}  criada com sucesso`,
+            }));
+
+           
           } catch (error: any) {
             if (error instanceof CustomError) {
               if (error.data?.objects) {

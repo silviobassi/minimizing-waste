@@ -31,7 +31,7 @@ export default function EmployeeEditView() {
     FileService.updatePhoto(file, Number(params.userId));
     UserService.updateExistingUser(Number(params.userId), user).then(() => {
       notification.success({
-        message: 'Usuário atualizado com sucesso.',
+        message: `Colaborador ${user?.name} atualizado com sucesso.`,
       });
     });
   }

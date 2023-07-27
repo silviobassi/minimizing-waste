@@ -1,4 +1,4 @@
-import { Card, Skeleton } from 'antd';
+import { Card, Skeleton, notification } from 'antd';
 
 import { useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
@@ -46,12 +46,21 @@ export default function TaskAssignView() {
   function handleAssignmentAssign(
     notice: Assignment.AssignmentNotificationInput,
     employeeId: number,
+    employeeName: string,
   ) {
     AssignmentService.associateEmployee(
       notice,
       Number(params.assignmentId),
       Number(employeeId),
-    );
+    ).then((res) => {
+      if (res.status === 204) {
+        notification.success({
+          message: 'Sucesso',
+          description: `Colaborador ${employeeName}
+          atribuído com sucesso`,
+        });
+      }
+    });
   }
 
   if (accessDeniedError) return <AccessDenied />;

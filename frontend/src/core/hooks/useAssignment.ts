@@ -20,13 +20,29 @@ export default function useAssignment() {
   }, []);
 
   const removeAssignment = async (assignmentId: number) => {
-    await AssignmentService.deleteExistingAssignment(assignmentId);
+    return await AssignmentService.deleteExistingAssignment(assignmentId);
+  };
+
+  const toggleComplete = async (
+    completed: Assignment.CompletedInput,
+    assignmentId: number,
+  ) => {
+    return await AssignmentService.completeAssignment(completed, assignmentId);
+  };
+
+  const toggleApprove = async (
+    approve: Assignment.ApprovedInput,
+    assignmentId: number,
+  ) => {
+    return await AssignmentService.approveAssignment(approve, assignmentId);
   };
 
   return {
     assignment,
     fetchAssignment,
     notFound,
-    removeAssignment
+    removeAssignment,
+    toggleComplete,
+    toggleApprove,
   };
 }

@@ -71,8 +71,17 @@ public class AssignmentService {
 
         if(!assignment.getEmployeesResponsible().contains(currentEmployeeResponsible)){
             throw new BusinessException(String.format(
-                    "O Colaborador com o nome: %s não está atribuído a esta tarefa", currentEmployeeResponsible.getName()));
+                    "O Colaborador com o nome: %s não está atribuído a esta tarefa",
+                    currentEmployeeResponsible.getName()));
         }
+
+        if(assignment.getApproved()){
+            throw new BusinessException(String.format(
+                    "O colaborador %s não pode ser desatribuído, pois esta tarefa foi aprovada",
+                    currentEmployeeResponsible.getName()));
+        }
+
+
         Notification notification = notificationService.create(assignment.getNotification());
         assignment.setNotification(notification);
         assignment.removeEmployeeResponsible(currentEmployeeResponsible);
@@ -89,7 +98,7 @@ public class AssignmentService {
 
         if(isEmptyEmployeeResponsible){
             throw new BusinessException(
-                    "Para concluir esta tarefa, a mesma precisa estar atribuída, ao menos, a um colaborador.");
+                    "Para alterar o status desta tarefa, a mesma precisa estar atribuída, ao menos, a um colaborador.");
         }
 
         if(currentAssignment.getApproved())

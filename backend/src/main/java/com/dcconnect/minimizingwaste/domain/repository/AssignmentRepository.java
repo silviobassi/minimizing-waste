@@ -16,7 +16,7 @@ import java.util.List;
 public interface AssignmentRepository extends CustomJpaRepository<Assignment, Long>,
         JpaSpecificationExecutor<Assignment> {
 
-    @EntityGraph(attributePaths = {"workStation.sector", "notification", "employeesResponsible"})
+    @EntityGraph(attributePaths = {"workStation.sector", "notification"})
     Page<Assignment> findAll(Specification<Assignment> specification, Pageable pageable);
 
     @Query("select case when count(1) > 0 then true else false end from Assignment at " +

@@ -37,9 +37,11 @@ interface AssignmentAssignedProps {
   onAssigned?: (
     notification: Assignment.AssignmentNotificationInput,
     employeeId: number,
+    employeeName: any,
   ) => any;
   onPage: (page: number) => any;
   assign: boolean;
+
 }
 
 export default function AssignmentAssigned(props: AssignmentAssignedProps) {
@@ -163,14 +165,12 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
                       notice: Assignment.AssignmentNotificationInput,
                     ) => {
                       try {
-                        await props.onAssigned(notice, Number(userId));
-
-                        notification.success({
-                          message: 'Sucesso',
-                          description: `Colaborador ${userName} ${
-                            props.assign ? 'atribuído' : 'desatribuído'
-                          } com sucesso`,
-                        });
+                        await props.onAssigned(
+                          notice,
+                          Number(userId),
+                          userName,
+                        );
+           
                       } catch (error: any) {
                         if (error instanceof CustomError) {
                           if (error.data?.objects) {

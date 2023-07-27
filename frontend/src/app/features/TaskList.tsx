@@ -4,7 +4,15 @@ import {
   EyeOutlined,
   ReconciliationOutlined,
 } from '@ant-design/icons';
-import { Button, Checkbox, Space, Table, Tooltip, notification } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Space,
+  Table,
+  Tag,
+  Tooltip,
+  notification,
+} from 'antd';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -12,7 +20,6 @@ import useAssignments from '../../core/hooks/useAssignments';
 import { Assignment } from '../../sdk/@types';
 
 import useAssignment from '../../core/hooks/useAssignment';
-import { AssignmentService } from '../../sdk';
 import AccessDenied from '../components/AccessDenied';
 import DoubleConfirm from '../components/DoubleConfirm';
 import WrapperDefault from '../components/WrapperDefault';
@@ -20,9 +27,9 @@ import WrapperDefault from '../components/WrapperDefault';
 export default function TaskList() {
   const navigate = useNavigate();
   const { assignments, fetchAssignments, accessDeniedError } = useAssignments();
-  const { removeAssignment } = useAssignment();
+  const { removeAssignment, toggleComplete, toggleApprove } = useAssignment();
   const [page, setPage] = useState<number>(0);
-  const [checked, setChecked] = useState(true);
+  const [checked, setChecked] = useState<boolean>();
 
   useEffect(() => {
     fetchAssignments(page);
@@ -71,15 +78,24 @@ export default function TaskList() {
             dataIndex: 'completed',
             align: 'center',
             render(_: any, assignment) {
-              return <Checkbox checked={assignment?.completed}
-              onChange={async () => {
-                await AssignmentService.completeAssignment(
-                  {completed: !assignment?.completed},
-                  assignment.id,
-                );
-                fetchAssignments(page);
-                console.log(assignment?.completed);
-              }}>{assignment?.completed ? 'FINALIZADA' : 'PENDENTE'}</Checkbox>;
+              return (
+                <Checkbox
+                  checked={assignment?.completed}
+                  onChange={async () => {
+                    await toggleComplete(
+                      { completed: !assignment?.completed },
+                      assignment.id,
+                    );
+                    fetchAssignments(page);
+                  }}
+                >
+                  {assignment?.completed ? (
+                    <Tag color="blue">FINALIZADA</Tag>
+                  ) : (
+                    <Tag color="red">PENDENTE</Tag>
+                  )}
+                </Checkbox>
+              );
             },
           },
           {
@@ -91,15 +107,18 @@ export default function TaskList() {
                 <Checkbox
                   checked={assignment?.approved}
                   onChange={async () => {
-                    await AssignmentService.approveAssignment(
-                      {approved: !assignment?.approved},
+                    await toggleApprove(
+                      { approved: !assignment?.approved },
                       assignment.id,
                     );
                     fetchAssignments(page);
-                    console.log(assignment?.approved);
                   }}
                 >
-                  {assignment?.approved ? 'APROVADA' : 'PENDENTE'}
+                  {assignment?.approved ? (
+                    <Tag color="blue">APROVADA</Tag>
+                  ) : (
+                    <Tag color="red">PENDENTE</Tag>
+                  )}
                 </Checkbox>
               );
             },
@@ -125,12 +144,16 @@ export default function TaskList() {
                     popConfirmContent="Deseja mesmo remover esta tarefa?"
                     onConfirm={async () => {
                       try {
-                        await removeAssignment(Number(assignment.id));
+                        await removeAssignment(Number(assignment.id)).then(
+                          (res) => {
+                            if (res.status === 204)
+                              notification.success({
+                                message: 'Sucesso',
+                                description: `Tarefa ${assignment.title}  removida com sucesso`,
+                              });
+                          },
+                        );
                         fetchAssignments(page);
-                        notification.success({
-                          message: 'Sucesso',
-                          description: `Tarefa ${assignment.title}  removida com sucesso`,
-                        });
                       } catch (error: any) {
                         notification.error({
                           message: `Houve um erro: ${error.message}`,

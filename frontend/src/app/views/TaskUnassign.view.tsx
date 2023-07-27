@@ -1,4 +1,4 @@
-import { Card, Skeleton } from 'antd';
+import { Card, Skeleton, notification } from 'antd';
 
 import { useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
@@ -44,12 +44,22 @@ export default function TaskUnassignView() {
   function handleAssignmentUnassign(
     notice: Assignment.AssignmentNotificationInput,
     employeeId: number,
+    employeeName: string,
   ) {
     AssignmentService.disassociateEmployee(
       notice,
       Number(params.assignmentId),
       Number(employeeId),
-    );
+    ).then((res) => {
+      if (res.status === 204) {
+        notification.success({
+          message: 'Sucesso',
+          description: `Colaborador ${employeeName}
+          desatribuído com sucesso`,
+        });
+      }
+    });
+
   }
 
   if (accessDeniedError) return <AccessDenied />;

@@ -37,7 +37,7 @@ class UserService extends Service {
   }
 
   static deleteExistingUser(userId: number) {
-    return this.Http.delete(`/users/${userId}`).then(this.getData);
+    return this.Http.delete(`/users/${userId}`);
   }
 }
 

@@ -18,7 +18,6 @@ export default function useAssignment() {
       }
     }
   }, []);
-
   const removeAssignment = async (assignmentId: number) => {
     return await AssignmentService.deleteExistingAssignment(assignmentId);
   };

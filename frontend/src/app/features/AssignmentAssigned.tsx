@@ -41,7 +41,6 @@ interface AssignmentAssignedProps {
   ) => any;
   onPage: (page: number) => any;
   assign: boolean;
-
 }
 
 export default function AssignmentAssigned(props: AssignmentAssignedProps) {
@@ -151,129 +150,6 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
                     }
                   />
                 </List.Item>
-                <Modal
-                  title="Notificação"
-                  open={open}
-                  footer={null}
-                  closable={false}
-                >
-                  <Form
-                    layout="vertical"
-                    autoComplete="off"
-                    form={form}
-                    onFinish={async (
-                      notice: Assignment.AssignmentNotificationInput,
-                    ) => {
-                      try {
-                        await props.onAssigned(
-                          notice,
-                          Number(userId),
-                          userName,
-                        );
-           
-                      } catch (error: any) {
-                        if (error instanceof CustomError) {
-                          if (error.data?.objects) {
-                            form.setFields(
-                              error.data.objects.map((error: any) => {
-                                return {
-                                  name: error.name
-                                    ?.split(/(\.|\[|\])/gi)
-                                    .filter(
-                                      (str: string) =>
-                                        str !== '.' &&
-                                        str !== '[' &&
-                                        str !== ']' &&
-                                        str !== '',
-                                    )
-                                    .map((str: string) =>
-                                      isNaN(Number(str)) ? str : Number(str),
-                                    ) as string[],
-                                  errors: [error.userMessage],
-                                };
-                              }),
-                            );
-                          } else {
-                            notification.error({
-                              message: error.message,
-                              description:
-                                error.data?.detail === 'Network Error'
-                                  ? 'Erro de Rede'
-                                  : error.data?.detail,
-                            });
-                          }
-                        } else {
-                          notification.error({
-                            message: `Houve um erro: ${error.message}`,
-                          });
-                        }
-                      }
-                    }}
-                  >
-                    <Form.Item
-                      label="Título:*"
-                      name={['notification', 'title']}
-                      rules={[
-                        {
-                          required: true,
-                          message: 'O título é obrigatório',
-                        },
-                      ]}
-                    >
-                      <Input size="large" placeholder="eg.: Seu Título" />
-                    </Form.Item>
-                    <Form.Item
-                      label="Motivo:*"
-                      name={['notification', 'reason']}
-                      rules={[
-                        {
-                          required: true,
-                          message: 'O motivo é obrigatório',
-                        },
-                      ]}
-                    >
-                      <Input size="large" placeholder="eg.: Seu motivo" />
-                    </Form.Item>
-                    <Form.Item
-                      label="Objetivo:*"
-                      name={['notification', 'goal']}
-                      rules={[
-                        {
-                          required: true,
-                          message: 'O título é obrigatório',
-                        },
-                      ]}
-                    >
-                      <Input size="large" placeholder="eg.: Seu objetivo" />
-                    </Form.Item>
-                    <Form.Item style={{ marginTop: 40 }}>
-                      <Space direction="horizontal">
-                        {props.assign ? (
-                          <Button
-                            type="primary"
-                            htmlType="submit"
-                            icon={<UserAddOutlined />}
-                          >
-                            ASSOCIAR
-                          </Button>
-                        ) : (
-                          <Button
-                            type="primary"
-                            danger
-                            htmlType="submit"
-                            icon={<UserDeleteOutlined />}
-                          >
-                            DESASSOCIAR
-                          </Button>
-                        )}
-
-                        <Button danger onClick={() => setOpen(false)}>
-                          CANCELAR
-                        </Button>
-                      </Space>
-                    </Form.Item>
-                  </Form>
-                </Modal>
               </>
             )}
             pagination={{
@@ -283,6 +159,125 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
             }}
           />
         </Col>
+        <Modal
+          title="Notificação"
+          open={open}
+          footer={null}
+          onCancel={() => setOpen(false)}
+        >
+          <Form
+            layout="vertical"
+            autoComplete="off"
+            form={form}
+            onFinish={async (
+              notice: Assignment.AssignmentNotificationInput,
+            ) => {
+              try {
+                await props.onAssigned(notice, Number(userId), userName);
+                setOpen(false);
+              } catch (error: any) {
+                if (error instanceof CustomError) {
+                  if (error.data?.objects) {
+                    form.setFields(
+                      error.data.objects.map((error: any) => {
+                        return {
+                          name: error.name
+                            ?.split(/(\.|\[|\])/gi)
+                            .filter(
+                              (str: string) =>
+                                str !== '.' &&
+                                str !== '[' &&
+                                str !== ']' &&
+                                str !== '',
+                            )
+                            .map((str: string) =>
+                              isNaN(Number(str)) ? str : Number(str),
+                            ) as string[],
+                          errors: [error.userMessage],
+                        };
+                      }),
+                    );
+                  } else {
+                    notification.error({
+                      message: error.message,
+                      description:
+                        error.data?.detail === 'Network Error'
+                          ? 'Erro de Rede'
+                          : error.data?.detail,
+                    });
+                  }
+                } else {
+                  notification.error({
+                    message: `Houve um erro: ${error.message}`,
+                  });
+                }
+              }
+            }}
+          >
+            <Form.Item
+              label="Título:*"
+              name={['notification', 'title']}
+              rules={[
+                {
+                  required: true,
+                  message: 'O título é obrigatório',
+                },
+              ]}
+            >
+              <Input size="large" placeholder="eg.: Seu Título" />
+            </Form.Item>
+            <Form.Item
+              label="Motivo:*"
+              name={['notification', 'reason']}
+              rules={[
+                {
+                  required: true,
+                  message: 'O motivo é obrigatório',
+                },
+              ]}
+            >
+              <Input size="large" placeholder="eg.: Seu motivo" />
+            </Form.Item>
+            <Form.Item
+              label="Objetivo:*"
+              name={['notification', 'goal']}
+              rules={[
+                {
+                  required: true,
+                  message: 'O título é obrigatório',
+                },
+              ]}
+            >
+              <Input size="large" placeholder="eg.: Seu objetivo" />
+            </Form.Item>
+            <Form.Item style={{ marginTop: 40 }}>
+              <Space direction="horizontal">
+                {props.assign ? (
+                  <Button
+                    type="primary"
+                    htmlType="submit"
+                    icon={<UserAddOutlined />}
+                  >
+                    ASSOCIAR
+                  </Button>
+                ) : (
+                  <Button
+                    type="primary"
+                    danger
+                    htmlType="submit"
+                    icon={<UserDeleteOutlined />}
+                  >
+                    DESASSOCIAR
+                  </Button>
+                )}
+
+                <Button danger onClick={() => setOpen(false)}>
+                  CANCELAR
+                </Button>
+              </Space>
+            </Form.Item>
+          </Form>
+        </Modal>
       </Row>
     </WrapperDefault>
   );

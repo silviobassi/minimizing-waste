@@ -60,6 +60,12 @@ export default function TaskAssignView() {
           atribuído com sucesso`,
         });
       }
+      fetchUserAssignmentsAssigned(
+        page,
+        false,
+        Number(params.assignmentId),
+      )
+      fetchAssignment(Number(params.assignmentId));
     });
   }
 

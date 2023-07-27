@@ -58,6 +58,8 @@ export default function TaskUnassignView() {
           desatribuído com sucesso`,
         });
       }
+      fetchUserAssignmentsAssigned(page, true, Number(params.assignmentId))
+      fetchAssignment(Number(params.assignmentId));
     });
 
   }

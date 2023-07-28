@@ -47,7 +47,7 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
   }
 
   useEffect(() => {
-    fetchWorkStations();
+    fetchWorkStations(0);
   }, [fetchWorkStations]);
 
   return (

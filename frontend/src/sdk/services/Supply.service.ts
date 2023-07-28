@@ -10,10 +10,48 @@ class SupplyService extends Service {
     ).then(this.getData);
   }
 
-  static fetchSupply(supplyId: number): Supply.Detailed {
+  static getSupply(supplyId: number): Supply.Detailed {
     return this.Http.get<Supply.Detailed>(`/supplies/${supplyId}`).then(
       this.getData,
     );
+  }
+
+  static createSupplyMaterial(supplyMaterial: Supply.MaterialInput) {
+    return this.Http.post<Supply.MaterialModel>(
+      '/supplies/materials',
+      supplyMaterial,
+    ).then(this.getData);
+  }
+
+  static createSupplyEquipment(supplyEquipment: Supply.EquipmentInput) {
+    return this.Http.post<Supply.EquipmentModel>(
+      '/supplies/equipments',
+      supplyEquipment,
+    ).then(this.getData);
+  }
+
+  static updateExistingSupplyMaterial(
+    supplyEquipment: Supply.MaterialInput,
+    supplyMaterialId: number,
+  ) {
+    return this.Http.put<Supply.MaterialModel>(
+      `/supplies/materials/${supplyMaterialId}`,
+      supplyEquipment,
+    ).then(this.getData);
+  }
+
+  static updateExistingSupplyEquipment(
+    supplyEquipment: Supply.EquipmentInput,
+    supplyMaterialId: number,
+  ) {
+    return this.Http.put<Supply.EquipmentModel>(
+      `/supplies/equipments/${supplyMaterialId}`,
+      supplyEquipment,
+    ).then(this.getData);
+  }
+
+  static deleteExistingSupply(supplyId: number) {
+    return this.Http.delete<{}>(`/supplies/${supplyId}`).then(this.getStatus);
   }
 }
 

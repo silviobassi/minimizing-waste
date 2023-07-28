@@ -1,11 +1,12 @@
 import { EditOutlined, StopOutlined } from '@ant-design/icons';
-import { Card, Skeleton, notification } from 'antd';
+import { Skeleton, notification } from 'antd';
 import moment from 'moment';
 import { useCallback, useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import useAssignment from '../../core/hooks/useAssignment';
 import usePageTitle from '../../core/usePageTitle';
 import { Assignment, AssignmentService } from '../../sdk';
+import ElementNotFound from '../components/ElementNotFound';
 import TaskForm from '../features/TaskForm';
 
 export default function TaskEditView() {
@@ -35,7 +36,8 @@ export default function TaskEditView() {
 
   if (isNaN(Number(params.assignmentId))) return <Navigate to={'/tarefas'} />;
 
-  if (notFound) return <Card>usuário não encontrado</Card>;
+  if (notFound)
+    return <ElementNotFound description="A Tarefa não foi encontrada!" />;
 
   function handleAssignmentUpdate(assignment: Assignment.AssignmentInput) {
     AssignmentService.updateExistingAssignment(

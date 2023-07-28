@@ -174,6 +174,7 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
             ) => {
               try {
                 await props.onAssigned(notice, Number(userId), userName);
+                form.resetFields()
                 setOpen(false);
               } catch (error: any) {
                 if (error instanceof CustomError) {

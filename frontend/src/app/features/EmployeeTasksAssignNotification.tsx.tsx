@@ -47,11 +47,11 @@ export default function EmployeeTasksAssignNotification() {
                           </Space>
                         </Descriptions.Item>
                       </Descriptions>
-                      <Link to={'/'}>
-                        <Button type="primary" style={{ marginTop: 20 }}>
-                          Ver Responsáveis
-                        </Button>
-                      </Link>
+                      <Link to={`/tarefas/${item.id}/detalhes`}>
+                      <Button type="primary" style={{ marginTop: 20 }}>
+                        Ver Responsáveis
+                      </Button>
+                    </Link>
                     </Col>
                     <Col xs={24} lg={8}>
                       <Descriptions column={1} size="small" bordered>

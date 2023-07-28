@@ -14,7 +14,6 @@ import NotFound404View from './views/NotFound404.view';
 import NotificationListView from './views/NotificationList.view';
 import SectorCreateView from './views/SectorCreate.view';
 import SectorEditView from './views/SectorEdit.view';
-import SupplyAllocateView from './views/SupplyAllocation.view';
 import SupplyCreateView from './views/SupplyCreate.view';
 import SupplyDetailedView from './views/SupplyDetailed.view';
 import SupplyEditView from './views/SupplyEdit.view';
@@ -70,10 +69,6 @@ export default function Routes() {
       <Route path={'/setores'} element={<SectorListView />} />
       <Route path={'/setor/criar'} element={<SectorCreateView />} />
       <Route path={'/setor/editar/:sectorId'} element={<SectorEditView />} />
-      <Route
-        path={'/setor/:sectorId/alocacao/recurso'}
-        element={<SupplyAllocateView />}
-      />
       <Route path={'/estacoes-de-trabalho'} element={<WorkStationListView />} />
       <Route
         path={'/estacao-de-trabalho/criar'}

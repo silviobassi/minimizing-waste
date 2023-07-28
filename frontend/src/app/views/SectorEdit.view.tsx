@@ -1,10 +1,11 @@
 import { EditOutlined, StopOutlined } from '@ant-design/icons';
-import { Card, notification } from 'antd';
+import { notification } from 'antd';
 import { useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import useSector from '../../core/hooks/useSector';
 import usePageTitle from '../../core/usePageTitle';
 import { Sector, SectorService } from '../../sdk';
+import ElementNotFound from '../components/ElementNotFound';
 import SectorForm from '../features/SectorForm';
 
 export default function SetorEditView() {
@@ -19,7 +20,8 @@ export default function SetorEditView() {
 
   if (isNaN(Number(params.sectorId))) return <Navigate to={'/setores'} />;
 
-  if (notFound) return <Card>usuário não encontrado</Card>;
+  if (notFound)
+    return <ElementNotFound description="O Setor não foi encontrado!" />;
 
   function handleSectorUpdate(sector: Sector.Input) {
     SectorService.updateExistingSector(sector, Number(params.sectorId)).then(

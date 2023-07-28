@@ -1,10 +1,11 @@
 import { EditOutlined, StopOutlined } from '@ant-design/icons';
-import { Card, notification } from 'antd';
+import { notification } from 'antd';
 import { useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import useWorkStation from '../../core/hooks/useWorkStation';
 import usePageTitle from '../../core/usePageTitle';
 import { WorkStation, WorkStationService } from '../../sdk';
+import ElementNotFound from '../components/ElementNotFound';
 import WorkStationForm from '../features/WorkStationForm';
 
 export default function WorkStationEditView() {
@@ -18,9 +19,13 @@ export default function WorkStationEditView() {
       fetchWorkStation(Number(params.workStationId));
   }, [fetchWorkStation, params.workStationId]);
 
-  if (isNaN(Number(params.workStationId))) return <Navigate to={'/tarefas'} />;
+  if (isNaN(Number(params.workStationId)))
+    return <Navigate to={'/estacoes-de-trabalho'} />;
 
-  if (notFound) return <Card>usuário não encontrado</Card>;
+  if (notFound)
+    return (
+      <ElementNotFound description="A Estação de Trabalho não foi encontrada!" />
+    );
 
   function handleWorkStationUpdate(workStation: WorkStation.Input) {
     WorkStationService.updateExistingWorkStation(

@@ -1,8 +1,4 @@
-import {
-  DeleteOutlined,
-  EditOutlined,
-  ReconciliationOutlined,
-} from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Space, Table, Tooltip, notification } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -69,22 +65,12 @@ export default function SectorList() {
                     }
                   }}
                 >
-                 <Tooltip title={'Excluir'} placement='bottom'>
-                    <Button type="link" >
+                  <Tooltip title={'Excluir'} placement="bottom">
+                    <Button type="link">
                       <DeleteOutlined />
                     </Button>
                   </Tooltip>
                 </DoubleConfirm>
-
-                <Tooltip title={'Alocar Recursos'}>
-                  <Button
-                    type={'link'}
-                    icon={<ReconciliationOutlined />}
-                    onClick={() =>
-                      navigate(`/setor/${sector.id}/alocacao/recurso`)
-                    }
-                  />
-                </Tooltip>
               </Space>
             ),
           },

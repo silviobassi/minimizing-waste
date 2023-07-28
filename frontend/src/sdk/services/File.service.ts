@@ -20,7 +20,7 @@ class FileService extends Service {
   }
 
   static deletePhotoExists(userPhotoId: number) {
-    this.Http.delete(`/users/${userPhotoId}/photo`);
+    this.Http.delete(`/users/${userPhotoId}/photo`).then(this.getStatus);
   }
 }
 

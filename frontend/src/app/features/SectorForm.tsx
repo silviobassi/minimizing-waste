@@ -1,9 +1,9 @@
 import { Button, Form, Input, notification, Space } from 'antd';
-import { useState } from 'react';
+import { useEffect } from 'react';
 import { Sector, SectorService } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
 import WrapperDefault from '../components/WrapperDefault';
-
+type SectorType = Sector.SectorModel;
 interface SectorFormDefaultProps {
   labelRegister: string;
   iconButton: {
@@ -11,25 +11,37 @@ interface SectorFormDefaultProps {
     cancel: React.ReactNode;
   };
   title: string;
+  onUpdate?: (sector: Sector.Input) => SectorType;
+  sector?: SectorType;
 }
 
 export default function SectorForm(props: SectorFormDefaultProps) {
   const [form] = Form.useForm<Sector.Input>();
-  const [accessDeniedError, setAccessDeniedError] = useState(false);
+
+  useEffect(() => {
+    form.resetFields();
+  }, [props.sector]);
 
   return (
     <WrapperDefault title={props.title}>
       <Form
         layout={'vertical'}
         form={form}
+        initialValues={props.sector}
         onFinish={async (sector: Sector.Input) => {
           try {
-            const data = await SectorService.createSector(sector);
+            if (props.sector) {
+              return props.onUpdate && props.onUpdate(sector);
+            }
 
-            notification.success({
-              message: 'Sucesso',
-              description: `Setor ${data?.name} criado com sucesso`,
-            });
+            await SectorService.createSector(sector).then(
+              (sector: Sector.SectorModel) => {
+                notification.success({
+                  message: 'Sucesso',
+                  description: `Setor ${sector?.name} criado com sucesso`,
+                });
+              },
+            );
           } catch (error) {
             if (error instanceof CustomError) {
               if (error.data?.objects) {

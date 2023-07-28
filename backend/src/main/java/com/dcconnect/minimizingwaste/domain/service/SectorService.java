@@ -16,7 +16,7 @@ import java.util.Optional;
 @Service
 public class SectorService {
 
-    public static final String SECTOR_IN_USE = "Setor de código %d não pode ser removida, pois está em uso";
+    public static final String SECTOR_IN_USE = "Setor de código %d não pode ser removido, pois está em uso";
     @Autowired
     private SectorRepository sectorRepository;
 

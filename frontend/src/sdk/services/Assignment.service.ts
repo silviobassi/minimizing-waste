@@ -36,7 +36,9 @@ class AssignmentService extends Service {
   }
 
   static deleteExistingAssignment(assignmentId: number) {
-    return this.Http.delete(`/assignments/${assignmentId}`);
+    return this.Http.delete(`/assignments/${assignmentId}`).then(
+      this.getStatus,
+    );
   }
 
   static associateEmployee(
@@ -47,7 +49,7 @@ class AssignmentService extends Service {
     return this.Http.put<{}>(
       `/assignments/${assignmentId}/employee-responsible/${employeeResponsibleId}/associate`,
       notice,
-    );
+    ).then(this.getStatus);
   }
 
   static disassociateEmployee(
@@ -58,7 +60,7 @@ class AssignmentService extends Service {
     return this.Http.put<{}>(
       `/assignments/${assignmentId}/employee-responsible/${employeeResponsibleId}/disassociate`,
       notice,
-    );
+    ).then(this.getStatus);
   }
 
   static completeAssignment(
@@ -68,7 +70,7 @@ class AssignmentService extends Service {
     return this.Http.put<{}>(
       `/assignments/${assignmentId}/conclusion`,
       completed,
-    );
+    ).then(this.getStatus);
   }
   static approveAssignment(
     approved: Assignment.ApprovedInput,
@@ -77,7 +79,7 @@ class AssignmentService extends Service {
     return this.Http.put<{}>(
       `/assignments/${assignmentId}/approval`,
       approved,
-    );
+    ).then(this.getStatus);
   }
 }
 

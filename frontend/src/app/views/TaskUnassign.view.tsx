@@ -51,7 +51,7 @@ export default function TaskUnassignView() {
       Number(params.assignmentId),
       Number(employeeId),
     ).then((res) => {
-      if (res.status === 204) {
+      if (res === 204) {
         notification.success({
           message: 'Sucesso',
           description: `Colaborador ${employeeName}

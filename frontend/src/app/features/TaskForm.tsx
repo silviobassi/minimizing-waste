@@ -23,7 +23,6 @@ interface AssignmentFormDefaultProps {
     register: React.ReactNode;
     cancel: React.ReactNode;
   };
-  isCurrentAssignment?: boolean;
   title: string;
   assignment?: AssignmentFormType;
   onUpdate?: (user: Assignment.AssignmentInput) => AssignmentFormType;
@@ -35,7 +34,7 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
   const { fetchWorkStations, workStations } = useWorkStations();
 
   function fetchOptions() {
-    const options: any = [];
+    const options: WorkStation.WorkStationModel = [];
     workStations?._embedded?.workStations.map(
       (workStation: WorkStation.WorkStationModel) => {
         options.push({
@@ -56,6 +55,7 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
       <Form
         layout={'vertical'}
         form={form}
+        initialValues={props.assignment}
         onFinish={async (assignment: Assignment.AssignmentInput) => {
           try {
             const assignmentDTO: Assignment.AssignmentInput = {
@@ -73,14 +73,13 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
               return props.onUpdate && props.onUpdate(assignmentDTO);
             }
 
-            await AssignmentService.createAssignment(
-              assignmentDTO,
-            ).then((assignment: Assignment.AssignmentModel) =>  notification.success({
-              message: 'Sucesso',
-              description: `Tarefa ${assignment?.title}  criada com sucesso`,
-            }));
-
-           
+            await AssignmentService.createAssignment(assignmentDTO).then(
+              (assignment: Assignment.AssignmentModel) =>
+                notification.success({
+                  message: 'Sucesso',
+                  description: `Tarefa ${assignment?.title}  criada com sucesso`,
+                }),
+            );
           } catch (error: any) {
             if (error instanceof CustomError) {
               if (error.data?.objects) {
@@ -119,12 +118,12 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
             }
           }
         }}
-        initialValues={props.assignment}
+        
       >
         <Row justify={'space-between'}>
           <Col xs={24} xl={15}>
             <Form.Item label="Título" name="title">
-              <Input size="large" placeholder="ex: Título" name="title" />
+              <Input size="large" placeholder="ex: Título" />
             </Form.Item>
           </Col>
           <Col xs={24} xl={8}>

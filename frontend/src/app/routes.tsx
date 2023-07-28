@@ -69,9 +69,9 @@ export default function Routes() {
       <Route path={'/home'} element={<HomeView />} />
       <Route path={'/setores'} element={<SectorListView />} />
       <Route path={'/setor/criar'} element={<SectorCreateView />} />
-      <Route path={'/setor/editar/:id'} element={<SectorEditView />} />
+      <Route path={'/setor/editar/:sectorId'} element={<SectorEditView />} />
       <Route
-        path={'/setor/:id/alocacao/recurso'}
+        path={'/setor/:sectorId/alocacao/recurso'}
         element={<SupplyAllocateView />}
       />
       <Route path={'/estacoes-de-trabalho'} element={<WorkStationListView />} />
@@ -80,7 +80,7 @@ export default function Routes() {
         element={<WorkStationCreateView />}
       />
       <Route
-        path={'/estacao-de-trabalho/editar/:id'}
+        path={'/estacao-de-trabalho/editar/:workStationId'}
         element={<WorkStationEditView />}
       />
       <Route path={'/recursos'} element={<SupplyListView />} />

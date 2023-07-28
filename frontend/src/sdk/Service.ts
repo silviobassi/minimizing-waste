@@ -1,12 +1,13 @@
-import axios, { AxiosRequestConfig, AxiosResponse } from "axios";
-import handleAxiosResponseError from "./utils/handleAxiosResponseError";
-import handleAxiosResponseSuccess from "./utils/handleAxiosResponseSuccess";
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios';
+import handleAxiosResponseError from './utils/handleAxiosResponseError';
+import handleAxiosResponseSuccess from './utils/handleAxiosResponseSuccess';
 
 const Http = axios.create();
 
 class Service {
   public static Http = Http;
   protected static getData = getData;
+  protected static getStatus = getStatus;
 
   public static setBaseUrl(baseURL: string) {
     this.Http.defaults.baseURL = baseURL;
@@ -14,32 +15,36 @@ class Service {
 
   public static setRequestInterceptors(
     onFulfilled: (
-      request: AxiosRequestConfig
+      request: AxiosRequestConfig,
     ) => AxiosRequestConfig | Promise<AxiosRequestConfig>,
-    onRejected?: (error: any) => any
+    onRejected?: (error: any) => any,
   ) {
     Http.interceptors.request.use(onFulfilled, onRejected);
   }
 
   public static setResponseInterceptors(
     onFulfilled: (
-      response: AxiosResponse
+      response: AxiosResponse,
     ) => AxiosResponse | Promise<AxiosResponse>,
-    onRejected: (error: any) => any
+    onRejected: (error: any) => any,
   ) {
     Http.interceptors.response.use(onFulfilled, onRejected);
   }
 }
 
 function getData<T>(res: AxiosResponse<T>) {
-  return  res.data;
+  return res.data;
 }
 
-Http.defaults.baseURL = "http://localhost:8080/v1";
+function getStatus<T>(res: AxiosResponse<T>) {
+  return res.status;
+}
+
+Http.defaults.baseURL = 'http://localhost:8080/v1';
 
 Http.interceptors.response.use(
   handleAxiosResponseSuccess,
-  handleAxiosResponseError
+  handleAxiosResponseError,
 );
 
 export default Service;

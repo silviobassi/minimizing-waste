@@ -58,7 +58,6 @@ export default function TaskEditView() {
         cancel: <StopOutlined />,
       }}
       title="Edição de Tarefa"
-      isCurrentAssignment={true}
       onUpdate={handleAssignmentUpdate}
       assignment={transformAssignmentData(assignment)}
     />

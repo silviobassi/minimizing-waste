@@ -1,11 +1,13 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
-import { Button, Space, Tooltip } from 'antd';
+import { Button, Space, Tooltip, notification } from 'antd';
 import Table from 'antd/es/table';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useWorkStation from '../../core/hooks/useWorkStation';
 import useWorkStations from '../../core/hooks/useWorkStations';
 import { WorkStation } from '../../sdk/@types';
 import AccessDenied from '../components/AccessDenied';
+import DoubleConfirm from '../components/DoubleConfirm';
 import WrapperDefault from '../components/WrapperDefault';
 
 export default function WorkStationList() {
@@ -13,9 +15,11 @@ export default function WorkStationList() {
   const { workStations, fetchWorkStations, accessDeniedError } =
     useWorkStations();
 
+  const { removeWorkStation } = useWorkStation();
+  const [page, setPage] = useState<number>(0);
   useEffect(() => {
-    fetchWorkStations();
-  }, [fetchWorkStations]);
+    fetchWorkStations(page);
+  }, [fetchWorkStations, page]);
 
   if (accessDeniedError) return <AccessDenied />;
 
@@ -46,19 +50,43 @@ export default function WorkStationList() {
                     }
                   />
                 </Tooltip>
-                <Tooltip title={'Excluir'}>
-                  <Button
-                    type={'link'}
-                    shape={'circle'}
-                    icon={<DeleteOutlined />}
-                  />
-                </Tooltip>
+
+                <DoubleConfirm
+                  popConfirmTitle="Remover Estação de Trabalho?"
+                  popConfirmContent="Deseja mesmo remover esta tarefa?"
+                  onConfirm={async () => {
+                    try {
+                      await removeWorkStation(Number(workstation.id)).then(
+                        (res) => {
+                          if (res === 204)
+                            notification.success({
+                              message: 'Sucesso',
+                              description: `Estação de Trabalho ${workstation.name}  removida com sucesso`,
+                            });
+                        },
+                      );
+                      fetchWorkStations(page);
+                    } catch (error: any) {
+                      notification.error({
+                        message: `Houve um erro: ${error.message}`,
+                      });
+                    }
+                  }}
+                >
+                  <Tooltip title={'Excluir'} placement='bottom'>
+                    <Button type="link" >
+                      <DeleteOutlined />
+                    </Button>
+                  </Tooltip>
+                </DoubleConfirm>
               </Space>
             ),
           },
         ]}
         pagination={{
-          pageSize: 5,
+          onChange: (page: number) => setPage(page - 1),
+          total: workStations?.page?.totalElements,
+          pageSize: 4,
         }}
       />
     </WrapperDefault>

@@ -3,16 +3,20 @@ import {
   EditOutlined,
   ReconciliationOutlined,
 } from '@ant-design/icons';
-import { Button, Space, Table, Tooltip } from 'antd';
+import { Button, Space, Table, Tooltip, notification } from 'antd';
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useSector from '../../core/hooks/useSector';
 import useSectors from '../../core/hooks/useSectors';
 import { Sector } from '../../sdk/@types';
 import AccessDenied from '../components/AccessDenied';
+import DoubleConfirm from '../components/DoubleConfirm';
 import WrapperDefault from '../components/WrapperDefault';
 export default function SectorList() {
   const navigate = useNavigate();
   const { sectors, fetchSectors, accessDeniedError } = useSectors();
+
+  const { removeSector } = useSector();
 
   useEffect(() => {
     fetchSectors();
@@ -43,13 +47,35 @@ export default function SectorList() {
                     onClick={() => navigate(`/setor/editar/${sector.id}`)}
                   />
                 </Tooltip>
-                <Tooltip title={'Excluir'}>
-                  <Button
-                    type={'link'}
-                    shape={'circle'}
-                    icon={<DeleteOutlined />}
-                  />
-                </Tooltip>
+
+                <DoubleConfirm
+                  popConfirmTitle="Remover Setor?"
+                  popConfirmContent="Deseja mesmo remover esta tarefa?"
+                  onConfirm={async () => {
+                    try {
+                      await removeSector(Number(sector.id)).then((res) => {
+                        if (res === 204) {
+                          notification.success({
+                            message: 'Sucesso',
+                            description: `Setor ${sector.name}  removido com sucesso`,
+                          });
+                        }
+                      });
+                      fetchSectors();
+                    } catch (error: any) {
+                      notification.error({
+                        message: `Houve um erro: ${error.message}`,
+                      });
+                    }
+                  }}
+                >
+                 <Tooltip title={'Excluir'} placement='bottom'>
+                    <Button type="link" >
+                      <DeleteOutlined />
+                    </Button>
+                  </Tooltip>
+                </DoubleConfirm>
+
                 <Tooltip title={'Alocar Recursos'}>
                   <Button
                     type={'link'}

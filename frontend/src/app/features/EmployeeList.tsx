@@ -112,30 +112,32 @@ export default function EmployeeList() {
                     <Button type={'link'} icon={<EditOutlined />} />
                   </Link>
                 </Tooltip>
-                <Tooltip title={'Excluir'}>
-                  <DoubleConfirm
-                    popConfirmTitle="Remover Colaborador?"
-                    popConfirmContent="Deseja mesmo remover este colaborador?"
-                    onConfirm={async () => {
-                      try {
-                        await removeUser(Number(user.id));
-                        fetchUsers(page)
-                        notification.success({
-                          message: 'Sucesso',
-                          description: `Tarefa ${user.name}  removida com sucesso`,
-                        });
-                      } catch (error: any) {
-                        notification.error({
-                          message: `Houve um erro: ${error.message}`,
-                        });
-                      }
-                    }}
-                  >
+
+                <DoubleConfirm
+                  popConfirmTitle="Remover Colaborador?"
+                  popConfirmContent="Deseja mesmo remover este colaborador?"
+                  onConfirm={async () => {
+                    try {
+                      await removeUser(Number(user.id));
+                      fetchUsers(page);
+                      notification.success({
+                        message: 'Sucesso',
+                        description: `Tarefa ${user.name}  removida com sucesso`,
+                      });
+                    } catch (error: any) {
+                      notification.error({
+                        message: `Houve um erro: ${error.message}`,
+                      });
+                    }
+                  }}
+                >
+                  <Tooltip title={'Excluir'} placement="bottom">
                     <Button type="link">
                       <DeleteOutlined />
                     </Button>
-                  </DoubleConfirm>
-                </Tooltip>
+                  </Tooltip>
+                </DoubleConfirm>
+
                 <Tooltip title={'Ver Detalhes'}>
                   <Link to={`/colaborador/${user.id}/detalhes`}>
                     <Button type={'link'} icon={<EyeOutlined />} />

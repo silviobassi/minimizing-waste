@@ -53,19 +53,15 @@ export default function TaskAssignView() {
       Number(params.assignmentId),
       Number(employeeId),
     ).then((res) => {
-      if (res.status === 204) {
+      if (res === 204) {
         notification.success({
           message: 'Sucesso',
           description: `Colaborador ${employeeName}
-          atribuído com sucesso`,
+            atribuído com sucesso`,
         });
+        fetchUserAssignmentsAssigned(page, false, Number(params.assignmentId));
+        fetchAssignment(Number(params.assignmentId));
       }
-      fetchUserAssignmentsAssigned(
-        page,
-        false,
-        Number(params.assignmentId),
-      )
-      fetchAssignment(Number(params.assignmentId));
     });
   }
 

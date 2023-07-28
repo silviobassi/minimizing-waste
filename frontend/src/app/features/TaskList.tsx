@@ -138,34 +138,37 @@ export default function TaskList() {
                     onClick={() => navigate(`/tarefa/editar/${assignment.id}`)}
                   />
                 </Tooltip>
-                <Tooltip title={'Excluir'}>
-                  <DoubleConfirm
-                    popConfirmTitle="Remover Tarefa?"
-                    popConfirmContent="Deseja mesmo remover esta tarefa?"
-                    onConfirm={async () => {
-                      try {
-                        await removeAssignment(Number(assignment.id)).then(
-                          (res) => {
-                            if (res.status === 204)
-                              notification.success({
-                                message: 'Sucesso',
-                                description: `Tarefa ${assignment.title}  removida com sucesso`,
-                              });
-                          },
-                        );
-                        fetchAssignments(page);
-                      } catch (error: any) {
-                        notification.error({
-                          message: `Houve um erro: ${error.message}`,
-                        });
-                      }
-                    }}
-                  >
-                    <Button type="link">
+
+                <DoubleConfirm
+                  popConfirmTitle="Remover Tarefa?"
+                  popConfirmContent="Deseja mesmo remover esta tarefa?"
+                  onConfirm={async () => {
+                    try {
+                      await removeAssignment(Number(assignment.id)).then(
+                        (res) => {
+                          if (res === 204) {
+                            notification.success({
+                              message: 'Sucesso',
+                              description: `Tarefa ${assignment.title}  removida com sucesso`,
+                            });
+                          }
+                        },
+                      );
+                      fetchAssignments(page);
+                    } catch (error: any) {
+                      notification.error({
+                        message: `Houve um erro: ${error.message}`,
+                      });
+                    }
+                  }}
+                >
+                 <Tooltip title={'Excluir'} placement='bottom'>
+                    <Button type="link" >
                       <DeleteOutlined />
                     </Button>
-                  </DoubleConfirm>
-                </Tooltip>
+                  </Tooltip>
+                </DoubleConfirm>
+
                 <Tooltip title={'Atribuir Tarefa'}>
                   <Button
                     type={'link'}

@@ -1,5 +1,5 @@
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { Button, Descriptions, Space, Tooltip } from 'antd';
+import { Button, Descriptions, Space, Tooltip, Typography } from 'antd';
 import Table from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { Supply } from '../../sdk/@types';
@@ -73,38 +73,48 @@ export default function SupplyList() {
             responsive: ['sm'],
           },
           {
-            title: 'Quantidade',
-            dataIndex: ['supplyDescription', 'quantity'],
-            width: 130,
-            responsive: ['sm'],
-          },
-
-          {
-            title: 'Medida',
+            title: 'Medida Unitária',
             dataIndex: ['supplyDescription', 'measure'],
-            width: 130,
+            width: 200,
             responsive: ['sm'],
+            render(_: any, supply) {
+              return (
+                <>
+                  <Space>
+                    {supply.supplyDescription?.measure}
+                    <Typography.Text underline>
+                      {supply.supplyDescription?.measureUnitType}
+                    </Typography.Text>
+                  </Space>
+                </>
+              );
+            },
           },
           {
             title: 'Total',
             dataIndex: ['supplyDescription', 'total'],
-            width: 130,
+            width: 200,
             responsive: ['sm'],
-          },
-          {
-            title: 'Unidade',
-            dataIndex: ['supplyDescription', 'measureUnitType'],
-            width: 40,
-            align: 'center',
-            responsive: ['sm'],
+            render(_: any, supply) {
+              return (
+                <>
+                  <Space>
+                    {supply.supplyDescription?.total}
+                    <Typography.Text underline>
+                      {supply.supplyDescription?.measureUnitType}
+                    </Typography.Text>
+                  </Space>
+                </>
+              );
+            },
           },
           {
             title: 'Ações',
-            dataIndex: '_links',
+            dataIndex: 'id',
             align: 'center',
             width: 200,
             responsive: ['sm'],
-            render: (_: string, _links: string) => (
+            render: () => (
               <Space size={'middle'}>
                 <Tooltip title={'Editar'}>
                   <Button type={'link'} icon={<EditOutlined />} />

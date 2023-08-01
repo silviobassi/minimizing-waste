@@ -18,13 +18,13 @@ public interface UserRepository extends UserRepositoryQueries, CustomJpaReposito
     Page<User> findAll(Specification<User> specification, Pageable pageable);
 
 
-    @EntityGraph(attributePaths = {"userPhoto"})
-    @Query("from User u where u not in (select ae.employeesResponsible from Assignment ae where ae.id = :assignmentId)")
+    @Query(value = "select u from User u where u not in (select ae.employeesResponsible from Assignment ae where ae.id = :assignmentId)",
+            countQuery = "select count(u) from User u where u not in (select ae.employeesResponsible from Assignment ae where ae.id = :assignmentId)")
+
     Page<User> findAllUserAssignmentsAssigned(Pageable pageable, @Param("assignmentId") Long assignmentId);
 
-
-    @EntityGraph(attributePaths = {"userPhoto"})
-    @Query("from User u where u in (select ae.employeesResponsible from Assignment ae where ae.id = :assignmentId)")
+    @Query(value = "from User u where u in (select ae.employeesResponsible from Assignment ae where ae.id = :assignmentId)",
+    countQuery = "select count(u) from User u where u in (select ae.employeesResponsible from Assignment ae where ae.id = :assignmentId)")
     Page<User> findAllUserNotAssignmentsAssigned(Pageable pageable, @Param("assignmentId") Long assignmentId);
 
     Optional<User> findByEmail(String email);

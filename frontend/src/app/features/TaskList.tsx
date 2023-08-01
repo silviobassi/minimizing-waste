@@ -26,13 +26,21 @@ import WrapperDefault from '../components/WrapperDefault';
 
 export default function TaskList() {
   const navigate = useNavigate();
-  const { assignments, fetchAssignments, accessDeniedError } = useAssignments();
+  const { assignments, fetchAssignments } = useAssignments();
+  const [accessDeniedError, setAccessDeniedError] = useState(false);
   const { removeAssignment, toggleComplete, toggleApprove } = useAssignment();
   const [page, setPage] = useState<number>(0);
   const [checked, setChecked] = useState<boolean>();
 
   useEffect(() => {
-    fetchAssignments(page);
+    fetchAssignments(page).catch((err) => {
+      if (err?.data?.status === 403) {
+        setAccessDeniedError(true);
+        return;
+      }
+
+      throw err;
+    });
   }, [fetchAssignments, page, checked]);
 
   if (accessDeniedError) return <AccessDenied />;
@@ -86,7 +94,6 @@ export default function TaskList() {
                       { completed: !assignment?.completed },
                       assignment.id,
                     );
-                    fetchAssignments(page);
                   }}
                 >
                   {assignment?.completed ? (
@@ -111,7 +118,6 @@ export default function TaskList() {
                       { approved: !assignment?.approved },
                       assignment.id,
                     );
-                    fetchAssignments(page);
                   }}
                 >
                   {assignment?.approved ? (
@@ -146,15 +152,12 @@ export default function TaskList() {
                     try {
                       await removeAssignment(Number(assignment.id)).then(
                         (res) => {
-                          if (res === 204) {
-                            notification.success({
-                              message: 'Sucesso',
-                              description: `Tarefa ${assignment.title}  removida com sucesso`,
-                            });
-                          }
+                          notification.success({
+                            message: 'Sucesso',
+                            description: `Tarefa ${assignment.title}  removida com sucesso`,
+                          });
                         },
                       );
-                      fetchAssignments(page);
                     } catch (error: any) {
                       notification.error({
                         message: `Houve um erro: ${error.message}`,
@@ -162,8 +165,8 @@ export default function TaskList() {
                     }
                   }}
                 >
-                 <Tooltip title={'Excluir'} placement='bottom'>
-                    <Button type="link" >
+                  <Tooltip title={'Excluir'} placement="bottom">
+                    <Button type="link">
                       <DeleteOutlined />
                     </Button>
                   </Tooltip>

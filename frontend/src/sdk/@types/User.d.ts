@@ -24,5 +24,6 @@ export namespace User {
     page?: number;
     size?: number;
     sort?: ['asc' | 'desc'];
+    assigned?: boolean
   };
 }

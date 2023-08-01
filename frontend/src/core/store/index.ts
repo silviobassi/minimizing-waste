@@ -1,8 +1,9 @@
 import { Middleware, configureStore, isRejected } from '@reduxjs/toolkit';
 import { notification } from 'antd';
+import assignmentReducer from './Assignment.slice';
 import authReducer from './Auth.slice';
-
 import UserReducer from './User.reducer';
+import usersAssignmentReducer from './UsersAssignment.slice';
 
 const observeActions: Middleware = () => (next) => (action) => {
   if (isRejected(action)) {
@@ -24,7 +25,8 @@ export const store = configureStore({
   reducer: {
     user: UserReducer,
     auth: authReducer,
-
+    assignment: assignmentReducer,
+    usersAssignmentAssigned: usersAssignmentReducer,
   },
   middleware: function (getDefaultMiddlewares) {
     return getDefaultMiddlewares().concat(observeActions);

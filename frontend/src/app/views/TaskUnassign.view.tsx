@@ -8,6 +8,8 @@ import usePageTitle from '../../core/usePageTitle';
 import { Assignment, AssignmentService } from '../../sdk';
 import AccessDenied from '../components/AccessDenied';
 import AssignmentAssigned from '../features/AssignmentAssigned';
+import useAssignments from '../../core/hooks/useAssignments';
+
 
 export default function TaskUnassignView() {
   usePageTitle('Desatribuição de Tarefas');
@@ -15,7 +17,7 @@ export default function TaskUnassignView() {
   const params = useParams<{ assignmentId: string }>();
 
   const { assignment, fetchAssignment, notFound } = useAssignment();
-  const { usersAssignmentsAssigned, fetchUserAssignmentsAssigned } = useUsers();
+  const { usersAssignmentAssign, fetchUserAssignmentsAssigned } = useAssignments();
   const [page, setPage] = useState<number>(0);
   const [accessDeniedError, setAccessDeniedError] = useState(false);
 
@@ -74,7 +76,7 @@ export default function TaskUnassignView() {
 
   return (
     <AssignmentAssigned
-      users={usersAssignmentsAssigned}
+      users={usersAssignmentAssign}
       assignment={assignment}
       onAssigned={handleAssignmentUnassign}
       onPage={(page: number) => setPage(page - 1)}

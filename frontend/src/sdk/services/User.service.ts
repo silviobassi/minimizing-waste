@@ -12,13 +12,12 @@ class UserService extends Service {
 
   static getAllUsersAssigned(
     search: User.Query,
-    assigned: boolean,
     assignmentId: number,
   ): User.PagedModelDetailed {
     const queryString = generateQueryString(search);
     return this.Http.get<User.PagedModelUserAssigned[]>(
       `/users/${assignmentId}/assignments`.concat(queryString) +
-        `assigned=${assigned}`,
+        `&assigned=${search.assigned}`,
     ).then(this.getData);
   }
 

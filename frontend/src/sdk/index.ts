@@ -7,7 +7,9 @@ export { default as UserService } from './services/User.service'
 export { default as SupplyService } from './services/Supply.service'
 export { default as SupplyMovementService } from './services/SupplyMovement.service'
 export { default as WorkStationService } from './services/WorkStation.service'
-
+export { default as SectorServiceService } from './services/Sector.service'
+export { default as FileService } from './services/File.service'
+export { default as NotificationService } from './services/WorkStation.service'
 export { default as generateQueryString } from './utils/generateQueryString'
 
 export * from './@types'

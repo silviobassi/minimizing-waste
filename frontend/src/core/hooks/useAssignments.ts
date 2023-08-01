@@ -1,35 +1,46 @@
-import { useCallback, useState } from 'react';
-import { Assignment } from '../../sdk/@types';
-import { AccessDeniedError } from '../../sdk/errors';
-import { AssignmentService } from '../../sdk/services';
+import { useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../store';
+import * as AssignmentActions from '../store/Assignment.slice';
+import * as UsersAssignmentActions from '../store/UsersAssignment.slice';
 
 export default function useAssignments() {
-  const [assignments, setAssignments] = useState<
-    Assignment.PagedModelAssignment[]
-  >([]);
+  const dispatch = useDispatch<AppDispatch>();
 
-  const [accessDeniedError, setAccessDeniedError] = useState(false);
+  const assignments = useSelector(
+    (state: RootState) => state.assignment.assignments,
+  );
+  const fetching = useSelector((state: RootState) => state.assignment.fetching);
 
-  const fetchAssignments = useCallback(async (page: number) => {
-    await AssignmentService.getAllAssignments({
-      sort: ['asc'],
-      page: page,
-      size: 4,
-    })
-      .then(setAssignments)
-      .catch((err: any) => {
-        if (err instanceof AccessDeniedError) {
-          setAccessDeniedError(true);
-          return;
-        }
+  const usersAssignmentAssign = useSelector(
+    (state: RootState) => state.usersAssignmentAssigned.list,
+  );
 
-        throw err;
-      });
-  }, []);
+  const fetchAssignments = useCallback(
+    async (page: number) => {
+      return dispatch(AssignmentActions.getAllAssignments(page)).unwrap();
+    },
+    [dispatch],
+  );
+
+  const fetchUserAssignmentsAssigned = useCallback(
+    async (page: number, assigned: boolean, assignmentId: number) => {
+      return dispatch(
+        UsersAssignmentActions.getAllUsersAssignmentAssign({
+          page,
+          assigned,
+          assignmentId,
+        }),
+      ).unwrap();
+    },
+    [dispatch],
+  );
 
   return {
     fetchAssignments,
+    fetchUserAssignmentsAssigned,
     assignments,
-    accessDeniedError,
+    usersAssignmentAssign,
+    fetching,
   };
 }

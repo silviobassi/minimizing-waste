@@ -18,7 +18,7 @@ public class UserSpecs {
             }
 
             if(userFilter.getUserCpf() != null) {
-                predicates.add(criteriaBuilder.like(root.get("cpf"), userFilter.getUserCpf()));
+                predicates.add(criteriaBuilder.like(root.get("cpf"), userFilter.getUserCpf()+"%"));
             }
 
             return criteriaBuilder.and(predicates.toArray(new Predicate[0]));

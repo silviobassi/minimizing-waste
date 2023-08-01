@@ -19,6 +19,11 @@ export namespace Supply {
   export type EquipmentModel =
     MinimizingWaste.components['schemas']['EquipmentSupplyModel'];
 
+  export type MaterialSupplyModel =
+    MinimizingWaste.components['schemas']['MaterialSupplyModel'];
+  export type EquipmentSupplyModel =
+    MinimizingWaste.components['schemas']['EquipmentSupplyModel'];
+
   export type Query = {
     supplyName?: number;
     page?: number;

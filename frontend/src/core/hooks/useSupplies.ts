@@ -1,32 +1,22 @@
 import { useCallback, useState } from 'react';
-import { Supply } from '../../sdk/@types';
-import { AccessDeniedError } from '../../sdk/errors';
-import { SupplyService } from '../../sdk/services';
+import { useDispatch, useSelector } from 'react-redux';
+import { AppDispatch, RootState } from '../store';
+import * as SupplyActions from '../store/Supply.slice';
 
 export default function useSupplies() {
-  const [supplies, setSupplies] = useState<Supply.PagedModelSummary[]>([]);
   const [accessDeniedError, setAccessDeniedError] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const supplies = useSelector((state: RootState) => state.supplies.list);
+  const fetching = useSelector((state: RootState) => state.supplies.fetching);
 
   const fetchSupplies = useCallback(async (page: number) => {
-    SupplyService.getAllSupplies({
-      sort: ['asc'],
-      page: page,
-      size: 4,
-    })
-      .then(setSupplies)
-      .catch((err: any) => {
-        if (err instanceof AccessDeniedError) {
-          setAccessDeniedError(true);
-          return;
-        }
-
-        throw err;
-      });
+    return dispatch(SupplyActions.getAllSupplies(page)).unwrap();
   }, []);
 
   return {
     fetchSupplies,
     supplies,
-    accessDeniedError
+    fetching,
+    accessDeniedError,
   };
 }

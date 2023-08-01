@@ -12,8 +12,6 @@ import jakarta.persistence.Table;
 @Getter
 @Setter
 
-@DiscriminatorColumn(name = "supply_type", discriminatorType = DiscriminatorType.STRING)
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @Entity
 @Table(name = "supplies")
 public class Supply extends BaseEntity{
@@ -23,5 +21,15 @@ public class Supply extends BaseEntity{
     @OneToOne(optional = false, cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "supply_description_id")
     private SupplyDescription supplyDescription;
+
+    @Enumerated(EnumType.STRING)
+    private SupplyType supplyType;
+
+    @Enumerated(EnumType.STRING)
+    private Manipulation manipulation;
+
+    @Enumerated(EnumType.STRING)
+    private Bulk bulk;
+
 
 }

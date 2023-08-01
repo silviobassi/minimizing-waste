@@ -96,7 +96,7 @@ export default function Routes() {
         element={<SupplyMovementGiveBackForm />}
       />
       <Route path={'/recursos/criar'} element={<SupplyCreateView />} />
-      <Route path={'/recursos/editar/:id'} element={<SupplyEditView />} />
+      <Route path={'/recursos/editar/:supplyId'} element={<SupplyEditView />} />
       <Route
         path={'/recursos/:supplyId/detalhes'}
         element={<SupplyDetailedView />}

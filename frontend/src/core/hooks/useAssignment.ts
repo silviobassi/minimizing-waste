@@ -1,29 +1,11 @@
-import { useCallback, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useCallback } from 'react';
+import { useDispatch } from 'react-redux';
 import { Assignment } from '../../sdk/@types';
-import { ResourceNotFoundError } from '../../sdk/errors';
-import { AppDispatch, RootState } from '../store';
+import { AppDispatch } from '../store';
 import * as AssignmentActions from '../store/Assignment.slice';
 
 export default function useAssignment() {
-  const [notFound, setNotFound] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
-  const assignment = useSelector((s: RootState) => s.assignment.assignment);
-
-  const fetchAssignment = useCallback(
-    async (assignmentId: number) => {
-      try {
-        return dispatch(AssignmentActions.getAssignment(assignmentId)).unwrap();
-      } catch (error) {
-        if (error instanceof ResourceNotFoundError) {
-          setNotFound(true);
-        } else {
-          throw error;
-        }
-      }
-    },
-    [dispatch],
-  );
 
   const removeAssignment = useCallback(
     async (assignmentId: number) => {
@@ -50,9 +32,6 @@ export default function useAssignment() {
   );
 
   return {
-    assignment,
-    fetchAssignment,
-    notFound,
     removeAssignment,
     toggleComplete,
     toggleApprove,

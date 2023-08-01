@@ -8,12 +8,13 @@ import usePageTitle from '../../core/usePageTitle';
 import { Assignment, AssignmentService } from '../../sdk';
 import ElementNotFound from '../components/ElementNotFound';
 import TaskForm from '../features/TaskForm';
+import useUsersAssignments from '../../core/hooks/useUsersAssignment';
 
 export default function TaskEditView() {
   usePageTitle('Edição de Tarefa');
 
   const params = useParams<{ assignmentId: string }>();
-  const { assignment, fetchAssignment, notFound } = useAssignment();
+  const { assignment, fetchAssignment, notFound } = useUsersAssignments();
 
   useEffect(() => {
     if (params.assignmentId && !isNaN(Number(params.assignmentId)))

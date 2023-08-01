@@ -18,6 +18,6 @@ public class SupplySummaryModel extends RepresentationModel<SupplySummaryModel> 
     @Schema(example = "Recurso")
     private String name;
 
-    private SupplyDescriptionSummaryModel supplyDescription;
+    private SupplyDescriptionDetailedModel supplyDescription;
 
 }

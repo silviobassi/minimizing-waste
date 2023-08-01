@@ -2,22 +2,25 @@ import { Card, Skeleton, notification } from 'antd';
 
 import { useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
-import useAssignment from '../../core/hooks/useAssignment';
-import useUsers from '../../core/hooks/useUsers';
+import useUsersAssignments from '../../core/hooks/useUsersAssignment';
 import usePageTitle from '../../core/usePageTitle';
-import { Assignment, AssignmentService } from '../../sdk';
+import { Assignment } from '../../sdk';
 import AccessDenied from '../components/AccessDenied';
 import AssignmentAssigned from '../features/AssignmentAssigned';
-import useAssignments from '../../core/hooks/useAssignments';
-
 
 export default function TaskUnassignView() {
   usePageTitle('Desatribuição de Tarefas');
 
   const params = useParams<{ assignmentId: string }>();
 
-  const { assignment, fetchAssignment, notFound } = useAssignment();
-  const { usersAssignmentAssign, fetchUserAssignmentsAssigned } = useAssignments();
+  const {
+    fetchAssignment,
+    fetchUserAssignmentsAssigned,
+    disassociateEmployee,
+    usersAssignmentAssign,
+    assignment,
+    notFound,
+  } = useUsersAssignments();
   const [page, setPage] = useState<number>(0);
   const [accessDeniedError, setAccessDeniedError] = useState(false);
 
@@ -48,22 +51,18 @@ export default function TaskUnassignView() {
     employeeId: number,
     employeeName: string,
   ) {
-    AssignmentService.disassociateEmployee(
+    disassociateEmployee(
       notice,
       Number(params.assignmentId),
-      Number(employeeId),
+      employeeId,
+      page,
     ).then((res) => {
-      if (res === 204) {
-        notification.success({
-          message: 'Sucesso',
-          description: `Colaborador ${employeeName}
+      notification.success({
+        message: 'Sucesso',
+        description: `Colaborador ${employeeName}
           desatribuído com sucesso`,
-        });
-      }
-      fetchUserAssignmentsAssigned(page, true, Number(params.assignmentId))
-      fetchAssignment(Number(params.assignmentId));
+      });
     });
-
   }
 
   if (accessDeniedError) return <AccessDenied />;

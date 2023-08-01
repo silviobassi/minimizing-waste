@@ -1,18 +1,26 @@
 package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.SupplyDetailedAssembler;
+import com.dcconnect.minimizingwaste.api.v1.assembler.SupplyEquipmentDisassembler;
+import com.dcconnect.minimizingwaste.api.v1.assembler.SupplyMaterialDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.SupplySummaryAssembler;
+import com.dcconnect.minimizingwaste.api.v1.model.AssignmentModel;
 import com.dcconnect.minimizingwaste.api.v1.model.SupplyDetailedModel;
 import com.dcconnect.minimizingwaste.api.v1.model.SupplySummaryModel;
+import com.dcconnect.minimizingwaste.api.v1.model.input.AssignmentInput;
+import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyEquipmentInput;
+import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMaterialInput;
 import com.dcconnect.minimizingwaste.api.v1.openapi.SupplyControllerOpenApi;
 import com.dcconnect.minimizingwaste.core.data.PageWrapper;
 import com.dcconnect.minimizingwaste.core.data.PageableTranslator;
 import com.dcconnect.minimizingwaste.core.security.CheckSecurity;
+import com.dcconnect.minimizingwaste.domain.model.Assignment;
 import com.dcconnect.minimizingwaste.domain.model.Supply;
 import com.dcconnect.minimizingwaste.domain.repository.SupplyRepository;
 import com.dcconnect.minimizingwaste.domain.repository.filter.SupplyFilter;
 import com.dcconnect.minimizingwaste.domain.service.SupplyService;
 import com.dcconnect.minimizingwaste.infrastructure.spec.SupplySpecs;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -57,6 +65,8 @@ public class SupplyController implements SupplyControllerOpenApi {
 
         return pagedResourcesAssembler.toModel(suppliesPage, supplySummaryAssembler);
     }
+
+
 
     @CheckSecurity.Supplies.CanEdit
     @ResponseStatus(HttpStatus.NO_CONTENT)

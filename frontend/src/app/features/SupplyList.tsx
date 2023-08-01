@@ -6,6 +6,7 @@ import { Supply } from '../../sdk/@types';
 import AccessDenied from '../components/AccessDenied';
 import WrapperDefault from '../components/WrapperDefault';
 
+import { Link } from 'react-router-dom';
 import useSupplies from '../../core/hooks/useSupplies';
 
 export default function SupplyList() {
@@ -32,8 +33,8 @@ export default function SupplyList() {
                   <Descriptions.Item label={'Nome'}>
                     {supply.name}
                   </Descriptions.Item>
-                  <Descriptions.Item label={'Quantidade'}>
-                    {supply.supplyDescription.quantity}
+                  <Descriptions.Item label={'Embalagem'}>
+                    {supply.supplyDescription.packing}
                   </Descriptions.Item>
                   <Descriptions.Item label={'Medida'}>
                     {`${supply.supplyDescription.measure} ${supply.supplyDescription.measureUnitType}`}
@@ -69,6 +70,12 @@ export default function SupplyList() {
           {
             title: 'Nome',
             dataIndex: 'name',
+            fixed: 'left',
+            responsive: ['sm'],
+          },
+          {
+            title: 'Embalagem',
+            dataIndex: ['supplyDescription', 'packing'],
             fixed: 'left',
             responsive: ['sm'],
           },
@@ -114,10 +121,12 @@ export default function SupplyList() {
             align: 'center',
             width: 200,
             responsive: ['sm'],
-            render: () => (
+            render: (_: any, supply) => (
               <Space size={'middle'}>
                 <Tooltip title={'Editar'}>
-                  <Button type={'link'} icon={<EditOutlined />} />
+                  <Link to={`/recursos/editar/${supply.id}`}>
+                    <Button type={'link'} icon={<EditOutlined />} />
+                  </Link>
                 </Tooltip>
                 <Tooltip title={'Excluir'}>
                   <Button type={'link'} icon={<DeleteOutlined />} />

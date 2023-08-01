@@ -3,10 +3,9 @@ package com.dcconnect.minimizingwaste.domain.model;
 import lombok.Getter;
 
 @Getter
-public enum Bulk {
+public enum SupplyType {
 
-    PEQUENO,
-    MÉDIO,
-    GRANDE
+    MATERIAL,
+    EQUIPAMENTO;
 
 }

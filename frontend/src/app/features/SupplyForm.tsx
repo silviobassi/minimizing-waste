@@ -22,17 +22,20 @@ interface SupplyFormDefaultProps {
     cancel: React.ReactNode;
   };
   title: string;
+  onUpdateMaterial: (supply: Supply.MaterialInput) => Supply.MaterialModel;
+  onUpdateEquipment: (supply: Supply.EquipmentInput) => Supply.EquipmentModel;
+  supply: Supply.Detailed;
 }
 
 export default function SupplyForm(props: SupplyFormDefaultProps) {
-  const [supplyType, setSupplyType] = useState<any>('material');
+  const [supplyKind, setSupplyKind] = useState<any>('material');
   const [form] = Form.useForm<any>();
 
   const supply: any = {
     material: (
       <Form.Item
-        label="Tipo da Manipulação*"
-        name={['manipulation']}
+        label="Manipulação*"
+        name={'manipulation'}
         rules={[
           {
             required: true,
@@ -47,25 +50,25 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
       >
         <Select
           size="large"
-          placeholder="Selecione o Tipo de Recurso"
+          placeholder="Selecione a manipulação"
           optionFilterProp="children"
           options={[
             {
-              label: 'TRANSMUTÁVEL',
+              label: 'Transmutável',
               value: 'TRANSMUTÁVEL',
             },
             {
-              label: 'IMUTÁVEL',
+              label: 'Imutável',
               value: 'IMUTÁVEL',
             },
           ]}
         />
       </Form.Item>
     ),
-    equipment: (
+    equipamento: (
       <Form.Item
-        label="Tipo do Volume*"
-        name={['bulk']}
+        label="Tamanho*"
+        name={'bulk'}
         rules={[
           {
             required: true,
@@ -80,19 +83,19 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
       >
         <Select
           size="large"
-          placeholder="Selecione o Tipo do Volume"
+          placeholder="Selecione o Tamanho"
           optionFilterProp="children"
           options={[
             {
-              label: 'PEQUENO',
+              label: 'Pequeno',
               value: 'PEQUENO',
             },
             {
-              label: 'MÉDIO',
+              label: 'Médio',
               value: 'MÉDIO',
             },
             {
-              label: 'GRANDE',
+              label: 'Grande',
               value: 'GRANDE',
             },
           ]}
@@ -102,35 +105,43 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
   };
 
   const handleChange = (value: string) => {
-    setSupplyType(value);
+    setSupplyKind(value);
   };
 
-  useEffect(() => {}, [supplyType]);
+  useEffect(() => {
+
+  }, [supplyKind])
 
   return (
     <WrapperDefault title={props.title}>
       <Form
         layout="vertical"
         form={form}
+        initialValues={props.supply}
         onFinish={async (
           supply: Supply.MaterialInput | Supply.EquipmentInput,
         ) => {
           try {
             const supplyDTO = {
               ...supply,
+              supplyType: supply?.supplyType.toUpperCase(),
               supplyDescription: {
-                measure: parseFloat(
-                  supply.supplyDescription?.measure,
-                ),
+                measure: parseFloat(supply.supplyDescription?.measure),
                 measureUnitType: supply.supplyDescription?.measureUnitType,
                 quantity: supply.supplyDescription?.quantity,
                 packing: supply.supplyDescription?.packing,
               },
             };
 
-            console.log(supplyDTO);
 
-            if (supplyType === 'material') {
+            console.log(supplyDTO)
+            if (supplyKind === 'material') {
+              if (props.supply) {
+                
+                return (
+                  props.onUpdateMaterial && props.onUpdateMaterial(supplyDTO)
+                );
+              }
               await SupplyService.createSupplyMaterial(supplyDTO).then(
                 (supply: Supply.MaterialModel) =>
                   notification.success({
@@ -139,6 +150,12 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
                   }),
               );
             } else {
+              if (props.supply) {
+                console.log('entrou')
+                return (
+                  props.onUpdateEquipment && props.onUpdateEquipment(supplyDTO)
+                );
+              }
               await SupplyService.createSupplyEquipment(supplyDTO).then(
                 (supply: Supply.EquipmentModel) =>
                   notification.success({
@@ -207,6 +224,7 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
           </Col>
           <Col xs={24} xl={8}>
             <Form.Item
+              name={'supplyType'}
               label="Tipo do Recurso"
               rules={[
                 {
@@ -215,32 +233,31 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
                 },
                 {
                   type: 'enum',
-                  enum: ['material', 'equipment', 'MANAGER'],
+                  enum: ['material', 'equipamento'],
                   message: `O tipo do recurso precisa ser: MATERIAL ou EQUIPAMENTO`,
                 },
               ]}
             >
               <Select
                 onChange={handleChange}
-                defaultValue={'material'}
                 size="large"
                 placeholder="Selecione o Tipo de Recurso"
                 optionFilterProp="children"
                 options={[
                   {
-                    label: 'MATERIAL',
+                    label: 'Material',
                     value: 'material',
                   },
                   {
-                    label: 'EQUIPAMENTO',
-                    value: 'equipment',
+                    label: 'Equipamento',
+                    value: 'equipamento',
                   },
                 ]}
               />
             </Form.Item>
           </Col>
           <Col xs={24} xl={8}>
-            {supply[supplyType]}
+            {supply[supplyKind]}
           </Col>
         </Row>
         <Row justify={'space-between'} gutter={30}>
@@ -270,7 +287,7 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
                 {
                   required: true,
                   message: 'A quantidade é obrigatória',
-                }
+                },
               ]}
             >
               <InputNumber
@@ -283,7 +300,7 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
           </Col>
           <Col xs={24} xl={6}>
             <Form.Item label="Medida" name={['supplyDescription', 'measure']}>
-              <Input placeholder="e.g.: 30,50 ou 30" size="large" />
+              <InputNumber size="large" style={{ width: '100%' }} />
             </Form.Item>
           </Col>
           <Col xs={24} xl={6}>
@@ -297,7 +314,15 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
                 },
                 {
                   type: 'enum',
-                  enum: ['UNIDADE', 'ML', 'LITRO', 'M2', 'M3', 'KG', 'TONELADA'],
+                  enum: [
+                    'UNIDADE',
+                    'ML',
+                    'LITRO',
+                    'M2',
+                    'M3',
+                    'KG',
+                    'TONELADA',
+                  ],
                   message:
                     'A unidade de medida precisa ser: UNIDADE, ML, LITRO, M2, M3, KG ou TONELADA',
                 },

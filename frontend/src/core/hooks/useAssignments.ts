@@ -12,10 +12,6 @@ export default function useAssignments() {
   );
   const fetching = useSelector((state: RootState) => state.assignment.fetching);
 
-  const usersAssignmentAssign = useSelector(
-    (state: RootState) => state.usersAssignmentAssigned.list,
-  );
-
   const fetchAssignments = useCallback(
     async (page: number) => {
       return dispatch(AssignmentActions.getAllAssignments(page)).unwrap();
@@ -23,24 +19,10 @@ export default function useAssignments() {
     [dispatch],
   );
 
-  const fetchUserAssignmentsAssigned = useCallback(
-    async (page: number, assigned: boolean, assignmentId: number) => {
-      return dispatch(
-        UsersAssignmentActions.getAllUsersAssignmentAssign({
-          page,
-          assigned,
-          assignmentId,
-        }),
-      ).unwrap();
-    },
-    [dispatch],
-  );
-
+  
   return {
     fetchAssignments,
-    fetchUserAssignmentsAssigned,
     assignments,
-    usersAssignmentAssign,
     fetching,
   };
 }

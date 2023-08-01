@@ -2,7 +2,6 @@ import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store';
 import * as UserActions from '../store/User.reducer';
-import * as UsersAssignmentActions from '../store/UsersAssignment.slice';
 
 export default function useUsers() {
   const dispatch = useDispatch<AppDispatch>();
@@ -22,8 +21,6 @@ export default function useUsers() {
     },
     [dispatch],
   );
-
-  
 
   return {
     fetchUsers,

@@ -1,18 +1,96 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { User } from '../../sdk/@types';
-import { UserService } from '../../sdk/services';
+import { Assignment, User } from '../../sdk/@types';
+import { AssignmentService, UserService } from '../../sdk/services';
 
 type PA<T> = PayloadAction<T>;
 
 interface UsersAssignmentState {
   list: User.PagedModelUserAssigned[] | [];
+  assignment: Assignment.AssignmentModel;
   fetching: boolean;
 }
 
 const initialState: UsersAssignmentState = {
   list: [],
+  assignment: null,
   fetching: false,
 };
+
+export const associateEmployee = createAsyncThunk(
+  'users/associateEmployee',
+  async (
+    {
+      notice,
+      assignmentId,
+      employeeResponsibleId,
+      page
+    }: {
+      notice: Assignment.AssignmentNotificationInput;
+      assignmentId: number;
+      employeeResponsibleId: number;
+      page: number
+    },
+    { dispatch, rejectWithValue },
+  ) => {
+    try {
+      await AssignmentService.associateEmployee(
+        notice,
+        assignmentId,
+        employeeResponsibleId,
+      );
+      await dispatch(getAssignment(assignmentId));
+      await dispatch(
+        getAllUsersAssignmentAssign({ page, assigned: false, assignmentId }),
+      );
+    } catch (error: any) {
+      return rejectWithValue({...error})
+    }
+  },
+);
+
+export const disassociateEmployee = createAsyncThunk(
+  'users/disassociateEmployee',
+  async (
+    {
+      notice,
+      assignmentId,
+      employeeResponsibleId,
+      page
+    }: {
+      notice: Assignment.AssignmentNotificationInput;
+      assignmentId: number;
+      employeeResponsibleId: number;
+      page: number
+    },
+    { dispatch, rejectWithValue },
+  ) => {
+    try {
+      await AssignmentService.disassociateEmployee(
+        notice,
+        assignmentId,
+        employeeResponsibleId,
+      );
+      await dispatch(getAssignment(assignmentId));
+      await dispatch(
+        getAllUsersAssignmentAssign({ page, assigned: true, assignmentId }),
+      );
+    } catch (error: any) {
+      return rejectWithValue({...error})
+    }
+  },
+);
+
+export const getAssignment = createAsyncThunk(
+  'assignments/getAssignment',
+  async (assignmentId: number, { rejectWithValue, dispatch }) => {
+    try {
+      const assignment = await AssignmentService.getAssignment(assignmentId);
+      dispatch(storeAssignment(assignment));
+    } catch (error: any) {
+      return rejectWithValue({ ...error });
+    }
+  },
+);
 
 export const getAllUsersAssignmentAssign = createAsyncThunk(
   'users/getAllUsersAssignmentAssign',
@@ -51,10 +129,13 @@ const UsersAssignmentSlice = createSlice({
     clearUsersAssignment(state) {
       state.list = [];
     },
+    storeAssignment(state, action: PA<Assignment.AssignmentModel>) {
+      state.assignment = action.payload;
+    },
   },
 });
 
-export const { storeUsersAssignment, clearUsersAssignment } =
+export const { storeAssignment, storeUsersAssignment, clearUsersAssignment } =
   UsersAssignmentSlice.actions;
 
 const UsersAssignmentReducer = UsersAssignmentSlice.reducer;

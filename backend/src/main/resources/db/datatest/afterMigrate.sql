@@ -77,15 +77,15 @@ insert into notifications (created_at, title, goal, reason)
 values (utc_timestamp, 'Recurso imcompatível', 'Realocar supplies compatível', 'Não pode ser utilizado devido a ocorrência');
 
 insert into supplies (supply_type, name, bulk, manipulation, supply_description_id) values
-('equipment', 'Betoneira', 'GRANDE', null, 2);
+('EQUIPAMENTO', 'Betoneira', 'GRANDE', null, 2);
 insert into supplies (supply_type, name, bulk, manipulation, supply_description_id) values
-('material', 'Argamassa', null, 'TRANSMUTÁVEL', 1);
+('MATERIAL', 'Argamassa', null, 'TRANSMUTÁVEL', 1);
 insert into supplies (supply_type, name, bulk, manipulation, supply_description_id) values
-('equipment', 'Bob Cat', 'GRANDE', null, 3);
+('EQUIPAMENTO', 'Bob Cat', 'GRANDE', null, 3);
 insert into supplies (supply_type, name, bulk, manipulation, supply_description_id) values
-('material', 'cimento', null, 'TRANSMUTÁVEL', 4);
+('MATERIAL', 'cimento', null, 'TRANSMUTÁVEL', 4);
 insert into supplies (supply_type, name, bulk, manipulation, supply_description_id) values
-('material', 'Porcelanato', null, 'IMUTÁVEL', 5);
+('MATERIAL', 'Porcelanato', null, 'IMUTÁVEL', 5);
 
 insert into supplies_movement (create_at, not_busy, movable, allocated_quantity, notification_id, work_station_id, supply_id, employee_responsible_id)
 values (utc_timestamp(), true, false,1, 3, 5, 1, 2);

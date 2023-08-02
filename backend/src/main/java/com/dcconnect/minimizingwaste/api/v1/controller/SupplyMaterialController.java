@@ -54,6 +54,7 @@ public class SupplyMaterialController implements SupplyMaterialControllerOpenApi
     @PutMapping("/{supplyId}")
     public SupplyDetailedModel updateMaterial(@PathVariable Long supplyId, @RequestBody @Valid SupplyMaterialInput supplyMaterialInput){
         Supply supply =  supplyService.findOrFail(supplyId);
+        supplyService.nullifyBulk(supply);
         supplyMaterialDisassembler.copyToDomainModel(supplyMaterialInput, supply);
         return supplyDetailedAssembler.toModel(supplyService.create(supply));
     }

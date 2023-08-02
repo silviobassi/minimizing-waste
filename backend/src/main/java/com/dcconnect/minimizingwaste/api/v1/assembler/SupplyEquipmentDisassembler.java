@@ -13,12 +13,11 @@ public class SupplyEquipmentDisassembler {
     @Autowired
     private ModelMapper modelMapper;
 
-    public Supply toDomainObject(Object supplyEquipmentInput) {
+    public Supply toDomainObject(SupplyEquipmentInput supplyEquipmentInput) {
         return modelMapper.map(supplyEquipmentInput, Supply.class);
     }
 
-    public void copyToDomainModel(Object supplyEquipmentInput, Supply supply) {
-
+    public void copyToDomainModel(SupplyEquipmentInput supplyEquipmentInput, Supply supply) {
         modelMapper.map(supplyEquipmentInput, supply);
     }
 

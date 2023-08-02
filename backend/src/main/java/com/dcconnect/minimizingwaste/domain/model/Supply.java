@@ -31,5 +31,20 @@ public class Supply extends BaseEntity{
     @Enumerated(EnumType.STRING)
     private Bulk bulk;
 
+    public boolean isManipulation(){
+        return getManipulation() == Manipulation.IMUTÁVEL || getManipulation() == Manipulation.TRANSMUTÁVEL;
+    }
+
+    public boolean isBulk(){
+        return getBulk() == Bulk.PEQUENO || getBulk() == Bulk.MÉDIO || getBulk() == Bulk.GRANDE;
+    }
+
+    public boolean isEquipment(){
+        return getSupplyType() == SupplyType.EQUIPAMENTO;
+    }
+
+    public boolean isMaterial(){
+        return getSupplyType() == SupplyType.MATERIAL;
+    }
 
 }

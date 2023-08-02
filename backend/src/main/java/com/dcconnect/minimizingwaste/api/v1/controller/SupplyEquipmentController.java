@@ -54,6 +54,7 @@ public class SupplyEquipmentController implements SupplyEquipmentControllerOpenA
     @PutMapping("/{supplyId}")
     public SupplyDetailedModel updateEquipment(@PathVariable Long supplyId, @RequestBody @Valid SupplyEquipmentInput supplyEquipmentInput){
         Supply supply =  supplyService.findOrFail(supplyId);
+        supplyService.nullifyManipulation(supply);
         supplyEquipmentDisassembler.copyToDomainModel(supplyEquipmentInput, supply);
         return supplyDetailedAssembler.toModel(supplyService.create(supply));
     }

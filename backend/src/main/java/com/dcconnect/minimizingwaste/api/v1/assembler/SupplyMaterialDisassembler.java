@@ -17,7 +17,6 @@ public class SupplyMaterialDisassembler {
     }
 
     public void copyToDomainModel(SupplyMaterialInput supplyMaterialInput, Supply supply) {
-
         modelMapper.map(supplyMaterialInput, supply);
     }
 

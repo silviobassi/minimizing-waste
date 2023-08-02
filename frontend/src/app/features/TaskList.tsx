@@ -152,10 +152,12 @@ export default function TaskList() {
                     try {
                       await removeAssignment(Number(assignment.id)).then(
                         (res) => {
-                          notification.success({
-                            message: 'Sucesso',
-                            description: `Tarefa ${assignment.title}  removida com sucesso`,
-                          });
+                          if (res.meta?.requestStatus === 'fulfilled') {
+                            notification.success({
+                              message: 'Sucesso',
+                              description: `Tarefa ${assignment.title}  removida com sucesso`,
+                            });
+                          }
                         },
                       );
                     } catch (error: any) {

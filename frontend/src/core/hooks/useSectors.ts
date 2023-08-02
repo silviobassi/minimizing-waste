@@ -1,28 +1,35 @@
 import { useCallback, useState } from 'react';
-import { Sector } from '../../sdk/@types';
-import { SectorService } from '../../sdk/services';
+import { useDispatch, useSelector } from 'react-redux';
 import { AccessDeniedError } from '../../sdk/errors';
+import { AppDispatch, RootState } from '../store';
+import * as SectorActions from '../store/Sector.slice';
 
 export default function useSectors() {
-  const [sectors, setSectors] = useState<Sector.Collection[]>([]);
-  const [accessDeniedError, setAccessDeniedError] = useState(false)
+  const [accessDeniedError, setAccessDeniedError] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
+  const sectors = useSelector((state: RootState) => state.sectors.list);
+  const fetching = useSelector((state: RootState) => state.sectors.fetching);
 
-  const fetchSectors = useCallback(() => {
-   
-      SectorService.getAllSectors().then(setSectors).catch(err => {
-        if(err instanceof AccessDeniedError){
-          setAccessDeniedError(true)
-          return 
-        }
+  const fetchSectors = useCallback(
+    async (page: number) => {
+      return dispatch(SectorActions.getAllSectors(page))
+        .unwrap()
+        .catch((err) => {
+          if (err instanceof AccessDeniedError) {
+            setAccessDeniedError(true);
+            return;
+          }
 
-        throw err
-      });
-    
-  }, []);
+          throw err;
+        });
+    },
+    [dispatch],
+  );
 
   return {
     fetchSectors,
     sectors,
-    accessDeniedError
+    accessDeniedError,
+    fetching,
   };
 }

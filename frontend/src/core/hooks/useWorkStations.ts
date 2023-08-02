@@ -1,26 +1,22 @@
 import { useCallback, useState } from 'react';
-import { WorkStation } from '../../sdk/@types';
-import { AccessDeniedError, ResourceNotFoundError } from '../../sdk/errors';
-import { WorkStationService } from '../../sdk/services';
+import { useDispatch, useSelector } from 'react-redux';
+import { AccessDeniedError } from '../../sdk/errors';
+import { AppDispatch, RootState } from '../store';
+import * as WorkStationActions from '../store/WorkStation.slice';
 
 export default function useWorkStations() {
-  const [workStations, setWorkStations] = useState<WorkStation.Collection[]>(
-    [],
+  const dispatch = useDispatch<AppDispatch>();
+  const workStations = useSelector(
+    (state: RootState) => state.workStations.list,
   );
-  const [workStation, setWorkStation] =
-    useState<WorkStation.WorkStationModel>();
-
-  const [notFound, setNotFound] = useState<boolean>(false);
-
+  const fetching = useSelector(
+    (state: RootState) => state.workStations.fetching,
+  );
   const [accessDeniedError, setAccessDeniedError] = useState(false);
 
-  const fetchWorkStations = useCallback((page: number) => {
-    WorkStationService.getAllWorkStations({
-      page: page,
-      size: 4,
-      sort: ['asc'],
-    })
-      .then(setWorkStations)
+  const fetchWorkStations = useCallback(async (page: number) => {
+    return dispatch(WorkStationActions.getAllWorkStations(page))
+      .unwrap()
       .catch((err: any) => {
         if (err instanceof AccessDeniedError) {
           setAccessDeniedError(true);
@@ -29,28 +25,12 @@ export default function useWorkStations() {
 
         throw err;
       });
-  }, []);
-
-  const fetchWorkStation = useCallback(async (workStationId: number) => {
-    try {
-      await WorkStationService.getWorkStation(workStationId).then(
-        setWorkStation,
-      );
-    } catch (error) {
-      if (error instanceof ResourceNotFoundError) {
-        setNotFound(true);
-      } else {
-        throw error;
-      }
-    }
-  }, []);
+  }, [dispatch]);
 
   return {
     fetchWorkStations,
     workStations,
-    fetchWorkStation,
-    workStation,
+    fetching,
     accessDeniedError,
-    notFound,
   };
 }

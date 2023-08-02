@@ -5,12 +5,13 @@ import usePageTitle from '../../core/usePageTitle';
 import TaskDetailed from '../features/TaskDetailed';
 import AccessDenied from '../components/AccessDenied';
 import { Card, Skeleton } from 'antd';
+import useUsersAssignments from '../../core/hooks/useUsersAssignment';
 
 export default function TaskDetailedView() {
   usePageTitle('Detalhes da tarefa');
 
   const params = useParams<{ assignmentId: string }>();
-  const { assignment, fetchAssignment, notFound } = useAssignment();
+  const { assignment, fetchAssignment, notFound } = useUsersAssignments();
   const [accessDeniedError, setAccessDeniedError] = useState(false);
 
   useEffect(() => {

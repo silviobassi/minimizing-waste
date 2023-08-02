@@ -54,11 +54,11 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
           optionFilterProp="children"
           options={[
             {
-              label: 'Transmutável',
+              label: 'TRANSMUTÁVEL',
               value: 'TRANSMUTÁVEL',
             },
             {
-              label: 'Imutável',
+              label: 'IMUTÁVEL',
               value: 'IMUTÁVEL',
             },
           ]}
@@ -87,15 +87,15 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
           optionFilterProp="children"
           options={[
             {
-              label: 'Pequeno',
+              label: 'PEQUENO',
               value: 'PEQUENO',
             },
             {
-              label: 'Médio',
+              label: 'MÉDIO',
               value: 'MÉDIO',
             },
             {
-              label: 'Grande',
+              label: 'GRANDE',
               value: 'GRANDE',
             },
           ]}
@@ -105,12 +105,13 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
   };
 
   const handleChange = (value: string) => {
-    setSupplyKind(value);
+
+    setSupplyKind(value.toLowerCase());
   };
 
   useEffect(() => {
-
-  }, [supplyKind])
+    setSupplyKind(props.supply?.supplyType.toLowerCase());
+  }, []);
 
   return (
     <WrapperDefault title={props.title}>
@@ -124,7 +125,6 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
           try {
             const supplyDTO = {
               ...supply,
-              supplyType: supply?.supplyType.toUpperCase(),
               supplyDescription: {
                 measure: parseFloat(supply.supplyDescription?.measure),
                 measureUnitType: supply.supplyDescription?.measureUnitType,
@@ -133,11 +133,8 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
               },
             };
 
-
-            console.log(supplyDTO)
             if (supplyKind === 'material') {
               if (props.supply) {
-                
                 return (
                   props.onUpdateMaterial && props.onUpdateMaterial(supplyDTO)
                 );
@@ -151,7 +148,6 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
               );
             } else {
               if (props.supply) {
-                console.log('entrou')
                 return (
                   props.onUpdateEquipment && props.onUpdateEquipment(supplyDTO)
                 );
@@ -233,7 +229,7 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
                 },
                 {
                   type: 'enum',
-                  enum: ['material', 'equipamento'],
+                  enum: ['MATERIAL', 'EQUIPAMENTO'],
                   message: `O tipo do recurso precisa ser: MATERIAL ou EQUIPAMENTO`,
                 },
               ]}
@@ -245,12 +241,12 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
                 optionFilterProp="children"
                 options={[
                   {
-                    label: 'Material',
-                    value: 'material',
+                    label: 'MATERIAL',
+                    value: 'MATERIAL',
                   },
                   {
-                    label: 'Equipamento',
-                    value: 'equipamento',
+                    label: 'EQUIPAMENTO',
+                    value: 'EQUIPAMENTO',
                   },
                 ]}
               />

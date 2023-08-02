@@ -53,19 +53,19 @@ export default function WorkStationList() {
 
                 <DoubleConfirm
                   popConfirmTitle="Remover Estação de Trabalho?"
-                  popConfirmContent="Deseja mesmo remover esta tarefa?"
+                  popConfirmContent="Deseja mesmo remover esta estação de trabalho?"
                   onConfirm={async () => {
                     try {
                       await removeWorkStation(Number(workstation.id)).then(
                         (res) => {
-                          if (res === 204)
+                          if (res.meta?.requestStatus === 'fulfilled') {
                             notification.success({
                               message: 'Sucesso',
                               description: `Estação de Trabalho ${workstation.name}  removida com sucesso`,
                             });
+                          }
                         },
                       );
-                      fetchWorkStations(page);
                     } catch (error: any) {
                       notification.error({
                         message: `Houve um erro: ${error.message}`,
@@ -73,8 +73,8 @@ export default function WorkStationList() {
                     }
                   }}
                 >
-                  <Tooltip title={'Excluir'} placement='bottom'>
-                    <Button type="link" >
+                  <Tooltip title={'Excluir'} placement="bottom">
+                    <Button type="link">
                       <DeleteOutlined />
                     </Button>
                   </Tooltip>

@@ -30,6 +30,14 @@ export const getAllSupplies = createAsyncThunk(
   },
 );
 
+export const removeSupply = createAsyncThunk(
+  'supplies/removeSupply',
+  async (supplyId: number, { dispatch }) => {
+    await SupplyService.deleteExistingSupply(supplyId);
+    await dispatch(getAllSupplies(0));
+  },
+);
+
 const SupplySlice = createSlice({
   initialState,
   name: 'supplies',

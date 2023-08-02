@@ -1,5 +1,12 @@
 import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { Button, Descriptions, Space, Tooltip, Typography } from 'antd';
+import {
+  Button,
+  Descriptions,
+  Space,
+  Tooltip,
+  Typography,
+  notification,
+} from 'antd';
 import Table from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { Supply } from '../../sdk/@types';
@@ -8,9 +15,12 @@ import WrapperDefault from '../components/WrapperDefault';
 
 import { Link } from 'react-router-dom';
 import useSupplies from '../../core/hooks/useSupplies';
+import useSupply from '../../core/hooks/useSupply';
+import DoubleConfirm from '../components/DoubleConfirm';
 
 export default function SupplyList() {
   const { supplies, fetchSupplies, accessDeniedError } = useSupplies();
+  const { removeSupply } = useSupply();
   const [page, setPage] = useState<number>(0);
   useEffect(() => {
     fetchSupplies(page);
@@ -128,9 +138,32 @@ export default function SupplyList() {
                     <Button type={'link'} icon={<EditOutlined />} />
                   </Link>
                 </Tooltip>
-                <Tooltip title={'Excluir'}>
-                  <Button type={'link'} icon={<DeleteOutlined />} />
-                </Tooltip>
+                <DoubleConfirm
+                  popConfirmTitle="Remover Recurso?"
+                  popConfirmContent="Deseja mesmo remover este recurso?"
+                  onConfirm={async () => {
+                    try {
+                      await removeSupply(Number(supply.id)).then((res) => {
+                        if (res.meta?.requestStatus === 'fulfilled') {
+                          notification.success({
+                            message: 'Sucesso',
+                            description: `Recurso ${supply.name}  removido com sucesso`,
+                          });
+                        }
+                      });
+                    } catch (error: any) {
+                      notification.error({
+                        message: `Houve um erro: ${error.message}`,
+                      });
+                    }
+                  }}
+                >
+                  <Tooltip title={'Excluir'} placement="bottom">
+                    <Button type="link">
+                      <DeleteOutlined />
+                    </Button>
+                  </Tooltip>
+                </DoubleConfirm>
 
                 <Tooltip title={'Ver Detalhes'}>
                   <Button type={'link'} icon={<EyeOutlined />} />

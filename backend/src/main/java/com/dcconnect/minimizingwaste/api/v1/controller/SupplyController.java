@@ -80,6 +80,7 @@ public class SupplyController implements SupplyControllerOpenApi {
     @GetMapping("/{supplyId}")
     public SupplyDetailedModel findById(@PathVariable Long supplyId){
         Supply supply = supplyService.findOrFail(supplyId);
+        System.out.println("bulk? "+supply.getBulk());
         return supplyDetailedAssembler.toModel(supply);
     }
 

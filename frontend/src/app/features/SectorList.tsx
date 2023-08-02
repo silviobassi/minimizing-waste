@@ -15,7 +15,7 @@ export default function SectorList() {
   const { removeSector } = useSector();
 
   useEffect(() => {
-    fetchSectors();
+    fetchSectors(0);
   }, [fetchSectors]);
 
   if (accessDeniedError) return <AccessDenied />;
@@ -50,14 +50,14 @@ export default function SectorList() {
                   onConfirm={async () => {
                     try {
                       await removeSector(Number(sector.id)).then((res) => {
-                        if (res === 204) {
+                        if (res.meta?.requestStatus === 'fulfilled') {
                           notification.success({
                             message: 'Sucesso',
                             description: `Setor ${sector.name}  removido com sucesso`,
                           });
                         }
                       });
-                      fetchSectors();
+                      
                     } catch (error: any) {
                       notification.error({
                         message: `Houve um erro: ${error.message}`,

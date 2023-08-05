@@ -2,21 +2,38 @@ import { Middleware, configureStore, isRejected } from '@reduxjs/toolkit';
 import { notification } from 'antd';
 import assignmentReducer from './Assignment.slice';
 import authReducer from './Auth.slice';
+import sectorReducer from './Sector.slice';
 import supplyReducer from './Supply.slice';
 import UserReducer from './User.reducer';
 import usersAssignmentReducer from './UsersAssignment.slice';
-import sectorReducer from './Sector.slice'
-import workStationReducer from './WorkStation.slice'
+import workStationReducer from './WorkStation.slice';
 
 const observeActions: Middleware = () => (next) => (action) => {
   if (isRejected(action)) {
-    const ignoredActions = ['user/getAllUsers/rejected'];
+    const ignoredActions = [
+      'user/getAllUsers/rejected',
+      'assignments/getAllUsersAssignmentAssign/rejected',
+      'assignments/toggleComplete/rejected',
+      'assignments/toggleApprove/rejected',
+      'auth/getUser/rejected',
+      'sectors/getAllSectors/rejected',
+      'supplies/getAllSupplies/rejected',
+      'users/associateEmployee/rejected',
+      'users/disassociateEmployee/rejected',
+      'assignments/getAssignment/rejected',
+      'users/getAllUsersAssignmentAssign/rejected',
+      'work-stations/getAllWorkStations/rejected',
+    ];
 
     const shouldNotify = !ignoredActions.includes(action.type);
 
+    const message = action.meta.rejectedWithValue
+      ? action.payload.message
+      : action.error.message;
+
     if (shouldNotify) {
       notification.error({
-        message: action.error.message,
+        message,
       });
     }
   }
@@ -32,7 +49,7 @@ export const store = configureStore({
     usersAssignmentAssigned: usersAssignmentReducer,
     supplies: supplyReducer,
     sectors: sectorReducer,
-    workStations: workStationReducer
+    workStations: workStationReducer,
   },
   middleware: function (getDefaultMiddlewares) {
     return getDefaultMiddlewares().concat(observeActions);

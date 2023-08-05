@@ -18,13 +18,6 @@ export default function EmployeesResponsible(props: EmployeesResponsibleProps) {
         <Card style={{ width: '100%', backgroundColor: props.color }}>
           <List.Item>
             <List.Item.Meta
-              avatar={
-                <Avatar
-                  src={props?.employeeResponsible?.userPhoto?.url}
-                  size={50}
-                  icon={<UserOutlined />}
-                />
-              }
               title={<a href="#">{props?.employeeResponsible?.name}</a>}
               description={
                 <>

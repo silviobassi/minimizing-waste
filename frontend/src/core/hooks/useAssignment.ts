@@ -9,7 +9,7 @@ export default function useAssignment() {
 
   const removeAssignment = useCallback(
     async (assignmentId: number) => {
-      return await dispatch(AssignmentActions.removeAssignment(assignmentId));
+      return await dispatch(AssignmentActions.removeAssignment(assignmentId)).unwrap();
     },
     [dispatch],
   );

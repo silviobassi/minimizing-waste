@@ -1,13 +1,11 @@
 import { SaveOutlined, StopOutlined } from '@ant-design/icons';
 import { Skeleton, notification } from 'antd';
-import { RcFile } from 'antd/es/upload';
 import { useEffect } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import useUser from '../../core/hooks/useUser';
 import usePageTitle from '../../core/usePageTitle';
 import { UserService } from '../../sdk';
 import { User } from '../../sdk/@types';
-import { FileService } from '../../sdk/services';
 import ElementNotFound from '../components/ElementNotFound';
 import EmployeeForm from '../features/EmployeeForm';
 
@@ -26,8 +24,7 @@ export default function EmployeeEditView() {
   if (notFound)
     return <ElementNotFound description="O Colaborador não foi encontrado!" />;
 
-  function handleUserUpdate(user: User.UpdateInput, file: RcFile) {
-    FileService.updatePhoto(file, Number(params.userId));
+  function handleUserUpdate(user: User.UpdateInput) {
     UserService.updateExistingUser(Number(params.userId), user).then(() => {
       notification.success({
         message: `Colaborador ${user?.name} atualizado com sucesso.`,

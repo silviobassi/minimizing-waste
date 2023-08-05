@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   Col,
   Descriptions,
@@ -16,11 +15,7 @@ import {
 
 import { format } from 'date-fns';
 
-import {
-  UserAddOutlined,
-  UserDeleteOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
+import { UserAddOutlined, UserDeleteOutlined } from '@ant-design/icons';
 import { useState } from 'react';
 import { Assignment, User } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
@@ -128,13 +123,6 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
                   ]}
                 >
                   <List.Item.Meta
-                    avatar={
-                      <Avatar
-                        src={employee?.userPhoto?.url}
-                        size={50}
-                        icon={<UserOutlined />}
-                      />
-                    }
                     title={<a href="#">{employee?.name}</a>}
                     description={
                       <>
@@ -173,8 +161,8 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
               notice: Assignment.AssignmentNotificationInput,
             ) => {
               try {
-                await props.onAssigned(notice, Number(userId), userName);
-                form.resetFields()
+                props.onAssigned(notice, Number(userId), userName);
+                form.resetFields();
                 setOpen(false);
               } catch (error: any) {
                 if (error instanceof CustomError) {

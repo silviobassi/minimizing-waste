@@ -1,10 +1,5 @@
-import {
-  DeleteOutlined,
-  EditOutlined,
-  EyeOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
-import { Avatar, Button, Space, Table, Tag, Tooltip, notification } from 'antd';
+import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
+import { Button, Space, Table, Tag, Tooltip, notification } from 'antd';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -46,16 +41,6 @@ export default function EmployeeList() {
         rowKey="id"
         columns={[
           { title: 'ID', dataIndex: 'id', width: 60 },
-          {
-            title: 'Foto',
-            dataIndex: ['userPhoto', 'url'],
-            width: 60,
-            render(url) {
-              return (
-                <Avatar src={url} icon={<UserOutlined />} size={'large'} />
-              );
-            },
-          },
           { title: 'Nome', dataIndex: 'name', width: 450 },
           {
             title: 'CPF',
@@ -117,18 +102,11 @@ export default function EmployeeList() {
                   popConfirmTitle="Remover Colaborador?"
                   popConfirmContent="Deseja mesmo remover este colaborador?"
                   onConfirm={async () => {
-                    try {
-                      await removeUser(Number(user.id));
-                      fetchUsers(page);
-                      notification.success({
-                        message: 'Sucesso',
-                        description: `Tarefa ${user.name}  removida com sucesso`,
-                      });
-                    } catch (error: any) {
-                      notification.error({
-                        message: `Houve um erro: ${error.message}`,
-                      });
-                    }
+                    await removeUser(Number(user.id));
+                    notification.success({
+                      message: 'Sucesso',
+                      description: `Tarefa ${user.name}  removida com sucesso`,
+                    });
                   }}
                 >
                   <Tooltip title={'Excluir'} placement="bottom">

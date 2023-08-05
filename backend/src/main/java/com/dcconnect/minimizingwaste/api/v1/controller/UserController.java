@@ -1,7 +1,6 @@
 package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.UserAssembler;
-import com.dcconnect.minimizingwaste.api.v1.assembler.UserAssignmentAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.UserDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.UserUpdateDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.model.UserDetailedModel;
@@ -15,7 +14,6 @@ import com.dcconnect.minimizingwaste.core.security.CheckSecurity;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.repository.UserRepository;
 import com.dcconnect.minimizingwaste.domain.repository.filter.UserFilter;
-import com.dcconnect.minimizingwaste.domain.service.AssignmentService;
 import com.dcconnect.minimizingwaste.domain.service.UserService;
 import com.dcconnect.minimizingwaste.infrastructure.spec.UserSpecs;
 import jakarta.validation.Valid;
@@ -41,13 +39,7 @@ public class UserController implements UserControllerOpenApi {
     private UserService userService;
 
     @Autowired
-    private AssignmentService assignmentService;
-
-    @Autowired
     private UserAssembler userAssembler;
-
-    @Autowired
-    private UserAssignmentAssembler userAssignmentAssembler;
 
     @Autowired
     private UserDisassembler userDisassembler;
@@ -61,7 +53,7 @@ public class UserController implements UserControllerOpenApi {
     @CheckSecurity.Users.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public PagedModel<UserDetailedModel> search(UserFilter userFilter, @PageableDefault(size = 10)Pageable pageable) {
+    public PagedModel<UserDetailedModel> search(UserFilter userFilter, @PageableDefault(size = 10) Pageable pageable) {
 
         Pageable translatedPageable = pageableTranslate(pageable);
 
@@ -75,7 +67,7 @@ public class UserController implements UserControllerOpenApi {
     @CheckSecurity.Users.CanEdit
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public UserDetailedModel create(@RequestBody @Valid UserInput userInput){
+    public UserDetailedModel create(@RequestBody @Valid UserInput userInput) {
         User user = userDisassembler.toDomainObject(userInput);
         user = userService.create(user);
         return userAssembler.toModel(user);
@@ -84,8 +76,8 @@ public class UserController implements UserControllerOpenApi {
     @CheckSecurity.Users.CanEdit
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{userId}")
-    public UserDetailedModel update(@PathVariable Long userId, @RequestBody @Valid UserUpdateInput userUpdateInput){
-        User currentUser =  userService.findOrFail(userId);
+    public UserDetailedModel update(@PathVariable Long userId, @RequestBody @Valid UserUpdateInput userUpdateInput) {
+        User currentUser = userService.findOrFail(userId);
         userUpdateDisassembler.copyToDomainModel(userUpdateInput, currentUser);
         currentUser = userService.create(currentUser);
 
@@ -95,7 +87,7 @@ public class UserController implements UserControllerOpenApi {
     @CheckSecurity.Users.CanEdit
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{userId}")
-    public void delete(@PathVariable Long userId){
+    public void delete(@PathVariable Long userId) {
         userService.delete(userId);
     }
 
@@ -103,7 +95,7 @@ public class UserController implements UserControllerOpenApi {
     @CheckSecurity.Users.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{userId}")
-    public UserDetailedModel findOrFail(@PathVariable Long userId){
+    public UserDetailedModel findOrFail(@PathVariable Long userId) {
         User user = userService.findOrFail(userId);
 
         return userAssembler.toModel(user);
@@ -112,11 +104,11 @@ public class UserController implements UserControllerOpenApi {
     @CheckSecurity.Users.CanEdit
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{userId}/password")
-    public void changePassword(@PathVariable Long userId, @RequestBody @Valid PasswordInput passwordInput){
+    public void changePassword(@PathVariable Long userId, @RequestBody @Valid PasswordInput passwordInput) {
         userService.changePassword(userId, passwordInput.getCurrentPassword(), passwordInput.getNewPassword());
     }
 
-    private Pageable pageableTranslate(Pageable apiPageable){
+    private Pageable pageableTranslate(Pageable apiPageable) {
         var mapping = Map.of(
                 "name", "name",
                 "cpf", "cpf"

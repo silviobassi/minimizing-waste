@@ -55,22 +55,11 @@ export default function WorkStationList() {
                   popConfirmTitle="Remover Estação de Trabalho?"
                   popConfirmContent="Deseja mesmo remover esta estação de trabalho?"
                   onConfirm={async () => {
-                    try {
-                      await removeWorkStation(Number(workstation.id)).then(
-                        (res) => {
-                          if (res.meta?.requestStatus === 'fulfilled') {
-                            notification.success({
-                              message: 'Sucesso',
-                              description: `Estação de Trabalho ${workstation.name}  removida com sucesso`,
-                            });
-                          }
-                        },
-                      );
-                    } catch (error: any) {
-                      notification.error({
-                        message: `Houve um erro: ${error.message}`,
-                      });
-                    }
+                    await removeWorkStation(Number(workstation.id));
+                    notification.success({
+                      message: 'Sucesso',
+                      description: `Estação de trabalho ${workstation.name}  removida com sucesso`,
+                    });
                   }}
                 >
                   <Tooltip title={'Excluir'} placement="bottom">

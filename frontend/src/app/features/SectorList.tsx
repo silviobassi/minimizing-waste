@@ -46,23 +46,13 @@ export default function SectorList() {
 
                 <DoubleConfirm
                   popConfirmTitle="Remover Setor?"
-                  popConfirmContent="Deseja mesmo remover esta tarefa?"
+                  popConfirmContent="Deseja mesmo remover este Setor?"
                   onConfirm={async () => {
-                    try {
-                      await removeSector(Number(sector.id)).then((res) => {
-                        if (res.meta?.requestStatus === 'fulfilled') {
-                          notification.success({
-                            message: 'Sucesso',
-                            description: `Setor ${sector.name}  removido com sucesso`,
-                          });
-                        }
-                      });
-                      
-                    } catch (error: any) {
-                      notification.error({
-                        message: `Houve um erro: ${error.message}`,
-                      });
-                    }
+                    await removeSector(Number(sector.id));
+                    notification.success({
+                      message: 'Sucesso',
+                      description: `Setor ${sector.name}  removido com sucesso`,
+                    });
                   }}
                 >
                   <Tooltip title={'Excluir'} placement="bottom">

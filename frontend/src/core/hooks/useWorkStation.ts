@@ -30,7 +30,7 @@ export default function useWorkStation() {
     async (workStationId: number) => {
       return await dispatch(
         WorkStationActions.removeWorkStation(workStationId),
-      );
+      ).unwrap();
     },
     [dispatch],
   );

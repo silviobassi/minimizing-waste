@@ -29,9 +29,6 @@ public class User extends BaseEntity {
 
     private String literate;
 
-    @OneToOne(mappedBy = "user", orphanRemoval = true)
-    private UserPhoto userPhoto;
-
     @JsonBackReference
     @ManyToMany(mappedBy = "employeesResponsible")
     private Set<Assignment> assignments = new HashSet<>();

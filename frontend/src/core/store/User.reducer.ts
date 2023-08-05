@@ -5,7 +5,7 @@ import {
   isPending,
   isRejected,
 } from '@reduxjs/toolkit';
-import { UserService } from '../../sdk';
+import { FileService, UserService } from '../../sdk';
 import { User } from '../../sdk/@types/User';
 
 interface UserState {
@@ -22,19 +22,32 @@ export const getAllUsers: User.PagedModelDetailed = createAsyncThunk(
   'user/getAllUsers',
   async (page: number, { rejectWithValue }) => {
     try {
-      return await UserService.getAllUsers(page);
+      return await UserService.getAllUsers({
+        page: page,
+        sort: ['asc'],
+        size: 4,
+      });
     } catch (error: any) {
       return rejectWithValue({ ...error });
     }
   },
 );
 
-
+export const removeUser = createAsyncThunk(
+  'users/removeUser',
+  async (
+    userId: number,
+    { dispatch },
+  ) => {
+    await UserService.deleteExistingUser(userId);
+    await dispatch(getAllUsers(0));
+  },
+);
 
 export default createReducer(initialState, (builder) => {
-  const success = isFulfilled(getAllUsers);
-  const error = isRejected(getAllUsers);
-  const loading = isPending(getAllUsers);
+  const success = isFulfilled(getAllUsers, removeUser);
+  const error = isRejected(getAllUsers, removeUser);
+  const loading = isPending(getAllUsers, removeUser);
 
   builder
     .addCase(getAllUsers.fulfilled, (state, action) => {
@@ -50,5 +63,3 @@ export default createReducer(initialState, (builder) => {
       state.fetching = true;
     });
 });
-
-

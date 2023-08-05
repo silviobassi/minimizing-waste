@@ -1,12 +1,15 @@
 import { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { User } from '../../sdk/@types';
 import { ResourceNotFoundError } from '../../sdk/errors';
 import { UserService } from '../../sdk/services';
+import { AppDispatch } from '../store';
+import * as UserActions from '../store/User.reducer';
 
 export default function useUser() {
   const [user, setUser] = useState<User.Detailed>();
   const [notFound, setNotFound] = useState(false);
-  const [error, setError] = useState(false);
+  const dispatch = useDispatch<AppDispatch>();
 
   const fetchUser = useCallback(async (userId: number) => {
     try {
@@ -20,9 +23,12 @@ export default function useUser() {
     }
   }, []);
 
-  const removeUser = async (userId: number) => {
-    await UserService.deleteExistingUser(userId);
-  };
+  const removeUser = useCallback(
+    async (userId: number) => {
+      return await dispatch(UserActions.removeUser(userId)).unwrap();
+    },
+    [dispatch],
+  );
 
   return {
     user,

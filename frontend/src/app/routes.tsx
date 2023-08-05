@@ -52,7 +52,7 @@ export default function Routes() {
         }
       } else {
         notification.error({
-          message: `Houve um erro: ${reason.message}`,
+          message: `${reason.message}`,
         });
       }
     };

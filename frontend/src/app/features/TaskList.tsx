@@ -149,22 +149,11 @@ export default function TaskList() {
                   popConfirmTitle="Remover Tarefa?"
                   popConfirmContent="Deseja mesmo remover esta tarefa?"
                   onConfirm={async () => {
-                    try {
-                      await removeAssignment(Number(assignment.id)).then(
-                        (res) => {
-                          if (res.meta?.requestStatus === 'fulfilled') {
-                            notification.success({
-                              message: 'Sucesso',
-                              description: `Tarefa ${assignment.title}  removida com sucesso`,
-                            });
-                          }
-                        },
-                      );
-                    } catch (error: any) {
-                      notification.error({
-                        message: `Houve um erro: ${error.message}`,
-                      });
-                    }
+                    await removeAssignment(Number(assignment.id));
+                    notification.success({
+                      message: 'Sucesso',
+                      description: `Tarefa ${assignment.title}  removida com sucesso`,
+                    });
                   }}
                 >
                   <Tooltip title={'Excluir'} placement="bottom">

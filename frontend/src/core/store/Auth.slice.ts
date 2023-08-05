@@ -15,7 +15,7 @@ const initialState: AuthState = {
 };
 
 export const fetchUser = createAsyncThunk(
-  'auth/fetchUser',
+  'auth/getUser',
   async (userId: number, { rejectWithValue, dispatch }) => {
     try {
       const user =  await UserService.getDetailedUser(userId);

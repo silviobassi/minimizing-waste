@@ -25,6 +25,5 @@ public class UserAssignedModel extends RepresentationModel<UserAssignedModel> {
     private String office;
     @Schema(example = "Instalador de Revestimento")
     private String occupation;
-    private UserPhotoModel userPhoto;
 
 }

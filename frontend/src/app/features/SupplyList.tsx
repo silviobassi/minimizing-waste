@@ -142,20 +142,11 @@ export default function SupplyList() {
                   popConfirmTitle="Remover Recurso?"
                   popConfirmContent="Deseja mesmo remover este recurso?"
                   onConfirm={async () => {
-                    try {
-                      await removeSupply(Number(supply.id)).then((res) => {
-                        if (res.meta?.requestStatus === 'fulfilled') {
-                          notification.success({
-                            message: 'Sucesso',
-                            description: `Recurso ${supply.name}  removido com sucesso`,
-                          });
-                        }
-                      });
-                    } catch (error: any) {
-                      notification.error({
-                        message: `Houve um erro: ${error.message}`,
-                      });
-                    }
+                    await removeSupply(Number(supply.id));
+                    notification.success({
+                      message: 'Sucesso',
+                      description: `Recurso ${supply.name}  removido com sucesso`,
+                    });
                   }}
                 >
                   <Tooltip title={'Excluir'} placement="bottom">

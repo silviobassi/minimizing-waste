@@ -1,12 +1,5 @@
-import {
-  ExportOutlined,
-  InfoCircleFilled,
-  InfoCircleOutlined,
-  UserOutlined,
-  WarningTwoTone,
-} from '@ant-design/icons';
-import { Avatar, Button, Layout, Modal, theme } from 'antd';
-import { Link } from 'react-router-dom';
+import { ExportOutlined, InfoCircleFilled } from '@ant-design/icons';
+import { Button, Layout, Modal, theme } from 'antd';
 import AuthService from '../../auth/Authorization.service';
 import useAuth from '../../core/hooks/useAuth';
 import BreadcrumbLayout from './BreadcrumbLayout';
@@ -40,24 +33,10 @@ export default function HeaderLayout() {
           alignItems: 'center',
         }}
       >
-        <div style={{ marginRight: 20 }}>
-          <Link to={`/colaborador/${user?.id}/detalhes`}>
-            <Avatar
-              size="large"
-              style={{
-                background: '#f5f5f5',
-                color: '#001529',
-                cursor: 'pointer',
-              }}
-              icon={<UserOutlined />}
-              src={user?.userPhoto?.url}
-            />
-          </Link>
-        </div>
         <Button
           onClick={() =>
             modal.confirm({
-              icon: <InfoCircleFilled style={{color: '#4096FF'}}/>,
+              icon: <InfoCircleFilled style={{ color: '#4096FF' }} />,
               title: 'Fazer Logout',
               content:
                 'Deseja realmente fazer o logout? Será necessário inserir as credenciais novamente!',
@@ -67,7 +46,7 @@ export default function HeaderLayout() {
               onCancel() {},
               closable: true,
               okButtonProps: { danger: true },
-              cancelButtonProps: {color: '#001529'},
+              cancelButtonProps: { color: '#001529' },
               okText: 'Fazer Logout',
               cancelText: 'Permanecer Logado',
             })

@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public interface UserRepository extends UserRepositoryQueries, CustomJpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
-    @EntityGraph(attributePaths = {"accessGroups", "userPhoto"})
+    @EntityGraph(attributePaths = {"accessGroups"})
     Page<User> findAll(Specification<User> specification, Pageable pageable);
 
 

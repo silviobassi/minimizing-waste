@@ -25,7 +25,7 @@ export default function useSector() {
 
   const removeSector = useCallback(
     async (sectorId: number) => {
-      return await dispatch(SectorActions.removeSector(sectorId));
+      return await dispatch(SectorActions.removeSector(sectorId)).unwrap();
     },
     [dispatch],
   );

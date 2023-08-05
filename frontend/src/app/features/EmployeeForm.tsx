@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   Col,
   DatePicker,
@@ -9,25 +8,14 @@ import {
   Row,
   Select,
   Space,
-  Upload,
   notification,
 } from 'antd';
-import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { User } from '../../sdk/@types';
-import FileService from '../../sdk/services/File.service';
 import WrapperDefault from '../components/WrapperDefault';
 const { RangePicker } = DatePicker;
 
-import { UserOutlined } from '@ant-design/icons';
-import ImgCrop from 'antd-img-crop';
 import { MaskedInput } from 'antd-mask-input';
-import type {
-  RcFile,
-  UploadChangeParam,
-  UploadFile,
-  UploadProps,
-} from 'antd/es/upload/interface';
 import CustomError from '../../sdk/CustomError';
 import { UserService } from '../../sdk/services';
 
@@ -41,32 +29,12 @@ interface TaskFormDefaultProps {
   isCurrentUser?: boolean;
   title: string;
   user?: UserFormType;
-  onUpdate?: (user: User.UpdateInput, file: RcFile) => any;
+  onUpdate?: (user: User.UpdateInput) => any;
 }
 
 export default function EmployeeForm(props: TaskFormDefaultProps) {
   const [form] = Form.useForm<User.Input>();
   const navigate = useNavigate();
-  const [imageUrl, setImageUrl] = useState<string>();
-  const [photo, setPhoto] = useState<RcFile>();
-
-  useEffect(() => {}, [photo]);
-
-  const getBase64 = (img: RcFile, callback: (url: string) => void) => {
-    const reader = new FileReader();
-    reader.addEventListener('load', () => callback(reader.result as string));
-    reader.readAsDataURL(img);
-    setPhoto(img);
-  };
-
-  const handleChange: UploadProps['onChange'] = (
-    info: UploadChangeParam<UploadFile>,
-  ) => {
-    // Get this url from response in real world.
-    getBase64(info.file.originFileObj as RcFile, (url) => {
-      setImageUrl(url);
-    });
-  };
 
   return (
     <WrapperDefault title={props.title}>
@@ -84,18 +52,9 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
               cpf: user.cpf ? user.cpf.replace(/\D/g, '') : user.cpf,
             };
 
-            if (!photo) {
-              notification.error({
-                message: 'A foto do usuário é obrigatória!',
-              });
-              return;
-            }
+            if (props.user) return props.onUpdate && props.onUpdate(userDTO);
 
-            if (props.user)
-              return props.onUpdate && props.onUpdate(userDTO, photo);
-
-            const dataUser = await UserService.createUser(userDTO);
-            await FileService.updatePhoto(photo, dataUser.id);
+            await UserService.createUser(userDTO);
 
             notification.success({
               message: 'Sucesso',
@@ -143,24 +102,6 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
       >
         <Divider orientation="left">DADOS PESSOAIS</Divider>
         <Row justify={'space-between'} gutter={24}>
-          <Col xs={24} xl={3}>
-            <ImgCrop rotationSlider cropShape={'round'} showGrid aspect={1}>
-              <Upload
-                name="avatar"
-                showUploadList={false}
-                maxCount={1}
-                onChange={handleChange}
-              >
-                <Avatar
-                  src={photo ? imageUrl : props.user?.userPhoto?.url}
-                  size={128}
-                  style={{ cursor: 'pointer' }}
-                  icon={<UserOutlined />}
-                />
-              </Upload>
-            </ImgCrop>
-          </Col>
-
           <Col xs={24} xl={11}>
             <Form.Item label="Nome:*" name={'name'}>
               <Input size="large" placeholder="ex: João dos Santos" />

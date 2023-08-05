@@ -1,24 +1,18 @@
+import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import {
-  DeleteOutlined,
-  EditOutlined,
-  UserOutlined,
-  WarningFilled,
-} from '@ant-design/icons';
-import {
-  Avatar,
   Button,
   Card,
   Col,
   Descriptions,
   Divider,
-  Popconfirm,
   Row,
   Skeleton,
   Space,
   Tag,
+  Tooltip,
   Typography,
+  notification,
 } from 'antd';
-import confirm from 'antd/es/modal/confirm';
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import { useEffect } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
@@ -32,6 +26,7 @@ import {
   cpfToFormat,
   phoneToFormat,
 } from '../../sdk/utils/generateFormatterData';
+import DoubleConfirm from '../components/DoubleConfirm';
 
 export default function EmployeeDetailedView() {
   usePageTitle('Detalhes do Colaborador');
@@ -43,7 +38,6 @@ export default function EmployeeDetailedView() {
   useEffect(() => {
     if (!isNaN(Number(params.employeeId))) {
       fetchUser(Number(params.employeeId));
-     
     }
   }, [fetchUser, params.employeeId]);
 
@@ -56,16 +50,7 @@ export default function EmployeeDetailedView() {
 
   return (
     <WrapperDefault title="Detalhes do Colaborador">
-      <Row justify={'start'} gutter={24}>
-        <Col xs={24} lg={4}>
-          <Row justify={'center'}>
-            <Avatar
-              size={120}
-              src={user?.userPhoto?.url}
-              icon={<UserOutlined />}
-            />
-          </Row>
-        </Col>
+      <Row justify={'space-between'}>
         <Col xs={24} lg={8} style={{ marginBottom: '30px' }}>
           <Space
             style={{ width: '100%' }}
@@ -80,25 +65,24 @@ export default function EmployeeDetailedView() {
                   Editar Perfil
                 </Button>
               </Link>
-              <Popconfirm
-                title={`Remover ${user?.name}`}
-                onConfirm={() => {
-                  confirm({
-                    onOk() {
-                      deletePhoto(user?.id);
-                      removeUser(user?.id);
-                    },
-                    icon: <WarningFilled style={{ color: '#1677FF' }} />,
-                    title: `Tem certeza que deseja remover o ${user?.name}?`,
-                    content:
-                      'Excluir um colaborador fará com que ele seja automaticamente desligado da plataforma, podendo causar prejuízos no gerenciamento da(s) obra(s)!',
+              <DoubleConfirm
+                popConfirmTitle="Remover Colaborador?"
+                popConfirmContent="Deseja mesmo remover este colaborador?"
+                onConfirm={async () => {
+                  await removeUser(Number(user.id));
+                  notification.success({
+                    message: 'Sucesso',
+                    description: `Tarefa ${user.name}  removida com sucesso`,
                   });
                 }}
               >
-                <Button type="primary" icon={<DeleteOutlined />}>
-                  Remover
-                </Button>
-              </Popconfirm>
+                <Tooltip title={'Excluir'} placement="bottom">
+                  <Button type="primary" danger>
+                    <DeleteOutlined />
+                    Remover Colaborador
+                  </Button>
+                </Tooltip>
+              </DoubleConfirm>
             </Space>
           </Space>
         </Col>

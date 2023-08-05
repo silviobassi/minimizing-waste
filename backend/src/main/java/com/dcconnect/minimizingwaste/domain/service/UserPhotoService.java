@@ -37,18 +37,6 @@ public class UserPhotoService {
             userRepository.delete(currentUserPhoto.get());
         }
 
-        userPhoto.setFileName(fileName);
-
-        if(storageProperties.getType().equals(StorageProperties.StorageType.S3)){
-            userPhoto.setUrl(("https://"+storageProperties.getS3().getBucket()+".s3.amazonaws.com/"
-                    +storageProperties.getS3().getDirectory()+"/"+fileName));
-
-        }
-
-        if(storageProperties.getType().equals(StorageProperties.StorageType.LOCAL)){
-            userPhoto.setUrl((storageProperties.getLocal().getDirectory() + "/" +fileName));
-
-        }
 
         UserPhoto photo = userRepository.save(userPhoto);
         userRepository.flush();
@@ -72,7 +60,6 @@ public class UserPhotoService {
     public void delete(long userId){
         UserPhoto userPhoto = userRepository.findPhotoById(userId)
                 .orElseThrow(() -> new UserPhotoNotFoundException(userId));
-        System.out.println(userPhoto.getFileName());
         userRepository.delete(userPhoto);
         userRepository.flush();
 

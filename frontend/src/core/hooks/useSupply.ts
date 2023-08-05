@@ -25,7 +25,7 @@ export default function useSupply() {
 
   const removeSupply = useCallback(
     async (supplyId: number) => {
-      return await dispatch(SupplyActions.removeSupply(supplyId));
+      return await dispatch(SupplyActions.removeSupply(supplyId)).unwrap();
     },
     [dispatch],
   );

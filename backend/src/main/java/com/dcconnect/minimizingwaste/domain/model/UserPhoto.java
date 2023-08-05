@@ -26,5 +26,4 @@ public class UserPhoto {
     private Long size;
     private String url;
 
-
 }

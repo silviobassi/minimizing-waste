@@ -9,18 +9,21 @@ import java.util.UUID;
 
 
 public interface PhotoStorageService {
-    void store(NewPhoto newPhoto);
+    String store(NewPhoto newPhoto);
+    boolean isPhoto(NewPhoto newPhoto);
 
     void remove(String fileName);
 
     RecoveredPhoto recover(String fileName);
 
-    default void replace(String oldFileName, NewPhoto newPhoto) {
-        this.store(newPhoto);
+    default String replace(String oldFileName, NewPhoto newPhoto) {
+        String url = this.store(newPhoto);
 
         if (oldFileName != null) {
             this.remove(oldFileName);
         }
+
+        return url;
     }
 
     default String generateFileName(String originalName) {

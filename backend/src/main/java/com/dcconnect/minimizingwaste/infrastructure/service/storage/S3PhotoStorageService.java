@@ -1,10 +1,7 @@
 package com.dcconnect.minimizingwaste.infrastructure.service.storage;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.CannedAccessControlList;
-import com.amazonaws.services.s3.model.DeleteObjectRequest;
-import com.amazonaws.services.s3.model.ObjectMetadata;
-import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.*;
 import com.dcconnect.minimizingwaste.core.storage.StorageProperties;
 import com.dcconnect.minimizingwaste.domain.service.PhotoStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +18,7 @@ public class S3PhotoStorageService implements PhotoStorageService {
     private StorageProperties storageProperties;
 
     @Override
-    public void store(NewPhoto newPhoto) {
+    public String store(NewPhoto newPhoto) {
 
         try {
             String filePath = getFilePath(newPhoto.getFileName());
@@ -37,6 +34,9 @@ public class S3PhotoStorageService implements PhotoStorageService {
                     .withCannedAcl(CannedAccessControlList.PublicRead);
 
             amazonS3.putObject(putObjectRequest);
+
+            return amazonS3.getUrl(storageProperties.getS3().getBucket(), storageProperties.getS3().getDirectory()
+                    +newPhoto.getFileName()).toString();
         }catch (Exception e){
             throw new StorageException("Não foi possível enviar arquivo para a Amazon S3.", e);
         }
@@ -69,6 +69,21 @@ public class S3PhotoStorageService implements PhotoStorageService {
         }catch (Exception e){
             throw new StorageException("Não foi possível recuperar o arquivo na Amazon S3.", e);
         }
+    }
+
+    @Override
+    public boolean isPhoto(NewPhoto newPhoto){
+        try{
+            return amazonS3.doesObjectExist(storageProperties.getS3().getBucket(),
+                    getFilePath("e8510a52-fb7f-47d5-985b-c1c703345b79_file"));
+        } catch (AmazonS3Exception e) {
+            if (e.getStatusCode() == 403) {
+                throw new StorageException("Sem permissão para executar esta operação na Amazon S3.", e);
+            } else {
+                throw e;
+            }
+        }
+
     }
 
     private String getFilePath(String fileName) {

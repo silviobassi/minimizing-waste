@@ -18,8 +18,6 @@ public class UserPhotoAssembler extends RepresentationModelAssemblerSupport<User
     @Autowired
     private ModelMapper modelMapper;
 
-    @Autowired
-    private StorageProperties storageProperties;
 
     public UserPhotoAssembler() {
         super(UserPhotoController.class, UserPhotoModel.class);

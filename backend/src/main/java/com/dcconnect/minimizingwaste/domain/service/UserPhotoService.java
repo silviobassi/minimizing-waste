@@ -42,7 +42,7 @@ public class UserPhotoService {
         userRepository.flush();
 
         NewPhoto newPhoto = NewPhoto.builder()
-                .fileName(userPhoto.getFileName())
+                .fileName(fileName)
                 .contentType(userPhoto.getContentType())
                 .inputStream(fileData).build();
 

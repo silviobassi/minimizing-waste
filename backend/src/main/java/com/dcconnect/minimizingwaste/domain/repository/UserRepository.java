@@ -1,7 +1,6 @@
 package com.dcconnect.minimizingwaste.domain.repository;
 
 import com.dcconnect.minimizingwaste.domain.model.User;
-import com.dcconnect.minimizingwaste.domain.model.UserPhoto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -12,7 +11,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-public interface UserRepository extends UserRepositoryQueries, CustomJpaRepository<User, Long>, JpaSpecificationExecutor<User> {
+public interface UserRepository extends CustomJpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
     @EntityGraph(attributePaths = {"accessGroups"})
     Page<User> findAll(Specification<User> specification, Pageable pageable);
@@ -29,8 +28,5 @@ public interface UserRepository extends UserRepositoryQueries, CustomJpaReposito
 
     Optional<User> findByEmail(String email);
     Optional<User> findByCpf(String cpf);
-
-    @Query("select f from UserPhoto f where f.user.id = :userId")
-    Optional<UserPhoto> findPhotoById(@Param("userId") Long userId);
 
 }

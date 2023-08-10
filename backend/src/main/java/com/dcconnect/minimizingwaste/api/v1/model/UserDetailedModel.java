@@ -1,6 +1,5 @@
 package com.dcconnect.minimizingwaste.api.v1.model;
 
-import com.dcconnect.minimizingwaste.domain.model.UserPhoto;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
@@ -33,6 +32,9 @@ public class UserDetailedModel extends RepresentationModel<UserDetailedModel> {
     private String occupation;
     @Schema(example = "Curso Superior Incompleto")
     private String literate;
+
+    @Schema(example = "https://localhost:8080/directory/dgfodsg809427yt3ijbvfdlkh0i650k50_file")
+    private String avatarUrl;
 
     @Schema(example = "2023-01-03T22:08Z")
     private OffsetDateTime createdAt;

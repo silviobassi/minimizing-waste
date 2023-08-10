@@ -1,11 +1,13 @@
 package com.dcconnect.minimizingwaste.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.annotation.PreDestroy;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.nio.file.Path;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -29,6 +31,8 @@ public class User extends BaseEntity {
 
     private String literate;
 
+    private String avatarUrl;
+
     @JsonBackReference
     @ManyToMany(mappedBy = "employeesResponsible")
     private Set<Assignment> assignments = new HashSet<>();
@@ -40,6 +44,10 @@ public class User extends BaseEntity {
             inverseJoinColumns = @JoinColumn(name = "access_group_id"))
     private List<AccessGroup> accessGroups = new ArrayList<>();
 
+    @Transient
+    private String currentAvatarUrl;
+
+
     public boolean removeAccessGroup(AccessGroup accessGroup) {
         return getAccessGroups().remove(accessGroup);
     }
@@ -50,6 +58,14 @@ public class User extends BaseEntity {
 
     public boolean isNew() {
         return getId() == null;
+    }
+
+    public boolean isNotNew(){
+        return !isNew();
+    }
+
+    public boolean isCurrentAvatarUrl(){
+        return getCurrentAvatarUrl() != null;
     }
 
     public boolean isCurrent() {

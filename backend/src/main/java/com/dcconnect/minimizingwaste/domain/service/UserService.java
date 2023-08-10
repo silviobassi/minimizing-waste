@@ -2,20 +2,18 @@ package com.dcconnect.minimizingwaste.domain.service;
 
 import com.dcconnect.minimizingwaste.domain.exception.BusinessException;
 import com.dcconnect.minimizingwaste.domain.exception.EntityInUseException;
-import com.dcconnect.minimizingwaste.domain.exception.SectorNotFoundException;
 import com.dcconnect.minimizingwaste.domain.exception.UserNotFoundException;
 import com.dcconnect.minimizingwaste.domain.model.AccessGroup;
 import com.dcconnect.minimizingwaste.domain.model.User;
-import com.dcconnect.minimizingwaste.domain.model.UserPhoto;
 import com.dcconnect.minimizingwaste.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -28,15 +26,21 @@ public class UserService {
     private AccessGroupService accessGroupService;
 
     @Autowired
+    private FileAvatarStorageService fileAvatarStorageService;
+
+    @Autowired
     private PasswordEncoder passwordEncoder;
 
     public static final String USER_IN_USE = "Colaborador de código %d não pode ser removido, pois está em uso";
     @Transactional
     public User create(User user){
-        //userRepository.detach(user);
+        userRepository.detach(user);
         Optional<User> currentUserByEmail = userRepository.findByEmail(user.getEmail());
         Optional<User> currentUserByCpf = userRepository.findByCpf(user.getCpf());
+
         existsEmailAndCpf(user, currentUserByEmail, currentUserByCpf);
+
+        fileAvatarStorageService.removeIfExistingOldAvatar(user);
 
         insertOrUpdatePassword(user);
 
@@ -44,16 +48,24 @@ public class UserService {
     }
 
     @Transactional
-    public void delete(Long userId){
+    public void delete(User user){
         try {
-            userRepository.deleteById(userId);
+            System.out.println("É novo usuário? "+user.isNotNew());
+            System.out.println("É novo usuário? "+user.isNotNew());
+            if(user.isNotNew() && user.isCurrentAvatarUrl()){
+                System.out.println("Entrou no bloco isNotNew()");
+                String oldFilename = fileAvatarStorageService.getFilenameOfUrl(user.getCurrentAvatarUrl());
+                if(Objects.nonNull(oldFilename))
+                    System.out.println("Entrou no bloco oldFilename");
+                if(fileAvatarStorageService.isPhoto(oldFilename)){
+                    fileAvatarStorageService.remove(oldFilename);
+                }
+            }
+            userRepository.delete(user);
             userRepository.flush();
-        } catch (EmptyResultDataAccessException e){
-            throw new UserNotFoundException(userId);
-
         } catch (DataIntegrityViolationException e){
             throw new EntityInUseException(
-                    String.format(USER_IN_USE, userId));
+                    String.format(USER_IN_USE, user.getId()));
         }
     }
 

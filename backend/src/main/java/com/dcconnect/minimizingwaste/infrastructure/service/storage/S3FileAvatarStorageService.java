@@ -3,13 +3,17 @@ package com.dcconnect.minimizingwaste.infrastructure.service.storage;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import com.dcconnect.minimizingwaste.core.storage.StorageProperties;
-import com.dcconnect.minimizingwaste.domain.service.PhotoStorageService;
+import com.dcconnect.minimizingwaste.domain.model.User;
+import com.dcconnect.minimizingwaste.domain.service.FileAvatarStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.io.File;
 import java.net.URL;
+import java.nio.file.Path;
+import java.util.Objects;
 
 
-public class S3PhotoStorageService implements PhotoStorageService {
+public class S3FileAvatarStorageService implements FileAvatarStorageService {
 
     @Autowired
     private AmazonS3 amazonS3;
@@ -18,25 +22,24 @@ public class S3PhotoStorageService implements PhotoStorageService {
     private StorageProperties storageProperties;
 
     @Override
-    public String store(NewPhoto newPhoto) {
+    public String store(Avatar avatar) {
 
         try {
-            String filePath = getFilePath(newPhoto.getFileName());
+            String filePath = getFilePath(avatar.getFileName());
 
             ObjectMetadata objectMetadata = new ObjectMetadata();
-            objectMetadata.setContentType(newPhoto.getContentType());
+            objectMetadata.setContentType(avatar.getContentType());
 
             var putObjectRequest = new PutObjectRequest(
                     storageProperties.getS3().getBucket(),
                     filePath,
-                    newPhoto.getInputStream(),
+                    avatar.getInputStream(),
                     objectMetadata)
                     .withCannedAcl(CannedAccessControlList.PublicRead);
 
             amazonS3.putObject(putObjectRequest);
 
-            return amazonS3.getUrl(storageProperties.getS3().getBucket(), storageProperties.getS3().getDirectory()
-                    +newPhoto.getFileName()).toString();
+            return amazonS3.getUrl(storageProperties.getS3().getBucket(), filePath).toString();
         }catch (Exception e){
             throw new StorageException("Não foi possível enviar arquivo para a Amazon S3.", e);
         }
@@ -59,6 +62,11 @@ public class S3PhotoStorageService implements PhotoStorageService {
     }
 
     @Override
+    public String getFilenameOfUrl(String url) {
+        return new File(url).getName();
+    }
+
+    @Override
     public RecoveredPhoto recover(String fileName) {
         try {
         String filePath = getFilePath(fileName);
@@ -72,10 +80,10 @@ public class S3PhotoStorageService implements PhotoStorageService {
     }
 
     @Override
-    public boolean isPhoto(NewPhoto newPhoto){
+    public boolean isPhoto(String filename){
         try{
             return amazonS3.doesObjectExist(storageProperties.getS3().getBucket(),
-                    getFilePath("e8510a52-fb7f-47d5-985b-c1c703345b79_file"));
+                    getFilePath(filename));
         } catch (AmazonS3Exception e) {
             if (e.getStatusCode() == 403) {
                 throw new StorageException("Sem permissão para executar esta operação na Amazon S3.", e);
@@ -84,6 +92,17 @@ public class S3PhotoStorageService implements PhotoStorageService {
             }
         }
 
+    }
+
+    @Override
+    public void removeIfExistingOldAvatar(User user) {
+        if(user.isNotNew() && user.isCurrentAvatarUrl()){
+            String oldFilename = getFilenameOfUrl(user.getCurrentAvatarUrl());
+            if(Objects.nonNull(oldFilename))
+                if(isPhoto(oldFilename)){
+                    remove(oldFilename);
+                }
+        }
     }
 
     private String getFilePath(String fileName) {

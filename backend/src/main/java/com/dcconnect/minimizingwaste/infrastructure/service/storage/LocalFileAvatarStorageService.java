@@ -1,24 +1,26 @@
 package com.dcconnect.minimizingwaste.infrastructure.service.storage;
 
 import com.dcconnect.minimizingwaste.core.storage.StorageProperties;
-import com.dcconnect.minimizingwaste.domain.service.PhotoStorageService;
+import com.dcconnect.minimizingwaste.domain.model.User;
+import com.dcconnect.minimizingwaste.domain.service.FileAvatarStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FileCopyUtils;
 
-import java.io.InputStream;
+import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Objects;
 
-public class LocalPhotoStorageService implements PhotoStorageService {
+public class LocalFileAvatarStorageService implements FileAvatarStorageService {
 
     @Autowired
     private StorageProperties storageProperties;
 
     @Override
-    public String store(NewPhoto newPhoto) {
+    public String store(Avatar avatar) {
         try{
-            Path filePath = getFilePath(newPhoto.getFileName());
-            FileCopyUtils.copy(newPhoto.getInputStream(), Files.newOutputStream(filePath));
+            Path filePath = getFilePath(avatar.getFileName());
+            FileCopyUtils.copy(avatar.getInputStream(), Files.newOutputStream(filePath));
             return "Local Storage...";
         }catch (Exception e){
             throw new StorageException("Não foi possível armazenar o arquivo.", e);
@@ -26,8 +28,19 @@ public class LocalPhotoStorageService implements PhotoStorageService {
     }
 
     @Override
-    public boolean isPhoto(NewPhoto newPhoto) {
+    public boolean isPhoto(String filename) {
         return false;
+    }
+
+    @Override
+    public void removeIfExistingOldAvatar(User user) {
+        if(user.isNotNew() && user.isCurrentAvatarUrl()){
+            String oldFilename = getFilenameOfUrl(user.getCurrentAvatarUrl());
+            if(Objects.nonNull(oldFilename))
+                if(isPhoto(oldFilename)){
+                    remove(oldFilename);
+                }
+        }
     }
 
     @Override
@@ -38,6 +51,11 @@ public class LocalPhotoStorageService implements PhotoStorageService {
         }catch (Exception e){
             throw new StorageException("Não foi possível remover o arquivo.", e);
         }
+    }
+
+    @Override
+    public String getFilenameOfUrl(String url) {
+        return new File(url).getName();
     }
 
     @Override

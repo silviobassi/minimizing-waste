@@ -13,7 +13,6 @@ delete from access_groups;
 delete from groups_permissions;
 delete from users_access_groups;
 delete from assignments_employees;
-delete from users_photos;
 delete from oauth2_registered_client;
 delete from assignments_employees;
 set foreign_key_checks = 1;
@@ -32,13 +31,13 @@ alter table users_access_groups auto_increment = 1;
 alter table groups_permissions auto_increment = 1;
 alter table assignments_employees auto_increment = 1;
 
-insert into users (name, cpf, email, whats_app, password, office, occupation, literate, created_at) values
+insert into users (name, cpf, email, whats_app, password, office, occupation, literate, created_at, avatar_url) values
 ('Silvio Bassi', '25782713801', 'silviobassi2@gmail.com', '17996079654', '$2a$12$0wznF6KN2P79LF0qgVNsQeVJTkSA.BFl6ZRaUBGvZUqHO1/BdWfoS', 'Azulejista', 'Instalador de Porcelanato',
- 'Ensino Médio', utc_timestamp),
+ 'Ensino Médio', utc_timestamp, null),
 ('Pedro Bassi', '99999999999', 'pedrobassi@gmail.com', '99999999999', '$2a$12$0wznF6KN2P79LF0qgVNsQeVJTkSA.BFl6ZRaUBGvZUqHO1/BdWfoS', 'Pedreiro', 'Assentamento de Tijolos',
- 'Curso Superior Completo', utc_timestamp),
+ 'Curso Superior Completo', utc_timestamp, null),
 ('Ana Paula Bassi', '99999999999', 'paulaanabassi@hotmail.com', '17997843606', '$2a$12$0wznF6KN2P79LF0qgVNsQeVJTkSA.BFl6ZRaUBGvZUqHO1/BdWfoS', 'Azulejista', 'Rejuntamento de Porcelanato',
- 'Curso Superior Incompleto', utc_timestamp);
+ 'Curso Superior Incompleto', utc_timestamp, null);
 
 insert into sectors (name) values ('Obras');
 insert into sectors (name) values ('Administrativo');

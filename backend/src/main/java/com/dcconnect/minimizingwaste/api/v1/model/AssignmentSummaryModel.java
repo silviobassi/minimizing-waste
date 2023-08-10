@@ -1,12 +1,10 @@
 package com.dcconnect.minimizingwaste.api.v1.model;
 
-import com.dcconnect.minimizingwaste.domain.model.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 
 @Getter
 @Setter

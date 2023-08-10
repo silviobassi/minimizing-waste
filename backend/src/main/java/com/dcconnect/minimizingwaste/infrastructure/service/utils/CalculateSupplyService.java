@@ -1,4 +1,4 @@
-package com.dcconnect.minimizingwaste.infrastructure.service;
+package com.dcconnect.minimizingwaste.infrastructure.service.utils;
 
 import com.dcconnect.minimizingwaste.domain.service.CalculateService;
 import com.dcconnect.minimizingwaste.domain.exception.BusinessException;

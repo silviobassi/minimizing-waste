@@ -37,4 +37,7 @@ public class UserInput {
     @Schema(example = "Curso Superior Incompleto")
     @NotBlank
     private String literate;
+
+    @Schema(example = "https://localhost:8080/directory/92352jfç2efk05iy45yrlkfmsdgjlkdrf_file")
+    private String avatarUrl;
 }

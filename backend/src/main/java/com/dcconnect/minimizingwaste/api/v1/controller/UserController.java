@@ -26,6 +26,9 @@ import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.File;
+import java.nio.file.FileSystem;
+import java.nio.file.Path;
 import java.util.Map;
 
 @RestController
@@ -78,9 +81,11 @@ public class UserController implements UserControllerOpenApi {
     @PutMapping("/{userId}")
     public UserDetailedModel update(@PathVariable Long userId, @RequestBody @Valid UserUpdateInput userUpdateInput) {
         User currentUser = userService.findOrFail(userId);
-        userUpdateDisassembler.copyToDomainModel(userUpdateInput, currentUser);
-        currentUser = userService.create(currentUser);
+        String avatarUrl = currentUser.getAvatarUrl();
 
+        userUpdateDisassembler.copyToDomainModel(userUpdateInput, currentUser);
+        currentUser.setCurrentAvatarUrl(avatarUrl);
+        currentUser = userService.create(currentUser);
         return userAssembler.toModel(currentUser);
     }
 
@@ -88,7 +93,9 @@ public class UserController implements UserControllerOpenApi {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{userId}")
     public void delete(@PathVariable Long userId) {
-        userService.delete(userId);
+        User currentUser = userService.findOrFail(userId);
+        currentUser.setCurrentAvatarUrl(currentUser.getAvatarUrl());
+        userService.delete(currentUser);
     }
 
 

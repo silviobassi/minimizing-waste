@@ -1,5 +1,5 @@
-import { ExportOutlined, InfoCircleFilled } from '@ant-design/icons';
-import { Button, Layout, Modal, theme } from 'antd';
+import { ExportOutlined, InfoCircleFilled, UserOutlined } from '@ant-design/icons';
+import { Avatar, Button, Layout, Modal, theme } from 'antd';
 import AuthService from '../../auth/Authorization.service';
 import useAuth from '../../core/hooks/useAuth';
 import BreadcrumbLayout from './BreadcrumbLayout';
@@ -31,8 +31,10 @@ export default function HeaderLayout() {
           display: 'flex',
           justifyContent: 'flex-end',
           alignItems: 'center',
+          gap: 30
         }}
       >
+        <Avatar size={'large'} src={user?.avatarUrl}><UserOutlined /></Avatar>
         <Button
           onClick={() =>
             modal.confirm({

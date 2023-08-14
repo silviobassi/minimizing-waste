@@ -1,4 +1,5 @@
 import {
+  Button,
   Card,
   Col,
   Descriptions,
@@ -10,16 +11,17 @@ import {
 } from 'antd';
 
 import { format } from 'date-fns';
-
 import { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import useCommunications from '../../core/hooks/useCommunications';
 
-export default function SupplyAvailableNotification() {
-  const { availableSupplies, fetchAvailableSupplies } = useCommunications();
+export default function EmployeeTasksAssignedNotification() {
+  const { availableAssignedTasks, fetchAvailableAssignedTasks } =
+    useCommunications();
 
   useEffect(() => {
-    fetchAvailableSupplies();
-  }, [fetchAvailableSupplies]);
+    fetchAvailableAssignedTasks();
+  }, [fetchAvailableAssignedTasks]);
 
   return (
     <>
@@ -27,27 +29,31 @@ export default function SupplyAvailableNotification() {
         <Col xs={24}>
           <Card type="inner" title="Recursos Disponìveis">
             <List
-              dataSource={availableSupplies}
+              dataSource={availableAssignedTasks}
               rowKey={'id'}
               renderItem={(item) => (
                 <List.Item>
-                  <Row justify={'space-between'} gutter={60}>
+                  <Row justify={'space-between'} gutter={40}>
                     <Col xs={24} lg={7}>
                       <Typography.Title level={3}>
-                        {item.supply?.name}
+                        {item.title}
                       </Typography.Title>
                       <Descriptions column={1} bordered size="small">
-                        <Descriptions.Item label={'Quantidade'}>
+                        <Descriptions.Item label={'Prazo de Conclusão'}>
                           <Space direction="horizontal">
-                            {`${item.supply?.supplyDescription?.total}`}
-                            <Tag color="green">
-                              {item.supply?.supplyDescription?.measureUnitType}
+                            <Tag color="yellow">
+                              {format(new Date(item.deadline), 'dd/MM/yyyy')}
                             </Tag>
                           </Space>
                         </Descriptions.Item>
                       </Descriptions>
+                      <Link to={`/tarefas/${item.id}/detalhes`}>
+                      <Button type="primary" style={{ marginTop: 20 }}>
+                        Ver Responsáveis
+                      </Button>
+                    </Link>
                     </Col>
-                    <Col xs={24} lg={8}>
+                    <Col xs={24} lg={9}>
                       <Descriptions column={1} size="small" bordered>
                         <Descriptions.Item label={'Estação de Trabalho'}>
                           {item.workStation?.name}
@@ -61,7 +67,7 @@ export default function SupplyAvailableNotification() {
                       </Descriptions>
                     </Col>
                     {item.notification && (
-                      <Col xs={24} lg={9}>
+                      <Col xs={24} lg={8}>
                         <Tag color="red">
                           <Typography.Title level={3}>
                             Observação:
@@ -89,8 +95,10 @@ export default function SupplyAvailableNotification() {
                       </Col>
                     )}
                   </Row>
+                
                 </List.Item>
               )}
+
             />
           </Card>
         </Col>

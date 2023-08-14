@@ -21,14 +21,6 @@ export interface paths {
     /** Deleta um usuário */
     delete: operations["delete_1"];
   };
-  "/v1/users/{userId}/photo": {
-    /** Busca a foto do usuário */
-    get: operations["findByUserPhoto"];
-    /** Atualiza a foto do usuário */
-    put: operations["updatePhoto"];
-    /** Exclui a foto do usuário */
-    delete: operations["deletePhoto"];
-  };
   "/v1/users/{userId}/password": {
     /** Altera a Senha do usuário */
     put: operations["changePassword"];
@@ -115,6 +107,10 @@ export interface paths {
     /** Cria um novo usuário */
     post: operations["create_1"];
   };
+  "/v1/users/upload/avatar": {
+    /** Cria um avatar de usuário */
+    post: operations["upload"];
+  };
   "/v1/supplies/materials": {
     /** Cria um novo recurso do tipo material */
     post: operations["createMaterial"];
@@ -173,8 +169,12 @@ export interface paths {
     /** Lista as permissões de cada grupo de acesso */
     get: operations["all_2"];
   };
+  "/v1/notifications/assignments": {
+    /** Lista as notificações enviadas por tarefas atribuídas ou não atribuídas */
+    get: operations["findAllAssignedOrUnassigned"];
+  };
   "/v1/notifications/assignments/available": {
-    /** Lista as notificações enviadas, por tarefas atribuídas */
+    /** Lista as notificações enviadas, completas, aprovadas e por data */
     get: operations["search_4"];
   };
   "/v1/assignments/{assignmentId}/employee-responsible": {
@@ -238,7 +238,7 @@ export interface components {
       sector: components["schemas"]["SectorIdInput"];
     };
     Links: {
-      [key: string]: components["schemas"]["Link"] | undefined;
+      [key: string]: components["schemas"]["Link"];
     };
     SectorModel: {
       /**
@@ -278,6 +278,8 @@ export interface components {
       occupation: string;
       /** @example Curso Superior Incompleto */
       literate: string;
+      /** @example https://localhost:8080/directory/92352jfç2efk05iy45yrlkfmsdgjlkdrf_file */
+      avatarUrl?: string;
     };
     AccessGroupSummaryModel: {
       /**
@@ -309,23 +311,14 @@ export interface components {
       occupation?: string;
       /** @example Curso Superior Incompleto */
       literate?: string;
+      /** @example https://localhost:8080/directory/dgfodsg809427yt3ijbvfdlkh0i650k50_file */
+      avatarUrl?: string;
       /**
        * Format: date-time
        * @example 2023-01-03T22:08:00Z
        */
       createdAt?: string;
       accessGroups?: components["schemas"]["AccessGroupSummaryModel"][];
-      _links?: components["schemas"]["Links"];
-    };
-    UserPhotoInput: {
-      /** Format: binary */
-      file: string;
-      /** @description descrição da foto do usuário */
-      description: string;
-    };
-    UserPhotoModel: {
-      /** @example https://server.com/lkfnlkflkfjlakfalkfjalkfjalkfjaslkfjaslf.jpeg */
-      url?: string;
       _links?: components["schemas"]["Links"];
     };
     PasswordInput: {
@@ -572,7 +565,8 @@ export interface components {
       office?: string;
       /** @example Instalador de Revestimento */
       occupation?: string;
-      userPhoto?: components["schemas"]["UserPhotoModel"];
+      /** @example https://localhost:8080/directory/lkdsfsdjlg439t74309jg3gikogiewrig_file */
+      avatarUrl?: string;
       _links?: components["schemas"]["Links"];
     };
     AssignmentNotificationInput: {
@@ -587,6 +581,11 @@ export interface components {
     AssignmentApprovedInput: {
       /** @example true */
       approved: boolean;
+      /**
+       * Format: date-time
+       * @example 2023-01-20T13:00:33Z
+       */
+      endDate?: string;
     };
     AccessGroupInput: {
       /** @example Engenheiro */
@@ -609,6 +608,16 @@ export interface components {
       occupation: string;
       /** @example Curso Superior Incompleto */
       literate: string;
+      /** @example https://localhost:8080/directory/92352jfç2efk05iy45yrlkfmsdgjlkdrf_file */
+      avatarUrl?: string;
+    };
+    AvatarInput: {
+      /** Format: binary */
+      file: string;
+    };
+    AvatarUrlModel: {
+      /** @example https://localhost:8080/directory/901582309572090idjksflkdlsrow4t_file */
+      avatarUrl?: string;
     };
     CollectionModelWorkStationModel: {
       _embedded?: {
@@ -879,7 +888,9 @@ export interface operations {
     };
     responses: {
       /** @description No Content */
-      204: never;
+      204: {
+        content: never;
+      };
       /** @description Estação de Trabalho não encontrada */
       404: {
         content: {
@@ -959,7 +970,9 @@ export interface operations {
     };
     responses: {
       /** @description Colaborador deletado com sucesso */
-      204: never;
+      204: {
+        content: never;
+      };
       /** @description ID do colaborador inválido */
       400: {
         content: {
@@ -967,93 +980,6 @@ export interface operations {
         };
       };
       /** @description Colaborador não encontrado */
-      404: {
-        content: {
-          "*/*": components["schemas"]["Problem"];
-        };
-      };
-    };
-  };
-  /** Busca a foto do usuário */
-  findByUserPhoto: {
-    parameters: {
-      path: {
-        /**
-         * @description Id do usuário
-         * @example 1
-         */
-        userId: number;
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "application/json": components["schemas"]["UserPhotoModel"];
-          "image/jpeg": string;
-          "image/png": string;
-        };
-      };
-      /** @description ID do usuário inválido */
-      400: {
-        content: {
-          "application/json": components["schemas"]["Problem"];
-        };
-      };
-      /** @description Foto do usuário não encontrada */
-      404: {
-        content: {
-          "application/json": components["schemas"]["Problem"];
-        };
-      };
-    };
-  };
-  /** Atualiza a foto do usuário */
-  updatePhoto: {
-    parameters: {
-      path: {
-        /**
-         * @description Id do usuário
-         * @example 1
-         */
-        userId: number;
-      };
-    };
-    requestBody: {
-      content: {
-        "multipart/form-data": components["schemas"]["UserPhotoInput"];
-      };
-    };
-    responses: {
-      /** @description OK */
-      200: {
-        content: {
-          "*/*": components["schemas"]["UserPhotoModel"];
-        };
-      };
-    };
-  };
-  /** Exclui a foto do usuário */
-  deletePhoto: {
-    parameters: {
-      path: {
-        /**
-         * @description Id do usuário
-         * @example 1
-         */
-        userId: number;
-      };
-    };
-    responses: {
-      /** @description Foto do usuário excluída */
-      204: never;
-      /** @description ID do usuário inválido */
-      400: {
-        content: {
-          "*/*": components["schemas"]["Problem"];
-        };
-      };
-      /** @description Foto do usuário não encontrada */
       404: {
         content: {
           "*/*": components["schemas"]["Problem"];
@@ -1080,7 +1006,9 @@ export interface operations {
     };
     responses: {
       /** @description No Content */
-      204: never;
+      204: {
+        content: never;
+      };
       /** @description Usuário não encontrado */
       404: {
         content: {
@@ -1099,7 +1027,9 @@ export interface operations {
     };
     responses: {
       /** @description Associação realizada com sucesso */
-      204: never;
+      204: {
+        content: never;
+      };
       /** @description ID do usuário/grupo de acesso inválido */
       400: {
         content: {
@@ -1118,7 +1048,9 @@ export interface operations {
     };
     responses: {
       /** @description Disassociação realizada com sucesso */
-      204: never;
+      204: {
+        content: never;
+      };
       /** @description ID do usuário/grupo de acesso inválido */
       400: {
         content: {
@@ -1262,7 +1194,9 @@ export interface operations {
     };
     responses: {
       /** @description Movimento de recurso deletado com sucesso */
-      204: never;
+      204: {
+        content: never;
+      };
       /** @description Movimento de Recurso não encontrado */
       404: {
         content: {
@@ -1380,7 +1314,9 @@ export interface operations {
     };
     responses: {
       /** @description Setor deletado com sucesso */
-      204: never;
+      204: {
+        content: never;
+      };
       /** @description ID do setor inválido */
       400: {
         content: {
@@ -1459,7 +1395,9 @@ export interface operations {
     };
     responses: {
       /** @description Tarefa deletada com sucesso */
-      204: never;
+      204: {
+        content: never;
+      };
       /** @description Tarefa não encontrada */
       404: {
         content: {
@@ -1483,7 +1421,9 @@ export interface operations {
     };
     responses: {
       /** @description No Content */
-      204: never;
+      204: {
+        content: never;
+      };
     };
   };
   /** Associa um colaborador a determinada tarefa */
@@ -1501,7 +1441,9 @@ export interface operations {
     };
     responses: {
       /** @description No Content */
-      204: never;
+      204: {
+        content: never;
+      };
     };
   };
   /** Conclui ou não uma tarefa */
@@ -1519,7 +1461,9 @@ export interface operations {
     };
     responses: {
       /** @description Tarefa completada ou não com sucesso */
-      204: never;
+      204: {
+        content: never;
+      };
       /** @description Tarefa não encontrada */
       404: {
         content: {
@@ -1543,7 +1487,9 @@ export interface operations {
     };
     responses: {
       /** @description Tarefa aprovada ou reprovada com sucesso */
-      204: never;
+      204: {
+        content: never;
+      };
       /** @description Tarefa não encontrada */
       404: {
         content: {
@@ -1602,7 +1548,9 @@ export interface operations {
     };
     responses: {
       /** @description No Content */
-      204: never;
+      204: {
+        content: never;
+      };
       /** @description ID do grupo de acesso inválido */
       400: {
         content: {
@@ -1629,7 +1577,9 @@ export interface operations {
     };
     responses: {
       /** @description Associação realizada com sucesso */
-      204: never;
+      204: {
+        content: never;
+      };
       /** @description ID do grupo de acesso/permissão inválido */
       400: {
         content: {
@@ -1656,7 +1606,9 @@ export interface operations {
     };
     responses: {
       /** @description Disassociação realizada com sucesso */
-      204: never;
+      204: {
+        content: never;
+      };
       /** @description ID do grupo de acesso/permissão inválido */
       400: {
         content: {
@@ -1746,6 +1698,22 @@ export interface operations {
       201: {
         content: {
           "*/*": components["schemas"]["UserDetailedModel"];
+        };
+      };
+    };
+  };
+  /** Cria um avatar de usuário */
+  upload: {
+    requestBody: {
+      content: {
+        "multipart/form-data": components["schemas"]["AvatarInput"];
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["AvatarUrlModel"];
         };
       };
     };
@@ -2078,7 +2046,9 @@ export interface operations {
     };
     responses: {
       /** @description Recurso deletado com sucesso */
-      204: never;
+      204: {
+        content: never;
+      };
       /** @description Recurso não encontrado */
       404: {
         content: {
@@ -2109,7 +2079,27 @@ export interface operations {
       };
     };
   };
-  /** Lista as notificações enviadas, por tarefas atribuídas */
+  /** Lista as notificações enviadas por tarefas atribuídas ou não atribuídas */
+  findAllAssignedOrUnassigned: {
+    parameters: {
+      query?: {
+        /**
+         * @description Atribuição ou não
+         * @example assignedTasks
+         */
+        assign?: string;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          "*/*": components["schemas"]["AssignmentNotificationModel"][];
+        };
+      };
+    };
+  };
+  /** Lista as notificações enviadas, completas, aprovadas e por data */
   search_4: {
     parameters: {
       query?: {
@@ -2190,7 +2180,9 @@ export interface operations {
     };
     responses: {
       /** @description Recurso desocupado com sucesso */
-      204: never;
+      204: {
+        content: never;
+      };
       /** @description Movimento de Recurso não encontrado */
       404: {
         content: {

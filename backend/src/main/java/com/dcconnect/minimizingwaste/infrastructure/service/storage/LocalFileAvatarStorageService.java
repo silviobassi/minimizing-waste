@@ -4,11 +4,14 @@ import com.dcconnect.minimizingwaste.core.storage.StorageProperties;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.service.FileAvatarStorageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
 import org.springframework.util.FileCopyUtils;
 
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
 public class LocalFileAvatarStorageService implements FileAvatarStorageService {
@@ -21,15 +24,15 @@ public class LocalFileAvatarStorageService implements FileAvatarStorageService {
         try{
             Path filePath = getFilePath(avatar.getFileName());
             FileCopyUtils.copy(avatar.getInputStream(), Files.newOutputStream(filePath));
-            return "Local Storage...";
+            return filePath.toString();
         }catch (Exception e){
             throw new StorageException("Não foi possível armazenar o arquivo.", e);
         }
     }
 
     @Override
-    public boolean isPhoto(String filename) {
-        return false;
+    public boolean isAvatar(String filename) {
+        return Files.exists(getFilePath(filename));
     }
 
     @Override
@@ -37,7 +40,7 @@ public class LocalFileAvatarStorageService implements FileAvatarStorageService {
         if(user.isNotNew() && user.isCurrentAvatarUrl()){
             String oldFilename = getFilenameOfUrl(user.getCurrentAvatarUrl());
             if(Objects.nonNull(oldFilename))
-                if(isPhoto(oldFilename)){
+                if(isAvatar(oldFilename)){
                     remove(oldFilename);
                 }
         }
@@ -76,6 +79,7 @@ public class LocalFileAvatarStorageService implements FileAvatarStorageService {
     private Path getFilePath(String fileName) {
         return storageProperties.getLocal().getDirectory().resolve(Path.of(fileName));
     }
+
 
 
 }

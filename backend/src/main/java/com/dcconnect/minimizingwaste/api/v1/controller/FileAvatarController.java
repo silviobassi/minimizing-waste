@@ -1,8 +1,10 @@
 package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.model.AvatarUrlModel;
-import com.dcconnect.minimizingwaste.api.v1.model.input.UserPhotoInput;
+import com.dcconnect.minimizingwaste.api.v1.model.input.AvatarInput;
+import com.dcconnect.minimizingwaste.api.v1.openapi.FileAvatarControllerOpenApi;
 import com.dcconnect.minimizingwaste.core.security.CheckSecurity;
+import com.dcconnect.minimizingwaste.domain.exception.BusinessException;
 import com.dcconnect.minimizingwaste.domain.service.FileAvatarStorageService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,15 +18,15 @@ import static com.dcconnect.minimizingwaste.domain.service.FileAvatarStorageServ
 
 
 @RestController
-@RequestMapping(value = "/v1/users/upload/avatar")
-public class UploadRequestController {
+@RequestMapping(value = "/v1/users")
+public class FileAvatarController implements FileAvatarControllerOpenApi {
 
     @Autowired
     private FileAvatarStorageService fileAvatarStorageService;
 
     @CheckSecurity.Users.CanEdit
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public AvatarUrlModel upload(@Valid UserPhotoInput userPhotoInput)
+    @PostMapping(value = "/upload/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public AvatarUrlModel upload(@Valid AvatarInput userPhotoInput)
             throws IOException {
         MultipartFile file = userPhotoInput.getFile();
 
@@ -39,6 +41,5 @@ public class UploadRequestController {
 
         return AvatarUrlModel.builder().avatarUrl(avatarUrl).build();
     }
-
-
+    
 }

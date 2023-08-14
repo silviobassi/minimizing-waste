@@ -10,7 +10,7 @@ import java.util.UUID;
 
 public interface FileAvatarStorageService {
     String store(Avatar avatar);
-    boolean isPhoto(String filename);
+    boolean isAvatar(String filename);
 
     void removeIfExistingOldAvatar(User user);
 

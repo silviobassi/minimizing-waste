@@ -59,11 +59,11 @@ public class AuthorizationServerConfig {
             csrf.ignoringRequestMatchers(new RequestMatcher[]{endpointsMatcher});
         }).apply(authorizationServerConfigurer);
 
-        //return http.formLogin(customizer -> customizer.loginPage("/login")).build();
-        return  http.formLogin(customizer -> customizer.loginPage("/login")
+        return http.formLogin(customizer -> customizer.loginPage("/login")).build();
+       /* return  http.formLogin(customizer -> customizer.loginPage("/login")
                 .defaultSuccessUrl(redirectProperties.getClient(), true)
 
-        ).build();
+        ).build();*/
     }
 
     @Bean

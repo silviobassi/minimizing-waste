@@ -1,5 +1,10 @@
-import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
-import { Button, Space, Table, Tag, Tooltip, notification } from 'antd';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  EyeOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
+import { Avatar, Button, Space, Table, Tag, Tooltip, notification } from 'antd';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -41,6 +46,18 @@ export default function EmployeeList() {
         rowKey="id"
         columns={[
           { title: 'ID', dataIndex: 'id', width: 60 },
+          {
+            title: 'CPF',
+            dataIndex: 'avatarUrl',
+            width: 60,
+            render(avatarUrl: string) {
+              return (
+                <Avatar src={avatarUrl}>
+                  <UserOutlined />
+                </Avatar>
+              );
+            },
+          },
           { title: 'Nome', dataIndex: 'name', width: 450 },
           {
             title: 'CPF',

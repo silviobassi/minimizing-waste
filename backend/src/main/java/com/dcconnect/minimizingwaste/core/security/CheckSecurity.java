@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 public @interface CheckSecurity {
 
     @interface Users {
-        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULT_USER')")
+        @PreAuthorize("@minimizingSecurity.canConsultUserLogin(#userId)")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         @interface CanConsult { }
@@ -27,10 +27,15 @@ public @interface CheckSecurity {
     }
 
     @interface Assignments {
-        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @PreAuthorize("@minimizingSecurity.canConsultAssignments(#assignmentId)")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         @interface CanConsult { }
+
+        @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface CanConsultList { }
 
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDIT_ASSIGNMENTS')")
         @Retention(RetentionPolicy.RUNTIME)

@@ -3,13 +3,15 @@ package com.dcconnect.minimizingwaste.infrastructure.service.storage;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.*;
 import com.dcconnect.minimizingwaste.core.storage.StorageProperties;
+import com.dcconnect.minimizingwaste.domain.exception.BusinessException;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.service.FileAvatarStorageService;
+import org.apache.tomcat.util.http.fileupload.impl.FileSizeLimitExceededException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.multipart.MaxUploadSizeExceededException;
 
 import java.io.File;
 import java.net.URL;
-import java.nio.file.Path;
 import java.util.Objects;
 
 
@@ -80,7 +82,7 @@ public class S3FileAvatarStorageService implements FileAvatarStorageService {
     }
 
     @Override
-    public boolean isPhoto(String filename){
+    public boolean isAvatar(String filename){
         try{
             return amazonS3.doesObjectExist(storageProperties.getS3().getBucket(),
                     getFilePath(filename));
@@ -99,7 +101,7 @@ public class S3FileAvatarStorageService implements FileAvatarStorageService {
         if(user.isNotNew() && user.isCurrentAvatarUrl()){
             String oldFilename = getFilenameOfUrl(user.getCurrentAvatarUrl());
             if(Objects.nonNull(oldFilename))
-                if(isPhoto(oldFilename)){
+                if(isAvatar(oldFilename)){
                     remove(oldFilename);
                 }
         }

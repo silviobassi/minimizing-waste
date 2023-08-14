@@ -3,9 +3,10 @@ import { useEffect, useState } from 'react';
 import usePageTitle from '../../core/usePageTitle';
 import ApprovedTasksNotification from '../features/ApprovedTasksNotification';
 import CompletionOfTasksNotification from '../features/CompletionOfTasksNotification';
-import EmployeeTasksAssignNotification from '../features/EmployeeTasksAssignNotification.tsx';
+import EmployeeTasksAssignedNotification from '../features/EmployeeTasksAssignedNotification.tsx';
 import ExpiredTasksNotification from '../features/ExpiredTasksNotification';
-import SupplyAvailableNotification from '../features/SupplyAvailableNotification';
+import SupplyAvailableNotification from '../features/SupplyAvailableAssignedNotification';
+import EmployeeTasksUnassignedNotification from '../features/EmployeeTasksUnassignedNotification.';
 
 export default function NotificationListView() {
   usePageTitle('Listas de Notificações');
@@ -21,7 +22,8 @@ export default function NotificationListView() {
     taskCompleted: <CompletionOfTasksNotification />,
     approvedTasks: <ApprovedTasksNotification />,
     expiredTasks: <ExpiredTasksNotification />,
-    tasksAssign: <EmployeeTasksAssignNotification />,
+    assignedTasks: <EmployeeTasksAssignedNotification />,
+    unassignedTasks: <EmployeeTasksUnassignedNotification />
   };
 
   const handleChange = (value: string) => {
@@ -57,7 +59,11 @@ export default function NotificationListView() {
                   },
                   {
                     label: 'Tarefas atribuídas aos colaboradores',
-                    value: 'tasksAssign',
+                    value: 'assignedTasks',
+                  },
+                  {
+                    label: 'Tarefas a atribuir aos colaboradores',
+                    value: 'unassignedTasks',
                   },
                 ]}
               />

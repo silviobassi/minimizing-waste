@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Button,
   Col,
   DatePicker,
@@ -8,16 +9,20 @@ import {
   Row,
   Select,
   Space,
+  Upload,
   notification,
 } from 'antd';
+import ImageCrop from 'antd-img-crop';
 import { useNavigate } from 'react-router-dom';
 import { User } from '../../sdk/@types';
 import WrapperDefault from '../components/WrapperDefault';
 const { RangePicker } = DatePicker;
 
+import { UserOutlined } from '@ant-design/icons';
 import { MaskedInput } from 'antd-mask-input';
+import { useCallback, useEffect, useState } from 'react';
 import CustomError from '../../sdk/CustomError';
-import { UserService } from '../../sdk/services';
+import { AvatarService, UserService } from '../../sdk/services';
 
 type UserFormType = User.Detailed;
 interface TaskFormDefaultProps {
@@ -35,6 +40,19 @@ interface TaskFormDefaultProps {
 export default function EmployeeForm(props: TaskFormDefaultProps) {
   const [form] = Form.useForm<User.Input>();
   const navigate = useNavigate();
+  const [avatarUrl, setAvatarUrl] = useState(props.user?.avatarUrl || '');
+
+  const handleAvatarUpload = useCallback(async (file: File) => {
+    const avatarSource = await AvatarService.upload(file);
+    setAvatarUrl(avatarSource);
+  }, []);
+
+  useEffect(() => {
+    form.setFieldsValue({
+      avatarUrl: avatarUrl.avatarUrl || undefined,
+    });
+
+  }, [avatarUrl, form]);
 
   return (
     <WrapperDefault title={props.title}>
@@ -101,7 +119,42 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
         initialValues={props.user}
       >
         <Divider orientation="left">DADOS PESSOAIS</Divider>
-        <Row justify={'space-between'} gutter={24}>
+        <Row justify={'space-between'} gutter={40}>
+          <Col xs={24} lg={3}>
+            <ImageCrop rotationSlider cropShape={'round'} showGrid aspect={1}>
+              <Upload
+                maxCount={1}
+                onRemove={() => {
+                  setAvatarUrl('');
+                  //Implementar serviço deleção de foto
+                }}
+                beforeUpload={(file) => {
+                  handleAvatarUpload(file);
+                  return false;
+                }}
+                fileList={[
+                  ...(avatarUrl
+                    ? [
+                        {
+                          name: 'Avatar',
+                          uid: '',
+                        },
+                      ]
+                    : []),
+                ]}
+              >
+                <Avatar
+                  style={{ cursor: 'pointer' }}
+                  icon={<UserOutlined />}
+                  src={avatarUrl?.avatarUrl}
+                  size={128}
+                />
+              </Upload>
+            </ImageCrop>
+            <Form.Item name={'avatarUrl'} hidden>
+              <Input hidden />
+            </Form.Item>
+          </Col>
           <Col xs={24} xl={11}>
             <Form.Item label="Nome:*" name={'name'}>
               <Input size="large" placeholder="ex: João dos Santos" />
@@ -117,7 +170,7 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
             </Form.Item>
           </Col>
         </Row>
-        <Row justify={'space-between'} gutter={24}>
+        <Row justify={'space-between'} gutter={40}>
           <Col xs={24} xl={props.isCurrentUser ? 12 : 8}>
             <Form.Item label="Email:*" name={'email'}>
               <Input size="large" placeholder="ex: joaosantos@email.com" />
@@ -141,7 +194,7 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
           )}
         </Row>
         <Divider orientation="left">DADOS PROFISSIONAIS</Divider>
-        <Row justify={'space-between'} gutter={24}>
+        <Row justify={'space-between'} gutter={40}>
           <Col xs={24} xl={8}>
             <Form.Item label="Cargo:*" name={'office'}>
               <Input size="large" placeholder="ex: Azulejista" />

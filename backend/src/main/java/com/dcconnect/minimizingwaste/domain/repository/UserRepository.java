@@ -29,4 +29,8 @@ public interface UserRepository extends CustomJpaRepository<User, Long>, JpaSpec
     Optional<User> findByEmail(String email);
     Optional<User> findByCpf(String cpf);
 
+    @Query("select case when count(1) > 0 then true else false end from User us " +
+            " where us.id = :userId ")
+    boolean existsByUser(Long userId);
+
 }

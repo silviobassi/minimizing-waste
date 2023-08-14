@@ -32,9 +32,8 @@ public class ResourceServerConfig {
                 .cors().and()
                 .oauth2ResourceServer().jwt().jwtAuthenticationConverter(jwtAuthenticationConverter());
 
-        return http.formLogin(customizer -> customizer.loginPage("/login")
+        return  http.formLogin(customizer -> customizer.loginPage("/login")
                 .defaultSuccessUrl(redirectProperties.getClient(), true)
-
         ).build();
     }
 

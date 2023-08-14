@@ -5,3 +5,4 @@ export type { Sector } from './Sector';
 export type { Supply } from './Supply';
 export type { User } from './User';
 export type { WorkStation } from './WorkStation';
+export type {Avatar} from './Avatar'

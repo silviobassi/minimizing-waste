@@ -14,4 +14,6 @@ public class AssignmentCompletedInput {
     @NotNull
     private Boolean completed;
 
+
+
 }

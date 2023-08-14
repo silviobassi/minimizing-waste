@@ -2,33 +2,33 @@ package com.dcconnect.minimizingwaste.infrastructure.spec;
 
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
 import com.dcconnect.minimizingwaste.domain.model.Notification;
+import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.repository.filter.AssignmentNotificationFilter;
+import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.domain.Specification;
 
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.Predicate;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
 public class AssignmentNotificationSpecs {
 
     public static Specification<Assignment> usingFilter(AssignmentNotificationFilter assignmentNotificationFilter){
-        return (root, query, criteriaBuilder) -> {
+        return (root, query, builder) -> {
             var predicates = new ArrayList<Predicate>();
-            //Join<Notification, Assignment> notificationJoin = root.join("notification");
 
             if(assignmentNotificationFilter.getCompleted() != null) {
-                predicates.add(criteriaBuilder.equal(root.get("completed"), assignmentNotificationFilter.getCompleted()));
+                predicates.add(builder.equal(root.get("completed"), assignmentNotificationFilter.getCompleted()));
             }
             if(assignmentNotificationFilter.getApproved() != null) {
-                predicates.add(criteriaBuilder.equal(root.get("approved"), assignmentNotificationFilter.getApproved()));
+                predicates.add(builder.equal(root.get("approved"), assignmentNotificationFilter.getApproved()));
             }
 
             if(assignmentNotificationFilter.getCurrentDate() != null) {
-                predicates.add(criteriaBuilder.lessThan(root.get("deadline"), assignmentNotificationFilter.getCurrentDate()));
+                predicates.add(builder.lessThan(root.get("deadline"), assignmentNotificationFilter.getCurrentDate()));
             }
-
-            return criteriaBuilder.and(predicates.toArray(new Predicate[0]));
+            return builder.and(predicates.toArray(new Predicate[0]));
         };
     }
+
 
 }

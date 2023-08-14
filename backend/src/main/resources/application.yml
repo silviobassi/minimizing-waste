@@ -69,7 +69,8 @@ springdoc:
 minimizing-waste:
   storage:
     local:
-      directory: /avatar
+      directory: /home/silvio/avatar
+
     s3:
       access-key-id: ${ACCESS_KEY_ID}
       secret-access-key: ${SECRET_ACCESS_KEY}
@@ -78,7 +79,7 @@ minimizing-waste:
       directory: user-photo
 
     #Enable photo storage services type, for example:
-    # - "s3" to PhotoStorageService.class or  "local" to LocalPhotoStorage
+    # - "s3" to PhotoStorageService.class or  "local" to LocalPhotoStorage.class
     type: s3
 
   auth:

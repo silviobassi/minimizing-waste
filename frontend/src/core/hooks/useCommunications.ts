@@ -7,9 +7,13 @@ export default function useCommunications() {
     Communication.SupplyMovementNotification[]
   >([]);
 
-  const [availableAssignments, setAvailableAssignments] = useState<
+  const [availableAssignedTasks, setAvailableAssignedTasks] = useState<
     Communication.AssignmentNotification[]
   >([]);
+
+  const [availableUnassignedTasks, setAvailableUnassignedTasks] = useState<
+  Communication.AssignmentNotification[]
+>([]);
 
   const [assignmentsExpired, setAssignmentsExpired] = useState<
     Communication.AssignmentNotification[]
@@ -27,9 +31,15 @@ export default function useCommunications() {
     await NotificationService.getAvailableSupplies().then(setAvailableSupplies);
   }, []);
 
-  const fetchAvailableAssignments = useCallback(async () => {
-    await NotificationService.getAvailableAssignments().then(
-      setAvailableAssignments,
+  const fetchAvailableAssignedTasks = useCallback(async () => {
+    await NotificationService.getAvailableAssignedTasks().then(
+      setAvailableAssignedTasks,
+    );
+  }, []);
+
+  const fetchAvailableUnassignedTasks = useCallback(async () => {
+    await NotificationService.getAvailableUnassignedTasks().then(
+      setAvailableUnassignedTasks,
     );
   }, []);
 
@@ -53,12 +63,14 @@ export default function useCommunications() {
 
   return {
     fetchAvailableSupplies,
-    fetchAvailableAssignments,
+    fetchAvailableAssignedTasks,
+    fetchAvailableUnassignedTasks,
     fetchAssignmentsExpired,
     fetchAssignmentsApproved,
     fetchAssignmentsCompleted,
     availableSupplies,
-    availableAssignments,
+    availableAssignedTasks,
+    availableUnassignedTasks,
     assignmentsExpired,
     assignmentsApproved,
     assignmentsCompleted,

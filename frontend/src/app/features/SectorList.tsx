@@ -1,6 +1,6 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Space, Table, Tooltip, notification } from 'antd';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useSector from '../../core/hooks/useSector';
 import useSectors from '../../core/hooks/useSectors';
@@ -10,12 +10,21 @@ import DoubleConfirm from '../components/DoubleConfirm';
 import WrapperDefault from '../components/WrapperDefault';
 export default function SectorList() {
   const navigate = useNavigate();
-  const { sectors, fetchSectors, accessDeniedError } = useSectors();
+  const { sectors, fetchSectors } = useSectors();
 
   const { removeSector } = useSector();
 
+  const [accessDeniedError, setAccessDeniedError] = useState(false);
+
   useEffect(() => {
-    fetchSectors(0);
+    fetchSectors(0).catch((err) => {
+      if (err?.data?.status === 403) {
+        setAccessDeniedError(true);
+        return;
+      }
+
+      throw err;
+    });
   }, [fetchSectors]);
 
   if (accessDeniedError) return <AccessDenied />;

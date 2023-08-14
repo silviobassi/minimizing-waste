@@ -1,4 +1,5 @@
 import {
+  Avatar,
   Button,
   Col,
   Descriptions,
@@ -15,7 +16,11 @@ import {
 
 import { format } from 'date-fns';
 
-import { UserAddOutlined, UserDeleteOutlined } from '@ant-design/icons';
+import {
+  UserAddOutlined,
+  UserDeleteOutlined,
+  UserOutlined,
+} from '@ant-design/icons';
 import { useState } from 'react';
 import { Assignment, User } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
@@ -123,6 +128,11 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
                   ]}
                 >
                   <List.Item.Meta
+                    avatar={
+                      <Avatar size={'large'} src={employee?.avatarUrl}>
+                        <UserOutlined />
+                      </Avatar>
+                    }
                     title={<a href="#">{employee?.name}</a>}
                     description={
                       <>

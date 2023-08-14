@@ -50,17 +50,8 @@ public class UserService {
     @Transactional
     public void delete(User user){
         try {
-            System.out.println("É novo usuário? "+user.isNotNew());
-            System.out.println("É novo usuário? "+user.isNotNew());
-            if(user.isNotNew() && user.isCurrentAvatarUrl()){
-                System.out.println("Entrou no bloco isNotNew()");
-                String oldFilename = fileAvatarStorageService.getFilenameOfUrl(user.getCurrentAvatarUrl());
-                if(Objects.nonNull(oldFilename))
-                    System.out.println("Entrou no bloco oldFilename");
-                if(fileAvatarStorageService.isPhoto(oldFilename)){
-                    fileAvatarStorageService.remove(oldFilename);
-                }
-            }
+            fileAvatarStorageService.removeIfExistingOldAvatar(user);
+
             userRepository.delete(user);
             userRepository.flush();
         } catch (DataIntegrityViolationException e){

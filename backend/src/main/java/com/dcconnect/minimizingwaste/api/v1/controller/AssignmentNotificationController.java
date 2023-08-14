@@ -6,15 +6,13 @@ import com.dcconnect.minimizingwaste.api.v1.openapi.AssignmentNotificationContro
 import com.dcconnect.minimizingwaste.core.data.PageableTranslator;
 import com.dcconnect.minimizingwaste.core.security.CheckSecurity;
 import com.dcconnect.minimizingwaste.domain.repository.AssignmentRepository;
+import com.dcconnect.minimizingwaste.domain.repository.NotificationRepository;
 import com.dcconnect.minimizingwaste.domain.repository.filter.AssignmentNotificationFilter;
 import com.dcconnect.minimizingwaste.infrastructure.spec.AssignmentNotificationSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
@@ -36,6 +34,19 @@ public class AssignmentNotificationController implements AssignmentNotificationC
         return assignmentNotificationAssembler
                 .toCollectionModel(assignmentRepository.findAll(
                         AssignmentNotificationSpecs.usingFilter(assignmentNotificationFilter)));
+    }
+
+
+    @CheckSecurity.Notifications.CanConsult
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    public List<AssignmentNotificationModel> findAllAssignedOrUnassigned(@RequestParam String assign){
+        if(assign.equals("assignedTasks"))
+            return assignmentNotificationAssembler
+                .toCollectionModel(assignmentRepository.findAllAssigned());
+
+        return assignmentNotificationAssembler
+                .toCollectionModel(assignmentRepository.findAllUnassigned());
     }
 
 }

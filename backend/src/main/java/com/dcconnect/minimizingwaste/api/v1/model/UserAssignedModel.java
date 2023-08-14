@@ -26,4 +26,7 @@ public class UserAssignedModel extends RepresentationModel<UserAssignedModel> {
     @Schema(example = "Instalador de Revestimento")
     private String occupation;
 
+    @Schema(example = "https://localhost:8080/directory/lkdsfsdjlg439t74309jg3gikogiewrig_file")
+    private String avatarUrl;
+
 }

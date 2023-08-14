@@ -6,7 +6,7 @@ export default function ApprovedTasks() {
   const { assignmentsExpired, fetchAssignmentsExpired } = useCommunications();
 
   useEffect(() => {
-    fetchAssignmentsExpired(new Date().toISOString());
+    fetchAssignmentsExpired(new Date(Date.now()).toISOString());
   }, [fetchAssignmentsExpired]);
 
   return <NotificationAssignments title='Tarefas Expiradas' assignments={assignmentsExpired} />;

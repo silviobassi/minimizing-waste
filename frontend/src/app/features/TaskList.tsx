@@ -114,10 +114,20 @@ export default function TaskList() {
                 <Checkbox
                   checked={assignment?.approved}
                   onChange={async () => {
-                    await toggleApprove(
-                      { approved: !assignment?.approved },
-                      assignment.id,
-                    );
+                    if (assignment?.approved) {
+                      await toggleApprove(
+                        { approved: !assignment?.approved },
+                        assignment.id,
+                      );
+                    } else {
+                      await toggleApprove(
+                        {
+                          approved: !assignment?.approved,
+                          endDate: new Date().toISOString(),
+                        },
+                        assignment.id,
+                      );
+                    }
                   }}
                 >
                   {assignment?.approved ? (

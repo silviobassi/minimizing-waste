@@ -1,5 +1,6 @@
 import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import {
+  Avatar,
   Button,
   Card,
   Col,
@@ -27,6 +28,7 @@ import {
   phoneToFormat,
 } from '../../sdk/utils/generateFormatterData';
 import DoubleConfirm from '../components/DoubleConfirm';
+import ElementNotFound from '../components/ElementNotFound';
 
 export default function EmployeeDetailedView() {
   usePageTitle('Detalhes do Colaborador');
@@ -44,20 +46,23 @@ export default function EmployeeDetailedView() {
   if (isNaN(Number(params.employeeId)))
     return <Navigate to={'/colaboradores'} />;
 
-  if (notFound) return <Card>usuário não encontrado</Card>;
+  if (notFound) return <ElementNotFound description="Colaborador não encontrado" />;
 
   if (!user) return <Skeleton />;
 
   return (
     <WrapperDefault title="Detalhes do Colaborador">
-      <Row justify={'space-between'}>
-        <Col xs={24} lg={8} style={{ marginBottom: '30px' }}>
+      <Row justify={'space-around'} gutter={30}>
+        <Col xs={24} lg={3}>
+          <Avatar size={128} src={user?.avatarUrl}></Avatar>
+        </Col>
+        <Col xs={24} lg={11} style={{ marginBottom: '30px' }}>
           <Space
             style={{ width: '100%' }}
             direction="vertical"
             align={lg ? 'start' : 'center'}
           >
-            <Typography.Title level={1}>{user?.name}</Typography.Title>
+            <Typography.Title level={3}>{user?.name}</Typography.Title>
             <Typography.Text>{user?.email}</Typography.Text>
             <Space>
               <Link to={`/colaborador/editar/${user?.id}`}>
@@ -79,7 +84,7 @@ export default function EmployeeDetailedView() {
                 <Tooltip title={'Excluir'} placement="bottom">
                   <Button type="primary" danger>
                     <DeleteOutlined />
-                    Remover Colaborador
+                    Remover
                   </Button>
                 </Tooltip>
               </DoubleConfirm>
@@ -88,7 +93,7 @@ export default function EmployeeDetailedView() {
         </Col>
         {xs && <Divider />}
 
-        <Col xs={24} lg={12}>
+        <Col xs={24} lg={8}>
           <Descriptions column={1} bordered size="small">
             <Descriptions.Item label={'CPF'}>
               {cpfToFormat(user?.cpf)}

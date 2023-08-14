@@ -55,7 +55,7 @@ public class AssignmentController implements AssignmentControllerOpenApi {
     @Autowired
     private PagedResourcesAssembler<Assignment> pagedResourcesAssembler;
 
-    @CheckSecurity.Assignments.CanConsult
+    @CheckSecurity.Assignments.CanConsultList
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public PagedModel<AssignmentDefaultModel> search(AssignmentFilter assignmentFilter,

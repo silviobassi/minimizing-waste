@@ -8,9 +8,15 @@ class NotificationService extends Service {
     ).then(this.getData);
   }
 
-  static getAvailableAssignments(): Communication.AssignmentNotification {
+  static getAvailableAssignedTasks(): Communication.AssignmentNotification {
     return this.Http.get<Communication.AssignmentNotification[]>(
-      '/notifications/assignments/available',
+      '/notifications/assignments?assign=assignedTasks',
+    ).then(this.getData);
+  }
+
+  static getAvailableUnassignedTasks(): Communication.AssignmentNotification {
+    return this.Http.get<Communication.AssignmentNotification[]>(
+      '/notifications/assignments?assign=unassignedTasks',
     ).then(this.getData);
   }
 

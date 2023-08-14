@@ -1,5 +1,4 @@
 import {
-  Button,
   Card,
   Col,
   Descriptions,
@@ -11,17 +10,16 @@ import {
 } from 'antd';
 
 import { format } from 'date-fns';
+
 import { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import useCommunications from '../../core/hooks/useCommunications';
 
-export default function EmployeeTasksAssignNotification() {
-  const { availableAssignments, fetchAvailableAssignments } =
-    useCommunications();
+export default function SupplyAvailableAssignedNotification() {
+  const { availableSupplies, fetchAvailableSupplies } = useCommunications();
 
   useEffect(() => {
-    fetchAvailableAssignments();
-  }, [fetchAvailableAssignments]);
+    fetchAvailableSupplies();
+  }, [fetchAvailableSupplies]);
 
   return (
     <>
@@ -29,29 +27,25 @@ export default function EmployeeTasksAssignNotification() {
         <Col xs={24}>
           <Card type="inner" title="Recursos Disponìveis">
             <List
-              dataSource={availableAssignments}
+              dataSource={availableSupplies}
               rowKey={'id'}
               renderItem={(item) => (
                 <List.Item>
                   <Row justify={'space-between'} gutter={60}>
                     <Col xs={24} lg={7}>
                       <Typography.Title level={3}>
-                        {item.title}
+                        {item.supply?.name}
                       </Typography.Title>
                       <Descriptions column={1} bordered size="small">
-                        <Descriptions.Item label={'Prazo de Conclusão'}>
+                        <Descriptions.Item label={'Quantidade'}>
                           <Space direction="horizontal">
-                            <Tag color="yellow">
-                              {format(new Date(item.deadline), 'dd/MM/yyyy')}
+                            {`${item.supply?.supplyDescription?.total}`}
+                            <Tag color="green">
+                              {item.supply?.supplyDescription?.measureUnitType}
                             </Tag>
                           </Space>
                         </Descriptions.Item>
                       </Descriptions>
-                      <Link to={`/tarefas/${item.id}/detalhes`}>
-                      <Button type="primary" style={{ marginTop: 20 }}>
-                        Ver Responsáveis
-                      </Button>
-                    </Link>
                     </Col>
                     <Col xs={24} lg={8}>
                       <Descriptions column={1} size="small" bordered>

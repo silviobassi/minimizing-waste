@@ -9,17 +9,17 @@ import {
   Typography,
 } from 'antd';
 
-import { format } from 'date-fns';
-
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import useCommunications from '../../core/hooks/useCommunications';
+import { Communication } from '../../sdk';
+import NotificationDescription from '../components/NotificationDescription';
 
 export default function SupplyAvailableAssignedNotification() {
   const { availableSupplies, fetchAvailableSupplies } = useCommunications();
-
+  const [page, setPage] = useState<number>(0);
   useEffect(() => {
-    fetchAvailableSupplies();
-  }, [fetchAvailableSupplies]);
+    fetchAvailableSupplies(page);
+  }, [fetchAvailableSupplies, page]);
 
   return (
     <>
@@ -27,13 +27,28 @@ export default function SupplyAvailableAssignedNotification() {
         <Col xs={24}>
           <Card type="inner" title="Recursos Disponìveis">
             <List
-              dataSource={availableSupplies}
+              dataSource={
+                availableSupplies?._embedded?.supplyMovementNotifications
+              }
+              pagination={{
+                onChange: (page: number) => setPage(page - 1),
+                total: availableSupplies?.page?.totalElements,
+                pageSize: 2,
+              }}
               rowKey={'id'}
-              renderItem={(item) => (
+              renderItem={(
+                item: Communication.SupplyMovementNotificationModel,
+              ) => (
                 <List.Item>
                   <Row justify={'space-between'} gutter={60}>
                     <Col xs={24} lg={7}>
-                      <Typography.Title level={3}>
+                      <Typography.Title
+                        level={4}
+                        style={{
+                          marginBottom: 20,
+                          textDecoration: 'underline',
+                        }}
+                      >
                         {item.supply?.name}
                       </Typography.Title>
                       <Descriptions column={1} bordered size="small">
@@ -60,34 +75,11 @@ export default function SupplyAvailableAssignedNotification() {
                         </Descriptions.Item>
                       </Descriptions>
                     </Col>
-                    {item.notification && (
-                      <Col xs={24} lg={9}>
-                        <Tag color="red">
-                          <Typography.Title level={3}>
-                            Observação:
-                          </Typography.Title>
-                          <Descriptions column={1} size="small">
-                            <Descriptions.Item label={'Título'}>
-                              {item.notification?.title}
-                            </Descriptions.Item>
-                            <Descriptions.Item
-                              label={'Data da Notificação'}
-                            >
-                              {format(
-                                new Date(item.notification?.createdAt),
-                                'dd/MM/yyyy',
-                              )}
-                            </Descriptions.Item>
-                            <Descriptions.Item label={'Motivo'}>
-                              {item.notification?.reason}
-                            </Descriptions.Item>
-                            <Descriptions.Item label={'Objetivo'}>
-                              {item.notification?.goal}
-                            </Descriptions.Item>
-                          </Descriptions>
-                        </Tag>
-                      </Col>
-                    )}
+                    <Col xs={24} lg={8}>
+                      <NotificationDescription
+                        notification={item?.notification}
+                      />
+                    </Col>
                   </Row>
                 </List.Item>
               )}

@@ -19,6 +19,7 @@ public class Notification extends BaseEntity{
     private OffsetDateTime createdAt;
     private String title;
     private String reason;
+
     private String goal;
 
 }

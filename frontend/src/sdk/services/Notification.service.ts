@@ -1,46 +1,57 @@
 import { Communication } from '../@types';
 import Service from '../Service';
+import { generateQueryString } from '../utils';
 
 class NotificationService extends Service {
-  static getAvailableSupplies() {
+  static getAvailableSupplies(search: Communication.Query) {
+    const queryString = generateQueryString(search);
     return this.Http.get<Communication.SupplyMovementNotification[]>(
-      '/supplies-movement/notifications/available',
+      '/supplies-movement/notifications/available'.concat(queryString),
     ).then(this.getData);
   }
 
-  static getAvailableAssignedTasks(): Communication.AssignmentNotification {
+  static getAvailableAssignedTasks(
+    search: Communication.Query,
+  ): Communication.AssignmentNotification {
+    const queryString = generateQueryString(search);
     return this.Http.get<Communication.AssignmentNotification[]>(
-      '/notifications/assignments?assign=assignedTasks',
+      '/notifications/assignments'.concat(queryString),
     ).then(this.getData);
   }
 
-  static getAvailableUnassignedTasks(): Communication.AssignmentNotification {
+  static getAvailableUnassignedTasks(
+    search: Communication.Query,
+  ): Communication.AssignmentNotification {
+    const queryString = generateQueryString(search);
     return this.Http.get<Communication.AssignmentNotification[]>(
-      '/notifications/assignments?assign=unassignedTasks',
+      '/notifications/assignments?assign=unassignedTasks'.concat(queryString),
     ).then(this.getData);
   }
 
   static getAssignmentsExpired(
-    currentDate: string,
+    search: Communication.Query,
   ): Communication.AssignmentNotification {
+    const queryString = generateQueryString(search);
     return this.Http.get<Communication.AssignmentNotification[]>(
-      `/notifications/assignments/available?currentDate=${currentDate}`,
+      `/notifications/assignments/available`.concat(queryString),
     ).then(this.getData);
   }
 
   static getAssignmentsApproved(
-    approved: boolean,
+    search: Communication.Query,
   ): Communication.AssignmentNotification {
+    const queryString = generateQueryString(search);
     return this.Http.get<Communication.AssignmentNotification[]>(
-      `/notifications/assignments/available?approved=${approved}`,
+      `/notifications/assignments/available`.concat(queryString),
     ).then(this.getData);
   }
 
   static getAssignmentsCompleted(
-    completed: boolean,
+    search: Communication.Query,
   ): Communication.AssignmentNotification {
+    const queryString = generateQueryString(search);
     return this.Http.get<Communication.AssignmentNotification[]>(
-      `/notifications/assignments/available?completed=${completed}`,
+      `/notifications/assignments/available`.concat(queryString),
     ).then(this.getData);
   }
 }

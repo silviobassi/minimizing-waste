@@ -12,8 +12,8 @@ export default function useCommunications() {
   >([]);
 
   const [availableUnassignedTasks, setAvailableUnassignedTasks] = useState<
-  Communication.AssignmentNotification[]
->([]);
+    Communication.AssignmentNotification[]
+  >([]);
 
   const [assignmentsExpired, setAssignmentsExpired] = useState<
     Communication.AssignmentNotification[]
@@ -27,39 +27,67 @@ export default function useCommunications() {
     Communication.AssignmentNotification[]
   >([]);
 
-  const fetchAvailableSupplies = useCallback(async () => {
-    await NotificationService.getAvailableSupplies().then(setAvailableSupplies);
+  const fetchAvailableSupplies = useCallback(async (page: number) => {
+    await NotificationService.getAvailableSupplies({
+      page: page,
+      sort: ['asc'],
+      size: 2
+    }).then(setAvailableSupplies);
   }, []);
 
-  const fetchAvailableAssignedTasks = useCallback(async () => {
-    await NotificationService.getAvailableAssignedTasks().then(
-      setAvailableAssignedTasks,
-    );
+  const fetchAvailableAssignedTasks = useCallback(async (page: number) => {
+    await NotificationService.getAvailableAssignedTasks({
+      page: page,
+      sort: ['asc'],
+      size: 2,
+      assign: 'assignedTasks'
+    }).then(setAvailableAssignedTasks);
   }, []);
 
-  const fetchAvailableUnassignedTasks = useCallback(async () => {
-    await NotificationService.getAvailableUnassignedTasks().then(
-      setAvailableUnassignedTasks,
-    );
+  const fetchAvailableUnassignedTasks = useCallback(async (page: number) => {
+    await NotificationService.getAvailableUnassignedTasks({
+      page: page,
+      sort: ['asc'],
+      size: 2,
+      assign: 'unassignTasks'
+    }).then(setAvailableUnassignedTasks);
   }, []);
 
-  const fetchAssignmentsExpired = useCallback(async (currentDate: string) => {
-    await NotificationService.getAssignmentsExpired(currentDate).then(
-      setAssignmentsExpired,
-    );
-  }, []);
+  const fetchAssignmentsExpired = useCallback(
+    async (page: number) => {
+      await NotificationService.getAssignmentsExpired({
+        page: page,
+        sort: ['asc'],
+        size: 2,
+        currentDate: new Date().toISOString()
+      }).then(setAssignmentsExpired);
+    },
+    [],
+  );
 
-  const fetchAssignmentsApproved = useCallback(async (approved = true) => {
-    await NotificationService.getAssignmentsApproved(approved).then(
-      setAssignmentsApproved,
-    );
-  }, []);
+  const fetchAssignmentsApproved = useCallback(
+    async (page: number) => {
+      await NotificationService.getAssignmentsApproved({
+        page: page,
+        sort: ['asc'],
+        size: 2,
+        approved: true
+      }).then(setAssignmentsApproved);
+    },
+    [],
+  );
 
-  const fetchAssignmentsCompleted = useCallback(async (completed = true) => {
-    await NotificationService.getAssignmentsCompleted(completed).then(
-      setAssignmentsCompleted,
-    );
-  }, []);
+  const fetchAssignmentsCompleted = useCallback(
+    async (page: number) => {
+      await NotificationService.getAssignmentsCompleted({
+        page: page,
+        sort: ['asc'],
+        size: 2,
+        completed: true
+      }).then(setAssignmentsCompleted);
+    },
+    [],
+  );
 
   return {
     fetchAvailableSupplies,

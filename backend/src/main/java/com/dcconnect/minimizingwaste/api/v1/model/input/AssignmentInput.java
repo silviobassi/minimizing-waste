@@ -30,4 +30,8 @@ public class AssignmentInput {
     @NotNull
     private WorkStationIdInput workStation;
 
+    @Valid
+    @NotNull
+    private NotificationInput notification;
+
 }

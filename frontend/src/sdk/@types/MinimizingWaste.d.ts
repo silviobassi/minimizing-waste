@@ -514,6 +514,7 @@ export interface components {
       /** @example OBRAS */
       nature: string;
       workStation: components["schemas"]["WorkStationIdInput"];
+      notification: components["schemas"]["NotificationInput"];
     };
     AssignmentModel: {
       /**
@@ -669,6 +670,20 @@ export interface components {
       _links?: components["schemas"]["Links"];
       page?: components["schemas"]["PageMetadata"];
     };
+    Pageable: {
+      /** Format: int32 */
+      page?: number;
+      /** Format: int32 */
+      size?: number;
+      sort?: string[];
+    };
+    PagedModelSupplyMovementNotificationModel: {
+      _embedded?: {
+        supplyMovementNotifications?: components["schemas"]["SupplyMovementNotificationModel"][];
+      };
+      _links?: components["schemas"]["Links"];
+      page?: components["schemas"]["PageMetadata"];
+    };
     SupplyMovementNotificationModel: {
       /**
        * Format: int64
@@ -678,6 +693,7 @@ export interface components {
       supply?: components["schemas"]["SupplySummaryModel"];
       workStation?: components["schemas"]["WorkStationDetailedModel"];
       notification?: components["schemas"]["NotificationModel"];
+      _links?: components["schemas"]["Links"];
     };
     WorkStationDetailedModel: {
       /**
@@ -727,6 +743,14 @@ export interface components {
       deadline?: string;
       workStation?: components["schemas"]["WorkStationDetailedModel"];
       notification?: components["schemas"]["NotificationModel"];
+      _links?: components["schemas"]["Links"];
+    };
+    PagedModelAssignmentNotificationModel: {
+      _embedded?: {
+        notificationsAssignments?: components["schemas"]["AssignmentNotificationModel"][];
+      };
+      _links?: components["schemas"]["Links"];
+      page?: components["schemas"]["PageMetadata"];
     };
     AssignmentDefaultModel: {
       /**
@@ -2059,11 +2083,16 @@ export interface operations {
   };
   /** Lista as notificações enviadas, por recursos atribuídos */
   findNotificationBySuppliesAvailable: {
+    parameters: {
+      query: {
+        pageable: components["schemas"]["Pageable"];
+      };
+    };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["SupplyMovementNotificationModel"][];
+          "*/*": components["schemas"]["PagedModelSupplyMovementNotificationModel"];
         };
       };
     };
@@ -2094,7 +2123,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["AssignmentNotificationModel"][];
+          "*/*": components["schemas"]["PagedModelAssignmentNotificationModel"];
         };
       };
     };
@@ -2118,7 +2147,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["AssignmentNotificationModel"][];
+          "*/*": components["schemas"]["PagedModelAssignmentNotificationModel"];
         };
       };
     };

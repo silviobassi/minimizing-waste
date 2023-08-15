@@ -7,6 +7,9 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -34,7 +37,8 @@ public interface AssignmentNotificationControllerOpenApi {
             example = "2023-01-08T22:30:00Z"
     )
     @Operation(summary = "Lista as notificações enviadas, completas, aprovadas e por data")
-    List<AssignmentNotificationModel> search(@Parameter(hidden = true) AssignmentNotificationFilter assignmentNotificationFilter);
+    PagedModel<AssignmentNotificationModel> search(@Parameter(hidden = true) AssignmentNotificationFilter assignmentNotificationFilter,
+                                                   @Parameter(hidden = true) @PageableDefault(size = 2) org.springframework.data.domain.Pageable pageable);
 
     @Parameter(
             in = ParameterIn.QUERY,
@@ -44,6 +48,7 @@ public interface AssignmentNotificationControllerOpenApi {
             example = "assignedTasks"
     )
     @Operation(summary = "Lista as notificações enviadas por tarefas atribuídas ou não atribuídas")
-    List<AssignmentNotificationModel> findAllAssignedOrUnassigned(@Parameter(hidden = true) String assign);
+    PagedModel<AssignmentNotificationModel> findAllAssignedOrUnassigned( @Parameter(hidden = true) String assign,
+                                                                         @Parameter(hidden = true) @PageableDefault(size = 2) Pageable pageable);
 
 }

@@ -8,8 +8,9 @@ import {
   Space,
   Tag,
 } from 'antd';
+import Title from 'antd/es/typography/Title';
 import { format } from 'date-fns';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Assignment, User } from '../../sdk';
 import EmployeesResponsible from '../components/EmployeesResponsible';
 import WrapperDefault from '../components/WrapperDefault';
@@ -21,13 +22,21 @@ interface AssignmentProps {
 }
 
 export default function TaskDetailed(props: AssignmentProps) {
-  const params = useParams<{ assignmentId: string }>();
+  function isEmployeeResponsible(): boolean {
+    return props?.assignment?.employeesResponsible.length;
+  }
 
   return (
     <WrapperDefault title="Detalhes da Tarefa">
       <Row justify={'space-between'} gutter={60}>
         <Col xs={24} xl={12}>
           <Divider orientation="left">DADOS DA TAREFA</Divider>
+          <Title
+            level={4}
+            style={{ marginBottom: 20, textDecoration: 'underline' }}
+          >
+            {props?.assignment?.title}
+          </Title>
           <Descriptions column={1} bordered size="small">
             <Descriptions.Item label={'Data do Início'}>
               <Space direction="horizontal">
@@ -82,7 +91,17 @@ export default function TaskDetailed(props: AssignmentProps) {
         <Col xs={24} lg={12}>
           <Divider orientation="left">RESPONSÁVEIS PELA TAREFA</Divider>
 
-          {props?.assignment?.employeesResponsible.length ? (
+          {isEmployeeResponsible() ? (
+            <Link to={`/tarefa/${props?.assignment?.id}/desatribuicao`}>
+              <Button type="primary" danger style={{ marginBottom: 20 }}>
+                Desatribuir
+              </Button>
+            </Link>
+          ) : (
+            ''
+          )}
+
+          {isEmployeeResponsible() ? (
             props?.assignment?.employeesResponsible.map(
               (employee: User.Assigned, key: number) => {
                 return (
@@ -98,7 +117,7 @@ export default function TaskDetailed(props: AssignmentProps) {
             <Alert
               action={
                 <Space direction="vertical">
-                  <Link to={`/tarefa/${params.assignmentId}/atribuicao`}>
+                  <Link to={`/tarefa/${props.assignment?.id}/atribuicao`}>
                     <Button type="primary">Atribuir Colaboradores</Button>
                   </Link>
                 </Space>

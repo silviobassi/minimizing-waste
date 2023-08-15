@@ -27,6 +27,7 @@ import CustomError from '../../sdk/CustomError';
 import { phoneToFormat } from '../../sdk/utils/generateFormatterData';
 import EmployeesResponsible from '../components/EmployeesResponsible';
 import WrapperDefault from '../components/WrapperDefault';
+import TextArea from 'antd/es/input/TextArea';
 
 type UserAssignedType = User.PagedModelUserAssigned;
 type AssignmentType = Assignment.AssignmentModel;
@@ -214,7 +215,7 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
             }}
           >
             <Form.Item
-              label="Título:*"
+              label="Título:"
               name={['notification', 'title']}
               rules={[
                 {
@@ -223,22 +224,11 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
                 },
               ]}
             >
-              <Input size="large" placeholder="eg.: Seu Título" />
+              <Input size="large" placeholder="e.g.: Seu Título" />
             </Form.Item>
+
             <Form.Item
-              label="Motivo:*"
-              name={['notification', 'reason']}
-              rules={[
-                {
-                  required: true,
-                  message: 'O motivo é obrigatório',
-                },
-              ]}
-            >
-              <Input size="large" placeholder="eg.: Seu motivo" />
-            </Form.Item>
-            <Form.Item
-              label="Objetivo:*"
+              label="Objetivo:"
               name={['notification', 'goal']}
               rules={[
                 {
@@ -247,7 +237,19 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
                 },
               ]}
             >
-              <Input size="large" placeholder="eg.: Seu objetivo" />
+              <Input size="large" placeholder="e.g.: Seu objetivo" />
+            </Form.Item>
+            <Form.Item
+              label="Razão:"
+              name={['notification', 'reason']}
+              rules={[
+                {
+                  required: true,
+                  message: 'O motivo é obrigatório',
+                },
+              ]}
+            >
+              <TextArea maxLength={600} size="large" placeholder="e.g.: Sua razão" />
             </Form.Item>
             <Form.Item style={{ marginTop: 40 }}>
               <Space direction="horizontal">

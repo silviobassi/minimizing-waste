@@ -34,7 +34,9 @@ public class AssignmentService {
         assignmentRepository.detach(assignment);
 
         WorkStation workStation = workStationService.findOrFail(assignment.getWorkStation().getId());
+        Notification notification = notificationService.create(assignment.getNotification());
         assignment.setWorkStation(workStation);
+        assignment.setNotification(notification);
 
         return assignmentRepository.save(assignment);
     }

@@ -11,31 +11,46 @@ import {
 } from 'antd';
 
 import { format } from 'date-fns';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import useCommunications from '../../core/hooks/useCommunications';
+import { Communication } from '../../sdk';
+import NotificationDescription from '../components/NotificationDescription';
 
 export default function EmployeeTasksAssignedNotification() {
   const { availableAssignedTasks, fetchAvailableAssignedTasks } =
     useCommunications();
-
+  const [page, setPage] = useState<number>(0);
   useEffect(() => {
-    fetchAvailableAssignedTasks();
-  }, [fetchAvailableAssignedTasks]);
+    fetchAvailableAssignedTasks(page);
+  }, [fetchAvailableAssignedTasks, page]);
 
   return (
     <>
       <Row>
         <Col xs={24}>
-          <Card type="inner" title="Recursos Disponìveis">
+          <Card type="inner" title="Recursos Disponíveis">
             <List
-              dataSource={availableAssignedTasks}
+              dataSource={
+                availableAssignedTasks?._embedded?.notificationsAssignments
+              }
+              pagination={{
+                onChange: (page: number) => setPage(page - 1),
+                total: availableAssignedTasks?.page?.totalElements,
+                pageSize: 2,
+              }}
               rowKey={'id'}
-              renderItem={(item) => (
+              renderItem={(item: Communication.AssignmentNotification) => (
                 <List.Item>
                   <Row justify={'space-between'} gutter={40}>
                     <Col xs={24} lg={7}>
-                      <Typography.Title level={3}>
+                      <Typography.Title
+                        level={4}
+                        style={{
+                          marginBottom: 20,
+                          textDecoration: 'underline',
+                        }}
+                      >
                         {item.title}
                       </Typography.Title>
                       <Descriptions column={1} bordered size="small">
@@ -47,11 +62,11 @@ export default function EmployeeTasksAssignedNotification() {
                           </Space>
                         </Descriptions.Item>
                       </Descriptions>
-                      <Link to={`/tarefas/${item.id}/detalhes`}>
-                      <Button type="primary" style={{ marginTop: 20 }}>
-                        Ver Responsáveis
-                      </Button>
-                    </Link>
+                      <Link to={`/tarefa/${item.id}/detalhes`}>
+                        <Button type="primary" style={{ marginTop: 20 }}>
+                          Ver Responsáveis
+                        </Button>
+                      </Link>
                     </Col>
                     <Col xs={24} lg={9}>
                       <Descriptions column={1} size="small" bordered>
@@ -66,39 +81,15 @@ export default function EmployeeTasksAssignedNotification() {
                         </Descriptions.Item>
                       </Descriptions>
                     </Col>
-                    {item.notification && (
-                      <Col xs={24} lg={8}>
-                        <Tag color="red">
-                          <Typography.Title level={3}>
-                            Observação:
-                          </Typography.Title>
-                          <Descriptions column={1} size="small">
-                            <Descriptions.Item label={'Título'}>
-                              {item.notification?.title}
-                            </Descriptions.Item>
-                            <Descriptions.Item
-                              label={'Data da Notificação'}
-                            >
-                              {format(
-                                new Date(item.notification?.createdAt),
-                                'dd/MM/yyyy',
-                              )}
-                            </Descriptions.Item>
-                            <Descriptions.Item label={'Motivo'}>
-                              {item.notification?.reason}
-                            </Descriptions.Item>
-                            <Descriptions.Item label={'Objetivo'}>
-                              {item.notification?.goal}
-                            </Descriptions.Item>
-                          </Descriptions>
-                        </Tag>
-                      </Col>
-                    )}
+
+                    <Col xs={24} lg={8}>
+                      <NotificationDescription
+                        notification={item?.notification}
+                      />
+                    </Col>
                   </Row>
-                
                 </List.Item>
               )}
-
             />
           </Card>
         </Col>

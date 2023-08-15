@@ -3,6 +3,9 @@ package com.dcconnect.minimizingwaste.api.v1.openapi;
 import com.dcconnect.minimizingwaste.api.v1.model.SupplyMovementNotificationModel;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.PagedModel;
 
 import java.util.List;
 
@@ -10,6 +13,6 @@ import java.util.List;
 public interface SupplyMovementNotificationControllerOpenApi {
 
     @Operation(summary = "Lista as notificações enviadas, por recursos atribuídos")
-    List<SupplyMovementNotificationModel> findNotificationBySuppliesAvailable();
+    PagedModel<SupplyMovementNotificationModel> findNotificationBySuppliesAvailable(@PageableDefault(size = 2) Pageable pageable);
 
 }

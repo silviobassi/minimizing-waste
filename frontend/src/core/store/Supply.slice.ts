@@ -16,12 +16,15 @@ const initialState: SupplyState = {
 
 export const getAllSupplies = createAsyncThunk(
   'supplies/getAllSupplies',
-  async (page: number, { rejectWithValue, dispatch }) => {
+  async (
+    { page, size }: { page?: number; size?: number },
+    { rejectWithValue, dispatch },
+  ) => {
     try {
       const supplies = await SupplyService.getAllSupplies({
         page: page,
         sort: ['asc'],
-        size: 4,
+        size: size,
       });
       dispatch(storeSupplies(supplies));
     } catch (error: any) {
@@ -34,7 +37,7 @@ export const removeSupply = createAsyncThunk(
   'supplies/removeSupply',
   async (supplyId: number, { dispatch }) => {
     await SupplyService.deleteExistingSupply(supplyId);
-    await dispatch(getAllSupplies(0));
+    await dispatch(getAllSupplies({ page: 0, size: 4 }));
   },
 );
 

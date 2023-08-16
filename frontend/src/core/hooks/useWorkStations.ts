@@ -12,20 +12,24 @@ export default function useWorkStations() {
   const fetching = useSelector(
     (state: RootState) => state.workStations.fetching,
   );
+
   const [accessDeniedError, setAccessDeniedError] = useState(false);
 
-  const fetchWorkStations = useCallback(async (page: number) => {
-    return dispatch(WorkStationActions.getAllWorkStations(page))
-      .unwrap()
-      .catch((err: any) => {
-        if (err instanceof AccessDeniedError) {
-          setAccessDeniedError(true);
-          return;
-        }
+  const fetchWorkStations = useCallback(
+    async (page?: number, size?: number) => {
+      return dispatch(WorkStationActions.getAllWorkStations({ page, size }))
+        .unwrap()
+        .catch((err: any) => {
+          if (err instanceof AccessDeniedError) {
+            setAccessDeniedError(true);
+            return;
+          }
 
-        throw err;
-      });
-  }, [dispatch]);
+          throw err;
+        });
+    },
+    [dispatch],
+  );
 
   return {
     fetchWorkStations,

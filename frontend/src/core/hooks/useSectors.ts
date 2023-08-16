@@ -9,8 +9,8 @@ export default function useSectors() {
   const fetching = useSelector((state: RootState) => state.sectors.fetching);
 
   const fetchSectors = useCallback(
-    async (page: number) => {
-      return dispatch(SectorActions.getAllSectors(page)).unwrap();
+    async () => {
+      return dispatch(SectorActions.getAllSectors(0)).unwrap();
     },
     [dispatch],
   );

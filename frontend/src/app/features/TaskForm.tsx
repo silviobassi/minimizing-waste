@@ -11,13 +11,13 @@ import {
   notification,
 } from 'antd';
 import locale from 'antd/es/date-picker/locale/pt_BR';
-import { useEffect } from 'react';
+import TextArea from 'antd/es/input/TextArea';
+import { useCallback, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import useWorkStations from '../../core/hooks/useWorkStations';
 import { Assignment, AssignmentService, WorkStation } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
 import WrapperDefault from '../components/WrapperDefault';
-import TextArea from 'antd/es/input/TextArea';
 type AssignmentFormType = Assignment.AssignmentModel;
 interface AssignmentFormDefaultProps {
   labelRegister: string;
@@ -35,6 +35,10 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
   const dateFormat = 'DD/MM/YYYY';
   const { fetchWorkStations, workStations } = useWorkStations();
 
+  const option = useCallback(() => {
+    return fetchOptions();
+  }, [fetchOptions]);
+
   function fetchOptions() {
     const options: WorkStation.WorkStationModel = [];
     workStations?._embedded?.workStations.map(
@@ -49,7 +53,7 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
   }
 
   useEffect(() => {
-    fetchWorkStations(0);
+    fetchWorkStations();
   }, [fetchWorkStations]);
 
   return (
@@ -177,7 +181,7 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
                     .toLowerCase()
                     .includes(input.toLowerCase())
                 }
-                options={fetchOptions()}
+                options={option()}
               />
             </Form.Item>
           </Col>

@@ -10,10 +10,8 @@ export default function useUsers() {
   const fetching = useSelector((state: RootState) => state.user.fetching);
 
   const fetchUsers = useCallback(
-    async (page: number) => {
-      return dispatch(
-        UserActions.getAllUsers(page),
-      ).unwrap();
+    async (page?: number, size?: number) => {
+      return dispatch(UserActions.getAllUsers({ page, size })).unwrap();
     },
     [dispatch],
   );

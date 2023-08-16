@@ -5,6 +5,8 @@ import authReducer from './Auth.slice';
 import sectorReducer from './Sector.slice';
 import supplyReducer from './Supply.slice';
 import UserReducer from './User.reducer';
+
+import supplyMovementReducer from './SupplyMovement.slice';
 import usersAssignmentReducer from './UsersAssignment.slice';
 import workStationReducer from './WorkStation.slice';
 
@@ -15,6 +17,7 @@ const observeActions: Middleware = () => (next) => (action) => {
       'assignments/getAllUsersAssignmentAssign/rejected',
       'assignments/toggleComplete/rejected',
       'assignments/toggleApprove/rejected',
+      'supplies-movements/getAllSuppliesMovements/reject',
       'auth/getUser/rejected',
       'sectors/getAllSectors/rejected',
       'supplies/getAllSupplies/rejected',
@@ -50,6 +53,7 @@ export const store = configureStore({
     supplies: supplyReducer,
     sectors: sectorReducer,
     workStations: workStationReducer,
+    suppliesMovements: supplyMovementReducer,
   },
   middleware: function (getDefaultMiddlewares) {
     return getDefaultMiddlewares().concat(observeActions);

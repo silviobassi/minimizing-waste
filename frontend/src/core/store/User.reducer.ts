@@ -5,7 +5,7 @@ import {
   isPending,
   isRejected,
 } from '@reduxjs/toolkit';
-import { FileService, UserService } from '../../sdk';
+import { UserService } from '../../sdk';
 import { User } from '../../sdk/@types/User';
 
 interface UserState {
@@ -20,12 +20,15 @@ const initialState: UserState = {
 
 export const getAllUsers: User.PagedModelDetailed = createAsyncThunk(
   'user/getAllUsers',
-  async (page: number, { rejectWithValue }) => {
+  async (
+    { page, size }: { page?: number; size?: number },
+    { rejectWithValue },
+  ) => {
     try {
       return await UserService.getAllUsers({
         page: page,
         sort: ['asc'],
-        size: 4,
+        size: size,
       });
     } catch (error: any) {
       return rejectWithValue({ ...error });
@@ -35,10 +38,7 @@ export const getAllUsers: User.PagedModelDetailed = createAsyncThunk(
 
 export const removeUser = createAsyncThunk(
   'users/removeUser',
-  async (
-    userId: number,
-    { dispatch },
-  ) => {
+  async (userId: number, { dispatch }) => {
     await UserService.deleteExistingUser(userId);
     await dispatch(getAllUsers(0));
   },

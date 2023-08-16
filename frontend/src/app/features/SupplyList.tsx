@@ -23,7 +23,7 @@ export default function SupplyList() {
   const { removeSupply } = useSupply();
   const [page, setPage] = useState<number>(0);
   useEffect(() => {
-    fetchSupplies(page);
+    fetchSupplies(page, 4);
   }, [fetchSupplies, page]);
 
   if (accessDeniedError) return <AccessDenied />;

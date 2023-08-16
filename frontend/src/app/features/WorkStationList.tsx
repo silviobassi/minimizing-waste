@@ -18,7 +18,7 @@ export default function WorkStationList() {
   const { removeWorkStation } = useWorkStation();
   const [page, setPage] = useState<number>(0);
   useEffect(() => {
-    fetchWorkStations(page);
+    fetchWorkStations(page, 4);
   }, [fetchWorkStations, page]);
 
   if (accessDeniedError) return <AccessDenied />;

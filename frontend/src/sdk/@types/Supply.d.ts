@@ -23,6 +23,9 @@ export namespace Supply {
     MinimizingWaste.components['schemas']['MaterialSupplyModel'];
   export type EquipmentSupplyModel =
     MinimizingWaste.components['schemas']['EquipmentSupplyModel'];
+  
+  export type MovementInput = MinimizingWaste.components['schemas']['SupplyMovementInput']
+  export type MovementModel = MinimizingWaste.components['schemas']['SupplyMovementModel']
 
   export type Query = {
     supplyName?: number;

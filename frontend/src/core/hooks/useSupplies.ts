@@ -9,8 +9,8 @@ export default function useSupplies() {
   const supplies = useSelector((state: RootState) => state.supplies.list);
   const fetching = useSelector((state: RootState) => state.supplies.fetching);
 
-  const fetchSupplies = useCallback(async (page: number) => {
-    return dispatch(SupplyActions.getAllSupplies(page)).unwrap();
+  const fetchSupplies = useCallback(async (page?: number, size?: number) => {
+    return dispatch(SupplyActions.getAllSupplies({ page, size })).unwrap();
   }, []);
 
   return {

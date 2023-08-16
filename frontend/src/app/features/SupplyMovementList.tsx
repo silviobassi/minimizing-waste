@@ -5,22 +5,28 @@ import {
   EyeOutlined,
   RollbackOutlined,
 } from '@ant-design/icons';
-import { Button, Checkbox, Space, Table, Tooltip } from 'antd';
-import { useEffect } from 'react';
+import { Button, Checkbox, Space, Table, Tooltip, notification } from 'antd';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import useSupplyMovement from '../../core/hooks/useSuppliesMovement';
 import useSuppliesMovements from '../../core/hooks/useSuppliesMovements';
 import { Supply } from '../../sdk/@types';
 import AccessDenied from '../components/AccessDenied';
+import DoubleConfirm from '../components/DoubleConfirm';
 import WrapperDefault from '../components/WrapperDefault';
 
 export default function SupplyMovementList() {
   const navigate = useNavigate();
+  const [page, setPage] = useState<number>(0);
 
   const { suppliesMovements, fetchSuppliesMovements, accessDeniedError } =
     useSuppliesMovements();
+
+  const { removeSupplyMovement } = useSupplyMovement();
+
   useEffect(() => {
-    fetchSuppliesMovements();
-  }, [fetchSuppliesMovements]);
+    fetchSuppliesMovements(page);
+  }, [fetchSuppliesMovements, page]);
 
   if (accessDeniedError) return <AccessDenied />;
 
@@ -66,22 +72,37 @@ export default function SupplyMovementList() {
             title: 'Ações',
             dataIndex: 'id',
             width: 200,
-            render: (id: number) => (
+            render: (_: any, supplyMovement) => (
               <Space size={'middle'}>
                 <Tooltip title={'Editar'}>
                   <Button
                     type={'link'}
                     icon={<EditOutlined />}
-                    onClick={() => navigate(`/movimento-recursos/editar/${id}`)}
+                    onClick={() =>
+                      navigate(
+                        `/movimento-recursos/editar/${supplyMovement?.id}`,
+                      )
+                    }
                   />
                 </Tooltip>
-                <Tooltip title={'Excluir'}>
-                  <Button
-                    type={'link'}
-                    icon={<DeleteOutlined />}
-                    onClick={() => navigate('/#')}
-                  />
-                </Tooltip>
+
+                <DoubleConfirm
+                  popConfirmTitle="Remover Recurso?"
+                  popConfirmContent="Deseja mesmo remover este movimento?"
+                  onConfirm={async () => {
+                    await removeSupplyMovement(Number(supplyMovement?.id));
+                    notification.success({
+                      message: 'Sucesso',
+                      description: `Movimento  removido com sucesso`,
+                    });
+                  }}
+                >
+                  <Tooltip title={'Excluir'} placement="bottom">
+                    <Button type="link">
+                      <DeleteOutlined />
+                    </Button>
+                  </Tooltip>
+                </DoubleConfirm>
                 <Tooltip title={'Devolver'}>
                   <Button
                     type={'link'}
@@ -102,7 +123,9 @@ export default function SupplyMovementList() {
           },
         ]}
         pagination={{
-          pageSize: 5,
+          onChange: (page: number) => setPage(page - 1),
+          total: suppliesMovements?.page?.totalElements,
+          pageSize: 4,
         }}
         rowKey="id"
       />

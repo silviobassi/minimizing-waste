@@ -26,7 +26,7 @@ export default function EmployeeList() {
   const { removeUser } = useUser();
 
   useEffect(() => {
-    fetchUsers(page).catch((err) => {
+    fetchUsers(page, 4).catch((err) => {
       if (err?.data?.status === 403) {
         setAccessDeniedError(true);
         return;

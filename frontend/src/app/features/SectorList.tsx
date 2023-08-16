@@ -17,7 +17,7 @@ export default function SectorList() {
   const [accessDeniedError, setAccessDeniedError] = useState(false);
 
   useEffect(() => {
-    fetchSectors(0).catch((err) => {
+    fetchSectors().catch((err) => {
       if (err?.data?.status === 403) {
         setAccessDeniedError(true);
         return;

@@ -21,13 +21,13 @@ import {
   UserDeleteOutlined,
   UserOutlined,
 } from '@ant-design/icons';
+import TextArea from 'antd/es/input/TextArea';
 import { useState } from 'react';
 import { Assignment, User } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
 import { phoneToFormat } from '../../sdk/utils/generateFormatterData';
 import EmployeesResponsible from '../components/EmployeesResponsible';
 import WrapperDefault from '../components/WrapperDefault';
-import TextArea from 'antd/es/input/TextArea';
 
 type UserAssignedType = User.PagedModelUserAssigned;
 type AssignmentType = Assignment.AssignmentModel;
@@ -249,7 +249,12 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
                 },
               ]}
             >
-              <TextArea maxLength={600} size="large" placeholder="e.g.: Sua razão" />
+              <TextArea
+                rows={5}
+                maxLength={500}
+                size="large"
+                placeholder="e.g.: Sua razão"
+              />
             </Form.Item>
             <Form.Item style={{ marginTop: 40 }}>
               <Space direction="horizontal">

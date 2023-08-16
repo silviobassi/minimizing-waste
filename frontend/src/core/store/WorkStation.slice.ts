@@ -16,11 +16,14 @@ const initialState: WorkStationState = {
 
 export const getAllWorkStations = createAsyncThunk(
   'work-stations/getAllWorkStations',
-  async (page: number, { rejectWithValue, dispatch }) => {
+  async (
+    { page, size }: { page?: number; size?: number },
+    { rejectWithValue, dispatch },
+  ) => {
     try {
       const workStations = await WorkStationService.getAllWorkStations({
         page: page,
-        size: 4,
+        size: size,
         sort: ['asc'],
       });
       dispatch(storeWorkStations(workStations));
@@ -34,7 +37,7 @@ export const removeWorkStation = createAsyncThunk(
   'work-stations/removeWorkStation',
   async (workStationId: number, { dispatch }) => {
     await WorkStationService.deleteExistingWorkStation(workStationId);
-    await dispatch(getAllWorkStations(0));
+    await dispatch(getAllWorkStations({ page: 0, size: 4 }));
   },
 );
 

@@ -26,6 +26,16 @@ class SupplyMovementService extends Service {
     ).then(this.getData);
   }
 
+  static updateExistingSupplyMovement(
+    movement: Supply.MovementInput,
+    supplyMovementId: number,
+  ) {
+    return this.Http.put<Supply.EquipmentModel>(
+      `/supplies-movements/${supplyMovementId}`,
+      movement,
+    ).then(this.getData);
+  }
+
   static deleteExistingSupplyMovement(supplyMovementId: number) {
     return this.Http.delete<{}>(`/supplies-movements/${supplyMovementId}`).then(
       this.getStatus,

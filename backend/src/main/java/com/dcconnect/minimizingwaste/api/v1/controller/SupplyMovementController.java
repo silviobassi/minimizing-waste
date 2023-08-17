@@ -10,9 +10,7 @@ import com.dcconnect.minimizingwaste.api.v1.openapi.SupplyMovementControllerOpen
 import com.dcconnect.minimizingwaste.core.security.CheckSecurity;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
 import com.dcconnect.minimizingwaste.domain.repository.SupplyRepository;
-import com.dcconnect.minimizingwaste.domain.service.CalculateService;
 import com.dcconnect.minimizingwaste.domain.service.SupplyMovementService;
-import com.dcconnect.minimizingwaste.domain.service.SupplyService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -35,9 +33,6 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
     private SupplyMovementService supplyMovementService;
 
     @Autowired
-    private CalculateService calculateService;
-
-    @Autowired
     private SupplyMovementAssembler supplyMovementAssembler;
 
     @Autowired
@@ -45,9 +40,6 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
 
     @Autowired
     private DevolvedSupplyMovementDisassembler devolvedSupplyMovementDisassembler;
-
-    @Autowired
-    private SupplyService supplyService;
 
     @Autowired
     private PagedResourcesAssembler<SupplyMovement> pagedResourcesAssembler;
@@ -80,12 +72,8 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
 
         SupplyMovement currentSupplyMovement = supplyMovementService.findOrFail(supplyMovementId);
 
-        Long supplyId = supplyMovementInput.getSupply().getId();
-
-        calculateService.whenReplaceSupply(currentSupplyMovement, supplyId);
-
         suppliesMovementDisassembler.copyToDomainModel(supplyMovementInput, currentSupplyMovement);
-        return supplyMovementAssembler.toModel(supplyMovementService.update(currentSupplyMovement, supplyId));
+        return supplyMovementAssembler.toModel(supplyMovementService.create(currentSupplyMovement));
     }
 
     @CheckSecurity.Supplies.CanEdit
@@ -119,6 +107,15 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
     public ResponseEntity<Void> vacateSupply(@PathVariable Long supplyMovementId){
         SupplyMovement supplyMovement = supplyMovementService.findOrFail(supplyMovementId);
         supplyMovementService.vacateSupply(supplyMovement);
+        return ResponseEntity.noContent().build();
+    }
+
+    @CheckSecurity.Supplies.CanEndSupply
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/end/{supplyMovementId}/supply")
+    public ResponseEntity<Void> endSupplyAllocated(@PathVariable Long supplyMovementId){
+        SupplyMovement supplyMovement = supplyMovementService.findOrFail(supplyMovementId);
+        supplyMovementService.endSupply(supplyMovement);
         return ResponseEntity.noContent().build();
     }
 

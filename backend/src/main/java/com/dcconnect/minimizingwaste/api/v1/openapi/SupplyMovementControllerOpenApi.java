@@ -14,8 +14,9 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 
-@Tag(name = "Supplies")
+@Tag(name = "Supplies Movement")
 public interface SupplyMovementControllerOpenApi {
 
     @Operation(summary = "Lista os movimentos de recursos")
@@ -65,4 +66,11 @@ public interface SupplyMovementControllerOpenApi {
     })
     ResponseEntity<Void> vacateSupply(@Parameter(
             description = "ID de um movimento de recurso", example = "1", required = true) Long supplyMovementId);
+
+    @Operation(summary = "Fim do recurso alocado", responses = {
+            @ApiResponse(responseCode = "404", description = "Movimento de Recurso não encontrado",
+                    content = @Content(schema = @Schema(ref = "Problem"))),
+            @ApiResponse(responseCode = "204", description = "Recurso finalizado com sucesso")
+    })
+    ResponseEntity<Void> endSupplyAllocated(Long supplyMovementId);
 }

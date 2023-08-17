@@ -65,24 +65,33 @@ public @interface CheckSecurity {
         @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULT_SUPPLIES')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
-        @interface CanConsult { }
+        @interface CanConsult {
+        }
 
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDIT_SUPPLIES')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
-        @interface CanEdit { }
+        @interface CanEdit {
+        }
 
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('GIVE_BACK_SUPPLIES')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
-        @interface CanGiveBack { }
+        @interface CanGiveBack {
+        }
 
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('VACATE_SUPPLIES')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
-        @interface CanVacate { }
-    }
+        @interface CanVacate {
+        }
 
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('END_SUPPLY_ALLOCATED')")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface CanEndSupply {
+        }
+    }
     @interface Sectors {
         @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULT_SECTORS')")
         @Retention(RetentionPolicy.RUNTIME)

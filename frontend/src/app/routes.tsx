@@ -88,7 +88,7 @@ export default function Routes() {
         element={<SupplyMovementCreateView />}
       />
       <Route
-        path={'/movimento-recursos/editar/:id'}
+        path={'/movimento-recursos/editar/:supplyMovementId'}
         element={<SupplyMovementEditView />}
       />
       <Route

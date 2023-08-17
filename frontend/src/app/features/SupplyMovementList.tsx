@@ -93,7 +93,7 @@ export default function SupplyMovementList() {
                     await removeSupplyMovement(Number(supplyMovement?.id));
                     notification.success({
                       message: 'Sucesso',
-                      description: `Movimento  removido com sucesso`,
+                      description: `Movimento do recurso ${supplyMovement?.supply?.name}  removido com sucesso`,
                     });
                   }}
                 >

@@ -19,10 +19,11 @@ public class SupplyMovementModel extends RepresentationModel<SupplyMovementModel
     private boolean movable;
     @Schema(example = "20")
     private Long allocatedQuantity;
-
     private NotificationModel notification;
     @Schema(example = "1")
     private WorkStationModel workStation;
     @Schema(example = "1")
     private SupplySummaryModel supply;
+
+    private UserEmployeeModel employeeResponsible;
 }

@@ -4,6 +4,7 @@ import com.dcconnect.minimizingwaste.api.v1.model.input.DevolvedSupplyMovementIn
 import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMovementInput;
 import com.dcconnect.minimizingwaste.domain.model.Supply;
 import com.dcconnect.minimizingwaste.domain.model.SupplyMovement;
+import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.model.WorkStation;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
@@ -25,6 +26,7 @@ public class SuppliesMovementDisassembler {
         //was altered from 2 to 3
         supplyMovement.setWorkStation(new WorkStation());
         supplyMovement.setSupply(new Supply());
+        supplyMovement.setEmployeeResponsible(new User());
 
         modelMapper.map(supplyMovementInput, supplyMovement);
     }

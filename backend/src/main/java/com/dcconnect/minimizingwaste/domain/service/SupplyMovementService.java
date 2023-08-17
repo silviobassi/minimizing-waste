@@ -1,5 +1,6 @@
 package com.dcconnect.minimizingwaste.domain.service;
 
+import com.dcconnect.minimizingwaste.domain.exception.BusinessException;
 import com.dcconnect.minimizingwaste.domain.exception.SuppliesMovementNotFoundException;
 import com.dcconnect.minimizingwaste.domain.model.Notification;
 import com.dcconnect.minimizingwaste.domain.model.Supply;
@@ -15,7 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class SupplyMovementService {
 
     public static final String DEVOLVED_QUANTITY_GREATER_ALLOCATED =
-            "A quantidade devolvida (%d), não pode ser maior do que a quantidade alocada (%d).";
+            "A quantidade %d não pode ser maior do que a quantidade alocada %d.";
+    public static final String AVAILABLE_SUPPLY_NUMBER = "A quantidade de recurso disponível é %d";
 
     @Autowired
     private SupplyRepository supplyRepository;
@@ -29,50 +31,34 @@ public class SupplyMovementService {
     @Autowired
     private NotificationService notificationService;
 
-    @Autowired
-    private CalculateService calculateService;
 
     @Transactional
     public SupplyMovement create(SupplyMovement supplyMovement){
-        Supply supply = supplyService.findOrFail(supplyMovement.getSupply().getId());
-        WorkStation workStation =
-                workStationService.findOrFail(supplyMovement.getWorkStation().getId());
 
-        supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());
+        Supply supply = supplyService.findOrFail(supplyMovement.getSupply().getId());
+        WorkStation workStation = workStationService.findOrFail(supplyMovement.getWorkStation().getId());
+
+        if(supplyMovement.isNew()){
+            isReservedQuantityGreaterThanSupplyQuantity(supplyMovement, supply);
+        }
+
+        if (supplyMovement.isNotNew()) {
+            isReservedQuantityGreaterThanSupplyQuantityToUpdate(supplyMovement, supply);
+        }
 
         supplyMovement.setSupply(supply);
-
+        supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());
         supplyMovement.setWorkStation(workStation);
 
         Notification notification = supplyMovement.getNotification();
 
         notificationService.create(notification);
-
-        calculateService.whenCreatingMovement(supplyMovement);
-        return supplyRepository.create(supplyMovement);
-    }
-
-    @Transactional
-    public SupplyMovement update(SupplyMovement supplyMovement, Long supplyId){
-
-        Supply supply = supplyService.findOrFail(supplyMovement.getSupply().getId());
-        WorkStation workStation =
-                workStationService.findOrFail(supplyMovement.getWorkStation().getId());
-
-        supplyMovement.setSupply(supply);
-
-        calculateService.whenUpdatingMovement(supplyMovement, supplyId);
-        supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());
-
-        supplyMovement.setWorkStation(workStation);
-
         return supplyRepository.create(supplyMovement);
     }
 
     @Transactional
     public void delete(Long supplyMovementId){
         var supplyMovementCurrent = findOrFail(supplyMovementId);
-        calculateService.whenDeleting(supplyMovementCurrent);
         supplyRepository.delete(supplyMovementCurrent);
     }
 
@@ -85,9 +71,13 @@ public class SupplyMovementService {
     public SupplyMovement giveBackSupply(SupplyMovement supplyMovement){
 
         Supply supply = supplyService.findOrFail(supplyMovement.getSupply().getId());
-        WorkStation workStation = workStationService
-                .findOrFail(supplyMovement.getWorkStation().getId());
-        supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());
+        WorkStation workStation = workStationService.findOrFail(supplyMovement.getWorkStation().getId());
+
+        if(supplyMovement.getReservedQuantity() > supplyMovement.getAllocatedQuantity()){
+            throw new BusinessException(String.format(DEVOLVED_QUANTITY_GREATER_ALLOCATED,
+                    supplyMovement.getReservedQuantity(), supplyMovement.getAllocatedQuantity()));
+        }
+
         supplyMovement.setSupply(supply);
         supplyMovement.setWorkStation(workStation);
 
@@ -102,20 +92,32 @@ public class SupplyMovementService {
         supplyRepository.create(supplyMovement);
     }
 
-    private void setModels(SupplyMovement supplyMovement) {
-        Supply supply = supplyService.findOrFail(supplyMovement.getSupply().getId());
-        WorkStation workStation =
-                workStationService.findOrFail(supplyMovement.getWorkStation().getId());
-        supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());
-        supplyMovement.setSupply(supply);
-
-        supplyMovement.setWorkStation(workStation);
-
-        Notification notification = supplyMovement.getNotification();
-
-        notificationService.create(notification);
-
-        supplyMovement.setAllocatedQuantity(supplyMovement.getReservedQuantity());
+    @Transactional
+    public void endSupply(SupplyMovement supplyMovement){
+        supplyMovement.decreaseSupply();
+        supplyMovement.decreaseAllocated();
+        supplyRepository.create(supplyMovement);
     }
+
+    private void isReservedQuantityGreaterThanSupplyQuantityToUpdate(SupplyMovement supplyMovement, Supply supply) {
+        long sumAllocatedToUpdate = supply.getSupplyDescription().getQuantity()
+                - (supplyRepository.findAllocatedSupply(supply.getId()) - supplyMovement.getAllocatedQuantity());
+
+        if(supplyMovement.getReservedQuantity() > sumAllocatedToUpdate) {
+            throw new BusinessException(String.format(AVAILABLE_SUPPLY_NUMBER,
+                    sumAllocatedToUpdate));
+        }
+    }
+
+    private void isReservedQuantityGreaterThanSupplyQuantity(SupplyMovement supplyMovement, Supply supply) {
+        if(supplyMovement.getReservedQuantity() >
+                supply.getSupplyDescription().getQuantity() - supplyRepository.findAllocatedSupply(supply.getId())
+        ){
+            throw new BusinessException(String.format(AVAILABLE_SUPPLY_NUMBER,
+                    supply.getSupplyDescription().getQuantity()
+                            - supplyRepository.findAllocatedSupply(supply.getId())));
+        }
+    }
+
 
 }

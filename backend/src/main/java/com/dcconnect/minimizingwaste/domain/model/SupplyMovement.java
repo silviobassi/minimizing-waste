@@ -42,8 +42,16 @@ public class SupplyMovement extends BaseEntity{
     @JoinColumn(name = "employee_responsible_id")
     private User employeeResponsible;
 
+    public boolean isNew(){
+        return getId() == null;
+    }
+
+    public boolean isNotNew(){
+        return !isNew();
+    }
+
     @PrePersist
-    public void prePersist(){
+    public void prePersist() {
         notBusy = false;
     }
 
@@ -51,31 +59,18 @@ public class SupplyMovement extends BaseEntity{
         setNotBusy(true);
         setMovable(true);
     }
-
     public void devolveAllocatedQuantity(){
         allocatedQuantity -= reservedQuantity;
-        updateSupplyAmount();
     }
 
-    public long sumAllocatedQuantityWithSuppliesQuantity() {
-        return allocatedQuantity + supply.getSupplyDescription().getQuantity();
+    public  void decreaseSupply() {
+        getSupply().getSupplyDescription().setQuantity(
+                getSupply().getSupplyDescription().getQuantity() - getAllocatedQuantity()
+        );
     }
 
-    public boolean isDevolvedQuantityGreaterThanAllocatedQuantity() {
-        return reservedQuantity > allocatedQuantity;
-    }
-
-    public boolean isAllocatedQuantityGreaterThanSupplyQuantity(){
-       return reservedQuantity > supply.getSupplyDescription().getQuantity();
-    }
-
-    public boolean isReservedQuantityGreaterThanAvailableQuantity() {
-        return reservedQuantity > sumAllocatedQuantityWithSuppliesQuantity();
-    }
-
-    private void updateSupplyAmount(){
-        supply.getSupplyDescription().setQuantity(
-                supply.getSupplyDescription().getQuantity() + getReservedQuantity());
+    public void decreaseAllocated(){
+        setAllocatedQuantity(null);
     }
 
 

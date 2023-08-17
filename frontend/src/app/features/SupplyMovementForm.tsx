@@ -44,12 +44,14 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
   const { workStations, fetchWorkStations } = useWorkStations();
   const { supplies, fetchSupplies } = useSupplies();
   const [checked, setChecked] = useState<boolean>(false);
+  const [quantity, setQuantity] = useState<number>();
 
   useEffect(() => {
     fetchUsers();
     fetchWorkStations();
     fetchSupplies();
-    form.setFieldValue('movable', checked)
+    form.resetFields()
+
   }, [fetchUsers, fetchWorkStations, fetchSupplies, checked]);
 
   const options = useCallback((list: any) => {
@@ -71,17 +73,17 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
       <Form
         layout={'vertical'}
         form={form}
-        //initialValues={'props.assignment'}
+        initialValues={props.supplyMovement}
         onFinish={async (movement: Supply.MovementInput) => {
+          if (props.supplyMovement)
+            return props.onUpdate && props.onUpdate(movement);
+
           try {
-            /*if (props.assignment) {
-              return props.onUpdate && props.onUpdate(assignmentDTO);
-            }*/
             await SupplyMovementService.createSupplyMovement(movement).then(
               (movement: Supply.MovementModel) =>
                 notification.success({
                   message: 'Sucesso',
-                  description: 'Movimento criado com sucesso',
+                  description: `Movimento do Recurso ${movement?.supply?.name} criado com sucesso`,
                 }),
             );
           } catch (error: any) {
@@ -134,7 +136,9 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
                   style={lg ? { marginBottom: 32 } : { marginBottom: 0 }}
                 >
                   <Checkbox
-                    onChange={() => setChecked(!checked)}
+                    onChange={() => {
+                      setChecked(!checked);
+                    }}
                     checked={checked}
                   >
                     MOVIMENTÁVEL

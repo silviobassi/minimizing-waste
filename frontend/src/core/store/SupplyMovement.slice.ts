@@ -38,6 +38,14 @@ export const removeSupplyMovement = createAsyncThunk(
   },
 );
 
+export const vacateSupplyMovement = createAsyncThunk(
+  'supplies-movements/vacateSupplyMovement',
+  async (supplyMovementId: number, { dispatch }) => {
+    await SupplyMovementService.vacateSupplyMovement(supplyMovementId);
+    await dispatch(getAllSuppliesMovements(0));
+  },
+);
+
 const SupplyMovementSlice = createSlice({
   initialState,
   name: 'suppliesMovements',

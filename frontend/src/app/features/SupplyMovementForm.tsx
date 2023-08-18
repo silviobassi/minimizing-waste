@@ -14,7 +14,7 @@ import {
 import TextArea from 'antd/es/input/TextArea';
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import { useCallback, useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import useSupplies from '../../core/hooks/useSupplies';
 import useUsers from '../../core/hooks/useUsers';
 import useWorkStations from '../../core/hooks/useWorkStations';
@@ -37,22 +37,38 @@ interface SupplyMovementFormProps {
 
 export default function SupplyMovementForm(props: SupplyMovementFormProps) {
   const [form] = Form.useForm();
-  const navigate = useNavigate();
   const { lg } = useBreakpoint();
 
   const { users, fetchUsers } = useUsers();
   const { workStations, fetchWorkStations } = useWorkStations();
   const { supplies, fetchSupplies } = useSupplies();
   const [checked, setChecked] = useState<boolean>(false);
-  const [quantity, setQuantity] = useState<number>();
 
   useEffect(() => {
     fetchUsers();
     fetchWorkStations();
     fetchSupplies();
-    form.resetFields()
 
-  }, [fetchUsers, fetchWorkStations, fetchSupplies, checked]);
+    if (props.supplyMovement) {
+      form.resetFields();
+      form.setFieldValue(
+        'reservedQuantity',
+        props.supplyMovement?.allocatedQuantity,
+      );
+      if (props.supplyMovement?.movable !== undefined)
+        setChecked(props.supplyMovement?.movable);
+    }
+
+    form.setFieldValue('movable', checked)
+  }, [
+    fetchUsers,
+    fetchWorkStations,
+    fetchSupplies,
+    props.supplyMovement?.allocateQuantity,
+    props.supplyMovement?.movable,
+    checked,
+    form,
+  ]);
 
   const options = useCallback((list: any) => {
     return fetchOptions(list);
@@ -71,10 +87,12 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
   return (
     <WrapperDefault title={props.title}>
       <Form
+        initialValues={props.supplyMovement}
         layout={'vertical'}
         form={form}
-        initialValues={props.supplyMovement}
         onFinish={async (movement: Supply.MovementInput) => {
+          console.log(movement);
+
           if (props.supplyMovement)
             return props.onUpdate && props.onUpdate(movement);
 
@@ -138,6 +156,8 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
                   <Checkbox
                     onChange={() => {
                       setChecked(!checked);
+                      delete(props.supplyMovement?.movable)
+                      console.log(checked);
                     }}
                     checked={checked}
                   >
@@ -236,21 +256,13 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
                 </Form.Item>
               </Col>
               <Col xs={24}>
-                <Form.Item
-                  name={['notification', 'reason']}
-                  label="Razão:"
-                  rules={[
-                    {
-                      required: true,
-                      message: 'A Razão é obrigatória',
-                    },
-                  ]}
-                >
+                <Form.Item name={['notification', 'reason']} label="Razão:">
                   <TextArea
-                    rows={5}
-                    maxLength={500}
+                    rows={4}
+                    maxLength={300}
                     placeholder="e.g.: O Revestimento deve ser executado, pois precisamos executar o gesso e as paredes. Sem o revestimento, tais serviços não podem ser executados!"
                     size="large"
+                    showCount
                   />
                 </Form.Item>
               </Col>

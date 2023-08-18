@@ -11,6 +11,7 @@ import {
   Row,
   Space,
   Tag,
+  Typography,
   notification,
 } from 'antd';
 
@@ -22,7 +23,7 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import TextArea from 'antd/es/input/TextArea';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { Assignment, User } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
 import { phoneToFormat } from '../../sdk/utils/generateFormatterData';
@@ -47,8 +48,11 @@ interface AssignmentAssignedProps {
 export default function AssignmentAssigned(props: AssignmentAssignedProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [form] = Form.useForm<Assignment.AssignmentNotificationInput>();
-  const [userId, setUserId] = useState<number>();
-  const [userName, setUserName] = useState<string>();
+  const [user, setUser] = useState<{ id: number; name: string }>();
+
+  const employee = useMemo(() => {
+    return user;
+  }, [user]);
 
   return (
     <WrapperDefault title="Atribuição de Tarefas">
@@ -107,8 +111,11 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
                         type="primary"
                         onClick={() => {
                           setOpen(true);
-                          setUserId(employee?.id);
-                          setUserName(employee?.name);
+                          setUser({
+                            ...user,
+                            name: employee?.name,
+                            id: employee?.id,
+                          });
                         }}
                       >
                         ATRIBUIR
@@ -119,8 +126,11 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
                         danger
                         onClick={() => {
                           setOpen(true);
-                          setUserId(employee?.id);
-                          setUserName(employee?.name);
+                          setUser({
+                            ...user,
+                            name: employee?.name,
+                            id: employee?.id,
+                          });
                         }}
                       >
                         DESATRIBUIR
@@ -172,7 +182,7 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
               notice: Assignment.AssignmentNotificationInput,
             ) => {
               try {
-                props.onAssigned(notice, Number(userId), userName);
+                props.onAssigned(notice, Number(employee?.id), employee?.name);
                 form.resetFields();
                 setOpen(false);
               } catch (error: any) {
@@ -250,11 +260,13 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
               ]}
             >
               <TextArea
-                rows={5}
-                maxLength={500}
+                rows={6}
+                maxLength={300}
                 size="large"
                 placeholder="e.g.: Sua razão"
+                showCount
               />
+        
             </Form.Item>
             <Form.Item style={{ marginTop: 40 }}>
               <Space direction="horizontal">

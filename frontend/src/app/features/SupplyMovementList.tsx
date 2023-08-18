@@ -5,7 +5,15 @@ import {
   EyeOutlined,
   RollbackOutlined,
 } from '@ant-design/icons';
-import { Button, Checkbox, Space, Table, Tooltip, notification } from 'antd';
+import {
+  Button,
+  Checkbox,
+  Space,
+  Table,
+  Tag,
+  Tooltip,
+  notification,
+} from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useSupplyMovement from '../../core/hooks/useSuppliesMovement';
@@ -22,7 +30,7 @@ export default function SupplyMovementList() {
   const { suppliesMovements, fetchSuppliesMovements, accessDeniedError } =
     useSuppliesMovements();
 
-  const { removeSupplyMovement } = useSupplyMovement();
+  const { removeSupplyMovement, vacateSupplyMovement } = useSupplyMovement();
 
   useEffect(() => {
     fetchSuppliesMovements(page);
@@ -56,8 +64,26 @@ export default function SupplyMovementList() {
             title: 'Desocupado?',
             dataIndex: 'notBusy',
             align: 'center',
-            render(notBusy: boolean) {
-              return <Checkbox checked={notBusy}>DESOCUPADO</Checkbox>;
+            render(_: any, movement: Supply.MaterialModel) {
+              return (
+                <>
+                  {' '}
+                  <Checkbox
+                    onChange={async () => {
+                    
+                        await vacateSupplyMovement(movement?.id);
+                
+                    }}
+                    checked={movement?.notBusy}
+                  >
+                    {movement?.notBusy ? (
+                      <Tag color="blue">DESOCUPADO</Tag>
+                    ) : (
+                      <Tag color="red">OCUPADO</Tag>
+                    )}
+                  </Checkbox>
+                </>
+              );
             },
           },
           {
@@ -65,7 +91,15 @@ export default function SupplyMovementList() {
             dataIndex: 'movable',
             align: 'center',
             render(movable: boolean) {
-              return <Checkbox checked={movable}>MOVIMENTÁVEL</Checkbox>;
+              return (
+                <>
+                  {movable ? (
+                    <Tag color="blue">MOVIMENTÁVEL</Tag>
+                  ) : (
+                    <Tag color="red">IMOVIMENTÁVEL</Tag>
+                  )}
+                </>
+              );
             },
           },
           {
@@ -87,7 +121,7 @@ export default function SupplyMovementList() {
                 </Tooltip>
 
                 <DoubleConfirm
-                  popConfirmTitle="Remover Recurso?"
+                  popConfirmTitle="Remover Movimento?"
                   popConfirmContent="Deseja mesmo remover este movimento?"
                   onConfirm={async () => {
                     await removeSupplyMovement(Number(supplyMovement?.id));
@@ -112,7 +146,7 @@ export default function SupplyMovementList() {
                     }
                   />
                 </Tooltip>
-                <Tooltip title={'Disponibilizar'}>
+                <Tooltip title={'Finalizar Recurso'}>
                   <Button type={'link'} icon={<CheckCircleOutlined />} />
                 </Tooltip>
                 <Tooltip title={'Ver Detalhes'}>

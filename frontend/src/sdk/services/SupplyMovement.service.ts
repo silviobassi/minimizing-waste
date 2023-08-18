@@ -41,6 +41,12 @@ class SupplyMovementService extends Service {
       this.getStatus,
     );
   }
+
+  static vacateSupplyMovement(supplyMovementId: number) {
+    return this.Http.delete<{}>(
+      `/supplies-movements/vacancies/${supplyMovementId}`,
+    ).then(this.getStatus);
+  }
 }
 
 export default SupplyMovementService;

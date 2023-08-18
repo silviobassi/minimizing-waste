@@ -56,8 +56,7 @@ public class SupplyMovement extends BaseEntity{
     }
 
     public void vacate(){
-        setNotBusy(true);
-        setMovable(true);
+        setNotBusy(!notBusy);
     }
     public void devolveAllocatedQuantity(){
         allocatedQuantity -= reservedQuantity;

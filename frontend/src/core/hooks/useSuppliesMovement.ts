@@ -11,9 +11,18 @@ export default function useSupplyMovement() {
   const dispatch = useDispatch<AppDispatch>();
 
   const removeSupplyMovement = useCallback(
-    async (supplyId: number) => {
+    async (supplyMovementId: number) => {
       return await dispatch(
-        SupplyMovementActions.removeSupplyMovement(supplyId),
+        SupplyMovementActions.removeSupplyMovement(supplyMovementId),
+      ).unwrap();
+    },
+    [dispatch],
+  );
+
+  const vacateSupplyMovement = useCallback(
+    async (supplyMovementId: number) => {
+      return await dispatch(
+        SupplyMovementActions.vacateSupplyMovement(supplyMovementId),
       ).unwrap();
     },
     [dispatch],
@@ -35,6 +44,7 @@ export default function useSupplyMovement() {
 
   return {
     removeSupplyMovement,
+    vacateSupplyMovement,
     fetchSupplyMovement,
     supplyMovement,
     notFound,

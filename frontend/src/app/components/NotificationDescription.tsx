@@ -25,7 +25,9 @@ export default function NotificationDescription(
               {props.notification?.goal}
             </Descriptions.Item>
             <Descriptions.Item label={<strong>Razão</strong>}>
-              <p>{props.notification?.reason}</p>
+              <Typography.Paragraph>
+                {props.notification?.reason}
+              </Typography.Paragraph>
             </Descriptions.Item>
           </Descriptions>
         </Card>

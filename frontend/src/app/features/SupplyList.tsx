@@ -90,6 +90,21 @@ export default function SupplyList() {
             responsive: ['sm'],
           },
           {
+            title: 'Quantidade',
+            dataIndex: ['supplyDescription', 'quantity'],
+            fixed: 'left',
+            responsive: ['sm'],
+            render(_: any, supply) {
+              return (
+                <>
+                  <Space>
+                    {supply.supplyDescription?.quantity}
+                  </Space>
+                </>
+              );
+            },
+          },
+          {
             title: 'Medida Unitária',
             dataIndex: ['supplyDescription', 'measure'],
             width: 200,

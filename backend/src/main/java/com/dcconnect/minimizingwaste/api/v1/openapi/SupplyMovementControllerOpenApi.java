@@ -1,5 +1,6 @@
 package com.dcconnect.minimizingwaste.api.v1.openapi;
 
+import com.dcconnect.minimizingwaste.api.v1.model.SupplyMovementDevolvedModel;
 import com.dcconnect.minimizingwaste.api.v1.model.SupplyMovementModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.DevolvedSupplyMovementInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMovementInput;
@@ -55,9 +56,9 @@ public interface SupplyMovementControllerOpenApi {
     })
     SupplyMovementModel findById(Long supplyMovementId);
     @Operation(summary = "Devolve uma quantia de recurso")
-    SupplyMovementModel giveBackSupply(@RequestBody(description = "Representação do recurso a devolver")
+    SupplyMovementDevolvedModel giveBackSupply(@RequestBody(description = "Representação do recurso a devolver")
                                        DevolvedSupplyMovementInput devolvedSupplyMovementInput,
-                                       @Parameter(description = "ID de um movimento de recurso",
+                                               @Parameter(description = "ID de um movimento de recurso",
                                                example = "1", required = true) Long supplyMovementId);
     @Operation(summary = "Disponibiliza um movimento de recurso em estado ocioso", responses = {
             @ApiResponse(responseCode = "404", description = "Movimento de Recurso não encontrado",

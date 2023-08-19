@@ -8,7 +8,7 @@ type EmployeeResponsibleType = User.Assigned;
 interface EmployeesResponsibleProps {
   employeeResponsible: EmployeeResponsibleType;
   color?: string;
-  isAssignScreen: boolean;
+  isAssignScreen?: boolean;
 }
 
 export default function EmployeesResponsible(props: EmployeesResponsibleProps) {

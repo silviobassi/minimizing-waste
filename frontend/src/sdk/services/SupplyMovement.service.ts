@@ -47,6 +47,22 @@ class SupplyMovementService extends Service {
       `/supplies-movements/vacancies/${supplyMovementId}`,
     ).then(this.getStatus);
   }
+
+  static giveBackSupplyMovement(
+    supplyMovementId: number,
+    movementDevolved: Supply.DevolvedSupplyInput,
+  ): Supply.DevolvedSupplyModel {
+    return this.Http.put<Supply.DevolvedSupplyModel>(
+      `/supplies-movements/give-back/${supplyMovementId}`,
+      movementDevolved,
+    ).then(this.getData);
+  }
+
+  static endSupply(supplyMovementId: number) {
+    return this.Http.delete<{}>(
+      `/supplies-movements/end/${supplyMovementId}/supply`,
+    ).then(this.getStatus);
+  }
 }
 
 export default SupplyMovementService;

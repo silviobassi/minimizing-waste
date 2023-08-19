@@ -1,10 +1,11 @@
 import { SaveOutlined, StopOutlined } from '@ant-design/icons';
 import { notification } from 'antd';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import useSupplyMovement from '../../core/hooks/useSuppliesMovement';
 import usePageTitle from '../../core/usePageTitle';
 import { Supply, SupplyMovementService } from '../../sdk';
+import AccessDenied from '../components/AccessDenied';
 import ElementNotFound from '../components/ElementNotFound';
 import SupplyMovementForm from '../features/SupplyMovementForm';
 
@@ -12,12 +13,20 @@ export default function SupplyMovementEditView() {
   usePageTitle('Edição de Movimento de Recurso');
   const params = useParams<{ supplyMovementId: string }>();
   const { supplyMovement, fetchSupplyMovement, notFound } = useSupplyMovement();
+  const [accessDeniedError, setAccessDeniedError] = useState<boolean>(false);
 
   useEffect(() => {
     if (params.supplyMovementId && !isNaN(Number(params.supplyMovementId)))
-      fetchSupplyMovement(Number(params.supplyMovementId));
-  }, [fetchSupplyMovement, params.supplyMovementId]);
+      fetchSupplyMovement(Number(params.supplyMovementId)).catch((err) => {
+        if (err?.data?.status === 403) {
+          setAccessDeniedError(true);
+          return;
+        }
 
+        throw err;
+      });
+  }, [fetchSupplyMovement, params.supplyMovementId]);
+  if (accessDeniedError) return <AccessDenied />;
   if (isNaN(Number(params.supplyMovementId)))
     return <Navigate to={'/movimento-recursos'} />;
 
@@ -25,6 +34,7 @@ export default function SupplyMovementEditView() {
     return (
       <ElementNotFound description="O Movimento do Recurso não foi encontrado!" />
     );
+  
 
   function handleSupplyMovementUpdate(movement: Supply.MovementInput) {
     SupplyMovementService.updateExistingSupplyMovement(

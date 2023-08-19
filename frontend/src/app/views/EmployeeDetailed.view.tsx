@@ -2,7 +2,6 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import {
   Avatar,
   Button,
-  Card,
   Col,
   Descriptions,
   Divider,
@@ -15,7 +14,7 @@ import {
   notification,
 } from 'antd';
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, Navigate, useParams } from 'react-router-dom';
 import useUser from '../../core/hooks/useUser';
 import usePageTitle from '../../core/usePageTitle';
@@ -29,25 +28,35 @@ import {
 } from '../../sdk/utils/generateFormatterData';
 import DoubleConfirm from '../components/DoubleConfirm';
 import ElementNotFound from '../components/ElementNotFound';
+import AccessDenied from '../components/AccessDenied';
 
 export default function EmployeeDetailedView() {
   usePageTitle('Detalhes do Colaborador');
   const { lg, xs } = useBreakpoint();
   const params = useParams<{ employeeId: string }>();
+  const [accessDeniedError, setAccessDeniedError] = useState<boolean>(false);
 
   const { user, fetchUser, removeUser, notFound } = useUser();
 
   useEffect(() => {
     if (!isNaN(Number(params.employeeId))) {
-      fetchUser(Number(params.employeeId));
+      fetchUser(Number(params.employeeId)).catch((err) => {
+        if (err?.data?.status === 403) {
+          setAccessDeniedError(true);
+          return;
+        }
+
+        throw err;
+      });
     }
   }, [fetchUser, params.employeeId]);
 
   if (isNaN(Number(params.employeeId)))
     return <Navigate to={'/colaboradores'} />;
 
-  if (notFound) return <ElementNotFound description="Colaborador não encontrado" />;
-
+  if (notFound)
+    return <ElementNotFound description="Colaborador não encontrado" />;
+  if (accessDeniedError) return <AccessDenied />;
   if (!user) return <Skeleton />;
 
   return (

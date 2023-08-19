@@ -11,7 +11,6 @@ import {
   Row,
   Space,
   Tag,
-  Typography,
   notification,
 } from 'antd';
 
@@ -266,7 +265,6 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
                 placeholder="e.g.: Sua razão"
                 showCount
               />
-        
             </Form.Item>
             <Form.Item style={{ marginTop: 40 }}>
               <Space direction="horizontal">

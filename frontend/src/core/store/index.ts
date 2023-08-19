@@ -18,6 +18,8 @@ const observeActions: Middleware = () => (next) => (action) => {
       'assignments/toggleComplete/rejected',
       'assignments/toggleApprove/rejected',
       'supplies-movements/getAllSuppliesMovements/rejected',
+      'supplies-movements/giveBackSupplyMovement/rejected',
+      'supplies-movements/vacateSupplyMovement/rejected',
       'auth/getUser/rejected',
       'sectors/getAllSectors/rejected',
       'supplies/getAllSupplies/rejected',

@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import useAssignments from '../../core/hooks/useAssignments';
 import { Assignment } from '../../sdk/@types';
 
+import { Link } from 'react-router-dom';
 import useAssignment from '../../core/hooks/useAssignment';
 import AccessDenied from '../components/AccessDenied';
 import DoubleConfirm from '../components/DoubleConfirm';
@@ -192,13 +193,9 @@ export default function TaskList() {
                   />
                 </Tooltip>
                 <Tooltip title={'Ver Detalhes'}>
-                  <Button
-                    type={'link'}
-                    icon={<EyeOutlined />}
-                    onClick={() =>
-                      navigate(`/tarefas/${assignment.id}/detalhes`)
-                    }
-                  />
+                  <Link to={`/tarefas/${assignment.id}/detalhes`}>
+                    <Button type={'link'} icon={<EyeOutlined />} />
+                  </Link>
                 </Tooltip>
               </Space>
             ),

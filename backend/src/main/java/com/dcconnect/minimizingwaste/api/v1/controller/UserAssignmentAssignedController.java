@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/v1/users/{assignmentId}")
 public class UserAssignmentAssignedController implements UserAssignmentAssignedControllerOpenApi {
-// users/2/assignments?sort=asc&size=4?assigned=false
+
     @Autowired
     private AssignmentService assignmentService;
 

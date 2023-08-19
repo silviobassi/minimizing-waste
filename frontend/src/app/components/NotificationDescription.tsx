@@ -16,13 +16,19 @@ export default function NotificationDescription(
           <Typography.Title level={3}>Observação:</Typography.Title>
           <Descriptions column={1} size="small">
             <Descriptions.Item label={<strong>Título</strong>}>
-              {props.notification?.title}
+              <Typography.Paragraph>
+                {props.notification?.title}
+              </Typography.Paragraph>
             </Descriptions.Item>
             <Descriptions.Item label={<strong>Data da Notificação</strong>}>
-              {format(new Date(props.notification?.createdAt), 'dd/MM/yyyy')}
+              <Typography.Paragraph>
+                {format(new Date(props.notification?.createdAt), 'dd/MM/yyyy')}
+              </Typography.Paragraph>
             </Descriptions.Item>
             <Descriptions.Item label={<strong>Objetivo</strong>}>
-              {props.notification?.goal}
+              <Typography.Paragraph>
+                {props.notification?.goal}
+              </Typography.Paragraph>
             </Descriptions.Item>
             <Descriptions.Item label={<strong>Razão</strong>}>
               <Typography.Paragraph>

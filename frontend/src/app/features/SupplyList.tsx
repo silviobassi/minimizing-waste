@@ -19,11 +19,21 @@ import useSupply from '../../core/hooks/useSupply';
 import DoubleConfirm from '../components/DoubleConfirm';
 
 export default function SupplyList() {
-  const { supplies, fetchSupplies, accessDeniedError } = useSupplies();
+  const { supplies, fetchSupplies } = useSupplies();
   const { removeSupply } = useSupply();
   const [page, setPage] = useState<number>(0);
+
+  const [accessDeniedError, setAccessDeniedError] = useState(false);
+
   useEffect(() => {
-    fetchSupplies(page, 4);
+    fetchSupplies(page, 4).catch((err) => {
+      if (err?.data?.status === 403) {
+        setAccessDeniedError(true);
+        return;
+      }
+
+      throw err;
+    });
   }, [fetchSupplies, page]);
 
   if (accessDeniedError) return <AccessDenied />;
@@ -97,9 +107,7 @@ export default function SupplyList() {
             render(_: any, supply) {
               return (
                 <>
-                  <Space>
-                    {supply.supplyDescription?.quantity}
-                  </Space>
+                  <Space>{supply.supplyDescription?.quantity}</Space>
                 </>
               );
             },

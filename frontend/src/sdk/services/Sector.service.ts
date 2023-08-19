@@ -26,9 +26,7 @@ class SectorService extends Service {
   }
 
   static deleteExistingSector(sectorId: number) {
-    return this.Http.delete(`/sectors/${sectorId}`).then(
-      this.getStatus,
-    );
+    return this.Http.delete(`/sectors/${sectorId}`).then(this.getStatus);
   }
 }
 

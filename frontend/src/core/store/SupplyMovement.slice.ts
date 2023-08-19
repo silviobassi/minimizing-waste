@@ -46,11 +46,42 @@ export const vacateSupplyMovement = createAsyncThunk(
   },
 );
 
+export const giveBackSupplyMovement = createAsyncThunk(
+  'supplies-movements/giveBackSupplyMovement',
+  async (
+    {
+      supplyMovementId,
+      movementDevolved,
+    }: {
+      supplyMovementId: number;
+      movementDevolved: Supply.DevolvedSupplyInput;
+    },
+    { dispatch },
+  ) => {
+    await SupplyMovementService.giveBackSupplyMovement(
+      supplyMovementId,
+      movementDevolved,
+    );
+    await dispatch(getAllSuppliesMovements(0));
+  },
+);
+
+export const endSupply = createAsyncThunk(
+  'supplies-movements/endSupply',
+  async (supplyMovementId: number, { dispatch }) => {
+    await SupplyMovementService.endSupply(supplyMovementId);
+    await dispatch(getAllSuppliesMovements(0));
+  },
+);
+
 const SupplyMovementSlice = createSlice({
   initialState,
   name: 'suppliesMovements',
   reducers: {
-    storeSuppliesMovements(state, action: PA<Supply.PagedModelSupplyMovementModel[]>) {
+    storeSuppliesMovements(
+      state,
+      action: PA<Supply.PagedModelSupplyMovementModel[]>,
+    ) {
       state.list = action.payload;
     },
     clearSuppliesMovements(state) {
@@ -59,7 +90,8 @@ const SupplyMovementSlice = createSlice({
   },
 });
 
-export const { storeSuppliesMovements, clearSuppliesMovements } = SupplyMovementSlice.actions;
+export const { storeSuppliesMovements, clearSuppliesMovements } =
+  SupplyMovementSlice.actions;
 
 const SupplyMovementReducer = SupplyMovementSlice.reducer;
 

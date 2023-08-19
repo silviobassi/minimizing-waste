@@ -12,13 +12,21 @@ import WrapperDefault from '../components/WrapperDefault';
 
 export default function WorkStationList() {
   const navigate = useNavigate();
-  const { workStations, fetchWorkStations, accessDeniedError } =
+  const [accessDeniedError, setAccessDeniedError] = useState(false);
+  const { workStations, fetchWorkStations } =
     useWorkStations();
 
   const { removeWorkStation } = useWorkStation();
   const [page, setPage] = useState<number>(0);
   useEffect(() => {
-    fetchWorkStations(page, 4);
+    fetchWorkStations(page, 4).catch((err) => {
+      if (err?.data?.status === 403) {
+        setAccessDeniedError(true);
+        return;
+      }
+
+      throw err;
+    });
   }, [fetchWorkStations, page]);
 
   if (accessDeniedError) return <AccessDenied />;

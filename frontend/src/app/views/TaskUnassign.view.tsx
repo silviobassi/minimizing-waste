@@ -65,11 +65,10 @@ export default function TaskUnassignView() {
     });
   }
 
-  if (accessDeniedError) return <AccessDenied />;
-
   if (isNaN(Number(params.assignmentId))) return <Navigate to={'/tarefas'} />;
 
   if (notFound) return <Card>tarefa não encontrada</Card>;
+  if (accessDeniedError) return <AccessDenied />;
 
   if (!assignment) return <Skeleton />;
 

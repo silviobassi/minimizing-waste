@@ -69,7 +69,7 @@ public class SupplyMovement extends BaseEntity{
     }
 
     public void decreaseAllocated(){
-        setAllocatedQuantity(null);
+        setAllocatedQuantity(0L);
     }
 
 

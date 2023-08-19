@@ -20,7 +20,7 @@ import SupplyEditView from './views/SupplyEdit.view';
 import SupplyListView from './views/SupplyList.view';
 import SupplyMovementCreateView from './views/SupplyMovementCreate.view';
 import SupplyMovementEditView from './views/SupplyMovementEdit.view';
-import SupplyMovementGiveBackForm from './views/SupplyMovementGiveBack.view';
+import SupplyMovementDetailedView from './views/SupplyMovementDetailed.view';
 import SupplyMovementListView from './views/SupplyMovementList.view';
 import TaskAssignView from './views/TaskAssign.view';
 import TaskCreateView from './views/TaskCreate.view';
@@ -92,8 +92,8 @@ export default function Routes() {
         element={<SupplyMovementEditView />}
       />
       <Route
-        path={'/movimento-recursos/devolver-recurso/:id'}
-        element={<SupplyMovementGiveBackForm />}
+        path={'/movimento-recursos/detalhes/:supplyMovementId'}
+        element={<SupplyMovementDetailedView />}
       />
       <Route path={'/recursos/criar'} element={<SupplyCreateView />} />
       <Route path={'/recursos/editar/:supplyId'} element={<SupplyEditView />} />

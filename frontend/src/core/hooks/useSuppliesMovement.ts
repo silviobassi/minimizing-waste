@@ -28,6 +28,30 @@ export default function useSupplyMovement() {
     [dispatch],
   );
 
+  const giveBackSupplyMovement = useCallback(
+    async (
+      supplyMovementId: number,
+      movementDevolved: Supply.DevolvedSupplyInput,
+    ) => {
+      return await dispatch(
+        SupplyMovementActions.giveBackSupplyMovement({
+          supplyMovementId,
+          movementDevolved,
+        }),
+      ).unwrap()
+    },
+    [dispatch],
+  );
+
+  const endSupply = useCallback(
+    async (supplyMovementId: number) => {
+      return await dispatch(
+        SupplyMovementActions.endSupply(supplyMovementId),
+      ).unwrap();
+    },
+    [dispatch],
+  );
+
   const fetchSupplyMovement = useCallback(async (supplyId: number) => {
     try {
       await SupplyMovementService.getSupplyMovement(supplyId).then(
@@ -45,6 +69,8 @@ export default function useSupplyMovement() {
   return {
     removeSupplyMovement,
     vacateSupplyMovement,
+    giveBackSupplyMovement,
+    endSupply,
     fetchSupplyMovement,
     supplyMovement,
     notFound,

@@ -3,6 +3,8 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 import com.dcconnect.minimizingwaste.api.v1.assembler.DevolvedSupplyMovementDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.SuppliesMovementDisassembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.SupplyMovementAssembler;
+import com.dcconnect.minimizingwaste.api.v1.assembler.SupplyMovementDevolvedAssembler;
+import com.dcconnect.minimizingwaste.api.v1.model.SupplyMovementDevolvedModel;
 import com.dcconnect.minimizingwaste.api.v1.model.SupplyMovementModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.DevolvedSupplyMovementInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.SupplyMovementInput;
@@ -34,6 +36,9 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
 
     @Autowired
     private SupplyMovementAssembler supplyMovementAssembler;
+
+    @Autowired
+    private SupplyMovementDevolvedAssembler supplyMovementDevolvedAssembler;
 
     @Autowired
     private SuppliesMovementDisassembler suppliesMovementDisassembler;
@@ -92,13 +97,13 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
     @CheckSecurity.Supplies.CanGiveBack
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/give-back/{supplyMovementId}")
-    public SupplyMovementModel giveBackSupply(
+    public SupplyMovementDevolvedModel giveBackSupply(
             @RequestBody @Valid DevolvedSupplyMovementInput devolvedSupplyMovementInput,
             @PathVariable Long supplyMovementId){
 
         SupplyMovement supplyMovement = supplyMovementService.findOrFail(supplyMovementId);
         devolvedSupplyMovementDisassembler.copyToDomainModel(devolvedSupplyMovementInput, supplyMovement);
-        return supplyMovementAssembler.toModel(supplyMovementService.giveBackSupply(supplyMovement));
+        return supplyMovementDevolvedAssembler.toModel(supplyMovementService.giveBackSupply(supplyMovement));
     }
 
     @CheckSecurity.Supplies.CanVacate

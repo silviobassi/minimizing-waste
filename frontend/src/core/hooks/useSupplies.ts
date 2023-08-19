@@ -4,7 +4,6 @@ import { AppDispatch, RootState } from '../store';
 import * as SupplyActions from '../store/Supply.slice';
 
 export default function useSupplies() {
-  const [accessDeniedError, setAccessDeniedError] = useState(false);
   const dispatch = useDispatch<AppDispatch>();
   const supplies = useSelector((state: RootState) => state.supplies.list);
   const fetching = useSelector((state: RootState) => state.supplies.fetching);
@@ -17,6 +16,5 @@ export default function useSupplies() {
     fetchSupplies,
     supplies,
     fetching,
-    accessDeniedError,
   };
 }

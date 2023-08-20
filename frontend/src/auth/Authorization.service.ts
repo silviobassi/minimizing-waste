@@ -1,4 +1,3 @@
-import { ConsoleSqlOutlined } from '@ant-design/icons';
 import axios from 'axios';
 import pkceChallenge from 'pkce-challenge';
 
@@ -9,7 +8,11 @@ const authServer = axios.create({
 });
 
 authServer.interceptors.response.use(undefined, async (error) => {
-  if (error?.response?.status === 401) {
+  if (
+    error?.response?.status === 401 ||
+    (error?.response?.status === 400 &&
+      error?.response?.data?.error == 'invalid_grant')
+  ) {
     AuthService.imperativelySendToLogout();
   }
 
@@ -94,7 +97,7 @@ export default class AuthService {
     this.setCodeVerifier(code_verifier);
 
     const loginUrl = this.getLoginScreenUrl(code_challenge);
-   
+
     // imperativo
     // gera efeito colateral
     window.location.href = loginUrl;

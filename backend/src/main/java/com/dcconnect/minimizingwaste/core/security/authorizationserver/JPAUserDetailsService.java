@@ -31,8 +31,8 @@ public class JPAUserDetailsService implements UserDetailsService {
 
     private Collection<GrantedAuthority> getAuthorities(com.dcconnect.minimizingwaste.domain.model.User user) {
         return user.getAccessGroups().stream()
-                .flatMap(grupo -> grupo.getPermissions().stream())
-                .map(permissao -> new SimpleGrantedAuthority(permissao.getName().toUpperCase()))
+                .flatMap(group -> group.getPermissions().stream())
+                .map(permission -> new SimpleGrantedAuthority(permission.getName().toUpperCase()))
                 .collect(Collectors.toSet());
     }
 }

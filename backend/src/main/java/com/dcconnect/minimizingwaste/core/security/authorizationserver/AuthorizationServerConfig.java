@@ -20,6 +20,7 @@ import org.springframework.security.config.annotation.web.configurers.AuthorizeH
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationConsentService;
 import org.springframework.security.oauth2.server.authorization.JdbcOAuth2AuthorizationService;
 import org.springframework.security.oauth2.server.authorization.OAuth2AuthorizationConsentService;
@@ -53,17 +54,11 @@ public class AuthorizationServerConfig {
                 customizer -> customizer.consentPage("/oauth2/consent"));
 
         RequestMatcher endpointsMatcher = authorizationServerConfigurer.getEndpointsMatcher();
-        http.securityMatcher(endpointsMatcher).authorizeHttpRequests((authorize) -> {
-            ((AuthorizeHttpRequestsConfigurer.AuthorizedUrl)authorize.anyRequest()).authenticated();
-        }).csrf((csrf) -> {
-            csrf.ignoringRequestMatchers(new RequestMatcher[]{endpointsMatcher});
-        }).apply(authorizationServerConfigurer);
+        http.securityMatcher(endpointsMatcher).authorizeHttpRequests((authorizeRequests) ->
+                authorizeRequests.anyRequest().authenticated()).csrf(csrf -> csrf.ignoringRequestMatchers(endpointsMatcher))
+                .apply(authorizationServerConfigurer);
 
         return http.formLogin(customizer -> customizer.loginPage("/login")).build();
-       /* return  http.formLogin(customizer -> customizer.loginPage("/login")
-                .defaultSuccessUrl(redirectProperties.getClient(), true)
-
-        ).build();*/
     }
 
     @Bean
@@ -74,8 +69,9 @@ public class AuthorizationServerConfig {
     }
 
     @Bean
-    public RegisteredClientRepository registeredClientRepository(JdbcOperations jdbcOperations){
-        return  new JdbcRegisteredClientRepository(jdbcOperations);
+    public RegisteredClientRepository registeredClientRepository(PasswordEncoder passwordEncoder,
+                                                                 JdbcOperations jdbcOperations) {
+        return new JdbcRegisteredClientRepository(jdbcOperations);
     }
 
     @Bean

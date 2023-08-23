@@ -10,8 +10,8 @@ export namespace User {
   export type Assigned =
     MinimizingWaste.components['schemas']['UserAssignedModel'];
   export type Summary = MinimizingWaste.components['schemas']['UserPhotoModel'];
-  export type AccessGroupSummary =
-    MinimizingWaste.components['schemas']['AccessGroupSummary'];
+  export type RoleDetailedModel =
+    MinimizingWaste.components['schemas']['RoleDetailedModel'];
   export type Input = MinimizingWaste.components['schemas']['UserInput'];
   export type UpdateInput =
     MinimizingWaste.components['schemas']['UserUpdateInput'];

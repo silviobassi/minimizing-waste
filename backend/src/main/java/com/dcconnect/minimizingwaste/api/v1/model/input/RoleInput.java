@@ -7,7 +7,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class AccessGroupInput {
+public class RoleInput {
 
     @Schema(example = "Engenheiro")
     @NotBlank

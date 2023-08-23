@@ -2,11 +2,10 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.PermissionAssembler;
 import com.dcconnect.minimizingwaste.api.v1.model.PermissionDetailedModel;
-import com.dcconnect.minimizingwaste.api.v1.openapi.AccessGroupPermissionControllerOpenApi;
+import com.dcconnect.minimizingwaste.api.v1.openapi.RolePermissionControllerOpenApi;
 import com.dcconnect.minimizingwaste.core.security.CheckSecurity;
-import com.dcconnect.minimizingwaste.domain.model.AccessGroup;
-import com.dcconnect.minimizingwaste.domain.repository.AccessGroupRepository;
-import com.dcconnect.minimizingwaste.domain.service.AccessGroupService;
+import com.dcconnect.minimizingwaste.domain.model.Role;
+import com.dcconnect.minimizingwaste.domain.service.RoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
@@ -16,11 +15,11 @@ import org.springframework.web.bind.annotation.*;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
 @RestController
-@RequestMapping("/v1/access-groups/{accessGroupId}/permissions")
-public class AccessGroupPermissionController implements AccessGroupPermissionControllerOpenApi {
+@RequestMapping("/v1/roles/{roleId}/permissions")
+public class RolePermissionController implements RolePermissionControllerOpenApi {
 
     @Autowired
-    private AccessGroupService accessGroupService;
+    private RoleService roleService;
 
     @Autowired
     private PermissionAssembler permissionAssembler;
@@ -28,26 +27,26 @@ public class AccessGroupPermissionController implements AccessGroupPermissionCon
     @CheckSecurity.Users.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public CollectionModel<PermissionDetailedModel> all(@PathVariable Long accessGroupId){
-        AccessGroup accessGroup =  accessGroupService.findOrFail(accessGroupId);
+    public CollectionModel<PermissionDetailedModel> all(@PathVariable Long roleId){
+        Role role =  roleService.findOrFail(roleId);
         CollectionModel<PermissionDetailedModel> permissionsDetailed = permissionAssembler
-                .toCollectionModel(accessGroup.getPermissions(), accessGroupId);
+                .toCollectionModel(role.getPermissions(), roleId);
         return permissionsDetailed;
     }
 
     @CheckSecurity.Users.CanEdit
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{permissionId}")
-    public ResponseEntity<Void> disassociate(@PathVariable Long accessGroupId, @PathVariable Long permissionId) {
-        accessGroupService.disassociatePermission(accessGroupId, permissionId);
+    public ResponseEntity<Void> disassociate(@PathVariable Long roleId, @PathVariable Long permissionId) {
+        roleService.disassociatePermission(roleId, permissionId);
         return ResponseEntity.noContent().build();
     }
 
     @CheckSecurity.Users.CanEdit
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{permissionId}")
-    public void associate(@PathVariable Long accessGroupId, @PathVariable Long permissionId){
-        accessGroupService.associatePermission(accessGroupId, permissionId);
+    public void associate(@PathVariable Long roleId, @PathVariable Long permissionId){
+        roleService.associatePermission(roleId, permissionId);
     }
 
 }

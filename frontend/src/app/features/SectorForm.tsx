@@ -3,6 +3,9 @@ import { useEffect } from 'react';
 import { Sector, SectorService } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
 import WrapperDefault from '../components/WrapperDefault';
+import { hasPermission } from '../../auth/utils/isAuthenticated';
+import AccessDenied from '../components/AccessDenied';
+import useAuth from '../../core/hooks/useAuth';
 type SectorType = Sector.SectorModel;
 interface SectorFormDefaultProps {
   labelRegister: string;
@@ -15,8 +18,15 @@ interface SectorFormDefaultProps {
   sector?: SectorType;
 }
 
+
+
 export default function SectorForm(props: SectorFormDefaultProps) {
   const [form] = Form.useForm<Sector.Input>();
+  const {userAuth} = useAuth()
+
+  if(!hasPermission('EDIT_SECTOR', userAuth)) return <AccessDenied>
+    Você não tem permissão para executar essa operação!
+  </AccessDenied>
 
   useEffect(() => {
     form.resetFields();

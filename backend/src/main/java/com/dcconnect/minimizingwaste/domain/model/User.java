@@ -1,17 +1,13 @@
 package com.dcconnect.minimizingwaste.domain.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.annotation.PreDestroy;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.nio.file.Path;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -33,27 +29,31 @@ public class User extends BaseEntity {
 
     private String avatarUrl;
 
+
     @JsonBackReference
     @ManyToMany(mappedBy = "employeesResponsible")
     private Set<Assignment> assignments = new HashSet<>();
 
     @CreationTimestamp
     private OffsetDateTime createdAt;
-    @ManyToMany
-    @JoinTable(name = "users_access_groups", joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "access_group_id"))
-    private List<AccessGroup> accessGroups = new ArrayList<>();
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
 
     @Transient
     private String currentAvatarUrl;
 
 
-    public boolean removeAccessGroup(AccessGroup accessGroup) {
-        return getAccessGroups().remove(accessGroup);
+
+    public boolean removeRole() {
+        setRole(null);
+        return getRole() == null;
     }
 
-    public boolean addAccessGroups(AccessGroup accessGroup) {
-        return getAccessGroups().add(accessGroup);
+    public boolean addRole() {
+        setRole(getRole());
+        return getRole() != null;
     }
 
     public boolean isNew() {

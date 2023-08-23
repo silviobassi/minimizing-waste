@@ -16,11 +16,16 @@ import {
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import {
+  hasEmployeeCurrent,
+  hasPermission,
+} from '../../auth/utils/isAuthenticated';
 import useAssignments from '../../core/hooks/useAssignments';
 import { Assignment } from '../../sdk/@types';
 
 import { Link } from 'react-router-dom';
 import useAssignment from '../../core/hooks/useAssignment';
+import useAuth from '../../core/hooks/useAuth';
 import AccessDenied from '../components/AccessDenied';
 import DoubleConfirm from '../components/DoubleConfirm';
 import WrapperDefault from '../components/WrapperDefault';
@@ -33,18 +38,19 @@ export default function TaskList() {
   const [page, setPage] = useState<number>(0);
   const [checked, setChecked] = useState<boolean>();
 
+  const { userAuth } = useAuth();
+
   useEffect(() => {
     fetchAssignments(page).catch((err) => {
       if (err?.data?.status === 403) {
         setAccessDeniedError(true);
         return;
       }
-
-      throw err;
+      //throw err;
     });
   }, [fetchAssignments, page, checked]);
-
-  if (accessDeniedError) return <AccessDenied />;
+  if (accessDeniedError)
+    return <AccessDenied>Você não pode visualizar esses dados!</AccessDenied>;
 
   return (
     <WrapperDefault title="Lista de Tarefas">
@@ -89,6 +95,10 @@ export default function TaskList() {
             render(_: any, assignment) {
               return (
                 <Checkbox
+                  disabled={
+                    !hasPermission('COMPLETE_ASSIGNMENTS', userAuth) &&
+                    !hasEmployeeCurrent(assignment, userAuth)
+                  }
                   checked={assignment?.completed}
                   onChange={async () => {
                     await toggleComplete(
@@ -113,6 +123,7 @@ export default function TaskList() {
             render(_: any, assignment) {
               return (
                 <Checkbox
+                  disabled={!hasPermission('APPROVE_ASSIGNMENTS', userAuth)}
                   checked={assignment?.approved}
                   onChange={async () => {
                     if (assignment?.approved) {
@@ -150,6 +161,7 @@ export default function TaskList() {
               <Space size={'middle'}>
                 <Tooltip title={'Editar'}>
                   <Button
+                    disabled={!hasPermission('EDIT_ASSIGNMENTS', userAuth)}
                     type={'link'}
                     icon={<EditOutlined />}
                     onClick={() => navigate(`/tarefa/editar/${assignment.id}`)}
@@ -157,6 +169,9 @@ export default function TaskList() {
                 </Tooltip>
 
                 <DoubleConfirm
+                  deactivatePermission={
+                    !hasPermission('EDIT_ASSIGNMENTS', userAuth)
+                  }
                   popConfirmTitle="Remover Tarefa?"
                   popConfirmContent="Deseja mesmo remover esta tarefa?"
                   onConfirm={async () => {
@@ -168,7 +183,10 @@ export default function TaskList() {
                   }}
                 >
                   <Tooltip title={'Excluir'} placement="bottom">
-                    <Button type="link">
+                    <Button
+                      disabled={!hasPermission('EDIT_ASSIGNMENTS', userAuth)}
+                      type="link"
+                    >
                       <DeleteOutlined />
                     </Button>
                   </Tooltip>
@@ -176,6 +194,7 @@ export default function TaskList() {
 
                 <Tooltip title={'Atribuir Tarefa'}>
                   <Button
+                    disabled={!hasPermission('EDIT_ASSIGNMENTS', userAuth)}
                     type={'link'}
                     icon={<ReconciliationOutlined />}
                     onClick={() =>
@@ -185,6 +204,7 @@ export default function TaskList() {
                 </Tooltip>
                 <Tooltip title={'Desatribuir Tarefa'}>
                   <Button
+                    disabled={!hasPermission('EDIT_ASSIGNMENTS', userAuth)}
                     type={'link'}
                     icon={<ReconciliationOutlined />}
                     onClick={() =>
@@ -194,7 +214,11 @@ export default function TaskList() {
                 </Tooltip>
                 <Tooltip title={'Ver Detalhes'}>
                   <Link to={`/tarefas/${assignment.id}/detalhes`}>
-                    <Button type={'link'} icon={<EyeOutlined />} />
+                    <Button
+                      disabled={!hasPermission('CONSULT_ASSIGNMENTS', userAuth)}
+                      type={'link'}
+                      icon={<EyeOutlined />}
+                    />
                   </Link>
                 </Tooltip>
               </Space>

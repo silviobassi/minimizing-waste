@@ -10,7 +10,7 @@ export default function HeaderLayout() {
     token: { colorBgContainer },
   } = theme.useToken();
 
-  const { user } = useAuth();
+  const { userAuth } = useAuth();
 
   const [modal, contextHolder] = Modal.useModal();
 
@@ -34,7 +34,7 @@ export default function HeaderLayout() {
           gap: 30
         }}
       >
-        <Avatar size={'large'} src={user?.avatarUrl}><UserOutlined /></Avatar>
+        <Avatar size={'large'} src={userAuth?.avatarUrl}><UserOutlined /></Avatar>
         <Button
           onClick={() =>
             modal.confirm({

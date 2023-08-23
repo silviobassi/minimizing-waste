@@ -34,6 +34,7 @@ public class AssignmentModel extends RepresentationModel<AssignmentModel> {
 
     private WorkStationModel workStation;
 
-    @Schema(example = "")
+    private NotificationModel notification;
+
     private List<UserAssignedModel> employeesResponsible;
 }

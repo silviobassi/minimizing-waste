@@ -24,15 +24,9 @@ public class SupplyService {
 
     @Transactional
     public Supply create(Supply supply){
-        System.out.println("É equipamento? "+ supply.isEquipment());
-        System.out.println("É material? "+ supply.isMaterial());
-        System.out.println("É manipulação? "+ supply.isManipulation());
-        System.out.println("É bulk? "+ supply.isBulk());
-
         isNotEquipmentAndMaterial(supply);
         isNotBulkOrManipulation(supply);
         return supplyRepository.save(supply);
-
     }
 
     @Transactional

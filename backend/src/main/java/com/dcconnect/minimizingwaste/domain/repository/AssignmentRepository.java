@@ -16,7 +16,7 @@ import java.util.List;
 public interface AssignmentRepository extends CustomJpaRepository<Assignment, Long>,
         JpaSpecificationExecutor<Assignment> {
 
-    @EntityGraph(attributePaths = {"workStation.sector", "notification"})
+    @EntityGraph(attributePaths = {"workStation.sector", "notification", "employeesResponsible"})
     Page<Assignment> findAll(Specification<Assignment> specification, Pageable pageable);
 
     @Query(value = "select a from Assignment a join fetch a.workStation ws join fetch ws.sector join fetch a.notification " +

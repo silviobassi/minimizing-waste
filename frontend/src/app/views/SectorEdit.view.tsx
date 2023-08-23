@@ -32,7 +32,12 @@ export default function SetorEditView() {
   if (notFound)
     return <ElementNotFound description="O Setor não foi encontrado!" />;
 
-  if (accessDeniedError) return <AccessDenied />;
+  if (accessDeniedError)
+    return (
+      <AccessDenied>
+        Você não tem permissão para executar essa operação!
+      </AccessDenied>
+    );
 
   function handleSectorUpdate(sector: Sector.Input) {
     SectorService.updateExistingSector(sector, Number(params.sectorId)).then(

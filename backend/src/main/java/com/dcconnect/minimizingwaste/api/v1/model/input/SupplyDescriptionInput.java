@@ -16,7 +16,6 @@ import java.math.BigDecimal;
 public class SupplyDescriptionInput {
 
     @Schema(example = "Caixa de Papel")
-    @NotBlank
     private String packing;
 
     @Schema(example = "1")

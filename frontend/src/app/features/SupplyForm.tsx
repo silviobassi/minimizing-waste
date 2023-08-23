@@ -14,6 +14,9 @@ import { Link } from 'react-router-dom';
 import { Supply, SupplyService } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
 import WrapperDefault from '../components/WrapperDefault';
+import useAuth from '../../core/hooks/useAuth';
+import AccessDenied from '../components/AccessDenied';
+import { hasPermission } from '../../auth/utils/isAuthenticated';
 
 interface SupplyFormDefaultProps {
   labelRegister: string;
@@ -30,6 +33,15 @@ interface SupplyFormDefaultProps {
 export default function SupplyForm(props: SupplyFormDefaultProps) {
   const [supplyKind, setSupplyKind] = useState<any>('material');
   const [form] = Form.useForm<any>();
+
+  const { userAuth } = useAuth();
+
+  if (!hasPermission('EDIT_SUPPLIES', userAuth))
+    return (
+      <AccessDenied>
+        Você não tem permissão para executar essa operação!
+      </AccessDenied>
+    );
 
   const supply: any = {
     material: (
@@ -262,10 +274,6 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
               label="Embalagem*"
               name={['supplyDescription', 'packing']}
               rules={[
-                {
-                  required: true,
-                  message: 'A embalagem é obrigatória',
-                },
                 {
                   max: 70,
                   message: `A embalagem não pode ter mais de 70 caracteres`,

@@ -122,14 +122,9 @@ export default function EmployeeDetailedView() {
             <Descriptions.Item label={'Grau de Instrução'}>
               {user?.literate}
             </Descriptions.Item>
-            <Descriptions.Item label={'Grupo de Acesso'}>
-              {user?.accessGroups.map((group: User.AccessGroupSummary) =>
-                group.name === 'Administrador' ? (
-                  <Tag color="blue">{group.name.toUpperCase()}</Tag>
-                ) : (
-                  <Tag color="green">{group.name.toUpperCase()}</Tag>
-                ),
-              )}
+            <Descriptions.Item label={'Nível de Acesso'}>
+            <Tag color="blue">{user?.role?.name.toUpperCase()}</Tag>
+              
             </Descriptions.Item>
           </Descriptions>
         </Col>

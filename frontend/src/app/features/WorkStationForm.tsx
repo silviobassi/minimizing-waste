@@ -9,9 +9,12 @@ import {
   notification,
 } from 'antd';
 import { useEffect } from 'react';
+import { hasPermission } from '../../auth/utils/isAuthenticated';
+import useAuth from '../../core/hooks/useAuth';
 import useSectors from '../../core/hooks/useSectors';
 import { Sector, WorkStation, WorkStationService } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
+import AccessDenied from '../components/AccessDenied';
 import WrapperDefault from '../components/WrapperDefault';
 
 type WorkStationFormType = WorkStation.WorkStationModel;
@@ -30,9 +33,18 @@ export default function WorkStationForm(props: WorkStationFormDefaultProps) {
   const [form] = Form.useForm();
   const { sectors, fetchSectors } = useSectors();
 
+  const { userAuth } = useAuth();
+
+  if (!hasPermission('EDIT_WOK_STATIONS', userAuth))
+    return (
+      <AccessDenied>
+        Você não tem permissão para executar essa operação!
+      </AccessDenied>
+    );
+
   useEffect(() => {
     fetchSectors();
-    form.resetFields()
+    form.resetFields();
   }, [fetchSectors, props.workStation]);
 
   function fetchOptions() {
@@ -103,7 +115,6 @@ export default function WorkStationForm(props: WorkStationFormDefaultProps) {
             }
           }
         }}
-       
       >
         <Row justify={'space-between'} gutter={40}>
           <Col xs={24} xl={8}>

@@ -1,6 +1,7 @@
 package com.dcconnect.minimizingwaste.api.v1.model;
 
 import com.dcconnect.minimizingwaste.domain.model.Nature;
+import com.dcconnect.minimizingwaste.domain.model.User;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,5 +34,7 @@ public class AssignmentDefaultModel extends RepresentationModel<AssignmentDefaul
     private Nature nature;
 
     private WorkStationModel workStation;
+
+    private List<UserDetailedModel> employeesResponsible;
 
 }

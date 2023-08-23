@@ -5,7 +5,7 @@ import * as AuthActions from '../store/Auth.slice';
 
 export default function useAuth() {
   const dispatch = useDispatch<AppDispatch>();
-  const user = useSelector((s: RootState) => s.auth.user);
+  const userAuth = useSelector((s: RootState) => s.auth.user);
   const fetching = useSelector((s: RootState) => s.auth.fetching);
 
   const fetchUser = useCallback(
@@ -16,7 +16,7 @@ export default function useAuth() {
   );
 
   return {
-    user,
+    userAuth,
     fetching,
     fetchUser,
   };

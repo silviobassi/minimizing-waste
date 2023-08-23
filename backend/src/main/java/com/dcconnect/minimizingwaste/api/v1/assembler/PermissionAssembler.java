@@ -1,6 +1,6 @@
 package com.dcconnect.minimizingwaste.api.v1.assembler;
 
-import com.dcconnect.minimizingwaste.api.v1.controller.AccessGroupPermissionController;
+import com.dcconnect.minimizingwaste.api.v1.controller.RolePermissionController;
 import com.dcconnect.minimizingwaste.api.v1.controller.PermissionController;
 import com.dcconnect.minimizingwaste.api.v1.model.PermissionDetailedModel;
 import com.dcconnect.minimizingwaste.domain.model.Permission;
@@ -22,21 +22,20 @@ public class PermissionAssembler extends RepresentationModelAssemblerSupport<Per
 
     @Autowired
     private ModelMapper modelMapper;
-    private final PermissionRepository permissionRepository;
+
     @Getter
     @Setter
-    private Long accessGroupId;
+    private Long roleId;
 
-    public PermissionAssembler(PermissionRepository permissionRepository) {
+    public PermissionAssembler() {
         super(PermissionController.class, PermissionDetailedModel.class);
-        this.permissionRepository = permissionRepository;
     }
 
     public PermissionDetailedModel toModel(Permission permission){
         PermissionDetailedModel permissionDetailedModel = new PermissionDetailedModel();
 
-        permissionDetailedModel.add(linkTo(methodOn(AccessGroupPermissionController.class)
-                .all(this.accessGroupId)).withRel(IanaLinkRelations.SELF.value()));
+        permissionDetailedModel.add(linkTo(methodOn(RolePermissionController.class)
+                .all(getRoleId())).withRel(IanaLinkRelations.SELF.value()));
 
         modelMapper.map(permission, permissionDetailedModel);
 
@@ -44,8 +43,8 @@ public class PermissionAssembler extends RepresentationModelAssemblerSupport<Per
     }
 
     public CollectionModel<PermissionDetailedModel> toCollectionModel(
-            Iterable<? extends Permission> entities, Long accessGroupId){
-        setAccessGroupId(accessGroupId);
+            Iterable<? extends Permission> entities, Long roleId){
+        setRoleId(roleId);
         return super.toCollectionModel(entities)
                 .add(linkTo(PermissionController.class).withSelfRel());
     }

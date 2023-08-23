@@ -5,6 +5,7 @@ import useSuppliesMovement from '../../core/hooks/useSuppliesMovement';
 import usePageTitle from '../../core/usePageTitle';
 import AccessDenied from '../components/AccessDenied';
 import SupplyMovementDetailed from '../features/SupplyMovementDetailed';
+import ElementNotFound from '../components/ElementNotFound';
 
 export default function SupplyMovementDetailedView() {
   usePageTitle('Detalhes do Movimento do Recurso');
@@ -27,13 +28,12 @@ export default function SupplyMovementDetailedView() {
     }
   }, [fetchSupplyMovement, params.supplyMovementId]);
 
-  if (accessDeniedError) return <AccessDenied />;
-
   if (isNaN(Number(params.supplyMovementId)))
     return <Navigate to={'/movimento-recursos'} />;
 
-  if (notFound) return <Card>tarefa não encontrada</Card>;
-  if (accessDeniedError) return <AccessDenied />;
+  if (notFound) return <ElementNotFound description='Tarefa não encontrada'/>;
+  if (accessDeniedError)
+    return <AccessDenied>Esse dado não pode ser visualizado!</AccessDenied>;
   if (!supplyMovement) return <Skeleton />;
 
   return <SupplyMovementDetailed supplyMovement={supplyMovement} />;

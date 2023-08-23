@@ -10,10 +10,11 @@ import java.lang.annotation.Target;
 public @interface CheckSecurity {
 
     @interface Users {
-        @PreAuthorize("@minimizingSecurity.canConsultUserLogin(#userId)")
+        @PreAuthorize("@minimizingSecurity.canConsultUserLogin(#userId) ")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         @interface CanConsult { }
+
 
         @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDIT_USER')")
         @Retention(RetentionPolicy.RUNTIME)

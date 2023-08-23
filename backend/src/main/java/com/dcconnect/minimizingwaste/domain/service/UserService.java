@@ -3,7 +3,7 @@ package com.dcconnect.minimizingwaste.domain.service;
 import com.dcconnect.minimizingwaste.domain.exception.BusinessException;
 import com.dcconnect.minimizingwaste.domain.exception.EntityInUseException;
 import com.dcconnect.minimizingwaste.domain.exception.UserNotFoundException;
-import com.dcconnect.minimizingwaste.domain.model.AccessGroup;
+import com.dcconnect.minimizingwaste.domain.model.Role;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -23,7 +21,7 @@ public class UserService {
     private UserRepository userRepository;
 
     @Autowired
-    private AccessGroupService accessGroupService;
+    private RoleService roleService;
 
     @Autowired
     private FileAvatarStorageService fileAvatarStorageService;
@@ -74,36 +72,35 @@ public class UserService {
     @Transactional
     public void disassociateAccessGroup(Long userId, Long accessGroupId){
         User user = findOrFail(userId);
-        AccessGroup accessGroup = accessGroupService.findOrFail(accessGroupId);
+        Role role = roleService.findOrFail(accessGroupId);
 
-        List<AccessGroup> accessGroupsMatches = getAccessGroupsMatches(user, accessGroup);
+        boolean roleMatches = getRolesMatches(user, role);
 
-        if(accessGroupsMatches.isEmpty()){
+        if(roleMatches){
             throw new BusinessException(
-                    String.format("O Grupo de Acesso não está associado ao usuário %s", user.getName()));
+                    String.format("O papel já está associado ao usuário %s", user.getName()));
         }
 
-        user.removeAccessGroup(accessGroup);
+        user.removeRole();
     }
 
     @Transactional
     public void associateAccessGroup(Long userId, Long accessGroupId){
         User user = findOrFail(userId);
-        AccessGroup accessGroup = accessGroupService.findOrFail(accessGroupId);
-        List<AccessGroup> accessGroupsMatches = getAccessGroupsMatches(user, accessGroup);
+        Role role = roleService.findOrFail(accessGroupId);
+        boolean roleMatches = getRolesMatches(user, role);
 
-        if(!accessGroupsMatches.isEmpty()){
+        if(!roleMatches){
             throw new BusinessException(
-                    String.format("O Grupo de Acesso já está associado ao usuário %s", user.getName()));
+                    String.format("O papel já está associado ao usuário %s", user.getName()));
         }
 
-        user.addAccessGroups(accessGroup);
+        user.addRole();
     }
 
-    private List<AccessGroup> getAccessGroupsMatches(User user, AccessGroup accessGroup) {
-        var accessGroupsMatchers = user.getAccessGroups().stream()
-                .filter((accessGroupCurrent) -> accessGroupCurrent.equals(accessGroup)).toList();
-        return accessGroupsMatchers;
+    private boolean getRolesMatches(User user, Role role) {
+        var roleMatchers = user.getRole().equals(role);
+        return roleMatchers;
     }
 
     public User findOrFail(Long userId){

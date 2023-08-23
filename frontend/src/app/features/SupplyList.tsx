@@ -14,6 +14,8 @@ import AccessDenied from '../components/AccessDenied';
 import WrapperDefault from '../components/WrapperDefault';
 
 import { Link } from 'react-router-dom';
+import { hasPermission } from '../../auth/utils/isAuthenticated';
+import useAuth from '../../core/hooks/useAuth';
 import useSupplies from '../../core/hooks/useSupplies';
 import useSupply from '../../core/hooks/useSupply';
 import DoubleConfirm from '../components/DoubleConfirm';
@@ -22,6 +24,7 @@ export default function SupplyList() {
   const { supplies, fetchSupplies } = useSupplies();
   const { removeSupply } = useSupply();
   const [page, setPage] = useState<number>(0);
+  const { userAuth } = useAuth();
 
   const [accessDeniedError, setAccessDeniedError] = useState(false);
 
@@ -36,7 +39,8 @@ export default function SupplyList() {
     });
   }, [fetchSupplies, page]);
 
-  if (accessDeniedError) return <AccessDenied />;
+  if (accessDeniedError)
+    return <AccessDenied>Você não pode visualizar esses dados!</AccessDenied>;
 
   return (
     <WrapperDefault title="Lista de Recursos">
@@ -158,10 +162,17 @@ export default function SupplyList() {
               <Space size={'middle'}>
                 <Tooltip title={'Editar'}>
                   <Link to={`/recursos/editar/${supply.id}`}>
-                    <Button type={'link'} icon={<EditOutlined />} />
+                    <Button
+                      disabled={!hasPermission('EDIT_SUPPLIES', userAuth)}
+                      type={'link'}
+                      icon={<EditOutlined />}
+                    />
                   </Link>
                 </Tooltip>
                 <DoubleConfirm
+                  deactivatePermission={
+                    !hasPermission('EDIT_SUPPLIES', userAuth)
+                  }
                   popConfirmTitle="Remover Recurso?"
                   popConfirmContent="Deseja mesmo remover este recurso?"
                   onConfirm={async () => {
@@ -173,14 +184,24 @@ export default function SupplyList() {
                   }}
                 >
                   <Tooltip title={'Excluir'} placement="bottom">
-                    <Button type="link">
+                    <Button
+                      disabled={!hasPermission('EDIT_SUPPLIES', userAuth)}
+                      type="link"
+                    >
                       <DeleteOutlined />
                     </Button>
                   </Tooltip>
                 </DoubleConfirm>
 
                 <Tooltip title={'Ver Detalhes'}>
-                  <Button type={'link'} icon={<EyeOutlined />} />
+                  <Link to={`/recursos/${supply.id}/detalhes`}>
+                    {' '}
+                    <Button
+                      disabled={!hasPermission('CONSULT_SUPPLIES', userAuth)}
+                      type={'link'}
+                      icon={<EyeOutlined />}
+                    />
+                  </Link>
                 </Tooltip>
               </Space>
             ),

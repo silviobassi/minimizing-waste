@@ -19,6 +19,8 @@ import {
 } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { hasPermission } from '../../auth/utils/isAuthenticated';
+import useAuth from '../../core/hooks/useAuth';
 import useSupplyMovement from '../../core/hooks/useSuppliesMovement';
 import useSuppliesMovements from '../../core/hooks/useSuppliesMovements';
 import { Supply } from '../../sdk/@types';
@@ -39,8 +41,9 @@ export default function SupplyMovementList() {
   }>();
   const [accessDeniedError, setAccessDeniedError] = useState(false);
 
-  const { suppliesMovements, fetchSuppliesMovements } =
-    useSuppliesMovements();
+  const { suppliesMovements, fetchSuppliesMovements } = useSuppliesMovements();
+
+  const { userAuth } = useAuth();
 
   const {
     removeSupplyMovement,
@@ -60,7 +63,8 @@ export default function SupplyMovementList() {
     });
   }, [fetchSuppliesMovements, page]);
 
-  if (accessDeniedError) return <AccessDenied />;
+  if (accessDeniedError)
+    return <AccessDenied>Você não pode visualizar esses dados!</AccessDenied>;
 
   return (
     <WrapperDefault title="Lista de Movimento de Recursos">
@@ -98,6 +102,7 @@ export default function SupplyMovementList() {
                 <>
                   {' '}
                   <Checkbox
+                    disabled={!hasPermission('VACATE_SUPPLIES', userAuth)}
                     onChange={async () => {
                       await vacateSupplyMovement(movement?.id);
                     }}
@@ -137,6 +142,7 @@ export default function SupplyMovementList() {
               <Space size={'middle'}>
                 <Tooltip title={'Editar'}>
                   <Button
+                    disabled={!hasPermission('EDIT_SUPPLIES', userAuth)}
                     type={'link'}
                     icon={<EditOutlined />}
                     onClick={() =>
@@ -148,6 +154,9 @@ export default function SupplyMovementList() {
                 </Tooltip>
 
                 <DoubleConfirm
+                  deactivatePermission={
+                    !hasPermission('EDIT_SUPPLIES', userAuth)
+                  }
                   popConfirmTitle="Remover Movimento?"
                   popConfirmContent="Deseja mesmo remover este movimento?"
                   onConfirm={async () => {
@@ -159,13 +168,17 @@ export default function SupplyMovementList() {
                   }}
                 >
                   <Tooltip title={'Excluir'} placement="bottom">
-                    <Button type="link">
+                    <Button
+                      disabled={!hasPermission('EDIT_SUPPLIES', userAuth)}
+                      type="link"
+                    >
                       <DeleteOutlined />
                     </Button>
                   </Tooltip>
                 </DoubleConfirm>
                 <Tooltip title={'Devolver'}>
                   <Button
+                    disabled={!hasPermission('GIVE_BACK_SUPPLIES', userAuth)}
                     type={'link'}
                     onClick={() => {
                       setMovement({
@@ -180,6 +193,9 @@ export default function SupplyMovementList() {
                 </Tooltip>
 
                 <DoubleConfirm
+                  deactivatePermission={
+                    !hasPermission('END_SUPPLY_ALLOCATED', userAuth)
+                  }
                   popConfirmTitle="Utilizou o recurso alocado?"
                   popConfirmContent="Tem certeza que o recurso alocado foi utilizado?"
                   onConfirm={async () => {
@@ -191,10 +207,15 @@ export default function SupplyMovementList() {
                   }}
                 >
                   <Tooltip
-                    title={'Recurso Alocado Utilizado'}
+                    title={'Finalizar Recurso Alocado'}
                     placement="bottom"
                   >
-                    <Button type="link">
+                    <Button
+                      disabled={
+                        !hasPermission('END_SUPPLY_ALLOCATED', userAuth)
+                      }
+                      type="link"
+                    >
                       <MinusOutlined />
                     </Button>
                   </Tooltip>
@@ -203,7 +224,9 @@ export default function SupplyMovementList() {
                   <Link
                     to={`/movimento-recursos/detalhes/${supplyMovement?.id}`}
                   >
-                    <Button type={'link'} icon={<EyeOutlined />} />
+                    <Button disabled={
+                        !hasPermission('CONSULT_SUPPLIES', userAuth)
+                      } type={'link'} icon={<EyeOutlined />} />
                   </Link>
                 </Tooltip>
               </Space>
@@ -230,6 +253,10 @@ export default function SupplyMovementList() {
           form={form}
           onFinish={async (supplyMovement: Supply.DevolvedSupplyInput) => {
             await giveBackSupplyMovement(movement?.id, supplyMovement);
+            notification.success({
+              message: 'Sucesso',
+              description: `Recurso ${movement?.supplyName}  devolvido com sucesso`,
+            });
           }}
         >
           <Form.Item

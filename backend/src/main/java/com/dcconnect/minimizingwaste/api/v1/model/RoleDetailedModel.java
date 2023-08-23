@@ -6,13 +6,17 @@ import lombok.Setter;
 import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
+import java.util.List;
+
 @Relation(collectionRelation = "accessGroups")
 @Getter
 @Setter
-public class AccessGroupSummaryModel extends RepresentationModel<AccessGroupSummaryModel> {
+public class RoleDetailedModel extends RepresentationModel<RoleDetailedModel> {
 
     @Schema(example = "1")
     private Long id;
     @Schema(example = "Engenheiro")
     private String name;
+
+    private List<PermissionDetailedModel> permissions;
 }

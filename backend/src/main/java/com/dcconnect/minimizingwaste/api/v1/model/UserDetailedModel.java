@@ -8,7 +8,6 @@ import org.springframework.hateoas.RepresentationModel;
 import org.springframework.hateoas.server.core.Relation;
 
 import java.time.OffsetDateTime;
-import java.util.List;
 
 @Relation(collectionRelation = "users")
 @Getter
@@ -38,6 +37,6 @@ public class UserDetailedModel extends RepresentationModel<UserDetailedModel> {
 
     @Schema(example = "2023-01-03T22:08Z")
     private OffsetDateTime createdAt;
-    private List<AccessGroupSummaryModel> accessGroups;
+    private RoleDetailedModel role;
 
 }

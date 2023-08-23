@@ -1,10 +1,9 @@
 package com.dcconnect.minimizingwaste.api.v1.assembler;
 
+import com.dcconnect.minimizingwaste.api.v1.controller.RoleController;
 import com.dcconnect.minimizingwaste.api.v1.controller.UserRoleController;
 import com.dcconnect.minimizingwaste.api.v1.model.RoleDetailedModel;
 import com.dcconnect.minimizingwaste.domain.model.Role;
-import lombok.Getter;
-import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
@@ -15,16 +14,12 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class UserAccessGroupAssembler extends RepresentationModelAssemblerSupport<Role, RoleDetailedModel> {
+public class RoleAssembler extends RepresentationModelAssemblerSupport<Role, RoleDetailedModel> {
 
     @Autowired
     private ModelMapper modelMapper;
 
-    @Getter
-    @Setter
-    private Long userId;
-
-    public UserAccessGroupAssembler() {
+    public RoleAssembler() {
         super(UserRoleController.class, RoleDetailedModel.class);
     }
 
@@ -32,21 +27,18 @@ public class UserAccessGroupAssembler extends RepresentationModelAssemblerSuppor
 
         RoleDetailedModel roleDetailedModel = new RoleDetailedModel();
 
-        roleDetailedModel.add(linkTo(methodOn(UserRoleController.class)
-                .associate(getUserId(), role.getId())).withRel("disassociate"));
+        roleDetailedModel
+                .add(linkTo(methodOn(RoleController.class)
+                        .delete(role.getId())).withRel("delete"));
 
         modelMapper.map(role, roleDetailedModel);
 
         return roleDetailedModel;
     }
 
-    public CollectionModel<RoleDetailedModel> toCollectionModel(
-            Iterable<? extends Role> entities,
-            Long userId){
-
-        setUserId(userId);
+    public CollectionModel<RoleDetailedModel> toCollectionModel(Iterable<? extends Role> entities){
         return super.toCollectionModel(entities)
-                .add(linkTo(methodOn(UserRoleController.class).all(getUserId())).withSelfRel());
+                .add(linkTo(RoleController.class).withSelfRel());
     }
 
 

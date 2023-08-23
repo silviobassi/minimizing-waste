@@ -26,12 +26,13 @@ public class JPAUserDetailsService implements UserDetailsService {
         com.dcconnect.minimizingwaste.domain.model.User userEmployee = userRepository.findByEmail(username)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado com e-mail informado"));
 
+
         return new User(userEmployee.getEmail(), userEmployee.getPassword(), getAuthorities(userEmployee));
     }
 
     private Collection<GrantedAuthority> getAuthorities(com.dcconnect.minimizingwaste.domain.model.User user) {
-        return user.getAccessGroups().stream()
-                .flatMap(group -> group.getPermissions().stream())
+
+        return user.getRole().getPermissions().stream()
                 .map(permission -> new SimpleGrantedAuthority(permission.getName().toUpperCase()))
                 .collect(Collectors.toSet());
     }

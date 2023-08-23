@@ -18,6 +18,7 @@ public class SupplyMovementService {
     public static final String DEVOLVED_QUANTITY_GREATER_ALLOCATED =
             "A quantidade %d não pode ser maior do que a quantidade alocada %d.";
     public static final String AVAILABLE_SUPPLY_NUMBER = "A quantidade de recurso disponível é %d";
+    public static final String THERE_IS_NO_SUPPLY_TO_FINALIZE = "Não há recurso a finalizar, pois a quantidade alocada é %d";
 
     @Autowired
     private SupplyRepository supplyRepository;
@@ -94,6 +95,10 @@ public class SupplyMovementService {
 
     @Transactional
     public void endSupply(SupplyMovement supplyMovement){
+        if(supplyMovement.getAllocatedQuantity().equals(0L)){
+            throw new BusinessException(String.format(THERE_IS_NO_SUPPLY_TO_FINALIZE,
+                    supplyMovement.getAllocatedQuantity()));
+        }
         supplyMovement.decreaseSupply();
         supplyMovement.decreaseAllocated();
         supplyRepository.create(supplyMovement);

@@ -3,6 +3,8 @@ import { Button, Space, Tooltip, notification } from 'antd';
 import Table from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { hasPermission } from '../../auth/utils/isAuthenticated';
+import useAuth from '../../core/hooks/useAuth';
 import useWorkStation from '../../core/hooks/useWorkStation';
 import useWorkStations from '../../core/hooks/useWorkStations';
 import { WorkStation } from '../../sdk/@types';
@@ -13,8 +15,8 @@ import WrapperDefault from '../components/WrapperDefault';
 export default function WorkStationList() {
   const navigate = useNavigate();
   const [accessDeniedError, setAccessDeniedError] = useState(false);
-  const { workStations, fetchWorkStations } =
-    useWorkStations();
+  const { workStations, fetchWorkStations } = useWorkStations();
+  const { userAuth } = useAuth();
 
   const { removeWorkStation } = useWorkStation();
   const [page, setPage] = useState<number>(0);
@@ -29,7 +31,8 @@ export default function WorkStationList() {
     });
   }, [fetchWorkStations, page]);
 
-  if (accessDeniedError) return <AccessDenied />;
+  if (accessDeniedError)
+    return <AccessDenied>Você não pode visualizar esses dados!</AccessDenied>;
 
   return (
     <WrapperDefault title="Lista de Estações de Trabalho">
@@ -50,6 +53,7 @@ export default function WorkStationList() {
               <Space size={'middle'}>
                 <Tooltip title={'Editar'}>
                   <Button
+                    disabled={!hasPermission('EDIT_WORK_STATIONS', userAuth)}
                     type={'link'}
                     shape={'circle'}
                     icon={<EditOutlined />}
@@ -60,6 +64,9 @@ export default function WorkStationList() {
                 </Tooltip>
 
                 <DoubleConfirm
+                 deactivatePermission={
+                  !hasPermission('EDIT_WORK_STATIONS', userAuth)
+                }
                   popConfirmTitle="Remover Estação de Trabalho?"
                   popConfirmContent="Deseja mesmo remover esta estação de trabalho?"
                   onConfirm={async () => {
@@ -71,7 +78,7 @@ export default function WorkStationList() {
                   }}
                 >
                   <Tooltip title={'Excluir'} placement="bottom">
-                    <Button type="link">
+                    <Button disabled={!hasPermission('EDIT_WORK_STATIONS', userAuth)} type="link">
                       <DeleteOutlined />
                     </Button>
                   </Tooltip>

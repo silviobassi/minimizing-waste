@@ -31,6 +31,7 @@ import TaskUnassignView from './views/TaskUnassign.view';
 import WorkStationCreateView from './views/WorkStationCreate.view';
 import WorkStationEditView from './views/WorkStationEdit.view';
 import WorkStationListView from './views/WorkStationList.view';
+import EmployeeAccessControlView from './views/EmployeeAccessControl.view'
 
 export default function Routes() {
   useEffect(() => {
@@ -101,6 +102,8 @@ export default function Routes() {
         path={'/recursos/:supplyId/detalhes'}
         element={<SupplyDetailedView />}
       />
+
+      <Route path='/usuarios/controle-de-acesso' element={<EmployeeAccessControlView/>}/>
 
       <Route path={'/tarefas'} element={<TaskListView />} />
       <Route path={'/tarefa/criar'} element={<TaskCreateView />} />

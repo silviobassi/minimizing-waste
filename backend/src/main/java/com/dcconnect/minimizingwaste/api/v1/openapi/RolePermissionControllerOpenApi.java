@@ -10,38 +10,38 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
 
-@Tag(name = "Users")
-public interface AccessGroupPermissionControllerOpenApi {
+@Tag(name = "Users Role")
+public interface RolePermissionControllerOpenApi {
 
-    @Operation(summary = "Lista as permissões relacionadas ao grupo atual", responses = {
-            @ApiResponse(responseCode = "400", description = "ID do grupo de acesso inválido",
+    @Operation(summary = "Lista as permissões relacionadas ao role atual", responses = {
+            @ApiResponse(responseCode = "400", description = "ID de um role  inválido",
                     content = @Content(schema = @Schema(ref = "Problem"))),
-            @ApiResponse(responseCode = "404", description = "Grupo de acesso não encontrado",
+            @ApiResponse(responseCode = "404", description = "Role não encontrado",
                     content = @Content(schema = @Schema(ref = "Problem")))
     })
-    CollectionModel<PermissionDetailedModel> all(Long accessGroupId);
+    CollectionModel<PermissionDetailedModel> all(Long roleId);
 
-    @Operation(summary = "Disassocia as permissões relacionadas ao grupo atual",  responses = {
+    @Operation(summary = "Disassocia as permissões relacionadas ao role atual",  responses = {
             @ApiResponse(responseCode = "204", description = "Disassociação realizada com sucesso"),
 
-            @ApiResponse(responseCode = "400", description = "ID do grupo de acesso/permissão inválido",
+            @ApiResponse(responseCode = "400", description = "ID da role/permissão inválido",
                     content = @Content(schema = @Schema(ref = "Problem"))),
 
-            @ApiResponse(responseCode = "404", description = "Grupo de acesso/permissão não encontrado",
+            @ApiResponse(responseCode = "404", description = "Grupo de role/permissão não encontrado",
                     content = @Content(schema = @Schema(ref = "Problem")))
     })
-    ResponseEntity<Void> disassociate(@Parameter(description = "ID do grupo de acesso", required = true) Long accessGroupId,
+    ResponseEntity<Void> disassociate(@Parameter(description = "ID do role de acesso", required = true) Long roleId,
                                       @Parameter(description = "ID da permissão", required = true) Long permissionId);
-    @Operation(summary = "Associa as permissões relacionadas ao grupo atual", responses = {
+    @Operation(summary = "Associa as permissões relacionadas ao role atual", responses = {
             @ApiResponse(responseCode = "204", description = "Associação realizada com sucesso"),
 
-            @ApiResponse(responseCode = "400", description = "ID do grupo de acesso/permissão inválido",
+            @ApiResponse(responseCode = "400", description = "ID do role/permissão inválido",
                     content = @Content(schema = @Schema(ref = "Problem"))),
 
-            @ApiResponse(responseCode = "404", description = "Grupo de acesso/permissão não encontrado",
+            @ApiResponse(responseCode = "404", description = "Role/permissão não encontrado",
                     content = @Content(schema = @Schema(ref = "Problem")))
     })
-    void associate(@Parameter(description = "ID do grupo de acesso", required = true) Long accessGroupId,
+    void associate(@Parameter(description = "ID do role de acesso", required = true) Long roleId,
                    @Parameter(description = "ID da permissão", required = true) Long permissionId);
 
 }

@@ -21,6 +21,9 @@ import useWorkStations from '../../core/hooks/useWorkStations';
 import { Supply, SupplyMovementService } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
 import WrapperDefault from '../components/WrapperDefault';
+import useAuth from '../../core/hooks/useAuth';
+import { hasPermission } from '../../auth/utils/isAuthenticated';
+import AccessDenied from '../components/AccessDenied';
 
 type SupplyMovementFormType = Supply.MovementModel;
 
@@ -44,6 +47,15 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
   const { supplies, fetchSupplies } = useSupplies();
   const [checked, setChecked] = useState<boolean>(false);
 
+  const { userAuth } = useAuth();
+
+  if (!hasPermission('EDIT_SUPPLIES', userAuth))
+    return (
+      <AccessDenied>
+        Você não tem permissão para executar essa operação!
+      </AccessDenied>
+    );
+
   useEffect(() => {
     fetchUsers();
     fetchWorkStations();
@@ -59,7 +71,7 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
         setChecked(props.supplyMovement?.movable);
     }
 
-    form.setFieldValue('movable', checked)
+    form.setFieldValue('movable', checked);
   }, [
     fetchUsers,
     fetchWorkStations,
@@ -156,7 +168,7 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
                   <Checkbox
                     onChange={() => {
                       setChecked(!checked);
-                      delete(props.supplyMovement?.movable)
+                      delete props.supplyMovement?.movable;
                       console.log(checked);
                     }}
                     checked={checked}

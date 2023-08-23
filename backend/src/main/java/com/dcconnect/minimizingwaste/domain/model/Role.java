@@ -11,13 +11,13 @@ import java.util.List;
 @Setter
 
 @Entity
-@Table(name = "access_groups")
-public class AccessGroup extends BaseEntity {
+@Table(name = "roles")
+public class Role extends BaseEntity {
 
     private String name;
 
     @ManyToMany
-    @JoinTable(name = "groups_permissions", joinColumns = @JoinColumn(name = "group_id"),
+    @JoinTable(name = "roles_permissions", joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "permission_id"))
     private List<Permission> permissions = new ArrayList<>();
 

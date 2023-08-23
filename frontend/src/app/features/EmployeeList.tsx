@@ -8,6 +8,8 @@ import { Avatar, Button, Space, Table, Tag, Tooltip, notification } from 'antd';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { hasPermission } from '../../auth/utils/isAuthenticated';
+import useAuth from '../../core/hooks/useAuth';
 import useUser from '../../core/hooks/useUser';
 import useUsers from '../../core/hooks/useUsers';
 import { User } from '../../sdk/@types';
@@ -24,6 +26,7 @@ export default function EmployeeList() {
   const [page, setPage] = useState<number>(0);
   const [accessDeniedError, setAccessDeniedError] = useState(false);
   const { removeUser } = useUser();
+  const { userAuth } = useAuth();
 
   useEffect(() => {
     fetchUsers(page, 4).catch((err) => {
@@ -36,7 +39,8 @@ export default function EmployeeList() {
     });
   }, [fetchUsers, page]);
 
-  if (accessDeniedError) return <AccessDenied />;
+  if (accessDeniedError)
+    return <AccessDenied>Você não pode visualizar esses dados!</AccessDenied>;
 
   return (
     <WrapperDefault title="Lista de Colaboradores">
@@ -84,22 +88,11 @@ export default function EmployeeList() {
             },
           },
           {
-            title: 'Tipo de Usuário',
-            dataIndex: 'accessGroups',
+            title: 'Nível de Acesso',
+            dataIndex: 'role',
             width: 180,
-            render(accessGroups: User.AccessGroupSummary[]) {
-              return (
-                <>
-                  {accessGroups.map((group: User.AccessGroupSummary, index) => (
-                    <Tag
-                      key={index}
-                      color={group.name === 'Administrador' ? 'blue' : 'green'}
-                    >
-                      {group.name}
-                    </Tag>
-                  ))}
-                </>
-              );
+            render(_: any, user: User.Detailed) {
+              return <Tag color="blue">{user?.role?.name.toUpperCase()}</Tag>;
             },
           },
           {
@@ -111,11 +104,16 @@ export default function EmployeeList() {
               <Space size={'middle'}>
                 <Tooltip title={'Editar'}>
                   <Link to={`/colaborador/editar/${user.id}`}>
-                    <Button type={'link'} icon={<EditOutlined />} />
+                    <Button
+                      disabled={!hasPermission('EDIT_USER', userAuth)}
+                      type={'link'}
+                      icon={<EditOutlined />}
+                    />
                   </Link>
                 </Tooltip>
 
                 <DoubleConfirm
+                  deactivatePermission={!hasPermission('EDIT_USER', userAuth)}
                   popConfirmTitle="Remover Colaborador?"
                   popConfirmContent="Deseja mesmo remover este colaborador?"
                   onConfirm={async () => {
@@ -127,7 +125,10 @@ export default function EmployeeList() {
                   }}
                 >
                   <Tooltip title={'Excluir'} placement="bottom">
-                    <Button type="link">
+                    <Button
+                      disabled={!hasPermission('EDIT_USER', userAuth)}
+                      type="link"
+                    >
                       <DeleteOutlined />
                     </Button>
                   </Tooltip>
@@ -135,7 +136,11 @@ export default function EmployeeList() {
 
                 <Tooltip title={'Ver Detalhes'}>
                   <Link to={`/colaborador/${user.id}/detalhes`}>
-                    <Button type={'link'} icon={<EyeOutlined />} />
+                    <Button
+                      disabled={!hasPermission('CONSULT_USER', userAuth)}
+                      type={'link'}
+                      icon={<EyeOutlined />}
+                    />
                   </Link>
                 </Tooltip>
               </Space>

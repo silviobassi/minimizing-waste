@@ -6,3 +6,4 @@ export { default as SupplyService } from './Supply.service';
 export { default as SupplyMovementService } from './SupplyMovement.service';
 export { default as UserService } from './User.service';
 export { default as WorkStationService } from './WorkStation.service';
+export {default as PermissionService} from './Permission.service'

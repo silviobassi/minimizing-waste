@@ -29,4 +29,12 @@ public class Role extends BaseEntity {
         return getPermissions().add(permission);
     }
 
+    public boolean isPermission(Permission permission){
+        return getPermissions().contains(permission);
+    }
+
+    public boolean isNotPermission(Permission permission){
+        return !isPermission(permission);
+    }
+
 }

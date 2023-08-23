@@ -70,4 +70,11 @@ public class RoleController implements RoleControllerOpenApi {
         return ResponseEntity.noContent().build();
     }
 
+    @CheckSecurity.Users.CanConsult
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{roleId}")
+    public RoleDetailedModel findOrFail(@PathVariable Long roleId){
+        return roleAssembler.toModel(roleService.findOrFail(roleId));
+    }
+
 }

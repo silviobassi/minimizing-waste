@@ -2,6 +2,7 @@ import {
   ApartmentOutlined,
   BankOutlined,
   HomeOutlined,
+  LockOutlined,
   NotificationOutlined,
   PrinterOutlined,
   UsergroupAddOutlined,
@@ -28,21 +29,14 @@ export default function MenuLayout() {
     },
 
     {
-      label: 'Gerenciamento de Recursos',
-      key: 'supply-management',
+      label: <Link to={'/recursos'}>Recursos</Link>,
+      key: 'supply',
       icon: <PrinterOutlined />,
-      children: [
-        {
-          label: <Link to={'/recursos'}>Recursos</Link>,
-          key: 'supply',
-          icon: <PrinterOutlined />
-        },
-        {
-          label: <Link to={'/movimento-recursos'}>Movimento</Link>,
-          key: 'supply-movement',
-          icon: <PrinterOutlined />
-        }
-      ]
+    },
+    {
+      label: <Link to={'/movimento-recursos'}>Movimento Recursos</Link>,
+      key: 'supply-movement',
+      icon: <PrinterOutlined />,
     },
 
     {
@@ -60,11 +54,16 @@ export default function MenuLayout() {
       key: 'notification',
       icon: <NotificationOutlined />,
     },
+    {
+      label: <Link to={'/perfis-de-acesso'}>Perfis de Acesso</Link>,
+      key: 'access-profile',
+      icon: <LockOutlined />,
+    },
   ];
 
   return (
     <Menu
-      style={{ minHeight: '100%', paddingTop: 20 }}
+      style={{ minHeight: '100%', paddingTop: 20, width: 220 }}
       theme="dark"
       mode="inline"
       defaultSelectedKeys={['4']}

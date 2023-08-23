@@ -6,6 +6,7 @@ import sectorReducer from './Sector.slice';
 import supplyReducer from './Supply.slice';
 import UserReducer from './User.reducer';
 
+import roleReducer from './AccessProfile.slice';
 import supplyMovementReducer from './SupplyMovement.slice';
 import usersAssignmentReducer from './UsersAssignment.slice';
 import workStationReducer from './WorkStation.slice';
@@ -28,6 +29,7 @@ const observeActions: Middleware = () => (next) => (action) => {
       'assignments/getAssignment/rejected',
       'users/getAllUsersAssignmentAssign/rejected',
       'work-stations/getAllWorkStations/rejected',
+      'roles/getAllRoles/rejected',
     ];
 
     const shouldNotify = !ignoredActions.includes(action.type);
@@ -56,6 +58,7 @@ export const store = configureStore({
     sectors: sectorReducer,
     workStations: workStationReducer,
     suppliesMovements: supplyMovementReducer,
+    roles: roleReducer,
   },
   middleware: function (getDefaultMiddlewares) {
     return getDefaultMiddlewares().concat(observeActions);

@@ -6,12 +6,23 @@ export default function usePermissions() {
   const [permissions, setPermissions] =
     useState<Permission.CollectionDetailedModel>([]);
 
+  const [permissionsNotGranted, setPermissionsNotGranted] =
+    useState<Permission.CollectionDetailedModel>([]);
+
   const fetchPermissions = useCallback(async () => {
-    return PermissionService.getAllPermissions().then(setPermissions);
+    return await PermissionService.getAllPermissions().then(setPermissions);
+  }, []);
+
+  const fetchPermissionsAllNotGranted = useCallback(async (roleId: number) => {
+    return await PermissionService.getAllPermissionsAllNotGranted(roleId).then(
+      setPermissionsNotGranted,
+    );
   }, []);
 
   return {
     fetchPermissions,
+    fetchPermissionsAllNotGranted,
     permissions,
+    permissionsNotGranted,
   };
 }

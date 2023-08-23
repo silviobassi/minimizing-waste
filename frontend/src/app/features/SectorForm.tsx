@@ -1,32 +1,30 @@
-import { Button, Form, Input, notification, Space } from 'antd';
+import { SaveOutlined, StopOutlined } from '@ant-design/icons';
+import { Form, Input, notification } from 'antd';
 import { useEffect } from 'react';
+import { hasPermission } from '../../auth/utils/isAuthenticated';
+import useAuth from '../../core/hooks/useAuth';
 import { Sector, SectorService } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
-import WrapperDefault from '../components/WrapperDefault';
-import { hasPermission } from '../../auth/utils/isAuthenticated';
 import AccessDenied from '../components/AccessDenied';
-import useAuth from '../../core/hooks/useAuth';
+import ButtonForm from '../components/ButtonForm';
+import WrapperDefault from '../components/WrapperDefault';
 type SectorType = Sector.SectorModel;
 interface SectorFormDefaultProps {
-  labelRegister: string;
-  iconButton: {
-    register: React.ReactNode;
-    cancel: React.ReactNode;
-  };
   title: string;
   onUpdate?: (sector: Sector.Input) => SectorType;
   sector?: SectorType;
 }
 
-
-
 export default function SectorForm(props: SectorFormDefaultProps) {
   const [form] = Form.useForm<Sector.Input>();
-  const {userAuth} = useAuth()
+  const { userAuth } = useAuth();
 
-  if(!hasPermission('EDIT_SECTOR', userAuth)) return <AccessDenied>
-    Você não tem permissão para executar essa operação!
-  </AccessDenied>
+  if (!hasPermission('EDIT_SECTORS', userAuth))
+    return (
+      <AccessDenied>
+        Você não tem permissão para executar essa operação!
+      </AccessDenied>
+    );
 
   useEffect(() => {
     form.resetFields();
@@ -84,20 +82,13 @@ export default function SectorForm(props: SectorFormDefaultProps) {
         >
           <Input placeholder="ex:nome do setor" size="large" />
         </Form.Item>
-        <Form.Item style={{ marginTop: 40 }}>
-          <Space direction="horizontal">
-            <Button
-              type="primary"
-              icon={props.iconButton.register}
-              htmlType={'submit'}
-            >
-              {props.labelRegister}
-            </Button>
-            <Button type="primary" danger icon={props.iconButton.cancel}>
-              Cancelar
-            </Button>
-          </Space>
-        </Form.Item>
+        <ButtonForm
+          icon={{ create: <SaveOutlined />, cancel: <StopOutlined /> }}
+          label={{
+            save: props.sector ? 'EDITAR' : 'CRIAR',
+            cancel: 'CANCELAR',
+          }}
+        />
       </Form>
     </WrapperDefault>
   );

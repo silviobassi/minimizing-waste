@@ -8,7 +8,7 @@ import org.springframework.hateoas.server.core.Relation;
 
 import java.util.List;
 
-@Relation(collectionRelation = "accessGroups")
+@Relation(collectionRelation = "roles")
 @Getter
 @Setter
 public class RoleDetailedModel extends RepresentationModel<RoleDetailedModel> {

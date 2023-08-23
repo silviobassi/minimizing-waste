@@ -7,6 +7,14 @@ class PermissionService extends Service {
       '/roles/permissions',
     ).then(this.getData);
   }
+
+  static getAllPermissionsAllNotGranted(
+    roleId: number,
+  ): Permission.CollectionDetailedModel {
+    return this.Http.get<Permission.CollectionDetailedModel>(
+      `/roles/permissions/${roleId}`,
+    ).then(this.getData);
+  }
 }
 
 export default PermissionService;

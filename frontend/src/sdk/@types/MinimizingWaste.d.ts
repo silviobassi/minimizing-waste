@@ -59,6 +59,7 @@ export interface paths {
     delete: operations['delete_4'];
   };
   '/v1/roles/{roleId}': {
+    get: operations['findOrFail_3'];
     /** Edita um role */
     put: operations['update_4'];
     /** Deleta um role */
@@ -72,7 +73,7 @@ export interface paths {
   };
   '/v1/assignments/{assignmentId}': {
     /** Busca uma taerfa pelo ID */
-    get: operations['findOrFail_3'];
+    get: operations['findOrFail_4'];
     /** Edita uma tarefa */
     put: operations['update_5'];
     /** Deleta uma tarefa */
@@ -171,6 +172,10 @@ export interface paths {
   '/v1/roles/permissions': {
     /** Lista as permissões de role de acesso */
     get: operations['all_4'];
+  };
+  '/v1/roles/permissions/{roleId}': {
+    /** Lista as permissões de role de acesso não concedidas ao usuário atual */
+    get: operations['allNotGranted'];
   };
   '/v1/notifications/assignments': {
     /** Lista as notificações enviadas por tarefas atribuídas ou não atribuídas */
@@ -758,7 +763,7 @@ export interface components {
     };
     CollectionModelRoleDetailedModel: {
       _embedded?: {
-        accessGroups?: components['schemas']['RoleDetailedModel'][];
+        roles?: components['schemas']['RoleDetailedModel'][];
       };
       _links?: components['schemas']['Links'];
     };
@@ -1391,6 +1396,25 @@ export interface operations {
       };
     };
   };
+  findOrFail_3: {
+    parameters: {
+      path: {
+        /**
+         * @description ID do role inválido
+         * @example 1
+         */
+        roleId: number;
+      };
+    };
+    responses: {
+      /** @description No Content */
+      204: {
+        content: {
+          '*/*': components['schemas']['RoleDetailedModel'];
+        };
+      };
+    };
+  };
   /** Edita um role */
   update_4: {
     parameters: {
@@ -1517,7 +1541,7 @@ export interface operations {
     };
   };
   /** Busca uma taerfa pelo ID */
-  findOrFail_3: {
+  findOrFail_4: {
     parameters: {
       path: {
         /** @description ID de iuma tarefa */
@@ -2168,6 +2192,32 @@ export interface operations {
       200: {
         content: {
           '*/*': components['schemas']['CollectionModelPermissionDetailedModel'];
+        };
+      };
+    };
+  };
+  /** Lista as permissões de role de acesso não concedidas ao usuário atual */
+  allNotGranted: {
+    parameters: {
+      path: {
+        /**
+         * @description ID de um role
+         * @example 1
+         */
+        roleId: number;
+      };
+    };
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          '*/*': components['schemas']['CollectionModelPermissionDetailedModel'];
+        };
+      };
+      /** @description Role da permissão não encontrada */
+      404: {
+        content: {
+          '*/*': components['schemas']['Problem'];
         };
       };
     };

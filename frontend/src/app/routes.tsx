@@ -6,6 +6,9 @@ import SectorListView from './views/SectorList.view';
 import { message, notification } from 'antd';
 import { useEffect } from 'react';
 import CustomError from '../sdk/CustomError';
+import AccessProfileCreateView from './views/AccessProfileCreate.view';
+import AccessProfileEditView from './views/AccessProfileEdit.view';
+import AccessProfileListView from './views/AccessProfileList.view';
 import EmployeeCreateView from './views/EmployeeCreate.view';
 import EmployeeDetailedView from './views/EmployeeDetailed.view';
 import EmployeeEditView from './views/EmployeeEdit.view';
@@ -19,8 +22,8 @@ import SupplyDetailedView from './views/SupplyDetailed.view';
 import SupplyEditView from './views/SupplyEdit.view';
 import SupplyListView from './views/SupplyList.view';
 import SupplyMovementCreateView from './views/SupplyMovementCreate.view';
-import SupplyMovementEditView from './views/SupplyMovementEdit.view';
 import SupplyMovementDetailedView from './views/SupplyMovementDetailed.view';
+import SupplyMovementEditView from './views/SupplyMovementEdit.view';
 import SupplyMovementListView from './views/SupplyMovementList.view';
 import TaskAssignView from './views/TaskAssign.view';
 import TaskCreateView from './views/TaskCreate.view';
@@ -31,7 +34,8 @@ import TaskUnassignView from './views/TaskUnassign.view';
 import WorkStationCreateView from './views/WorkStationCreate.view';
 import WorkStationEditView from './views/WorkStationEdit.view';
 import WorkStationListView from './views/WorkStationList.view';
-import EmployeeAccessControlView from './views/EmployeeAccessControl.view'
+import GrantingPermissionsView from './views/GrantingPermissions.view'
+import RevoKePermissionsView from './views/RevokePermissions.view'
 
 export default function Routes() {
   useEffect(() => {
@@ -103,7 +107,27 @@ export default function Routes() {
         element={<SupplyDetailedView />}
       />
 
-      <Route path='/usuarios/controle-de-acesso' element={<EmployeeAccessControlView/>}/>
+      <Route path="/perfis-de-acesso" element={<AccessProfileListView />} />
+
+      <Route
+        path="/perfil-de-acesso/editar/:roleId"
+        element={<AccessProfileEditView />}
+      />
+
+      <Route
+        path="/conceder-permissoes/perfis-de-acesso"
+        element={<GrantingPermissionsView />}
+      />
+
+      <Route
+        path="/revogar-permissoes/perfis-de-acesso"
+        element={<RevoKePermissionsView />}
+      />
+
+      <Route
+        path="/perfil-de-acesso/criar"
+        element={<AccessProfileCreateView />}
+      />
 
       <Route path={'/tarefas'} element={<TaskListView />} />
       <Route path={'/tarefa/criar'} element={<TaskCreateView />} />

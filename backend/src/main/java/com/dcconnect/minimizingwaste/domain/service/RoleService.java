@@ -18,7 +18,7 @@ import java.util.List;
 public class RoleService {
 
     public static final String ACCESS_GROUP_IN_USE =
-            "Grupo de código %d não pode ser removido, pois está em uso";
+            "Role de código %d não pode ser removido, pois está em uso";
     @Autowired
     private RoleRepository roleRepository;
 
@@ -31,26 +31,24 @@ public class RoleService {
     }
 
     @Transactional
-    public void delete(Long accessGroupId) {
+    public void delete(Long roleId) {
         try {
-            roleRepository.deleteById(accessGroupId);
+            roleRepository.deleteById(roleId);
             roleRepository.flush();
         } catch (EmptyResultDataAccessException e) {
-            throw new RoleNotFoundException(accessGroupId);
+            throw new RoleNotFoundException(roleId);
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException(
-                    String.format(ACCESS_GROUP_IN_USE, accessGroupId));
+                    String.format(ACCESS_GROUP_IN_USE, roleId));
         }
     }
 
     @Transactional
-    public void disassociatePermission(Long accessGroupId, Long permissionId) {
-        Role role = findOrFail(accessGroupId);
+    public void disassociatePermission(Long roleId, Long permissionId) {
+        Role role = findOrFail(roleId);
         Permission permission = permissionService.findOrFail(permissionId);
 
-        List<Permission> permissionMatches = getPermissionMatches(role, permission);
-
-        if(permissionMatches.isEmpty()){
+        if(role.isNotPermission(permission)){
             throw new BusinessException(
                     String.format("A permissão não está associada ao nível de acesso %s", role.getName()));
         }
@@ -59,13 +57,11 @@ public class RoleService {
     }
 
     @Transactional
-    public void associatePermission(Long accessGroupId, Long permissionId){
-        Role role = findOrFail(accessGroupId);
+    public void associatePermission(Long roleId, Long permissionId){
+        Role role = findOrFail(roleId);
         Permission permission = permissionService.findOrFail(permissionId);
 
-        List<Permission> permissionMatches = getPermissionMatches(role, permission);
-
-        if(!permissionMatches.isEmpty()){
+        if(role.isPermission(permission)){
             throw new BusinessException(
                     String.format("A permissão já está associada ao nível de acesso %s", role.getName()));
         }
@@ -73,14 +69,10 @@ public class RoleService {
         role.addPermission(permission);
     }
 
-    public Role findOrFail(Long accessGroupId) {
-        return roleRepository.findById(accessGroupId)
-                .orElseThrow(() -> new RoleNotFoundException(accessGroupId));
+    public Role findOrFail(Long roleId) {
+        return roleRepository.findById(roleId)
+                .orElseThrow(() -> new RoleNotFoundException(roleId));
     }
 
-    private static List<Permission> getPermissionMatches(Role role, Permission permission) {
-        var permissionDoNotMatch = role.getPermissions().stream()
-                .filter((permissionCurrent) -> permissionCurrent.equals(permission)).toList();
-        return permissionDoNotMatch;
-    }
+
 }

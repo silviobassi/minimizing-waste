@@ -49,7 +49,12 @@ export default function TaskEditView() {
   if (notFound)
     return <ElementNotFound description="A Tarefa não foi encontrada!" />;
 
-  if (accessDeniedError) return <AccessDenied />;
+  if (accessDeniedError)
+    return (
+      <AccessDenied>
+        Você não tem permissão para executar essa operação!
+      </AccessDenied>
+    );
 
   function handleAssignmentUpdate(assignment: Assignment.AssignmentInput) {
     AssignmentService.updateExistingAssignment(

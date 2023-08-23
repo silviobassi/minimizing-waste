@@ -18,19 +18,35 @@ export default function HomeView() {
 
   return (
     <WrapperDefault title="Home">
-      <Row justify={'start'} gutter={20}>
-        <Col xs={24} sm={12} lg={6}>
+
+      <Row gutter={20} style={{ marginBottom: 20 }}>
+      <Col xs={24} sm={12} lg={6}>
           {' '}
           <MenuHomePage
-            link="/usuarios/controle-de-acesso"
+            link="/conceder-permissoes/perfis-de-acesso"
             labelColor="#001529"
             border="1px solid #001529"
           >
             <LockFilled style={{ marginRight: 15 }} />
-            GERENCIAMENTO DE CONTROLE DE ACESSO
+            CONCEDER PERMISSÕES A PERFIS DE ACESSO
           </MenuHomePage>
         </Col>
-        <Col xs={24} sm={12} lg={6} style={{ marginBottom: 40 }}>
+        <Col xs={24} sm={12} lg={6}>
+          {' '}
+          <MenuHomePage
+            link="/revogar-permissoes/perfis-de-acesso"
+            labelColor="#fff"
+            border="1px solid #001529"
+            backgroundColor='#001529'
+          >
+            <LockFilled style={{ marginRight: 15 }} />
+            REVOGAR PERMISSÕES A PERFIS DE ACESSO
+          </MenuHomePage>
+        </Col>
+      </Row>
+
+      <Row justify={'start'} gutter={20}style={{ marginBottom: 20 }}>
+        <Col xs={24} sm={12} lg={6} >
           <MenuHomePage
             link="/setor/criar"
             labelColor="#fff"

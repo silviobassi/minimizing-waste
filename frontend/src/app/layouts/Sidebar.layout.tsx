@@ -12,7 +12,7 @@ export default function SiderBarLayout() {
       collapsedWidth="0"
       
     >
-      <div style={{ borderRight: '1px solid #d7e2ed' }}>
+      <div style={{ borderRight: '1px solid #d7e2ed', width: 220 }}>
         <img
           src={logo}
           style={{

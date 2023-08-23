@@ -12,6 +12,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Tag(name = "Users Role")
 @SecurityRequirement(name = "security_auth")
@@ -51,6 +52,9 @@ public interface RoleControllerOpenApi {
     })
     ResponseEntity<Void> delete(
             @Parameter(description = "ID do role inválido", example = "1", required = true)
-            Long accessGroupId);
+            Long roleId);
+
+    RoleDetailedModel findOrFail( @Parameter(description = "ID do role inválido", example = "1", required = true)
+                                  Long roleId);
 
 }

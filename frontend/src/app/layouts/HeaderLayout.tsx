@@ -27,7 +27,6 @@ export default function HeaderLayout() {
       <BreadcrumbLayout />
       <div
         style={{
-          width: 170,
           display: 'flex',
           justifyContent: 'flex-end',
           alignItems: 'center',

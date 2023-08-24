@@ -88,8 +88,6 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
                 : '',
             };
 
-            console.log(assignmentDTO);
-
             if (props.assignment) {
               return props.onUpdate && props.onUpdate(assignmentDTO);
             }

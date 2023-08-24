@@ -1,36 +1,50 @@
-import { Col, Form, Row, Select } from 'antd';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import useAccessProfiles from '../../core/hooks/useAccessProfiles';
 import usePageTitle from '../../core/usePageTitle';
 import { Permission, Role } from '../../sdk';
-import WrapperDefault from '../components/WrapperDefault';
 
 import type { SelectProps } from 'antd';
+import usePermission from '../../core/hooks/usePermission';
 import usePermissions from '../../core/hooks/usePermissions';
+import AccessDenied from '../components/AccessDenied';
+import GrantingPermissionsForm from '../features/GrantingPermissionsForm';
 
 export default function GrantingPermissionsView() {
   usePageTitle('Concessão de Permissões');
+  const [accessDeniedError, setAccessDeniedError] = useState<boolean>(false);
   const { fetchRoles, roles } = useAccessProfiles();
-  const { permissionsNotGranted, fetchPermissionsAllNotGranted } =
+  const { permissionsNotOrGranted, fetchPermissionsAllNotOrGranted } =
     usePermissions();
-  const [form] = Form.useForm();
-  const [notGranted, setNotGranted] = useState<string>('');
-
-  const option = useCallback(() => {
-    return fetchOptions();
-  }, [fetchOptions]);
+  const { grantingPermissions } = usePermission();
 
   useEffect(() => {
-    fetchRoles();
-  
-  }, [fetchRoles, fetchPermissionsAllNotGranted]);
+    fetchRoles().catch((err) => {
+      if (err?.data?.status === 403) {
+        setAccessDeniedError(true);
+        return;
+      }
+
+      throw err;
+    });
+  }, [fetchRoles, fetchPermissionsAllNotOrGranted, grantingPermissions]);
+
+  if (accessDeniedError)
+    return (
+      <AccessDenied>
+        Você não tem permissão para executar essa operação!
+      </AccessDenied>
+    );
+
+  const onfetchPermissionsAllNotOrGranted = function (roleId: number) {
+    fetchPermissionsAllNotOrGranted(roleId, 'notGranted');
+  };
 
   const optionsAllNotGranted: SelectProps['options'] = [];
 
-  permissionsNotGranted?._embedded?.permissions.map(
+  permissionsNotOrGranted?._embedded?.permissions.map(
     (permission: Permission.DetailedModel) => {
       return optionsAllNotGranted.push({
-        label: `${permission.name} - ${permission.description}`,
+        label: permission.description.toUpperCase(),
         value: permission.id,
       });
     },
@@ -46,53 +60,14 @@ export default function GrantingPermissionsView() {
     });
     return options;
   }
-
-  const perm: any = {
-    permission: (
-      <Select
-        size="large"
-        mode="multiple"
-        allowClear
-        style={{ width: '100%' }}
-        placeholder="Selecione as permissões"
-        onChange={(value: number[]) => console.log(value)}
-        options={optionsAllNotGranted}
-      />
-    ),
-  };
-
   return (
-    <WrapperDefault title="Concessão de Permissões">
-      <Form form={form} layout="vertical">
-        <Row gutter={30}>
-          <Col xs={24} lg={8}>
-            <Form.Item label="Perfis de Acesso" name={'role'}>
-              <Select
-                style={{ width: '100%' }}
-                onChange={(value) => {
-                 fetchPermissionsAllNotGranted(value)
-                  setNotGranted('permission');
-                }}
-                size="large"
-                showSearch
-                placeholder="Selecione o Perfil de Acesso"
-                optionFilterProp="children"
-                filterOption={(input, option: any) =>
-                  (option?.label ?? '')
-                    .toLowerCase()
-                    .includes(input.toLowerCase())
-                }
-                options={option()}
-              />
-            </Form.Item>
-          </Col>
-          <Col xs={24} lg={16}>
-            {perm[notGranted] && (
-              <Form.Item label="Permissões a serem concedidas">{perm[notGranted]}</Form.Item>
-            )}
-          </Col>
-        </Row>
-      </Form>
-    </WrapperDefault>
+    <GrantingPermissionsForm
+      title="Concessão de Permissões"
+      isNotGranted={true}
+      optionsAllNotOrGranted={optionsAllNotGranted}
+      optionsRole={fetchOptions()}
+      onPermissionsNotOrGranted={onfetchPermissionsAllNotOrGranted}
+      onGrantingPermissions={grantingPermissions}
+    />
   );
 }

@@ -11,6 +11,7 @@ delete from assignments;
 delete from permissions;
 delete from roles;
 delete from roles_permissions;
+delete from roles_permissions;
 delete from assignments_employees;
 delete from oauth2_registered_client;
 delete from assignments_employees;
@@ -28,6 +29,7 @@ alter table permissions auto_increment = 1;
 alter table roles auto_increment = 1;
 alter table roles_permissions auto_increment = 1;
 alter table assignments_employees auto_increment = 1;
+alter table roles_permissions auto_increment = 1;
 
 insert into sectors (name) values ('Obras');
 insert into sectors (name) values ('Administrativo');
@@ -77,21 +79,21 @@ insert into supplies (supply_type, name, bulk, manipulation, supply_description_
 ('MATERIAL', 'Porcelanato', null, 'IMUTÁVEL', 5);
 
 
-insert into permissions (name, description) values ('EDIT_USER', 'Permite editar usuários');
-insert into permissions (name, description) values ('CONSULT_USER', 'Permite consultar usuários');
-insert into permissions (name, description) values ('EDIT_ASSIGNMENTS', 'Permite editar tarefas');
-insert into permissions (name, description) values ('EDIT_SUPPLIES', 'Permite editar tarefas');
-insert into permissions (name, description) values ('CONSULT_SUPPLIES', 'Permite consultar tarefas');
-insert into permissions (name, description) values ('EDIT_SECTORS', 'Permite editar tarefas');
-insert into permissions (name, description) values ('CONSULT_SECTORS', 'Permite consultar tarefas');
-insert into permissions (name, description) values ('EDIT_WORK_STATIONS', 'Permite editar estações de trabalho');
-insert into permissions (name, description) values ('CONSULT_WORK_STATIONS', 'Permite consultar estações de trabalho');
-insert into permissions (name, description) values ('APPROVE_ASSIGNMENTS', 'Permite aprovar tarefas');
-insert into permissions (name, description) values ('COMPLETE_ASSIGNMENTS', 'Permite completar tarefas');
-insert into permissions (name, description) values ('GIVE_BACK_SUPPLIES', 'Permite devolver recursos');
-insert into permissions (name, description) values ('VACATE_SUPPLIES', 'Permite disponibilizar recursos');
-insert into permissions (name, description) values ('CONSULT_ASSIGNMENTS', 'Permite consultar tarefas');
-insert into permissions (name, description) values ('END_SUPPLY_ALLOCATED', 'Permite finalizar recursos');
+insert into permissions (name, description) values ('EDIT_USER', 'Permitir criar, editar e excluir usuários');
+insert into permissions (name, description) values ('CONSULT_USER', 'Permitir consultar usuários');
+insert into permissions (name, description) values ('EDIT_ASSIGNMENTS', 'Permitir criar, editar e excluir tarefas');
+insert into permissions (name, description) values ('EDIT_SUPPLIES', 'Permitir criar, editar e excluir recursos');
+insert into permissions (name, description) values ('CONSULT_SUPPLIES', 'Permitir consultar recursos');
+insert into permissions (name, description) values ('EDIT_SECTORS', 'Permitir criar, editar e excluir setores');
+insert into permissions (name, description) values ('CONSULT_SECTORS', 'Permitir consultar setores');
+insert into permissions (name, description) values ('EDIT_WORK_STATIONS', 'Permitir criar, editar e excluir estações de trabalho');
+insert into permissions (name, description) values ('CONSULT_WORK_STATIONS', 'Permitir consultar estações de trabalho');
+insert into permissions (name, description) values ('APPROVE_ASSIGNMENTS', 'Permitir aprovar tarefas concluídas');
+insert into permissions (name, description) values ('COMPLETE_ASSIGNMENTS', 'Permitir concluir tarefas');
+insert into permissions (name, description) values ('GIVE_BACK_SUPPLIES', 'Permitir devolver recursos não utilizados');
+insert into permissions (name, description) values ('VACATE_SUPPLIES', 'Permitir disponibilizar recursos desocupados');
+insert into permissions (name, description) values ('CONSULT_ASSIGNMENTS', 'Permitir consultar tarefas');
+insert into permissions (name, description) values ('END_SUPPLY_ALLOCATED', 'Permitir informar que recursos alocados terminaram');
 
 insert into roles (name) values ('Encarregado');
 insert into roles (name) values ('Administrador');

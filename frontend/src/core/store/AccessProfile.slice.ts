@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Role, Sector } from '../../sdk/@types';
-import { RoleService, SectorService } from '../../sdk/services';
+import { Role } from '../../sdk/@types';
+import { RoleService } from '../../sdk/services';
 
 type PA<T> = PayloadAction<T>;
 

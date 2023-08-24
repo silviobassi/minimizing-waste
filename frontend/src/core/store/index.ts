@@ -7,6 +7,7 @@ import supplyReducer from './Supply.slice';
 import UserReducer from './User.reducer';
 
 import roleReducer from './AccessProfile.slice';
+import permissionsNotOrGrantedReducer from './Permission.slice';
 import supplyMovementReducer from './SupplyMovement.slice';
 import usersAssignmentReducer from './UsersAssignment.slice';
 import workStationReducer from './WorkStation.slice';
@@ -30,6 +31,9 @@ const observeActions: Middleware = () => (next) => (action) => {
       'users/getAllUsersAssignmentAssign/rejected',
       'work-stations/getAllWorkStations/rejected',
       'roles/getAllRoles/rejected',
+      'permissions/getAllPermissionsNotOrGranted/rejected',
+      'permissions/disassociatePermissionsToRole/rejected',
+      'permissions/associatePermissionsToRole/rejected',
     ];
 
     const shouldNotify = !ignoredActions.includes(action.type);
@@ -59,6 +63,7 @@ export const store = configureStore({
     workStations: workStationReducer,
     suppliesMovements: supplyMovementReducer,
     roles: roleReducer,
+    permissionsNotOrGranted: permissionsNotOrGrantedReducer,
   },
   middleware: function (getDefaultMiddlewares) {
     return getDefaultMiddlewares().concat(observeActions);

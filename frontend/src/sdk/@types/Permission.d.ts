@@ -5,4 +5,8 @@ export namespace Permission {
     MinimizingWaste.components['schemas']['PermissionDetailedModel'];
   export type CollectionDetailedModel =
     MinimizingWaste.components['schemas']['CollectionModelPermissionDetailedModel'];
+
+  export type Query = {
+    permission?: string;
+  };
 }

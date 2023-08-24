@@ -21,4 +21,9 @@ public class RolePermissionService {
         return permissionRepository.findAllNotGranted(roleId);
     }
 
+    public List<Permission> findAllGranted(Long roleId){
+        roleService.findOrFail(roleId);
+        return permissionRepository.findAllGranted(roleId);
+    }
+
 }

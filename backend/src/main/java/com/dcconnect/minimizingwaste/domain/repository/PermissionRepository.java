@@ -10,5 +10,7 @@ public interface PermissionRepository extends CustomJpaRepository<Permission, Lo
 
     @Query("select p from Permission p where p not in (select p from Role r join r.permissions p where r.id = :roleId )")
     List<Permission> findAllNotGranted(@Param("roleId") Long roleId);
+    @Query("select p from Permission p where p in (select p from Role r join r.permissions p where r.id = :roleId )")
+    List<Permission> findAllGranted(@Param("roleId") Long roleId);
 
 }

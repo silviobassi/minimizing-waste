@@ -121,7 +121,7 @@ export interface paths {
   };
   '/v1/supplies-movements': {
     /** Lista os movimentos de recursos */
-    get: operations['all_1'];
+    get: operations['all'];
     /** Cria um novo movimento de recurso */
     post: operations['create_2'];
   };
@@ -133,7 +133,7 @@ export interface paths {
   };
   '/v1/roles': {
     /** Lista os roles de acessos */
-    get: operations['all_2'];
+    get: operations['all_1'];
     /** Cria um role de acessos */
     post: operations['create_4'];
   };
@@ -144,12 +144,16 @@ export interface paths {
     post: operations['create_5'];
   };
   '/v1/users/{userId}/roles': {
-    /** Apresenta o role  do usuário */
-    get: operations['all'];
+    /** Lista os roles associados ou não aos usuário atual */
+    get: operations['allNotOrGranted'];
   };
   '/v1/users/{assignmentId}/assignments': {
     /** Lista os usuários atribuídos ou não a tarefa atual */
     get: operations['allAssigned'];
+  };
+  '/v1/users/summary': {
+    /** Lista todos os usuários apenas com  seus espectivos nomes */
+    get: operations['findAllUserSummary'];
   };
   '/v1/supplies': {
     /** Lista recursos */
@@ -167,15 +171,15 @@ export interface paths {
   };
   '/v1/roles/{roleId}/permissions': {
     /** Lista as permissões relacionadas ao role atual */
-    get: operations['all_3'];
+    get: operations['all_2'];
   };
   '/v1/roles/permissions': {
     /** Lista as permissões de role de acesso */
-    get: operations['all_4'];
+    get: operations['all_3'];
   };
   '/v1/roles/permissions/{roleId}': {
     /** Lista as permissões de role de acesso não concedidas ao usuário atual */
-    get: operations['allNotGranted'];
+    get: operations['allNotOrGranted_1'];
   };
   '/v1/notifications/assignments': {
     /** Lista as notificações enviadas por tarefas atribuídas ou não atribuídas */
@@ -187,7 +191,7 @@ export interface paths {
   };
   '/v1/assignments/{assignmentId}/employee-responsible': {
     /** Lista colaboradores atribuídos a respectivas tarefas */
-    get: operations['all_5'];
+    get: operations['all_4'];
   };
   '/v1/supplies-movements/vacancies/{supplyMovementId}': {
     /** Disponibiliza um movimento de recurso em estado ocioso */
@@ -694,12 +698,44 @@ export interface components {
       _links?: components['schemas']['Links'];
       page?: components['schemas']['PageMetadata'];
     };
+    CollectionModelRoleSummaryModel: {
+      _embedded?: {
+        roles?: components['schemas']['RoleSummaryModel'][];
+      };
+      _links?: components['schemas']['Links'];
+    };
+    RoleSummaryModel: {
+      /**
+       * Format: int64
+       * @example 1
+       */
+      id?: number;
+      /** @example Engenheiro */
+      name?: string;
+      _links?: components['schemas']['Links'];
+    };
     PagedModelUserAssignedModel: {
       _embedded?: {
         users?: components['schemas']['UserAssignedModel'][];
       };
       _links?: components['schemas']['Links'];
       page?: components['schemas']['PageMetadata'];
+    };
+    CollectionModelUserSummaryModel: {
+      _embedded?: {
+        users?: components['schemas']['UserSummaryModel'][];
+      };
+      _links?: components['schemas']['Links'];
+    };
+    UserSummaryModel: {
+      /**
+       * Format: int64
+       * @example 1
+       */
+      id?: number;
+      /** @example Pedro Oliveira Bassi */
+      name?: string;
+      _links?: components['schemas']['Links'];
     };
     PagedModelSupplySummaryModel: {
       _embedded?: {
@@ -1056,6 +1092,10 @@ export interface operations {
   associate: {
     parameters: {
       path: {
+        /**
+         * @description ID de um usuário
+         * @example 1
+         */
         userId: number;
         roleId: number;
       };
@@ -1077,6 +1117,10 @@ export interface operations {
   disassociate: {
     parameters: {
       path: {
+        /**
+         * @description ID de um usuário
+         * @example 1
+         */
         userId: number;
         roleId: number;
       };
@@ -1407,8 +1451,8 @@ export interface operations {
       };
     };
     responses: {
-      /** @description No Content */
-      204: {
+      /** @description OK */
+      200: {
         content: {
           '*/*': components['schemas']['RoleDetailedModel'];
         };
@@ -1837,7 +1881,7 @@ export interface operations {
     };
   };
   /** Lista os movimentos de recursos */
-  all_1: {
+  all: {
     parameters: {
       query?: {
         /** @description Número da página (0..N). */
@@ -1919,7 +1963,7 @@ export interface operations {
     };
   };
   /** Lista os roles de acessos */
-  all_2: {
+  all_1: {
     responses: {
       /** @description OK */
       200: {
@@ -2014,10 +2058,21 @@ export interface operations {
       };
     };
   };
-  /** Apresenta o role  do usuário */
-  all: {
+  /** Lista os roles associados ou não aos usuário atual */
+  allNotOrGranted: {
     parameters: {
+      query?: {
+        /**
+         * @description Lista os roles
+         * @example granted
+         */
+        role?: string;
+      };
       path: {
+        /**
+         * @description ID de um usuário
+         * @example 1
+         */
         userId: number;
       };
     };
@@ -2025,13 +2080,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          '*/*': components['schemas']['RoleDetailedModel'];
-        };
-      };
-      /** @description ID do usuário */
-      400: {
-        content: {
-          '*/*': components['schemas']['Problem'];
+          '*/*': components['schemas']['CollectionModelRoleSummaryModel'];
         };
       };
     };
@@ -2067,6 +2116,17 @@ export interface operations {
       404: {
         content: {
           '*/*': components['schemas']['Problem'];
+        };
+      };
+    };
+  };
+  /** Lista todos os usuários apenas com  seus espectivos nomes */
+  findAllUserSummary: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          '*/*': components['schemas']['CollectionModelUserSummaryModel'];
         };
       };
     };
@@ -2158,7 +2218,7 @@ export interface operations {
     };
   };
   /** Lista as permissões relacionadas ao role atual */
-  all_3: {
+  all_2: {
     parameters: {
       path: {
         roleId: number;
@@ -2186,7 +2246,7 @@ export interface operations {
     };
   };
   /** Lista as permissões de role de acesso */
-  all_4: {
+  all_3: {
     responses: {
       /** @description OK */
       200: {
@@ -2197,8 +2257,16 @@ export interface operations {
     };
   };
   /** Lista as permissões de role de acesso não concedidas ao usuário atual */
-  allNotGranted: {
+  allNotOrGranted_1: {
     parameters: {
+      query?: {
+        permission?: string;
+        /**
+         * @description Permissões não concedidas
+         * @example PERMITIR EDITAR USUÁRIO, PERMITIR DEVOLVER RECURSOS ALOCADOS...
+         */
+        notGranted?: string;
+      };
       path: {
         /**
          * @description ID de um role
@@ -2267,7 +2335,7 @@ export interface operations {
     };
   };
   /** Lista colaboradores atribuídos a respectivas tarefas */
-  all_5: {
+  all_4: {
     parameters: {
       path: {
         assignmentId: number;

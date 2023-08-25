@@ -1,6 +1,7 @@
 package com.dcconnect.minimizingwaste.api.v1.openapi;
 
 import com.dcconnect.minimizingwaste.api.v1.model.UserDetailedModel;
+import com.dcconnect.minimizingwaste.api.v1.model.UserSummaryModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.PasswordInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.UserInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.UserUpdateInput;
@@ -15,6 +16,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
 
 @Tag(name = "Users")
@@ -39,9 +41,11 @@ public interface UserControllerOpenApi {
             @Parameter(hidden = true) UserFilter userFilter,
             @Parameter(hidden = true) @PageableDefault(size = 10) Pageable pageable);
 
+    @Operation(summary = "Lista todos os usuários apenas com  seus espectivos nomes")
+    CollectionModel<UserSummaryModel> findAllUserSummary();
 
     @Operation(summary = "Cria um novo usuário")
-    public UserDetailedModel create(@RequestBody(description = "Representação de um novo usuário", required = true)
+    UserDetailedModel create(@RequestBody(description = "Representação de um novo usuário", required = true)
                                         UserInput userInput);
 
     @Operation(summary = "Edita um usuário", responses = {

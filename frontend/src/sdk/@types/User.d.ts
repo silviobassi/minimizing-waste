@@ -20,10 +20,13 @@ export namespace User {
   export type UserAssignment =
     MinimizingWaste.components['schemas']['UserAssignmentModel'];
 
+  export type SummaryNameModel =
+    MinimizingWaste.components['schemas']['CollectionModelUserSummaryModel'];
+
   export type Query = {
     page?: number;
     size?: number;
     sort?: ['asc' | 'desc'];
-    assigned?: boolean
+    assigned?: boolean;
   };
 }

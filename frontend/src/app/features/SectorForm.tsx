@@ -37,12 +37,12 @@ export default function SectorForm(props: SectorFormDefaultProps) {
         form={form}
         initialValues={props.sector}
         onFinish={async (sector: Sector.Input) => {
+          if (props.sector) {
+            form.setFieldValue('name', '');
+            return props.onUpdate && props.onUpdate(sector);
+          }
+          
           try {
-            if (props.sector) {
-              form.setFieldValue('name', '');
-              return props.onUpdate && props.onUpdate(sector);
-            }
-
             await SectorService.createSector(sector).then(
               (sector: Sector.SectorModel) => {
                 notification.success({

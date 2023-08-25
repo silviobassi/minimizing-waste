@@ -2,8 +2,11 @@ package com.dcconnect.minimizingwaste.api.v1.controller;
 
 import com.dcconnect.minimizingwaste.api.v1.assembler.UserAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.UserDisassembler;
+import com.dcconnect.minimizingwaste.api.v1.assembler.UserSummaryAssembler;
 import com.dcconnect.minimizingwaste.api.v1.assembler.UserUpdateDisassembler;
+import com.dcconnect.minimizingwaste.api.v1.model.SectorModel;
 import com.dcconnect.minimizingwaste.api.v1.model.UserDetailedModel;
+import com.dcconnect.minimizingwaste.api.v1.model.UserSummaryModel;
 import com.dcconnect.minimizingwaste.api.v1.model.input.PasswordInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.UserInput;
 import com.dcconnect.minimizingwaste.api.v1.model.input.UserUpdateInput;
@@ -11,10 +14,13 @@ import com.dcconnect.minimizingwaste.api.v1.openapi.UserControllerOpenApi;
 import com.dcconnect.minimizingwaste.core.data.PageWrapper;
 import com.dcconnect.minimizingwaste.core.data.PageableTranslator;
 import com.dcconnect.minimizingwaste.core.security.CheckSecurity;
+import com.dcconnect.minimizingwaste.domain.model.Sector;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.repository.UserRepository;
+import com.dcconnect.minimizingwaste.domain.repository.filter.SectorFilter;
 import com.dcconnect.minimizingwaste.domain.repository.filter.UserFilter;
 import com.dcconnect.minimizingwaste.domain.service.UserService;
+import com.dcconnect.minimizingwaste.infrastructure.spec.SectorSpecs;
 import com.dcconnect.minimizingwaste.infrastructure.spec.UserSpecs;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +28,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.data.web.PagedResourcesAssembler;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +36,7 @@ import org.springframework.web.bind.annotation.*;
 import java.io.File;
 import java.nio.file.FileSystem;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -43,6 +51,9 @@ public class UserController implements UserControllerOpenApi {
 
     @Autowired
     private UserAssembler userAssembler;
+
+    @Autowired
+    private UserSummaryAssembler userSummaryAssembler;
 
     @Autowired
     private UserDisassembler userDisassembler;
@@ -65,6 +76,13 @@ public class UserController implements UserControllerOpenApi {
         usersPage = new PageWrapper<>(usersPage, pageable);
 
         return pagedResourcesAssembler.toModel(usersPage, userAssembler);
+    }
+
+    @CheckSecurity.Users.CanConsult
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/summary")
+    public CollectionModel<UserSummaryModel> findAllUserSummary(){
+        return userSummaryAssembler.toCollectionModel(userRepository.findAllUserSummary());
     }
 
     @CheckSecurity.Users.CanEdit

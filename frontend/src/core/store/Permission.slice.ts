@@ -36,7 +36,7 @@ export const associatePermissionsToRole = createAsyncThunk(
   'permissions/associatePermissionsToRole',
   async (
     { roleId, permissionId }: { roleId: number; permissionId: number },
-    { dispatch },
+    {rejectWithValue, dispatch },
   ) => {
     await PermissionService.associatePermissionsToRole(roleId, permissionId);
     await dispatch(

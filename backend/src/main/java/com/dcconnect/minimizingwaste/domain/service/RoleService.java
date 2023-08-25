@@ -59,6 +59,7 @@ public class RoleService {
 
     @Transactional
     public void disassociatePermission(Long roleId, Long permissionId) {
+
         Role role = findOrFail(roleId);
         Permission permission = permissionService.findOrFail(permissionId);
 

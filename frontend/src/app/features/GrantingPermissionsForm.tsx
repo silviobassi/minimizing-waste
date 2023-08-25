@@ -7,10 +7,12 @@ import {
   Select,
   SelectProps,
   Space,
-  notification,
+  Typography,
 } from 'antd';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { hasManagerUser } from '../../auth/utils/isAuthenticated';
+import useAuth from '../../core/hooks/useAuth';
 import { Permission, Role } from '../../sdk';
 import WrapperDefault from '../components/WrapperDefault';
 
@@ -22,7 +24,11 @@ interface GrantingPermissionsFormDefaultProps {
   optionsAllNotOrGranted: SelectProps['options'];
   optionsRole: Role.CollectionDetailed;
   onPermissionsNotOrGranted: (value: number) => GrantingPermissionsType;
-  onGrantingPermissions: (roleId: number, permissionId: number) => any;
+  onGrantingPermissions: (
+    roleId: number,
+    permissionId: number,
+    permission: string,
+  ) => any;
 }
 export default function GrantingPermissionsForm(
   props: GrantingPermissionsFormDefaultProps,
@@ -33,11 +39,12 @@ export default function GrantingPermissionsForm(
     id: number;
     description: string;
   }>();
-  const [role, setRole] = useState<{ id: number }>();
+  const [role, setRole] = useState<{ id: number; name: string }>();
+  const { userAuth } = useAuth();
 
-  const roleId: number | undefined = useMemo(() => {
-    return role?.id;
-  }, [role?.id]);
+  const access: { id: number; name: string } | undefined = useMemo(() => {
+    return role;
+  }, [{ ...role }]);
 
   const permission: { id: number; description: string } | undefined =
     useMemo(() => {
@@ -47,6 +54,9 @@ export default function GrantingPermissionsForm(
   const perm: any = {
     permission: (
       <Select
+        disabled={
+          !props.isNotGranted ? hasManagerUser(userAuth, access?.name) : false
+        }
         size="large"
         style={{ width: '100%' }}
         placeholder="Selecione as permissões"
@@ -71,14 +81,23 @@ export default function GrantingPermissionsForm(
       <Form form={form} layout="vertical">
         <Row gutter={30}>
           <Col xs={24} lg={8}>
-            <Form.Item label="Perfis de Acesso" name={'role'}>
+            <Form.Item
+              label="Perfis de Acesso"
+              name={'role'}
+              rules={[
+                {
+                  required: false,
+                  message: 'o campo é obrigatório',
+                },
+              ]}
+            >
               <Select
                 style={{ width: '100%' }}
-                onChange={(value) => {
+                onChange={(value, option: any) => {
                   if (props.optionsAllNotOrGranted) {
                     props.onPermissionsNotOrGranted(value);
                   }
-                  setRole({ ...role, id: value });
+                  setRole({ ...role, id: value, name: option?.label });
                   setNotGranted('permission');
                 }}
                 size="large"
@@ -96,7 +115,18 @@ export default function GrantingPermissionsForm(
           </Col>
           <Col xs={24} lg={16}>
             {perm[notGranted] && (
-              <Form.Item label="Permissões a serem concedidas" name={'grant'}>
+              <Form.Item
+                label={
+                  hasManagerUser(userAuth, access?.name) ? (
+                    <Typography.Text type="danger">
+                      Administrador não pode revogar suas permissões
+                    </Typography.Text>
+                  ) : (
+                    'Selecione as Permissões '
+                  )
+                }
+                name={'grant'}
+              >
                 {perm[notGranted]}
               </Form.Item>
             )}
@@ -105,20 +135,17 @@ export default function GrantingPermissionsForm(
         <Space>
           <Button
             type="primary"
-            onClick={async () => {
-              await props.onGrantingPermissions(
-                Number(roleId),
-                Number(permission?.id),
+            onClick={() => {
+              if (props.optionsAllNotOrGranted && props.optionsRole)
+                form.setFieldValue('grant', '');
+              return (
+                props.onGrantingPermissions &&
+                props.onGrantingPermissions(
+                  Number(access?.id),
+                  Number(permission?.id),
+                  permission?.description,
+                )
               );
-
-              form.setFieldValue('grant', '');
-
-              notification.success({
-                message: 'Sucesso',
-                description: props.isNotGranted
-                  ? `Permissão ${permission?.description} concedida com sucesso`
-                  : `Permissão ${permission?.description} revogada com sucesso`,
-              });
             }}
             icon={<LockTwoTone />}
           >

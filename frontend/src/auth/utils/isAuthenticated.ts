@@ -16,4 +16,8 @@ function hasEmployeeCurrent(
   );
 }
 
-export { hasEmployeeCurrent, hasPermission };
+function hasManagerUser(user: User.Detailed, accessLevel: string): boolean {
+  return accessLevel ? user.role?.name === accessLevel : true;
+}
+
+export { hasEmployeeCurrent, hasManagerUser, hasPermission };

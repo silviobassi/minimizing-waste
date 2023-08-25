@@ -1,13 +1,16 @@
 package com.dcconnect.minimizingwaste.api.v1.assembler;
 
+import com.dcconnect.minimizingwaste.api.v1.controller.SectorController;
 import com.dcconnect.minimizingwaste.api.v1.controller.UserRoleController;
 import com.dcconnect.minimizingwaste.api.v1.model.RoleDetailedModel;
+import com.dcconnect.minimizingwaste.api.v1.model.RoleSummaryModel;
 import com.dcconnect.minimizingwaste.domain.model.Role;
 import lombok.Getter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.IanaLinkRelations;
 import org.springframework.hateoas.server.mvc.RepresentationModelAssemblerSupport;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +18,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Component
-public class UserAccessGroupAssembler extends RepresentationModelAssemblerSupport<Role, RoleDetailedModel> {
+public class UserRoleAssembler extends RepresentationModelAssemblerSupport<Role, RoleSummaryModel> {
 
     @Autowired
     private ModelMapper modelMapper;
@@ -24,29 +27,25 @@ public class UserAccessGroupAssembler extends RepresentationModelAssemblerSuppor
     @Setter
     private Long userId;
 
-    public UserAccessGroupAssembler() {
-        super(UserRoleController.class, RoleDetailedModel.class);
+    public UserRoleAssembler() {
+        super(UserRoleController.class, RoleSummaryModel.class);
     }
 
-    public RoleDetailedModel toModel(Role role){
+    public RoleSummaryModel toModel(Role role){
 
-        RoleDetailedModel roleDetailedModel = new RoleDetailedModel();
+        RoleSummaryModel roleSummaryModel = new RoleSummaryModel();
 
-        roleDetailedModel.add(linkTo(methodOn(UserRoleController.class)
-                .associate(getUserId(), role.getId())).withRel("disassociate"));
+        modelMapper.map(role, roleSummaryModel);
 
-        modelMapper.map(role, roleDetailedModel);
-
-        return roleDetailedModel;
+        return roleSummaryModel;
     }
 
-    public CollectionModel<RoleDetailedModel> toCollectionModel(
-            Iterable<? extends Role> entities,
-            Long userId){
+    public CollectionModel<RoleSummaryModel> toCollectionModel(
+            Iterable<? extends Role> entities
+            ){
 
-        setUserId(userId);
         return super.toCollectionModel(entities)
-                .add(linkTo(methodOn(UserRoleController.class).all(getUserId())).withSelfRel());
+                .add(linkTo(SectorController.class).withRel(IanaLinkRelations.SELF.value()));
     }
 
 

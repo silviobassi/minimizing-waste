@@ -3,7 +3,7 @@ import useAccessProfiles from '../../core/hooks/useAccessProfiles';
 import usePageTitle from '../../core/usePageTitle';
 import { Permission, Role } from '../../sdk';
 
-import type { SelectProps } from 'antd';
+import { notification, type SelectProps } from 'antd';
 import usePermission from '../../core/hooks/usePermission';
 import usePermissions from '../../core/hooks/usePermissions';
 import AccessDenied from '../components/AccessDenied';
@@ -60,6 +60,24 @@ export default function GrantingPermissionsView() {
     });
     return options;
   }
+
+  function grantPermissions(
+    roleId: number,
+    permissionId: number,
+    permission: string,
+  ) {
+    if (isNaN(Number(roleId)) || isNaN(Number(permissionId))) {
+      return notification.error({
+        message: 'Informe o perfil de acesso ou a permissão para a concessão',
+      });
+    }
+    grantingPermissions(roleId, permissionId).then((res: any) =>
+      notification.success({
+        message: 'Sucesso',
+        description: `Permissão ${permission} concedida com sucesso`,
+      }),
+    );
+  }
   return (
     <GrantingPermissionsForm
       title="Concessão de Permissões"
@@ -67,7 +85,7 @@ export default function GrantingPermissionsView() {
       optionsAllNotOrGranted={optionsAllNotGranted}
       optionsRole={fetchOptions()}
       onPermissionsNotOrGranted={onfetchPermissionsAllNotOrGranted}
-      onGrantingPermissions={grantingPermissions}
+      onGrantingPermissions={grantPermissions}
     />
   );
 }

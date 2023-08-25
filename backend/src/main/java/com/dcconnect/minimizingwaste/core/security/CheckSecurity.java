@@ -21,10 +21,33 @@ public @interface CheckSecurity {
         @Target(ElementType.METHOD)
         @interface CanEdit { }
 
+        @PreAuthorize("@minimizingSecurity.userEqualAuthenticated(#userId)")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface CanDelete { }
+
         @PreAuthorize("hasAuthority('SCOPE_READ') and isAuthenticated()")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         @interface CanPhotoConsult { }
+    }
+
+    @interface RolesPermissions {
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDIT_ACCESS_STATUS')")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface CanEdit { }
+
+        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULT_ACCESS_STATUS')")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface CanConsult { }
+
+        @PreAuthorize("@minimizingSecurity.userEqualAuthenticated(#userId)")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface CanDelete { }
+
     }
 
     @interface Assignments {

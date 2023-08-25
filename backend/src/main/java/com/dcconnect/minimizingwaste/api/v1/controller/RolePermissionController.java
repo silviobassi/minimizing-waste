@@ -24,7 +24,7 @@ public class RolePermissionController implements RolePermissionControllerOpenApi
     @Autowired
     private PermissionAssembler permissionAssembler;
 
-    @CheckSecurity.Users.CanConsult
+    @CheckSecurity.RolesPermissions.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public CollectionModel<PermissionDetailedModel> all(@PathVariable Long roleId){
@@ -34,7 +34,7 @@ public class RolePermissionController implements RolePermissionControllerOpenApi
         return permissionsDetailed;
     }
 
-    @CheckSecurity.Users.CanEdit
+    @CheckSecurity.RolesPermissions.CanEdit
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{permissionId}")
     public ResponseEntity<Void> disassociate(@PathVariable Long roleId, @PathVariable Long permissionId) {
@@ -42,7 +42,7 @@ public class RolePermissionController implements RolePermissionControllerOpenApi
         return ResponseEntity.noContent().build();
     }
 
-    @CheckSecurity.Users.CanEdit
+    @CheckSecurity.RolesPermissions.CanEdit
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{permissionId}")
     public void associate(@PathVariable Long roleId, @PathVariable Long permissionId){

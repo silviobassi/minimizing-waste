@@ -42,7 +42,7 @@ public class RoleController implements RoleControllerOpenApi {
         return roleAssembler.toCollectionModel(roles);
     }
 
-    @CheckSecurity.Users.CanEdit
+    @CheckSecurity.RolesPermissions.CanEdit
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public RoleDetailedModel create(@RequestBody @Valid RoleInput roleInput){
@@ -51,7 +51,7 @@ public class RoleController implements RoleControllerOpenApi {
         return roleAssembler.toModel(role);
     }
 
-    @CheckSecurity.Users.CanEdit
+    @CheckSecurity.RolesPermissions.CanEdit
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{roleId}")
     public RoleDetailedModel update(@PathVariable Long roleId,
@@ -70,7 +70,7 @@ public class RoleController implements RoleControllerOpenApi {
         return ResponseEntity.noContent().build();
     }
 
-    @CheckSecurity.Users.CanConsult
+    @CheckSecurity.RolesPermissions.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{roleId}")
     public RoleDetailedModel findOrFail(@PathVariable Long roleId){

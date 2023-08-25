@@ -1,5 +1,14 @@
 import { LockTwoTone, StopOutlined } from '@ant-design/icons';
-import { Button, Col, Form, Row, Select, SelectProps, Space } from 'antd';
+import {
+  Button,
+  Col,
+  Form,
+  Row,
+  Select,
+  SelectProps,
+  Space,
+  notification,
+} from 'antd';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Permission, Role } from '../../sdk';
@@ -20,25 +29,33 @@ export default function GrantingPermissionsForm(
 ) {
   const [form] = Form.useForm();
   const [notGranted, setNotGranted] = useState<string>('');
-  const [receiveConcession, setReceiveConcession] = useState<number[]>([]);
+  const [receivePermission, setReceivePermission] = useState<{
+    id: number;
+    description: string;
+  }>();
   const [role, setRole] = useState<{ id: number }>();
 
-  const roleId = useMemo(() => {
+  const roleId: number | undefined = useMemo(() => {
     return role?.id;
   }, [role?.id]);
+
+  const permission: { id: number; description: string } | undefined =
+    useMemo(() => {
+      return receivePermission;
+    }, [{ ...receivePermission }]);
 
   const perm: any = {
     permission: (
       <Select
         size="large"
-        mode="multiple"
-        allowClear
         style={{ width: '100%' }}
         placeholder="Selecione as permissões"
-        onChange={(value) => {
-          const grant: number[] = [];
-          grant.push(value);
-          setReceiveConcession(grant);
+        onChange={(value, option: any) => {
+          setReceivePermission({
+            ...receivePermission,
+            id: value,
+            description: option?.label,
+          });
         }}
         optionFilterProp="children"
         filterOption={(input, option: any) =>
@@ -64,7 +81,6 @@ export default function GrantingPermissionsForm(
                   setRole({ ...role, id: value });
                   setNotGranted('permission');
                 }}
-                onClear={() => form.setFieldValue('grant', '')}
                 size="large"
                 showSearch
                 placeholder="Selecione o Perfil de Acesso"
@@ -89,15 +105,20 @@ export default function GrantingPermissionsForm(
         <Space>
           <Button
             type="primary"
-            onClick={() => {
-              receiveConcession.map((element: any) =>
-                element.map(async (permissionId: number) => {
-                  await props.onGrantingPermissions(
-                    Number(roleId),
-                    permissionId,
-                  );
-                }),
+            onClick={async () => {
+              await props.onGrantingPermissions(
+                Number(roleId),
+                Number(permission?.id),
               );
+
+              form.setFieldValue('grant', '');
+
+              notification.success({
+                message: 'Sucesso',
+                description: props.isNotGranted
+                  ? `Permissão ${permission?.description} concedida com sucesso`
+                  : `Permissão ${permission?.description} revogada com sucesso`,
+              });
             }}
             icon={<LockTwoTone />}
           >

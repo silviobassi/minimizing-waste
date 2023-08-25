@@ -8,7 +8,7 @@ export default function usePermission() {
 
   const grantingPermissions = useCallback(
     async (roleId: number, permissionId: number) => {
-      await dispatch(
+      return await dispatch(
         PermissionActions.associatePermissionsToRole({ roleId, permissionId }),
       ).unwrap();
     },

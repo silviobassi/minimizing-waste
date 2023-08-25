@@ -30,7 +30,7 @@ public class PermissionController implements PermissionControllerOpenApi {
     @Autowired
     private PermissionAssembler permissionAssembler;
 
-    @CheckSecurity.Users.CanConsult
+    @CheckSecurity.RolesPermissions.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public CollectionModel<PermissionDetailedModel> all(){
@@ -38,7 +38,7 @@ public class PermissionController implements PermissionControllerOpenApi {
         return permissionAssembler.toCollectionModel(permissions);
     }
 
-    @CheckSecurity.Users.CanConsult
+    @CheckSecurity.RolesPermissions.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{roleId}")
     public CollectionModel<PermissionDetailedModel> allNotOrGranted(@PathVariable Long roleId,

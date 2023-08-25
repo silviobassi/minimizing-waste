@@ -15,7 +15,7 @@ export default function GrantingPermissionsView() {
   const { fetchRoles, roles } = useAccessProfiles();
   const { permissionsNotOrGranted, fetchPermissionsAllNotOrGranted } =
     usePermissions();
-  const { grantingPermissions } = usePermission();
+  const { revokingPermissions } = usePermission();
 
   useEffect(() => {
     fetchRoles().catch((err) => {
@@ -26,7 +26,7 @@ export default function GrantingPermissionsView() {
 
       throw err;
     });
-  }, [fetchRoles, fetchPermissionsAllNotOrGranted, grantingPermissions]);
+  }, [fetchRoles, fetchPermissionsAllNotOrGranted, revokingPermissions]);
 
   if (accessDeniedError)
     return (
@@ -36,7 +36,7 @@ export default function GrantingPermissionsView() {
     );
 
   const onfetchPermissionsAllNotOrGranted = function (roleId: number) {
-    fetchPermissionsAllNotOrGranted(roleId, 'notGranted');
+    fetchPermissionsAllNotOrGranted(roleId, 'granted');
   };
 
   const optionsAllNotGranted: SelectProps['options'] = [];
@@ -67,7 +67,7 @@ export default function GrantingPermissionsView() {
       optionsAllNotOrGranted={optionsAllNotGranted}
       optionsRole={fetchOptions()}
       onPermissionsNotOrGranted={onfetchPermissionsAllNotOrGranted}
-      onGrantingPermissions={grantingPermissions}
+      onGrantingPermissions={revokingPermissions}
     />
   );
 }

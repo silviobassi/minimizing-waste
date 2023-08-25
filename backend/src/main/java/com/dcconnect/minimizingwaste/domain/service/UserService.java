@@ -17,6 +17,7 @@ import java.util.Optional;
 @Service
 public class UserService {
 
+    public static final String IS_LOGGED_USER = "O usuário %s não pode ser removido, pois está logado";
     @Autowired
     private UserRepository userRepository;
 
@@ -47,6 +48,14 @@ public class UserService {
 
     @Transactional
     public void delete(User user){
+
+        Optional<User> userCurrent = userRepository.findById(user.getId());
+
+        if(userCurrent.get().getRole().equals("Administrador"))
+            throw new BusinessException(String.format("O usuário %s não pode ser excluído, pois é o Administrador " +
+                            "do sistema",
+                    userCurrent.get().getName()));
+
         try {
             fileAvatarStorageService.removeIfExistingOldAvatar(user);
 

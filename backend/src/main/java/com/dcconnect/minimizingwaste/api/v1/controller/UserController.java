@@ -89,7 +89,7 @@ public class UserController implements UserControllerOpenApi {
         return userAssembler.toModel(currentUser);
     }
 
-    @CheckSecurity.Users.CanEdit
+    @CheckSecurity.Users.CanDelete
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{userId}")
     public void delete(@PathVariable Long userId) {

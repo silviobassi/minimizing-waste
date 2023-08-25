@@ -32,12 +32,6 @@ public interface SupplyRepository extends CustomJpaRepository<Supply, Long>, Sup
     @Query("from SupplyMovement sm where sm.id = :supplyMovementId")
     Optional<SupplyMovement> findBySupplyMovementById(@Param("supplyMovementId") Long supplyMovementId);
 
-   /*
-   select distinct(true) from supplies_movement where (select ds.quantity from supplies sup inner join descriptions_supplies ds on
-   sup.supply_description_id = ds.id where sup.id = 4) >
-	(select sum(sm.allocated_quantity) from supplies_movement sm inner join supplies sup on sup.id = sm.supply_id where sup.id = 4);
-    */
-
     @Query(value = "select coalesce(sum(sm.allocatedQuantity), 0) from SupplyMovement sm join sm.supply sup  where sup.id = :supplyId")
     long findAllocatedSupply(@Param("supplyId") long supplyId);
 

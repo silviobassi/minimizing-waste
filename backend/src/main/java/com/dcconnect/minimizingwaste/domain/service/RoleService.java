@@ -6,19 +6,28 @@ import com.dcconnect.minimizingwaste.domain.exception.EntityInUseException;
 import com.dcconnect.minimizingwaste.domain.model.Role;
 import com.dcconnect.minimizingwaste.domain.model.Permission;
 import com.dcconnect.minimizingwaste.domain.repository.RoleRepository;
+import jakarta.persistence.LockModeType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
+
+import java.util.Optional;
 
 @Service
 public class RoleService {
 
-    public static final String ACCESS_GROUP_IN_USE =
+    public static final String ROLE_IN_USE =
             "Role de código %d não pode ser removido, pois está em uso";
+    public static final String CANNOT_BE_EXCLUDED = "O Administrador não pode ser excluído";
+    public static final String ASSIGNED_PERMISSION_ALREADY = "A permissão já está associada ao nível de acesso %s";
+
+    public static final String UNASSIGNED_PERMISSION_ALREADY = "A permissão está disassociada ao nível de acesso %s";
+    public static final String PERMISSIONS_CANNOT_BE_UNASSIGNED = "As permissões de Administrador não podem ser revogadas";
+
     @Autowired
     private RoleRepository roleRepository;
 
@@ -32,6 +41,11 @@ public class RoleService {
 
     @Transactional
     public void delete(Long roleId) {
+        Role roleCurrent = findOrFail(roleId);
+
+        if(roleCurrent.getName().equals("Administrador"))
+            throw new BusinessException(CANNOT_BE_EXCLUDED);
+
         try {
             roleRepository.deleteById(roleId);
             roleRepository.flush();
@@ -39,7 +53,7 @@ public class RoleService {
             throw new RoleNotFoundException(roleId);
         } catch (DataIntegrityViolationException e) {
             throw new EntityInUseException(
-                    String.format(ACCESS_GROUP_IN_USE, roleId));
+                    String.format(ROLE_IN_USE, roleId));
         }
     }
 
@@ -48,9 +62,14 @@ public class RoleService {
         Role role = findOrFail(roleId);
         Permission permission = permissionService.findOrFail(permissionId);
 
+        if(role.getName().equals("Administrador"))
+            throw new BusinessException(
+                    String.format(PERMISSIONS_CANNOT_BE_UNASSIGNED, role.getName()));
+
+
         if(role.isNotPermission(permission)){
             throw new BusinessException(
-                    String.format("A permissão não está associada ao nível de acesso %s", role.getName()));
+                    String.format(UNASSIGNED_PERMISSION_ALREADY, role.getName()));
         }
 
         role.removePermission(permission);
@@ -63,7 +82,7 @@ public class RoleService {
 
         if(role.isPermission(permission)){
             throw new BusinessException(
-                    String.format("A permissão já está associada ao nível de acesso %s", role.getName()));
+                    String.format(ASSIGNED_PERMISSION_ALREADY, role.getName()));
         }
 
         role.addPermission(permission);

@@ -44,10 +44,10 @@ public class MinimizingSecurity {
         return assignmentRepository.existsByEmployeeResponsible(assignmentId, getUserId());
     }
 
+
     public boolean hasUserLogin(Long userId){
-        if(userId == null) {
+        if(userId == null)
             return false;
-        }
         return userRepository.existsByUser(userId);
     }
 
@@ -61,8 +61,15 @@ public class MinimizingSecurity {
                 || hasAssignmentResponsible(assignmentId));
     }
 
+
     public boolean canConsultUserLogin(Long userId){
         return isScopeRead() && (hasAuthority("CONSULT_USER")
                 || hasUserLogin(userId));
     }
+
+    public boolean userEqualAuthenticated(Long userId) {
+        return getUserId() != null && userId != null
+                && !getUserId().equals(userId);
+    }
+
 }

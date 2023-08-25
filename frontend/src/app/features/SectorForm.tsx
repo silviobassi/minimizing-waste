@@ -39,6 +39,7 @@ export default function SectorForm(props: SectorFormDefaultProps) {
         onFinish={async (sector: Sector.Input) => {
           try {
             if (props.sector) {
+              form.setFieldValue('name', '');
               return props.onUpdate && props.onUpdate(sector);
             }
 
@@ -50,6 +51,7 @@ export default function SectorForm(props: SectorFormDefaultProps) {
                 });
               },
             );
+            form.resetFields();
           } catch (error) {
             if (error instanceof CustomError) {
               if (error.data?.objects) {
@@ -88,6 +90,7 @@ export default function SectorForm(props: SectorFormDefaultProps) {
             save: props.sector ? 'EDITAR' : 'CRIAR',
             cancel: 'CANCELAR',
           }}
+          link={{ cancel: '/setores' }}
         />
       </Form>
     </WrapperDefault>

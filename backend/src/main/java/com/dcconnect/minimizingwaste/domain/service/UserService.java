@@ -17,7 +17,9 @@ import java.util.Optional;
 @Service
 public class UserService {
 
-    public static final String IS_LOGGED_USER = "O usuário %s não pode ser removido, pois está logado";
+
+    public static final String PERMISSIONS_CANNOT_BE_UNASSIGNED = "A role do Administrador não pode ser revogadas";
+
     @Autowired
     private UserRepository userRepository;
 
@@ -51,10 +53,13 @@ public class UserService {
 
         Optional<User> userCurrent = userRepository.findById(user.getId());
 
-        if(userCurrent.get().getRole().equals("Administrador"))
-            throw new BusinessException(String.format("O usuário %s não pode ser excluído, pois é o Administrador " +
-                            "do sistema",
-                    userCurrent.get().getName()));
+         var role = userCurrent.get().getRole();
+         if(role != null){
+             if(role.getName().equals("Administrador"))
+                 throw new BusinessException(String.format("O usuário %s não pode ser excluído, pois é o Administrador " +
+                                 "do sistema",
+                         userCurrent.get().getName()));
+         }
 
         try {
             fileAvatarStorageService.removeIfExistingOldAvatar(user);
@@ -79,37 +84,38 @@ public class UserService {
     }
 
     @Transactional
-    public void disassociateAccessGroup(Long userId, Long accessGroupId){
+    public void disassociateRole(Long userId, Long roleId){
         User user = findOrFail(userId);
-        Role role = roleService.findOrFail(accessGroupId);
+        Role role = roleService.findOrFail(roleId);
 
-        boolean roleMatches = getRolesMatches(user, role);
-
-        if(roleMatches){
+        if(role.getName().equals("Administrador"))
             throw new BusinessException(
-                    String.format("O papel já está associado ao usuário %s", user.getName()));
+                    String.format(PERMISSIONS_CANNOT_BE_UNASSIGNED, role.getName()));
+
+        if(user.isNotRole(role)){
+            throw new BusinessException(
+                    String.format("O papel não está associado ao usuário %s", user.getName()));
         }
 
-        user.removeRole();
+        user.setRole(null);
     }
 
     @Transactional
-    public void associateAccessGroup(Long userId, Long accessGroupId){
+    public void associateRole(Long userId, Long roleId){
         User user = findOrFail(userId);
-        Role role = roleService.findOrFail(accessGroupId);
-        boolean roleMatches = getRolesMatches(user, role);
+        Role role = roleService.findOrFail(roleId);
 
-        if(!roleMatches){
+        if(user.getRole() != null){
+            throw new BusinessException(String.format("%s cada usuário só pode ter um tipo de acesso",
+                    user.getName()));
+        }
+
+        if(user.isRole(role)){
             throw new BusinessException(
                     String.format("O papel já está associado ao usuário %s", user.getName()));
         }
 
-        user.addRole();
-    }
-
-    private boolean getRolesMatches(User user, Role role) {
-        var roleMatchers = user.getRole().equals(role);
-        return roleMatchers;
+        user.setRole(role);
     }
 
     public User findOrFail(Long userId){

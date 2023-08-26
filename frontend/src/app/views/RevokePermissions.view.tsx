@@ -9,7 +9,7 @@ import usePermissions from '../../core/hooks/usePermissions';
 import AccessDenied from '../components/AccessDenied';
 import GrantingPermissionsForm from '../features/GrantingPermissionsForm';
 
-export default function GrantingPermissionsView() {
+export default function RevokePermissionsView() {
   usePageTitle('Revogação de Permissões');
   const [accessDeniedError, setAccessDeniedError] = useState<boolean>(false);
   const { fetchRoles, roles } = useAccessProfiles();
@@ -86,6 +86,7 @@ export default function GrantingPermissionsView() {
       optionsRole={fetchOptions()}
       onPermissionsNotOrGranted={onfetchPermissionsAllNotOrGranted}
       onGrantingPermissions={revokePermissions}
+      profile='REVOKE_PERMISSIONS'
     />
   );
 }

@@ -13,8 +13,10 @@ import EmployeeCreateView from './views/EmployeeCreate.view';
 import EmployeeDetailedView from './views/EmployeeDetailed.view';
 import EmployeeEditView from './views/EmployeeEdit.view';
 import EmployeeListView from './views/EmployeeList.view';
+import GrantingPermissionsView from './views/GrantingPermissions.view';
 import NotFound404View from './views/NotFound404.view';
 import NotificationListView from './views/NotificationList.view';
+import RevoKePermissionsView from './views/RevokePermissions.view';
 import SectorCreateView from './views/SectorCreate.view';
 import SectorEditView from './views/SectorEdit.view';
 import SupplyCreateView from './views/SupplyCreate.view';
@@ -34,8 +36,8 @@ import TaskUnassignView from './views/TaskUnassign.view';
 import WorkStationCreateView from './views/WorkStationCreate.view';
 import WorkStationEditView from './views/WorkStationEdit.view';
 import WorkStationListView from './views/WorkStationList.view';
-import GrantingPermissionsView from './views/GrantingPermissions.view'
-import RevoKePermissionsView from './views/RevokePermissions.view'
+import GrantingRoleView from './views/GrantingRole.view';
+import RevokeRoleView from './views/RevokeRole.view';
 
 export default function Routes() {
   useEffect(() => {
@@ -112,6 +114,16 @@ export default function Routes() {
       <Route
         path="/perfil-de-acesso/editar/:roleId"
         element={<AccessProfileEditView />}
+      />
+
+      <Route
+        path="/conceder-roles/perfis-de-acesso"
+        element={<GrantingRoleView />}
+      />
+
+      <Route
+        path="/revogar-roles/perfis-de-acesso"
+        element={<RevokeRoleView />}
       />
 
       <Route

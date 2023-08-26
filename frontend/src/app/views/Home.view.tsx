@@ -18,9 +18,19 @@ export default function HomeView() {
 
   return (
     <WrapperDefault title="Home">
-
       <Row gutter={20} style={{ marginBottom: 20 }}>
-      <Col xs={24} sm={12} lg={6}>
+        <Col xs={24} sm={12} lg={6}>
+          {' '}
+          <MenuHomePage
+            link="/conceder-roles/perfis-de-acesso"
+            labelColor="#001529"
+            border="1px solid #001529"
+          >
+            <LockFilled style={{ marginRight: 15 }} />
+            CONCEDER ROLES
+          </MenuHomePage>
+        </Col>
+        <Col xs={24} sm={12} lg={6}>
           {' '}
           <MenuHomePage
             link="/conceder-permissoes/perfis-de-acesso"
@@ -28,7 +38,7 @@ export default function HomeView() {
             border="1px solid #001529"
           >
             <LockFilled style={{ marginRight: 15 }} />
-            CONCEDER PERMISSÕES A PERFIS DE ACESSO
+            CONCEDER PERMISSÕES
           </MenuHomePage>
         </Col>
         <Col xs={24} sm={12} lg={6}>
@@ -37,16 +47,28 @@ export default function HomeView() {
             link="/revogar-permissoes/perfis-de-acesso"
             labelColor="#fff"
             border="1px solid #001529"
-            backgroundColor='#001529'
+            backgroundColor="#001529"
           >
             <LockFilled style={{ marginRight: 15 }} />
-            REVOGAR PERMISSÕES A PERFIS DE ACESSO
+            REVOGAR PERMISSÕES
+          </MenuHomePage>
+        </Col>
+        <Col xs={24} sm={12} lg={6}>
+          {' '}
+          <MenuHomePage
+            link="/revogar-roles/perfis-de-acesso"
+            labelColor="#fff"
+            border="1px solid #001529"
+            backgroundColor="#001529"
+          >
+            <LockFilled style={{ marginRight: 15 }} />
+            REVOGAR ROLES
           </MenuHomePage>
         </Col>
       </Row>
 
-      <Row justify={'start'} gutter={20}style={{ marginBottom: 20 }}>
-        <Col xs={24} sm={12} lg={6} >
+      <Row justify={'start'} gutter={20} style={{ marginBottom: 20 }}>
+        <Col xs={24} sm={12} lg={6}>
           <MenuHomePage
             link="/setor/criar"
             labelColor="#fff"

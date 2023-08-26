@@ -71,4 +71,12 @@ public class User extends BaseEntity {
     public boolean isCurrent() {
         return getId() != null;
     }
+
+    public boolean isRole(Role role){
+        return getRole() == role;
+    }
+
+    public boolean isNotRole(Role role){
+        return !isRole(role);
+    }
 }

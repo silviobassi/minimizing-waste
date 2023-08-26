@@ -86,6 +86,7 @@ export default function GrantingPermissionsView() {
       optionsRole={fetchOptions()}
       onPermissionsNotOrGranted={onfetchPermissionsAllNotOrGranted}
       onGrantingPermissions={grantPermissions}
+      profile='GRANT_PERMISSIONS'
     />
   );
 }

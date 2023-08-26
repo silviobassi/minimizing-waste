@@ -1,17 +1,7 @@
 import { LockTwoTone, StopOutlined } from '@ant-design/icons';
-import {
-  Button,
-  Col,
-  Form,
-  Row,
-  Select,
-  SelectProps,
-  Space,
-  Typography,
-} from 'antd';
-import { useMemo, useState } from 'react';
+import { Button, Col, Form, Row, Select, SelectProps, Space } from 'antd';
+import { useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { hasManagerUser } from '../../auth/utils/isAuthenticated';
 import useAuth from '../../core/hooks/useAuth';
 import { Permission, Role } from '../../sdk';
 import WrapperDefault from '../components/WrapperDefault';
@@ -21,6 +11,11 @@ type GrantingPermissionsType = Permission.CollectionDetailedModel;
 interface GrantingPermissionsFormDefaultProps {
   title: string;
   isNotGranted: boolean;
+  profile:
+    | 'REVOKE_ROLE'
+    | 'GRANT_ROLE'
+    | 'REVOKE_PERMISSIONS'
+    | 'GRANT_PERMISSIONS';
   optionsAllNotOrGranted: SelectProps['options'];
   optionsRole: Role.CollectionDetailed;
   onPermissionsNotOrGranted: (value: number) => GrantingPermissionsType;
@@ -51,15 +46,21 @@ export default function GrantingPermissionsForm(
       return receivePermission;
     }, [{ ...receivePermission }]);
 
+  const labels = useCallback((firstLabel: string, secondLabel: string) => {
+    return props.profile.includes('REVOKE_ROLE') ||
+      props.profile.includes('GRANT_ROLE')
+      ? firstLabel
+      : props.profile.includes('REVOKE_PERMISSIONS') ||
+        props.profile.includes('GRANT_PERMISSIONS')
+      ? secondLabel
+      : '';
+  }, []);
+
   const perm: any = {
     permission: (
       <Select
-        disabled={
-          !props.isNotGranted ? hasManagerUser(userAuth, access?.name) : false
-        }
         size="large"
         style={{ width: '100%' }}
-        placeholder="Selecione as permissões"
         onChange={(value, option: any) => {
           setReceivePermission({
             ...receivePermission,
@@ -82,7 +83,7 @@ export default function GrantingPermissionsForm(
         <Row gutter={30}>
           <Col xs={24} lg={8}>
             <Form.Item
-              label="Perfis de Acesso"
+              label={labels('Selecione um usuário', 'Selecione um Role')}
               name={'role'}
               rules={[
                 {
@@ -116,15 +117,7 @@ export default function GrantingPermissionsForm(
           <Col xs={24} lg={16}>
             {perm[notGranted] && (
               <Form.Item
-                label={
-                  hasManagerUser(userAuth, access?.name) ? (
-                    <Typography.Text type="danger">
-                      Administrador não pode revogar suas permissões
-                    </Typography.Text>
-                  ) : (
-                    'Selecione as Permissões '
-                  )
-                }
+                label={labels('Selecione um role', 'Selecione uma permissão')}
                 name={'grant'}
               >
                 {perm[notGranted]}

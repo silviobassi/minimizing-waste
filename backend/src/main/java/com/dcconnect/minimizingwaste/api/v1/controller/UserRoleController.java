@@ -48,7 +48,7 @@ public class UserRoleController implements UserRoleControllerOpenApi {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{roleId}")
     public ResponseEntity<Void> disassociate(@PathVariable Long userId, @PathVariable Long roleId){
-        userService.disassociateAccessGroup(userId, roleId);
+        userService.disassociateRole(userId, roleId);
         return ResponseEntity.noContent().build();
     }
 
@@ -56,7 +56,7 @@ public class UserRoleController implements UserRoleControllerOpenApi {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{roleId}")
     public ResponseEntity<Void> associate(@PathVariable Long userId, @PathVariable Long roleId){
-        userService.associateAccessGroup(userId, roleId);
+        userService.associateRole(userId, roleId);
         return ResponseEntity.noContent().build();
     }
 }

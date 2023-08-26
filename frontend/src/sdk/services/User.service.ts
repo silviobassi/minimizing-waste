@@ -25,6 +25,12 @@ class UserService extends Service {
     return this.Http.get<User.Detailed>(`/users/${userId}`).then(this.getData);
   }
 
+  static getAllUsersSummary(): User.SummaryNameModel {
+    return this.Http.get<User.SummaryNameModel[]>(`/users/summary`).then(
+      this.getData,
+    );
+  }
+
   static getAllUserSummary(): Promise<User.SummaryNameModel[]> {
     return this.Http.get<User.SummaryNameModel[]>('/users/summary').then(
       this.getData,

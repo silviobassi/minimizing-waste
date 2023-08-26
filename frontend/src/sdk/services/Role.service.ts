@@ -1,5 +1,6 @@
 import { Role } from '../@types';
 import Service from '../Service';
+import { generateQueryString } from '../utils';
 
 class RoleService extends Service {
   static getAllRoles(): Role.CollectionDetailed {
@@ -10,8 +11,14 @@ class RoleService extends Service {
     return this.Http.get<Role.Detailed>(`/roles/${roleId}`).then(this.getData);
   }
 
-  static getRoleUser(userId: number): Role.Detailed {
-    return this.Http.get(`/users${userId}/roles`).then(this.getData);
+  static getAllRolesAllNotOrGranted(
+    userId: number,
+    search: Role.Query,
+  ): Role.CollectionSummary {
+    const queryString = generateQueryString(search);
+    return this.Http.get<Role.CollectionSummary[]>(
+      `/users/${userId}/roles`.concat(queryString),
+    ).then(this.getData);
   }
 
   static createRole(role: Role.Input): Role.Detailed {

@@ -36,7 +36,7 @@ export const associatePermissionsToRole = createAsyncThunk(
   'permissions/associatePermissionsToRole',
   async (
     { roleId, permissionId }: { roleId: number; permissionId: number },
-    {rejectWithValue, dispatch },
+    { rejectWithValue, dispatch },
   ) => {
     await PermissionService.associatePermissionsToRole(roleId, permissionId);
     await dispatch(
@@ -57,14 +57,6 @@ export const disassociatePermissionsToRole = createAsyncThunk(
     );
   },
 );
-
-/*export const removeRoles = createAsyncThunk(
-  'roles/removeRoles',
-  async (roleId: number, { dispatch }) => {
-    await RoleService.deleteExistingRole(roleId);
-    await dispatch(getAllRoles(0));
-  },
-);*/
 
 const PermissionsNotOrGrantedSlice = createSlice({
   initialState,

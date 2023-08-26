@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Permission, Role } from '../../sdk/@types';
-import { PermissionService, RoleService } from '../../sdk/services';
+import { Role } from '../../sdk/@types';
+import { RoleService } from '../../sdk/services';
 
 type PA<T> = PayloadAction<T>;
 
 interface RoleState {
-  list: Role.CollectionDetailed | [];
+  list: Role.CollectionSummary | [];
   fetching: boolean;
 }
 
@@ -14,12 +14,20 @@ const initialState: RoleState = {
   fetching: false,
 };
 
-export const getAllRoles = createAsyncThunk(
-  'roles/getAllRoles',
-  async (_: any, { rejectWithValue, dispatch }) => {
+export const getAllRolesNotOrGranted = createAsyncThunk(
+  'roles/getAllRolesNotOrGranted',
+  async (
+    { userId, roleParam }: { userId: number; roleParam: string },
+    { rejectWithValue, dispatch },
+  ) => {
     try {
-      const roles = await RoleService.getAllRoles();
-      dispatch(storeRoles(roles));
+      const rolesNotOrGranted = await RoleService.getAllRolesAllNotOrGranted(
+        userId,
+        {
+          role: roleParam,
+        },
+      );
+      dispatch(storeRolesNotOrGranted(rolesNotOrGranted));
     } catch (error: any) {
       return rejectWithValue({ ...error });
     }
@@ -33,7 +41,9 @@ export const associateRoleToUser = createAsyncThunk(
     { rejectWithValue, dispatch },
   ) => {
     await RoleService.associateRoleToUser(userId, roleId);
-    await dispatch(getAllRoles(0));
+    await dispatch(
+      getAllRolesNotOrGranted({ userId, roleParam: 'notGranted' }),
+    );
   },
 );
 
@@ -44,30 +54,26 @@ export const disassociateRoleToUser = createAsyncThunk(
     { rejectWithValue, dispatch },
   ) => {
     await RoleService.disassociateRoleToUser(userId, roleId);
-    await dispatch(getAllRoles(0));
+    await dispatch(getAllRolesNotOrGranted({ userId, roleParam: 'granted' }));
   },
 );
 
-
-const RoleSlice = createSlice({
+const RolesNotOrGrantedSlice = createSlice({
   initialState,
-  name: 'roles',
+  name: 'rolesNotOrGranted',
   reducers: {
-    storeRoles(
-      state,
-      action: PA<Permission.CollectionDetailedModel[]>,
-    ) {
+    storeRolesNotOrGranted(state, action: PA<Role.CollectionSummary[]>) {
       state.list = action.payload;
     },
-    clearRoles(state) {
+    clearRolesNotOrGranted(state) {
       state.list = [];
     },
   },
 });
 
-export const { storeRoles, clearRoles } =
-  RoleSlice.actions;
+export const { storeRolesNotOrGranted, clearRolesNotOrGranted } =
+  RolesNotOrGrantedSlice.actions;
 
-const RoleReducer = RoleSlice.reducer;
+const RolesNotOrGrantedReducer = RolesNotOrGrantedSlice.reducer;
 
-export default RoleReducer;
+export default RolesNotOrGrantedReducer;

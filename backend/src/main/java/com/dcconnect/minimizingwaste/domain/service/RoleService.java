@@ -26,7 +26,7 @@ public class RoleService {
     public static final String ASSIGNED_PERMISSION_ALREADY = "A permissão já está associada ao nível de acesso %s";
 
     public static final String UNASSIGNED_PERMISSION_ALREADY = "A permissão está disassociada ao nível de acesso %s";
-    public static final String PERMISSIONS_CANNOT_BE_UNASSIGNED = "As permissões de Administrador não podem ser revogadas";
+    public static final String PERMISSIONS_CANNOT_BE_UNASSIGNED = "As permissões de Administrador não podem ser revogada";
 
     @Autowired
     private RoleRepository roleRepository;

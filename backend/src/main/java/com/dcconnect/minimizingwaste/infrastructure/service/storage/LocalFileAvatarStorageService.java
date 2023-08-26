@@ -3,6 +3,7 @@ package com.dcconnect.minimizingwaste.infrastructure.service.storage;
 import com.dcconnect.minimizingwaste.core.storage.StorageProperties;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.service.FileAvatarStorageService;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
@@ -19,8 +20,10 @@ public class LocalFileAvatarStorageService implements FileAvatarStorageService {
     @Autowired
     private StorageProperties storageProperties;
 
+
     @Override
     public String store(Avatar avatar) {
+
         try{
             Path filePath = getFilePath(avatar.getFileName());
             FileCopyUtils.copy(avatar.getInputStream(), Files.newOutputStream(filePath));

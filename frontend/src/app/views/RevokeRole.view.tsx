@@ -6,7 +6,7 @@ import useUsers from '../../core/hooks/useUsers';
 import usePageTitle from '../../core/usePageTitle';
 import { Role, User } from '../../sdk';
 import AccessDenied from '../components/AccessDenied';
-import GrantingPermissionsForm from '../features/GrantingPermissionsForm';
+import GrantForm from '../features/GrantForm';
 
 export default function RevokeRoleView() {
   usePageTitle('Revogação de Roles');
@@ -47,7 +47,7 @@ export default function RevokeRoleView() {
   });
 
   function fetchOptions() {
-    const options: Role.CollectionDetailed = [];
+    const options: User.Summary= [];
     allUsersSummary?._embedded?.users.map((user: User.SummaryNameModel) => {
       options.push({
         label: user.name,
@@ -71,14 +71,14 @@ export default function RevokeRoleView() {
     );
   }
   return (
-    <GrantingPermissionsForm
+    <GrantForm
       title="Revogação de Roles"
       isNotGranted={false}
       optionsAllNotOrGranted={optionsAllNotGranted}
-      optionsRole={fetchOptions()}
+      optionsRoleOrUser={fetchOptions()}
       onPermissionsNotOrGranted={onfetchPermissionsAllNotOrGranted}
       onGrantingPermissions={revokeRoles}
-      profile='REVOKE_ROLE'
+      profile="REVOKE_ROLE"
     />
   );
 }

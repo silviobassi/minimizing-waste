@@ -2,8 +2,7 @@ import { LockTwoTone, StopOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Row, Select, SelectProps, Space } from 'antd';
 import { useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import useAuth from '../../core/hooks/useAuth';
-import { Permission, Role } from '../../sdk';
+import { Permission, Role, User } from '../../sdk';
 import WrapperDefault from '../components/WrapperDefault';
 
 type GrantingPermissionsType = Permission.CollectionDetailedModel;
@@ -17,7 +16,7 @@ interface GrantingPermissionsFormDefaultProps {
     | 'REVOKE_PERMISSIONS'
     | 'GRANT_PERMISSIONS';
   optionsAllNotOrGranted: SelectProps['options'];
-  optionsRole: Role.CollectionDetailed;
+  optionsRoleOrUser: Role.CollectionDetailed | User.SummaryNameModel;
   onPermissionsNotOrGranted: (value: number) => GrantingPermissionsType;
   onGrantingPermissions: (
     roleId: number,
@@ -25,26 +24,25 @@ interface GrantingPermissionsFormDefaultProps {
     permission: string,
   ) => any;
 }
-export default function GrantingPermissionsForm(
-  props: GrantingPermissionsFormDefaultProps,
-) {
+export default function GrantForm(props: GrantingPermissionsFormDefaultProps) {
   const [form] = Form.useForm();
   const [notGranted, setNotGranted] = useState<string>('');
-  const [receivePermission, setReceivePermission] = useState<{
+  const [receivePermissionOrRole, setReceivePermissionOrRole] = useState<{
     id: number;
-    description: string;
+    description?: string;
   }>();
-  const [role, setRole] = useState<{ id: number; name: string }>();
-  const { userAuth } = useAuth();
+  const [roleOrUser, setRoleOrUser] = useState<{
+    id: number;
+    name: string;
+  }>();
 
   const access: { id: number; name: string } | undefined = useMemo(() => {
-    return role;
-  }, [{ ...role }]);
+    return roleOrUser;
+  }, [{ ...roleOrUser }]);
 
-  const permission: { id: number; description: string } | undefined =
-    useMemo(() => {
-      return receivePermission;
-    }, [{ ...receivePermission }]);
+  const permissionOrRole: { id: number; description: string } = useMemo(() => {
+    return receivePermissionOrRole;
+  }, [{ ...receivePermissionOrRole }]);
 
   const labels = useCallback((firstLabel: string, secondLabel: string) => {
     return props.profile.includes('REVOKE_ROLE') ||
@@ -62,8 +60,8 @@ export default function GrantingPermissionsForm(
         size="large"
         style={{ width: '100%' }}
         onChange={(value, option: any) => {
-          setReceivePermission({
-            ...receivePermission,
+          setReceivePermissionOrRole({
+            ...receivePermissionOrRole,
             id: value,
             description: option?.label,
           });
@@ -98,7 +96,13 @@ export default function GrantingPermissionsForm(
                   if (props.optionsAllNotOrGranted) {
                     props.onPermissionsNotOrGranted(value);
                   }
-                  setRole({ ...role, id: value, name: option?.label });
+
+                  setRoleOrUser({
+                    ...roleOrUser,
+                    id: value,
+                    name: option?.label,
+                  });
+
                   setNotGranted('permission');
                 }}
                 size="large"
@@ -110,7 +114,7 @@ export default function GrantingPermissionsForm(
                     .toLowerCase()
                     .includes(input.toLowerCase())
                 }
-                options={props.optionsRole}
+                options={props.optionsRoleOrUser}
               />
             </Form.Item>
           </Col>
@@ -129,14 +133,14 @@ export default function GrantingPermissionsForm(
           <Button
             type="primary"
             onClick={() => {
-              if (props.optionsAllNotOrGranted && props.optionsRole)
+              if (props.optionsAllNotOrGranted && props.optionsRoleOrUser)
                 form.setFieldValue('grant', '');
               return (
                 props.onGrantingPermissions &&
                 props.onGrantingPermissions(
                   Number(access?.id),
-                  Number(permission?.id),
-                  permission?.description,
+                  Number(permissionOrRole?.id),
+                  permissionOrRole?.description,
                 )
               );
             }}

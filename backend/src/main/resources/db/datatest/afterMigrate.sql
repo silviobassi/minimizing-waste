@@ -107,7 +107,15 @@ insert into users (name, cpf, email, whats_app, password, office, occupation, li
 ('Pedro Bassi', '99999999999', 'pedrobassi@gmail.com', '99999999999', '$2a$12$0wznF6KN2P79LF0qgVNsQeVJTkSA.BFl6ZRaUBGvZUqHO1/BdWfoS', 'Pedreiro', 'Assentamento de Tijolos',
 'Curso Superior Completo', utc_timestamp, null, 1),
 ('Ana Paula Bassi', '99999999999', 'paulaanabassi@hotmail.com', '17997843606', '$2a$12$0wznF6KN2P79LF0qgVNsQeVJTkSA.BFl6ZRaUBGvZUqHO1/BdWfoS', 'Azulejista', 'Rejuntamento de Porcelanato',
-'Curso Superior Incompleto', utc_timestamp, null, 3);
+'Curso Superior Incompleto', utc_timestamp, null, 3),
+('Marcelo Ramos', '66812871150', 'marcelo ramos2@gmail.com', '17996079654', '$2a$12$0wznF6KN2P79LF0qgVNsQeVJTkSA.BFl6ZRaUBGvZUqHO1/BdWfoS', 'Azulejista', 'Instalador de Porcelanato',
+ 'Ensino Médio', utc_timestamp, null, null),
+('Carlos Arnaldo de Andrade', '58783040153', 'arnaldo@gmail.com', '99999999999', '$2a$12$0wznF6KN2P79LF0qgVNsQeVJTkSA.BFl6ZRaUBGvZUqHO1/BdWfoS', 'Pedreiro', 'Assentamento de Tijolos',
+ 'Curso Superior Completo', utc_timestamp, null, null),
+('Maria dos Santos Oliveira', '65272094107', 'maria@hotmail.com', '17997843606', '$2a$12$0wznF6KN2P79LF0qgVNsQeVJTkSA.BFl6ZRaUBGvZUqHO1/BdWfoS', 'Azulejista', 'Rejuntamento de Porcelanato',
+ 'Curso Superior Incompleto', utc_timestamp, null, null);
+
+
 
 insert into supplies_movement (create_at, not_busy, movable, allocated_quantity, notification_id, work_station_id, supply_id, employee_responsible_id)
 values (utc_timestamp(), true, false,1, 3, 5, 1, 2);

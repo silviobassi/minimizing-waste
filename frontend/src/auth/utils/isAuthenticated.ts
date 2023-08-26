@@ -16,20 +16,4 @@ function hasEmployeeCurrent(
   );
 }
 
-function hasManagerPermission(
-  user: User.Detailed,
-  accessLevel: string,
-): boolean {
-  return accessLevel ? user.role?.name === accessLevel : true;
-}
-
-function hasManagerRole(userAuth: User.Detailed, user: User.Detailed): boolean {
-  return user.name ? userAuth?.name === user.name : true;
-}
-
-export {
-  hasEmployeeCurrent,
-  hasManagerPermission,
-  hasManagerRole,
-  hasPermission,
-};
+export { hasEmployeeCurrent, hasPermission };

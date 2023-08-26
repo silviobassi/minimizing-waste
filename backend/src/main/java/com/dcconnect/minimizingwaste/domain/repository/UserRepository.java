@@ -35,7 +35,7 @@ public interface UserRepository extends CustomJpaRepository<User, Long>, JpaSpec
             " where us.id = :userId ")
     boolean existsByUser(Long userId);
 
-    @Query("select u from User u")
+    @Query("select u, (select r from Role r where u.role.id = r.id) from User u")
     List<User> findAllUserSummary();
 
 }

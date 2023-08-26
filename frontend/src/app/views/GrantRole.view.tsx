@@ -6,9 +6,9 @@ import useUsers from '../../core/hooks/useUsers';
 import usePageTitle from '../../core/usePageTitle';
 import { Role, User } from '../../sdk';
 import AccessDenied from '../components/AccessDenied';
-import GrantingPermissionsForm from '../features/GrantingPermissionsForm';
+import GrantForm from '../features/GrantForm';
 
-export default function RevokeRoleView() {
+export default function GrantRoleView() {
   usePageTitle('Concessão de Roles');
   const [accessDeniedError, setAccessDeniedError] = useState<boolean>(false);
   const { fetchRolesAllNotOrGranted, rolesNotOrGranted } = useRoles();
@@ -71,14 +71,14 @@ export default function RevokeRoleView() {
     );
   }
   return (
-    <GrantingPermissionsForm
+    <GrantForm
       title="Concessão de Roles"
       isNotGranted={true}
       optionsAllNotOrGranted={optionsAllNotGranted}
-      optionsRole={fetchOptions()}
+      optionsRoleOrUser={fetchOptions()}
       onPermissionsNotOrGranted={onfetchPermissionsAllNotOrGranted}
       onGrantingPermissions={grantRoles}
-      profile='GRANT_ROLE'
+      profile="GRANT_ROLE"
     />
   );
 }

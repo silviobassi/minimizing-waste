@@ -17,5 +17,7 @@ public class UserSummaryModel extends RepresentationModel<UserSummaryModel> {
     private Long id;
     @Schema(example = "Pedro Oliveira Bassi")
     private String name;
+    @Schema(example = "Administrador")
+    private RoleSummaryModel role;
 
 }

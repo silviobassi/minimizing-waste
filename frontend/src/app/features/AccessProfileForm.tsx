@@ -11,9 +11,8 @@ import ButtonForm from '../components/ButtonForm';
 type RoleType = Role.Detailed;
 
 interface AccessProfileFormDefaultProps {
-  title: string;
   onUpdate?: (role: Role.Input) => RoleType;
-  role: RoleType;
+  role?: RoleType;
 }
 
 export default function AccessProfileForm(

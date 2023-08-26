@@ -7,7 +7,7 @@ import { notification, type SelectProps } from 'antd';
 import usePermission from '../../core/hooks/usePermission';
 import usePermissions from '../../core/hooks/usePermissions';
 import AccessDenied from '../components/AccessDenied';
-import GrantingPermissionsForm from '../features/GrantingPermissionsForm';
+import GrantForm from '../features/GrantForm';
 
 export default function RevokePermissionsView() {
   usePageTitle('Revogação de Permissões');
@@ -79,14 +79,14 @@ export default function RevokePermissionsView() {
     );
   }
   return (
-    <GrantingPermissionsForm
+    <GrantForm
       title="Revogação de Permissões"
       isNotGranted={false}
       optionsAllNotOrGranted={optionsAllNotGranted}
-      optionsRole={fetchOptions()}
+      optionsRoleOrUser={fetchOptions()}
       onPermissionsNotOrGranted={onfetchPermissionsAllNotOrGranted}
       onGrantingPermissions={revokePermissions}
-      profile='REVOKE_PERMISSIONS'
+      profile="REVOKE_PERMISSIONS"
     />
   );
 }

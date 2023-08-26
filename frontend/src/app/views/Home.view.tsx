@@ -2,7 +2,6 @@ import {
   BankOutlined,
   BellOutlined,
   HomeOutlined,
-  LockFilled,
   ReconciliationOutlined,
   RotateLeftOutlined,
   ShoppingCartOutlined,
@@ -18,55 +17,6 @@ export default function HomeView() {
 
   return (
     <WrapperDefault title="Home">
-      <Row gutter={20} style={{ marginBottom: 20 }}>
-        <Col xs={24} sm={12} lg={6}>
-          {' '}
-          <MenuHomePage
-            link="/conceder-roles/perfis-de-acesso"
-            labelColor="#001529"
-            border="1px solid #001529"
-          >
-            <LockFilled style={{ marginRight: 15 }} />
-            CONCEDER ROLES
-          </MenuHomePage>
-        </Col>
-        <Col xs={24} sm={12} lg={6}>
-          {' '}
-          <MenuHomePage
-            link="/conceder-permissoes/perfis-de-acesso"
-            labelColor="#001529"
-            border="1px solid #001529"
-          >
-            <LockFilled style={{ marginRight: 15 }} />
-            CONCEDER PERMISSÕES
-          </MenuHomePage>
-        </Col>
-        <Col xs={24} sm={12} lg={6}>
-          {' '}
-          <MenuHomePage
-            link="/revogar-permissoes/perfis-de-acesso"
-            labelColor="#fff"
-            border="1px solid #001529"
-            backgroundColor="#001529"
-          >
-            <LockFilled style={{ marginRight: 15 }} />
-            REVOGAR PERMISSÕES
-          </MenuHomePage>
-        </Col>
-        <Col xs={24} sm={12} lg={6}>
-          {' '}
-          <MenuHomePage
-            link="/revogar-roles/perfis-de-acesso"
-            labelColor="#fff"
-            border="1px solid #001529"
-            backgroundColor="#001529"
-          >
-            <LockFilled style={{ marginRight: 15 }} />
-            REVOGAR ROLES
-          </MenuHomePage>
-        </Col>
-      </Row>
-
       <Row justify={'start'} gutter={20} style={{ marginBottom: 20 }}>
         <Col xs={24} sm={12} lg={6}>
           <MenuHomePage
@@ -98,8 +48,6 @@ export default function HomeView() {
             CRIAR RECURSO
           </MenuHomePage>
         </Col>
-      </Row>
-      <Row gutter={20}>
         <Col xs={24} sm={12} lg={6}>
           {' '}
           <MenuHomePage
@@ -111,6 +59,8 @@ export default function HomeView() {
             CRIAR MOVIMENTO DE RECURSO
           </MenuHomePage>
         </Col>
+      </Row>
+      <Row gutter={20}>
         <Col xs={24} sm={12} lg={6}>
           <MenuHomePage
             link="/tarefa/criar"

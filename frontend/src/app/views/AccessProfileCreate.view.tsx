@@ -1,10 +1,7 @@
-import WrapperDefault from '../components/WrapperDefault';
+import usePageTitle from '../../core/usePageTitle';
 import AccessProfileForm from '../features/AccessProfileForm';
 
 export default function AccessProfileCreateView() {
-  return (
-    <WrapperDefault title="Cadastro de Perfil de Acesso">
-      <AccessProfileForm />
-    </WrapperDefault>
-  );
+  usePageTitle("Criação de Colaborador")
+  return <AccessProfileForm/>;
 }

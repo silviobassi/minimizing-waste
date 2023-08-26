@@ -58,7 +58,6 @@ export default function AccessProfileEditView() {
     <AccessProfileForm
       role={role}
       onUpdate={handleUserUpdate}
-      title="Edição de Colaborador"
     />
   );
 }

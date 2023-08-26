@@ -7,9 +7,9 @@ import { notification, type SelectProps } from 'antd';
 import usePermission from '../../core/hooks/usePermission';
 import usePermissions from '../../core/hooks/usePermissions';
 import AccessDenied from '../components/AccessDenied';
-import GrantingPermissionsForm from '../features/GrantingPermissionsForm';
+import GrantForm from '../features/GrantForm';
 
-export default function GrantingPermissionsView() {
+export default function GrantPermissionsView() {
   usePageTitle('Concessão de Permissões');
   const [accessDeniedError, setAccessDeniedError] = useState<boolean>(false);
   const { fetchRoles, roles } = useAccessProfiles();
@@ -79,14 +79,14 @@ export default function GrantingPermissionsView() {
     );
   }
   return (
-    <GrantingPermissionsForm
+    <GrantForm
       title="Concessão de Permissões"
       isNotGranted={true}
       optionsAllNotOrGranted={optionsAllNotGranted}
-      optionsRole={fetchOptions()}
+      optionsRoleOrUser={fetchOptions()}
       onPermissionsNotOrGranted={onfetchPermissionsAllNotOrGranted}
       onGrantingPermissions={grantPermissions}
-      profile='GRANT_PERMISSIONS'
+      profile="GRANT_PERMISSIONS"
     />
   );
 }

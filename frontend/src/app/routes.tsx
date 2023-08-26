@@ -13,7 +13,7 @@ import EmployeeCreateView from './views/EmployeeCreate.view';
 import EmployeeDetailedView from './views/EmployeeDetailed.view';
 import EmployeeEditView from './views/EmployeeEdit.view';
 import EmployeeListView from './views/EmployeeList.view';
-import GrantingPermissionsView from './views/GrantingPermissions.view';
+import GrantingPermissionsView from './views/GrantPermissions.view';
 import NotFound404View from './views/NotFound404.view';
 import NotificationListView from './views/NotificationList.view';
 import RevoKePermissionsView from './views/RevokePermissions.view';
@@ -36,8 +36,10 @@ import TaskUnassignView from './views/TaskUnassign.view';
 import WorkStationCreateView from './views/WorkStationCreate.view';
 import WorkStationEditView from './views/WorkStationEdit.view';
 import WorkStationListView from './views/WorkStationList.view';
-import GrantingRoleView from './views/GrantingRole.view';
+import GrantingRoleView from './views/GrantRole.view';
 import RevokeRoleView from './views/RevokeRole.view';
+import GrantPermissionsView from './views/GrantPermissions.view';
+import GrantRoleView from './views/GrantRole.view';
 
 export default function Routes() {
   useEffect(() => {
@@ -118,7 +120,7 @@ export default function Routes() {
 
       <Route
         path="/conceder-roles/perfis-de-acesso"
-        element={<GrantingRoleView />}
+        element={<GrantRoleView />}
       />
 
       <Route
@@ -128,7 +130,7 @@ export default function Routes() {
 
       <Route
         path="/conceder-permissoes/perfis-de-acesso"
-        element={<GrantingPermissionsView />}
+        element={<GrantPermissionsView />}
       />
 
       <Route

@@ -735,6 +735,7 @@ export interface components {
       id?: number;
       /** @example Pedro Oliveira Bassi */
       name?: string;
+      role?: components['schemas']['RoleSummaryModel'];
       _links?: components['schemas']['Links'];
     };
     PagedModelSupplySummaryModel: {

@@ -92,7 +92,15 @@ export default function EmployeeList() {
             dataIndex: 'role',
             width: 180,
             render(_: any, user: User.Detailed) {
-              return <Tag color="blue">{user?.role?.name.toUpperCase()}</Tag>;
+              return (
+                <>
+                  {user?.role?.name ? (
+                    <Tag color="blue">{user?.role?.name.toUpperCase()}</Tag>
+                  ) : (
+                    <Tag color="red">{'sem acesso'.toUpperCase()}</Tag>
+                  )}
+                </>
+              );
             },
           },
           {

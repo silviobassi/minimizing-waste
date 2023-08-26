@@ -1,10 +1,14 @@
 import {
   ApartmentOutlined,
   BankOutlined,
+  FormOutlined,
   HomeOutlined,
+  KeyOutlined,
   LockOutlined,
   NotificationOutlined,
-  PrinterOutlined,
+  RetweetOutlined,
+  StockOutlined,
+  TeamOutlined,
   UsergroupAddOutlined,
 } from '@ant-design/icons';
 import { Menu } from 'antd';
@@ -20,7 +24,7 @@ export default function MenuLayout() {
     {
       label: <Link to={'/setores'}>Setores</Link>,
       key: 'sectors',
-      icon: <BankOutlined />,
+      icon: <ApartmentOutlined />,
     },
     {
       label: <Link to={'/estacoes-de-trabalho'}>Estações de Trabalho</Link>,
@@ -31,33 +35,73 @@ export default function MenuLayout() {
     {
       label: <Link to={'/recursos'}>Recursos</Link>,
       key: 'supply',
-      icon: <PrinterOutlined />,
+      icon: <StockOutlined />,
     },
     {
       label: <Link to={'/movimento-recursos'}>Movimento Recursos</Link>,
       key: 'supply-movement',
-      icon: <PrinterOutlined />,
+      icon: <RetweetOutlined />,
     },
 
     {
       label: <Link to={'/tarefas'}>Tarefas</Link>,
       key: 'tasks',
-      icon: <BankOutlined />,
+      icon: <FormOutlined />,
     },
     {
       label: <Link to={'/colaboradores'}>Colaboradores</Link>,
       key: 'users',
-      icon: <UsergroupAddOutlined />,
+      icon: <TeamOutlined />,
     },
     {
       label: <Link to={'/notificacoes'}>Notificações</Link>,
       key: 'notification',
       icon: <NotificationOutlined />,
     },
+
     {
-      label: <Link to={'/perfis-de-acesso'}>Perfis de Acesso</Link>,
-      key: 'access-profile',
+      label: 'Controle de Acessos',
+      key: 'access-manager',
       icon: <LockOutlined />,
+      children: [
+        {
+          label: <Link to={'/perfis-de-acesso'}>Perfis de Acesso</Link>,
+          key: '1',
+          icon: <UsergroupAddOutlined />,
+        },
+        {
+          label: (
+            <Link to={'/conceder-permissoes/perfis-de-acesso'}>
+              Conceder Permissões
+            </Link>
+          ),
+          key: '2',
+          icon: <KeyOutlined />,
+        },
+        {
+          label: (
+            <Link to={'/revogar-permissoes/perfis-de-acesso'}>
+              Revogar Permissão
+            </Link>
+          ),
+          key: '3',
+          icon: <LockOutlined />,
+        },
+        {
+          label: (
+            <Link to={'/conceder-roles/perfis-de-acesso'}>Conceder Acesso</Link>
+          ),
+          key: '4',
+          icon: <KeyOutlined />,
+        },
+        {
+          label: (
+            <Link to={'/revogar-roles/perfis-de-acesso'}>Revogar Acesso</Link>
+          ),
+          key: '5',
+          icon: <LockOutlined />,
+        },
+      ],
     },
   ];
 

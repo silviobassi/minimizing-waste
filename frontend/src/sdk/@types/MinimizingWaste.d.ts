@@ -193,6 +193,10 @@ export interface paths {
     /** Lista colaboradores atribuídos a respectivas tarefas */
     get: operations['all_4'];
   };
+  '/v1/users/remove/avatar/{filename}': {
+    /** Deleta um avatar de usuário */
+    delete: operations['remove'];
+  };
   '/v1/supplies-movements/vacancies/{supplyMovementId}': {
     /** Disponibiliza um movimento de recurso em estado ocioso */
     delete: operations['vacateSupply'];
@@ -2348,6 +2352,24 @@ export interface operations {
         content: {
           '*/*': components['schemas']['CollectionModelUserDetailedModel'];
         };
+      };
+    };
+  };
+  /** Deleta um avatar de usuário */
+  remove: {
+    parameters: {
+      path: {
+        /**
+         * @description nome de um arquivo existente
+         * @example lsafgsldgju8w5hj4o5ihgj9h5jo5j6h_file
+         */
+        filename: string;
+      };
+    };
+    responses: {
+      /** @description No Content */
+      204: {
+        content: never;
       };
     };
   };

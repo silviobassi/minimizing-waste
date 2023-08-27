@@ -22,6 +22,8 @@ export namespace User {
 
   export type SummaryNameModel =
     MinimizingWaste.components['schemas']['CollectionModelUserSummaryModel'];
+  export type PasswordInput =
+    MinimizingWaste.components['schemas']['PasswordInput'];
 
   export type Query = {
     page?: number;

@@ -21,6 +21,11 @@ public @interface CheckSecurity {
         @Target(ElementType.METHOD)
         @interface CanEdit { }
 
+        @PreAuthorize("@minimizingSecurity.canChangedPassword(#userId)")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface CanChangedPassword { }
+
         @PreAuthorize("@minimizingSecurity.userEqualAuthenticated(#userId)")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)

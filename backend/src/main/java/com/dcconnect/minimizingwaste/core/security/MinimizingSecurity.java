@@ -56,6 +56,11 @@ public class MinimizingSecurity {
                 || hasAssignmentResponsible(assignmentId));
     }
 
+    public boolean canChangedPassword(Long userId){
+        return getUserId() != null && userId != null
+                && getUserId().equals(userId);
+    }
+
     public boolean canConsultAssignments(Long assignmentId){
         return isScopeRead() && (hasAuthority("CONSULT_ASSIGNMENTS")
                 || hasAssignmentResponsible(assignmentId));

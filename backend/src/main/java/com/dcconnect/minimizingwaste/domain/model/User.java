@@ -29,7 +29,6 @@ public class User extends BaseEntity {
 
     private String avatarUrl;
 
-
     @JsonBackReference
     @ManyToMany(mappedBy = "employeesResponsible")
     private Set<Assignment> assignments = new HashSet<>();
@@ -43,18 +42,6 @@ public class User extends BaseEntity {
 
     @Transient
     private String currentAvatarUrl;
-
-
-
-    public boolean removeRole() {
-        setRole(null);
-        return getRole() == null;
-    }
-
-    public boolean addRole() {
-        setRole(getRole());
-        return getRole() != null;
-    }
 
     public boolean isNew() {
         return getId() == null;

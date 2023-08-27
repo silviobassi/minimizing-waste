@@ -5,9 +5,9 @@ import { Navigate, useParams } from 'react-router-dom';
 import useSupply from '../../core/hooks/useSupply';
 import usePageTitle from '../../core/usePageTitle';
 import { Supply, SupplyService } from '../../sdk';
+import AccessDenied from '../components/AccessDenied';
 import ElementNotFound from '../components/ElementNotFound';
 import SupplyForm from '../features/SupplyForm';
-import AccessDenied from '../components/AccessDenied';
 
 export default function SupplyEditView() {
   usePageTitle('Edição de Recurso');
@@ -32,7 +32,8 @@ export default function SupplyEditView() {
 
   if (notFound)
     return <ElementNotFound description="O Recurso não foi encontrado!" />;
-  if (accessDeniedError) return <AccessDenied />;
+  if (accessDeniedError)
+    return <AccessDenied>Você não pode executar essa operação!</AccessDenied>;
 
   function handleSupplyMaterialUpdate(supply: Supply.MaterialInput) {
     SupplyService.updateExistingSupplyMaterial(

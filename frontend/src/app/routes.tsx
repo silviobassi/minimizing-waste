@@ -13,10 +13,12 @@ import EmployeeCreateView from './views/EmployeeCreate.view';
 import EmployeeDetailedView from './views/EmployeeDetailed.view';
 import EmployeeEditView from './views/EmployeeEdit.view';
 import EmployeeListView from './views/EmployeeList.view';
-import GrantingPermissionsView from './views/GrantPermissions.view';
+import GrantPermissionsView from './views/GrantPermissions.view';
+import GrantRoleView from './views/GrantRole.view';
 import NotFound404View from './views/NotFound404.view';
 import NotificationListView from './views/NotificationList.view';
 import RevoKePermissionsView from './views/RevokePermissions.view';
+import RevokeRoleView from './views/RevokeRole.view';
 import SectorCreateView from './views/SectorCreate.view';
 import SectorEditView from './views/SectorEdit.view';
 import SupplyCreateView from './views/SupplyCreate.view';
@@ -36,10 +38,7 @@ import TaskUnassignView from './views/TaskUnassign.view';
 import WorkStationCreateView from './views/WorkStationCreate.view';
 import WorkStationEditView from './views/WorkStationEdit.view';
 import WorkStationListView from './views/WorkStationList.view';
-import GrantingRoleView from './views/GrantRole.view';
-import RevokeRoleView from './views/RevokeRole.view';
-import GrantPermissionsView from './views/GrantPermissions.view';
-import GrantRoleView from './views/GrantRole.view';
+import ChangedPasswordView from './views/ChangedPassword.view'
 
 export default function Routes() {
   useEffect(() => {
@@ -167,6 +166,11 @@ export default function Routes() {
       <Route
         path={'/colaborador/:employeeId/detalhes'}
         element={<EmployeeDetailedView />}
+      />
+
+      <Route
+        path={'/user/alteracao-de-senha'}
+        element={<ChangedPasswordView />}
       />
       <Route path={'/notificacoes'} element={<NotificationListView />} />
       <Route path="/404" element={<NotFound404View />} />

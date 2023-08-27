@@ -126,7 +126,7 @@ public class UserController implements UserControllerOpenApi {
         return userAssembler.toModel(user);
     }
 
-    @CheckSecurity.Users.CanEdit
+    @CheckSecurity.Users.CanChangedPassword
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{userId}/password")
     public void changePassword(@PathVariable Long userId, @RequestBody @Valid PasswordInput passwordInput) {

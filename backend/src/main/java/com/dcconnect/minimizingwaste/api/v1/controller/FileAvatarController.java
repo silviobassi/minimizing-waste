@@ -8,6 +8,7 @@ import com.dcconnect.minimizingwaste.domain.exception.BusinessException;
 import com.dcconnect.minimizingwaste.domain.service.FileAvatarStorageService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -41,5 +42,13 @@ public class FileAvatarController implements FileAvatarControllerOpenApi {
 
         return AvatarUrlModel.builder().avatarUrl(avatarUrl).build();
     }
-    
+
+    @CheckSecurity.Users.CanEdit
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping(value = "/remove/avatar/{filename}")
+    public void remove(@PathVariable String filename) {
+        fileAvatarStorageService.remove(filename);
+    }
+
+
 }

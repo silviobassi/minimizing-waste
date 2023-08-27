@@ -50,6 +50,12 @@ class UserService extends Service {
   static deleteExistingUser(userId: number) {
     return this.Http.delete(`/users/${userId}`).then(this.getStatus);
   }
+
+  static changedPassword(password: User.PasswordInput, userId: number) {
+    return this.Http.put<void>(`/users/${userId}/password`, password).then(
+      this.getStatus,
+    );
+  }
 }
 
 export default UserService;

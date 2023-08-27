@@ -61,7 +61,7 @@ export default function HeaderLayout() {
       label: <Divider style={{ margin: '15px 0' }} />,
     },
     {
-      key: '5',
+      key: '6',
       label: (
         <Link
           to={`/colaborador/editar/${userAuth?.id}`}
@@ -78,7 +78,7 @@ export default function HeaderLayout() {
     {
       key: '7',
       label: (
-        <Link to={``} style={{ color: elementColor }}>
+        <Link to={`/user/alteracao-de-senha`} style={{ color: elementColor }}>
           <Space direction="horizontal">
             <KeyOutlined />
             Alterar Senha

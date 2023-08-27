@@ -9,6 +9,12 @@ class AvatarService extends Service {
       this.getData,
     );
   }
+
+  static remove(filename: string) {
+    return this.Http.delete<void>(`/users/remove/avatar/${filename}`).then(
+      this.getStatus,
+    );
+  }
 }
 
 export default AvatarService;

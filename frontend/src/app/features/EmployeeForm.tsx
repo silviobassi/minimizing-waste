@@ -21,10 +21,10 @@ const { RangePicker } = DatePicker;
 import { UserOutlined } from '@ant-design/icons';
 import { MaskedInput } from 'antd-mask-input';
 import { useCallback, useEffect, useState } from 'react';
+import { hasPermission } from '../../auth/utils/isAuthenticated';
 import useAuth from '../../core/hooks/useAuth';
 import CustomError from '../../sdk/CustomError';
 import { AvatarService, UserService } from '../../sdk/services';
-import { hasPermission } from '../../auth/utils/isAuthenticated';
 import AccessDenied from '../components/AccessDenied';
 
 type UserFormType = User.Detailed;
@@ -44,11 +44,15 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
   const [form] = Form.useForm<User.Input>();
   const navigate = useNavigate();
   const [avatarUrl, setAvatarUrl] = useState(props.user?.avatarUrl || '');
+  const [filename, setFilename] = useState<string>('');
   const { userAuth } = useAuth();
 
-  if(!hasPermission("EDIT_USER", userAuth)) return  <AccessDenied>
-    Você não tem permissão para executar esta operação!
-  </AccessDenied>
+  if (!hasPermission('EDIT_USER', userAuth))
+    return (
+      <AccessDenied>
+        Você não tem permissão para executar esta operação!
+      </AccessDenied>
+    );
 
   const handleAvatarUpload = useCallback(async (file: File) => {
     const avatarSource = await AvatarService.upload(file);
@@ -59,7 +63,8 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
     form.setFieldsValue({
       avatarUrl: avatarUrl.avatarUrl || undefined,
     });
-  }, [avatarUrl, form]);
+    setFilename(avatarUrl?.avatarUrl?.split('/').pop());
+  }, [avatarUrl, form, filename]);
 
   return (
     <WrapperDefault title={props.title}>
@@ -132,10 +137,15 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
               <Upload
                 maxCount={1}
                 onRemove={() => {
+                  AvatarService.remove(filename);
                   setAvatarUrl('');
-                  //Implementar serviço deleção de foto
+                  form.setFieldsValue({
+                    avatarUrl: '',
+                  });
                 }}
                 beforeUpload={(file) => {
+                  if (avatarUrl?.avatarUrl)
+                    AvatarService.remove(filename);
                   handleAvatarUpload(file);
                   return false;
                 }}
@@ -153,7 +163,11 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
                 <Avatar
                   style={{ cursor: 'pointer' }}
                   icon={<UserOutlined />}
-                  src={avatarUrl?.avatarUrl}
+                  src={
+                    avatarUrl.avatarUrl
+                      ? avatarUrl.avatarUrl
+                      : props.user?.avatarUrl
+                  }
                   size={128}
                 />
               </Upload>

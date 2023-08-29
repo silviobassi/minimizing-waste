@@ -61,7 +61,7 @@ export default function MenuLayout() {
 
     {
       label: 'Controle de Acessos',
-      key: 'access-manager',
+      key: 'access-profile',
       icon: <LockOutlined />,
       children: [
         {

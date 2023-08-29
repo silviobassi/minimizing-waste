@@ -21,14 +21,19 @@ public class AssignmentSpecs {
                 predicates.add(builder.like(root.get("title"), assignmentFilter.getAssignmentTitle()+"%"));
             }
             if(assignmentFilter.getStartDate() != null && assignmentFilter.getEndDate() != null){
-                predicates.add(builder.and(builder.between(root.get("startDate"),
-                        assignmentFilter.getStartDate(), assignmentFilter.getEndDate()),
-                        builder.isNotNull(root.get("endDate"))));
+                predicates.add(builder.between(root.get("startDate"), assignmentFilter.getStartDate(),
+                        assignmentFilter.getEndDate()));
+
+
             }
             if(assignmentFilter.getStartDate() != null && assignmentFilter.getDeadline() != null){
-                predicates.add(builder.between(root.get("deadline"),
-                        assignmentFilter.getStartDate(), assignmentFilter.getDeadline()));
+                predicates.add(builder.and(builder.between(root.get("deadline"),
+                                assignmentFilter.getStartDate(), assignmentFilter.getDeadline()),
+                        builder.isNotNull(root.get("deadline"))));
             }
+
+
+
             if(assignmentFilter.getCompleted() != null){
                 predicates.add(builder.equal(root.get("completed"), assignmentFilter.getCompleted()));
             }

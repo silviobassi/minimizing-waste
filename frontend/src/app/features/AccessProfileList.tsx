@@ -2,7 +2,6 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Space, Table, Tooltip, notification } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { hasPermission } from '../../auth/utils/isAuthenticated';
 import useAccessProfiles from '../../core/hooks/useAccessProfiles';
 import useAuth from '../../core/hooks/useAuth';
 import { Role } from '../../sdk/@types';
@@ -54,7 +53,6 @@ export default function AccessProfileList() {
                 <Tooltip title={'Editar'}>
                   <Link to={`/perfil-de-acesso/editar/${role.id}`}>
                     <Button
-                      disabled={!hasPermission('EDIT_USER', userAuth)}
                       type={'link'}
                       shape={'circle'}
                       icon={<EditOutlined />}
@@ -63,7 +61,6 @@ export default function AccessProfileList() {
                 </Tooltip>
 
                 <DoubleConfirm
-                  deactivatePermission={!hasPermission('EDIT_USER', userAuth)}
                   popConfirmTitle="Remover Perfil de Acesso?"
                   popConfirmContent="Deseja mesmo remover este Perfil?"
                   onConfirm={async () => {
@@ -75,10 +72,7 @@ export default function AccessProfileList() {
                   }}
                 >
                   <Tooltip title={'Excluir'} placement="bottom">
-                    <Button
-                      disabled={!hasPermission('EDIT_USER', userAuth)}
-                      type="link"
-                    >
+                    <Button type="link">
                       <DeleteOutlined />
                     </Button>
                   </Tooltip>

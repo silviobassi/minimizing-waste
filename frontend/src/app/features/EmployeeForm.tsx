@@ -21,11 +21,9 @@ const { RangePicker } = DatePicker;
 import { UserOutlined } from '@ant-design/icons';
 import { MaskedInput } from 'antd-mask-input';
 import { useCallback, useEffect, useState } from 'react';
-import { hasPermission } from '../../auth/utils/isAuthenticated';
 import useAuth from '../../core/hooks/useAuth';
 import CustomError from '../../sdk/CustomError';
 import { AvatarService, UserService } from '../../sdk/services';
-import AccessDenied from '../components/AccessDenied';
 
 type UserFormType = User.Detailed;
 interface TaskFormDefaultProps {
@@ -46,13 +44,6 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
   const [avatarUrl, setAvatarUrl] = useState(props.user?.avatarUrl || '');
   const [filename, setFilename] = useState<string>('');
   const { userAuth } = useAuth();
-
-  if (!hasPermission('EDIT_USER', userAuth))
-    return (
-      <AccessDenied>
-        Você não tem permissão para executar esta operação!
-      </AccessDenied>
-    );
 
   const handleAvatarUpload = useCallback(async (file: File) => {
     const avatarSource = await AvatarService.upload(file);
@@ -144,8 +135,7 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
                   });
                 }}
                 beforeUpload={(file) => {
-                  if (avatarUrl?.avatarUrl)
-                    AvatarService.remove(filename);
+                  if (avatarUrl?.avatarUrl) AvatarService.remove(filename);
                   handleAvatarUpload(file);
                   return false;
                 }}

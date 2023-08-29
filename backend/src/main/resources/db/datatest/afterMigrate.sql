@@ -90,12 +90,15 @@ insert into permissions (name, description) values ('EDIT_WORK_STATIONS', 'Permi
 insert into permissions (name, description) values ('CONSULT_WORK_STATIONS', 'Permitir consultar estações de trabalho');
 insert into permissions (name, description) values ('APPROVE_ASSIGNMENTS', 'Permitir aprovar tarefas concluídas');
 insert into permissions (name, description) values ('COMPLETE_ASSIGNMENTS', 'Permitir concluir tarefas');
-insert into permissions (name, description) values ('GIVE_BACK_SUPPLIES', 'Permitir devolver recursos não utilizados');
-insert into permissions (name, description) values ('VACATE_SUPPLIES', 'Permitir disponibilizar recursos desocupados');
+insert into permissions (name, description) values ('GIVE_BACK_SUPPLIES_MOVEMENTS', 'Permitir devolver recursos não utilizados');
+insert into permissions (name, description) values ('VACATE_SUPPLIES_MOVEMENTS', 'Permitir disponibilizar recursos desocupados');
 insert into permissions (name, description) values ('CONSULT_ASSIGNMENTS', 'Permitir consultar tarefas');
-insert into permissions (name, description) values ('END_SUPPLY_ALLOCATED', 'Permitir informar que recursos alocados terminaram');
+insert into permissions (name, description) values ('END_SUPPLY_ALLOCATED_MOVEMENTS', 'Permitir informar que recursos alocados terminaram');
 insert into permissions (name, description) values ('EDIT_ACCESS_STATUS', 'Permitir criar, editar e excluir perfis de acesso');
 insert into permissions (name, description) values ('CONSULT_ACCESS_STATUS', 'Permitir consultar perfis de acesso');
+insert into permissions (name, description) values ('CONSULT_SUPPLIES_MOVEMENTS', 'Permitir consultar movimentos de recursos');
+insert into permissions (name, description) values ('EDIT_SUPPLIES_MOVEMENTS', 'Permitir criar, editar e excluir movimentos de recursos');
+
 
 insert into roles (name) values ('Encarregado');
 insert into roles (name) values ('Administrador');
@@ -130,7 +133,7 @@ insert into assignments (title, start_date, end_date, deadline, completed, appro
 values ('Revestimento de Banheiros', '2023-08-21 17:51:58.000000', '2023-08-23 17:51:58.000000', '2023-08-27 17:51:58.000000', true, false, 'OBRAS', 1,
         'Rejuntar novamente os banheiros, pois estão mau rejuntados. Trocar um revestimento que estã descascado em uma das pontas', 1);
 insert into assignments (title, start_date, end_date, deadline, completed, approved, nature, work_station_id, approval_description, notification_id)
-values ('Instalação de Porcelanato', '2023-06-02 17:51:58.000000', null, '2023-07-21 17:51:58.000000', false, false, 'OBRAS', 2,
+values ('Instalação de Porcelanato', '2023-06-02 17:51:58.000000', NULL, '2023-07-21 17:51:58.000000', false, false, 'OBRAS', 2,
         '3 Porcelanatos marcados devem ser trocados, pois estão sem argamassa', 2);
 insert into assignments (title, start_date, end_date, deadline, completed, approved, nature, work_station_id, approval_description, notification_id)
 values ('Organização de Materiais Espalhados', utc_timestamp(), utc_timestamp(), utc_timestamp(), true, true, 'LIMPEZA', 2,
@@ -142,7 +145,7 @@ values ('Organização de Materiais Espalhados', utc_timestamp(), utc_timestamp(
 insert into assignments_employees (assignment_id, responsible_employee_id) VALUES (2, 2), (3, 2);
 
 insert into roles_permissions (role_id, permission_id) values (1, 5), (1, 7), (1, 9),(1, 10), (1,11),(1, 12), (1,13), (1, 14), (1, 15),
-                                                              (2, 1), (2, 2), (2, 3), (2, 4), (2, 5), (2, 6),(2, 7), (2, 8), (2, 9), (2, 10), (2, 11), (2, 12), (2, 13), (2, 14), (2,15), (2,16), (2,17);
+                                                              (2, 1), (2, 2), (2, 3), (2, 4), (2, 5), (2, 6),(2, 7), (2, 8), (2, 9), (2, 10), (2, 11), (2, 12), (2, 13), (2, 14), (2,15), (2,16), (2,17), (2,18),(2,19);
 INSERT INTO minimizing_waste.oauth2_registered_client
 (id, client_id, client_id_issued_at, client_secret, client_secret_expires_at, client_name, client_authentication_methods, authorization_grant_types, redirect_uris, scopes, client_settings, token_settings)
 VALUES('1', 'minimizing-web', '2023-02-03 13:36:44', '$2a$10$nuH5YQJrevTT.rsmCMJl1OVH4OmqjZu231f5sf09bMG8pcsWR.MWa', NULL, 'Minimizing Web', 'client_secret_basic', 'refresh_token,authorization_code', 'http://127.0.0.1:8080/swagger-ui/oauth2-redirect.html,http://127.0.0.1:5173/authorize', 'READ,WRITE', '{"@class":"java.util.Collections$UnmodifiableMap","settings.client.require-proof-key":false,"settings.client.require-authorization-consent":true}', '{"@class":"java.util.Collections$UnmodifiableMap","settings.token.reuse-refresh-tokens":false,"settings.token.id-token-signature-algorithm":["org.springframework.security.oauth2.jose.jws.SignatureAlgorithm","RS256"],"settings.token.access-token-time-to-live":["java.time.Duration",1800.000000000],"settings.token.access-token-format":{"@class":"org.springframework.security.oauth2.server.authorization.settings.OAuth2TokenFormat","value":"self-contained"},"settings.token.refresh-token-time-to-live":["java.time.Duration",86400.000000000],"settings.token.authorization-code-time-to-live":["java.time.Duration",300.000000000]}');

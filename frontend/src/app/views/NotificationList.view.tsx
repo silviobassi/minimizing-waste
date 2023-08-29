@@ -12,6 +12,7 @@ export default function NotificationListView() {
   usePageTitle('Listas de Notificações');
   const [notificationType, setNotificationType] = useState<any>('available');
   const [accessDeniedError, setAccessDeniedError] = useState(false);
+  
 
   useEffect(() => {
     // implementar o component de acesso negado

@@ -6,16 +6,11 @@ interface DoubleConfirmProps {
   popConfirmTitle: string;
   popConfirmContent: string;
   onConfirm?: () => void;
-  deactivatePermission: boolean;
 }
 
 export default function DoubleConfirm(props: DoubleConfirmProps) {
   return (
-    <Popconfirm
-      disabled={props.deactivatePermission}
-      title={props.popConfirmTitle}
-      onConfirm={props.onConfirm}
-    >
+    <Popconfirm title={props.popConfirmTitle} onConfirm={props.onConfirm}>
       {props.children}
     </Popconfirm>
   );

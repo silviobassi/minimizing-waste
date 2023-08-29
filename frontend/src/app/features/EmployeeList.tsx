@@ -84,7 +84,7 @@ export default function EmployeeList() {
             dataIndex: 'createdAt',
             width: 270,
             render(createdAt: string) {
-              return format(new Date(createdAt), 'dd/MM/yyyy');
+              return format(new Date(createdAt), 'dd/MM/yyyy - HH:ss');
             },
           },
           {
@@ -113,7 +113,7 @@ export default function EmployeeList() {
                 <Tooltip title={'Editar'}>
                   <Link to={`/colaborador/editar/${user.id}`}>
                     <Button
-                      disabled={!hasPermission('EDIT_USER', userAuth)}
+                     
                       type={'link'}
                       icon={<EditOutlined />}
                     />
@@ -121,10 +121,11 @@ export default function EmployeeList() {
                 </Tooltip>
 
                 <DoubleConfirm
-                  deactivatePermission={!hasPermission('EDIT_USER', userAuth)}
+                  
                   popConfirmTitle="Remover Colaborador?"
                   popConfirmContent="Deseja mesmo remover este colaborador?"
                   onConfirm={async () => {
+                    console.log(user.id)
                     await removeUser(Number(user.id));
                     notification.success({
                       message: 'Sucesso',
@@ -134,7 +135,7 @@ export default function EmployeeList() {
                 >
                   <Tooltip title={'Excluir'} placement="bottom">
                     <Button
-                      disabled={!hasPermission('EDIT_USER', userAuth)}
+                  
                       type="link"
                     >
                       <DeleteOutlined />
@@ -145,7 +146,7 @@ export default function EmployeeList() {
                 <Tooltip title={'Ver Detalhes'}>
                   <Link to={`/colaborador/${user.id}/detalhes`}>
                     <Button
-                      disabled={!hasPermission('CONSULT_USER', userAuth)}
+                     
                       type={'link'}
                       icon={<EyeOutlined />}
                     />

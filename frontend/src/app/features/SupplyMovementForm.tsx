@@ -15,15 +15,13 @@ import TextArea from 'antd/es/input/TextArea';
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import { useCallback, useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import useAuth from '../../core/hooks/useAuth';
 import useSupplies from '../../core/hooks/useSupplies';
 import useUsers from '../../core/hooks/useUsers';
 import useWorkStations from '../../core/hooks/useWorkStations';
 import { Supply, SupplyMovementService } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
 import WrapperDefault from '../components/WrapperDefault';
-import useAuth from '../../core/hooks/useAuth';
-import { hasPermission } from '../../auth/utils/isAuthenticated';
-import AccessDenied from '../components/AccessDenied';
 
 type SupplyMovementFormType = Supply.MovementModel;
 
@@ -49,17 +47,10 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
 
   const { userAuth } = useAuth();
 
-  if (!hasPermission('EDIT_SUPPLIES', userAuth))
-    return (
-      <AccessDenied>
-        Você não tem permissão para executar essa operação!
-      </AccessDenied>
-    );
-
   useEffect(() => {
-    fetchUsers();
-    fetchWorkStations();
-    fetchSupplies();
+    fetchUsers({});
+    fetchWorkStations({});
+    fetchSupplies({});
 
     if (props.supplyMovement) {
       form.resetFields();

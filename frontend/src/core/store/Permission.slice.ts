@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Permission } from '../../sdk/@types';
 import { PermissionService } from '../../sdk/services';
+import getThunkStatus from '../utils/getThunkStatus';
 
 type PA<T> = PayloadAction<T>;
 
@@ -71,6 +72,25 @@ const PermissionsNotOrGrantedSlice = createSlice({
     clearPermissionsNotOrGranted(state) {
       state.list = [];
     },
+  },
+
+  extraReducers(builder) {
+    const { error, loading, success } = getThunkStatus([
+      getAllPermissionsNotOrGranted,
+      associatePermissionsToRole,
+      disassociatePermissionsToRole,
+    ]);
+
+    builder
+      .addMatcher(error, (state) => {
+        state.fetching = false;
+      })
+      .addMatcher(success, (state) => {
+        state.fetching = false;
+      })
+      .addMatcher(loading, (state) => {
+        state.fetching = true;
+      });
   },
 });
 

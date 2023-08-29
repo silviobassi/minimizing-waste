@@ -18,10 +18,9 @@ import { Communication } from '../../sdk';
 import NotificationDescription from '../components/NotificationDescription';
 
 export default function EmployeeTasksUnassignedNotification() {
-  const { availableUnassignedTasks, fetchAvailableUnassignedTasks } =
+  const { availableUnassignedTasks, fetchAvailableUnassignedTasks, fetching } =
     useCommunications();
   const [page, setPage] = useState<number>(0);
-
   useEffect(() => {
     fetchAvailableUnassignedTasks(page);
   }, [fetchAvailableUnassignedTasks, page]);
@@ -32,6 +31,7 @@ export default function EmployeeTasksUnassignedNotification() {
         <Col xs={24}>
           <Card type="inner" title="Recursos Disponìveis">
             <List
+              loading={fetching}
               pagination={{
                 onChange: (page: number) => setPage(page - 1),
                 total: availableUnassignedTasks?.page?.totalElements,

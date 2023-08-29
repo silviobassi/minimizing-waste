@@ -15,7 +15,8 @@ import { Communication } from '../../sdk';
 import NotificationDescription from '../components/NotificationDescription';
 
 export default function SupplyAvailableAssignedNotification() {
-  const { availableSupplies, fetchAvailableSupplies } = useCommunications();
+  const { availableSupplies, fetchAvailableSupplies, fetching } =
+    useCommunications();
   const [page, setPage] = useState<number>(0);
   useEffect(() => {
     fetchAvailableSupplies(page);
@@ -27,6 +28,7 @@ export default function SupplyAvailableAssignedNotification() {
         <Col xs={24}>
           <Card type="inner" title="Recursos Disponìveis">
             <List
+              loading={fetching}
               dataSource={
                 availableSupplies?._embedded?.supplyMovementNotifications
               }

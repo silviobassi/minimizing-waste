@@ -22,15 +22,12 @@ import {
   Tooltip,
   notification,
 } from 'antd';
+import locale from 'antd/es/date-picker/locale/pt_BR';
 import { ColumnProps } from 'antd/es/table';
 import { format } from 'date-fns';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import {
-  hasEmployeeCurrent,
-  hasPermission,
-} from '../../auth/utils/isAuthenticated';
 import useAssignment from '../../core/hooks/useAssignment';
 import useAssignments from '../../core/hooks/useAssignments';
 import useAuth from '../../core/hooks/useAuth';
@@ -41,7 +38,7 @@ import WrapperDefault from '../components/WrapperDefault';
 
 export default function TaskList() {
   const navigate = useNavigate();
-  const { assignments, fetchAssignments } = useAssignments();
+  const { assignments, fetchAssignments, fetching } = useAssignments();
   const [accessDeniedError, setAccessDeniedError] = useState(false);
   const { removeAssignment, toggleComplete, toggleApprove } = useAssignment();
   const [page, setPage] = useState<number>(0);
@@ -53,15 +50,17 @@ export default function TaskList() {
   const [assignmentTitle, setAssignmentTitle] = useState<string | undefined>();
   const { userAuth } = useAuth();
 
+  const [form] = Form.useForm();
+
   useEffect(() => {
     fetchAssignments({
       page,
       size: 4,
       sort: ['asc'],
       assignmentTitle,
-      startDate: moment(startDate).toISOString(),
-      endDate: moment(endDate).toISOString(),
-      deadline: moment(deadline).toISOString(),
+      startDate,
+      endDate,
+      deadline,
     }).catch((err) => {
       if (err?.data?.status === 403) {
         setAccessDeniedError(true);
@@ -69,7 +68,6 @@ export default function TaskList() {
       }
       //throw err;
     });
-console.log(moment(deadline).toISOString())
     //2023-08-23T00:00:00Z
   }, [
     fetchAssignments,
@@ -86,29 +84,26 @@ console.log(moment(deadline).toISOString())
 
   const search: any = {
     concluded: (
-      <Space direction="horizontal">
-        <DatePicker.RangePicker
-          size="large"
-          onChange={(_, date: string[]) => {
-            
-            setStartDate(date[0]);
-            setEndDate(date[1]);
-          }}
-        />
-      </Space>
+      <DatePicker.RangePicker
+        locale={locale}
+        style={{ display: 'flex', justifySelf: 'end' }}
+        size="large"
+        onChange={(_, date: string[]) => {
+          setStartDate(moment(date[0]).toISOString());
+          setEndDate(moment(date[1]).toISOString());
+        }}
+      />
     ),
     finished: (
-      <Space>
-        <DatePicker.RangePicker
-          size="large"
-        
-          
-          onChange={(_, date: string[]) => {
-            setStartDate(date[0]);
-            setDeadline(date[1]);
-          }}
-        />
-      </Space>
+      <DatePicker.RangePicker
+        locale={locale}
+        style={{ display: 'flex', justifySelf: 'end' }}
+        size="large"
+        onChange={(_, date: string[]) => {
+          setStartDate(moment(date[0]).toISOString());
+          setDeadline(moment(date[1]).toISOString());
+        }}
+      />
     ),
   };
 
@@ -118,18 +113,28 @@ console.log(moment(deadline).toISOString())
   ): ColumnProps<Assignment.PagedModelAssignment> => ({
     filterDropdown: ({}) => (
       <Card>
-        <Input
-          type="text"
-          //@ts-ignore
-          placeholder={`Buscar ${displayName || dataIndex}`}
-          onChange={(e) => {
-            setAssignmentTitle(e.target.value);
-          }}
-        />
+        <Form form={form}>
+          <Form.Item name={'name'}>
+            <Input
+              type="text"
+              //@ts-ignore
+              placeholder={`Buscar ${displayName || dataIndex}`}
+              onChange={(e) => {
+                setAssignmentTitle(e.target.value);
+              }}
+            />
+          </Form.Item>
+        </Form>
       </Card>
     ),
     filterIcon: (filtered: boolean) => (
-      <SearchOutlined style={{ color: filtered ? '#0099ff' : undefined }} />
+      <SearchOutlined
+        onClick={() => {
+          form.setFieldValue('name', '');
+          setAssignmentTitle('');
+        }}
+        style={{ color: filtered ? '#0099ff' : undefined }}
+      />
     ),
   });
 
@@ -145,24 +150,29 @@ console.log(moment(deadline).toISOString())
             CRIAR TAREFAS
           </Button>
         </Col>
-        <Col xs={24} lg={10}>
-          <Form.Item label="Tipo da Tarefa" name="nature">
-            <Select
-              onChange={(e) => setSearchDate(e)}
-              size="large"
-              placeholder="Selecione o Tipo da Pesquisa"
-              options={[
-                {
-                  label: 'PRAZO PARA CONCLUSÃO DA TAREFA',
-                  value: 'concluded',
-                },
-                { label: 'DATA DA FINALIZAÇÃO DA TAREFA', value: 'finished' },
-              ]}
-            />
-          </Form.Item>
+        <Col xs={24} lg={7}>
+          <Form>
+            <Form.Item label="Tipo da Tarefa" name="nature">
+              <Select
+                onChange={(e) => setSearchDate(e)}
+                size="large"
+                placeholder="Selecione o Tipo da Pesquisa"
+                options={[
+                  {
+                    label: 'TAREFAS COM DATAS DE FINALIZAÇÃO',
+                    value: 'concluded',
+                  },
+                  {
+                    label: 'PRAZO PARA CONCLUSÃO DA TAREFA',
+                    value: 'finished',
+                  },
+                ]}
+              />
+            </Form.Item>
+          </Form>
         </Col>
 
-        <Col xs={24} lg={10}>
+        <Col xs={24} lg={6}>
           {search[searchDate]}
         </Col>
       </Row>
@@ -174,6 +184,7 @@ console.log(moment(deadline).toISOString())
       </Row>
       <WrapperDefault title="Lista de Tarefas">
         <Table<Assignment.PagedModelAssignment>
+          loading={fetching}
           dataSource={assignments?._embedded?.assignments}
           columns={[
             { title: 'ID', dataIndex: 'id', width: 60 },
@@ -187,31 +198,33 @@ console.log(moment(deadline).toISOString())
               dataIndex: ['workStation', 'name'],
             },
             {
-              title: 'Data de Início',
+              title: 'Prazo para Conclusão',
               dataIndex: 'startDate',
               align: 'center',
-              width: 130,
-              render(startDate: string) {
-    
-                return format(new Date(startDate), 'dd/MM/yyyy');
+              width: 300,
+              render(_: any, assignment) {
+                return `${format(
+                  new Date(assignment?.startDate),
+                  'dd/MM/yyyy - HH:ss',
+                )}  - 
+                ${format(
+                  new Date(assignment?.deadline),
+                  'dd/MM/yyyy - HH:ss',
+                )}`;
               },
             },
+
             {
-              title: 'Prazo Para Conclusão',
-              dataIndex: 'deadline',
-              align: 'center',
-              width: 130,
-              render(deadline: string) {
-                return format(new Date(deadline), 'dd/MM/yyyy');
-              },
-            },
-            {
-              title: 'Data do Término',
+              title: 'Data da Finalização',
               dataIndex: 'endDate',
               align: 'center',
-              width: 130,
+              width: 200,
               render(endDate: string) {
-                return format(new Date(endDate), 'dd/MM/yyyy');
+                return endDate ? (
+                  format(new Date(endDate), 'dd/MM/yyyy - HH:ss')
+                ) : (
+                  <Tag color="green">A FINALIZAR</Tag>
+                );
               },
             },
 
@@ -222,10 +235,6 @@ console.log(moment(deadline).toISOString())
               render(_: any, assignment) {
                 return (
                   <Checkbox
-                    disabled={
-                      hasPermission('COMPLETE_ASSIGNMENTS', userAuth) &&
-                      !hasEmployeeCurrent(assignment, userAuth)
-                    }
                     checked={assignment?.completed}
                     onChange={async () => {
                       await toggleComplete(
@@ -250,7 +259,6 @@ console.log(moment(deadline).toISOString())
               render(_: any, assignment) {
                 return (
                   <Checkbox
-                    disabled={hasPermission('APPROVE_ASSIGNMENTS', userAuth)}
                     checked={assignment?.approved}
                     onChange={async () => {
                       if (assignment?.approved) {
@@ -288,7 +296,6 @@ console.log(moment(deadline).toISOString())
                 <Space size={'middle'}>
                   <Tooltip title={'Editar'}>
                     <Button
-                      disabled={hasPermission('EDIT_ASSIGNMENTS', userAuth)}
                       type={'link'}
                       icon={<EditOutlined />}
                       onClick={() =>
@@ -298,10 +305,6 @@ console.log(moment(deadline).toISOString())
                   </Tooltip>
 
                   <DoubleConfirm
-                    deactivatePermission={hasPermission(
-                      'EDIT_ASSIGNMENTS',
-                      userAuth,
-                    )}
                     popConfirmTitle="Remover Tarefa?"
                     popConfirmContent="Deseja mesmo remover esta tarefa?"
                     onConfirm={async () => {
@@ -313,10 +316,7 @@ console.log(moment(deadline).toISOString())
                     }}
                   >
                     <Tooltip title={'Excluir'} placement="bottom">
-                      <Button
-                        disabled={hasPermission('EDIT_ASSIGNMENTS', userAuth)}
-                        type="link"
-                      >
+                      <Button type="link">
                         <DeleteOutlined />
                       </Button>
                     </Tooltip>
@@ -324,7 +324,6 @@ console.log(moment(deadline).toISOString())
 
                   <Tooltip title={'Atribuir Tarefa'}>
                     <Button
-                      disabled={hasPermission('EDIT_ASSIGNMENTS', userAuth)}
                       type={'link'}
                       icon={<ReconciliationOutlined />}
                       onClick={() =>
@@ -334,7 +333,6 @@ console.log(moment(deadline).toISOString())
                   </Tooltip>
                   <Tooltip title={'Desatribuir Tarefa'}>
                     <Button
-                      disabled={hasPermission('EDIT_ASSIGNMENTS', userAuth)}
                       type={'link'}
                       icon={<ReconciliationOutlined />}
                       onClick={() =>
@@ -344,14 +342,7 @@ console.log(moment(deadline).toISOString())
                   </Tooltip>
                   <Tooltip title={'Ver Detalhes'}>
                     <Link to={`/tarefas/${assignment.id}/detalhes`}>
-                      <Button
-                        disabled={hasPermission(
-                          'CONSULT_ASSIGNMENTS',
-                          userAuth,
-                        )}
-                        type={'link'}
-                        icon={<EyeOutlined />}
-                      />
+                      <Button type={'link'} icon={<EyeOutlined />} />
                     </Link>
                   </Tooltip>
                 </Space>

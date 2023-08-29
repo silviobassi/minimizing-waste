@@ -11,12 +11,10 @@ import {
 } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import useAuth from '../../core/hooks/useAuth';
 import { Supply, SupplyService } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
 import WrapperDefault from '../components/WrapperDefault';
-import useAuth from '../../core/hooks/useAuth';
-import AccessDenied from '../components/AccessDenied';
-import { hasPermission } from '../../auth/utils/isAuthenticated';
 
 interface SupplyFormDefaultProps {
   labelRegister: string;
@@ -35,13 +33,6 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
   const [form] = Form.useForm<any>();
 
   const { userAuth } = useAuth();
-
-  if (!hasPermission('EDIT_SUPPLIES', userAuth))
-    return (
-      <AccessDenied>
-        Você não tem permissão para executar essa operação!
-      </AccessDenied>
-    );
 
   const supply: any = {
     material: (
@@ -117,7 +108,6 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
   };
 
   const handleChange = (value: string) => {
-
     setSupplyKind(value.toLowerCase());
   };
 

@@ -18,9 +18,10 @@ import { Communication } from '../../sdk';
 import NotificationDescription from '../components/NotificationDescription';
 
 export default function EmployeeTasksAssignedNotification() {
-  const { availableAssignedTasks, fetchAvailableAssignedTasks } =
+  const { availableAssignedTasks, fetchAvailableAssignedTasks, fetching } =
     useCommunications();
   const [page, setPage] = useState<number>(0);
+
   useEffect(() => {
     fetchAvailableAssignedTasks(page);
   }, [fetchAvailableAssignedTasks, page]);
@@ -31,6 +32,7 @@ export default function EmployeeTasksAssignedNotification() {
         <Col xs={24}>
           <Card type="inner" title="Recursos Disponíveis">
             <List
+              loading={fetching}
               dataSource={
                 availableAssignedTasks?._embedded?.notificationsAssignments
               }

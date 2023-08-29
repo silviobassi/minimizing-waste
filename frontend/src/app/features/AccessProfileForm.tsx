@@ -1,11 +1,9 @@
 import { SaveOutlined, StopOutlined } from '@ant-design/icons';
 import { Col, Form, Input, Row, notification } from 'antd';
-import { hasPermission } from '../../auth/utils/isAuthenticated';
 import useAuth from '../../core/hooks/useAuth';
 import { Role } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
 import { RoleService } from '../../sdk/services';
-import AccessDenied from '../components/AccessDenied';
 import ButtonForm from '../components/ButtonForm';
 
 type RoleType = Role.Detailed;
@@ -21,13 +19,6 @@ export default function AccessProfileForm(
   const [form] = Form.useForm<Role.Input>();
   const { userAuth } = useAuth();
 
-  if (!hasPermission('EDIT_USER', userAuth))
-    return (
-      <AccessDenied>
-        Você não tem permissão para executar esta operação!
-      </AccessDenied>
-    );
-
   return (
     <Row justify={'start'}>
       <Col xs={24}>
@@ -36,12 +27,9 @@ export default function AccessProfileForm(
           form={form}
           initialValues={props.role}
           onFinish={async (role: Role.Input) => {
-           
-
             try {
               if (props.role) {
-   
-                return props.onUpdate && props.onUpdate(role, );
+                return props.onUpdate && props.onUpdate(role);
               }
               await RoleService.createRole(role).then((role: Role.Detailed) => {
                 notification.success({

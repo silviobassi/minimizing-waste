@@ -19,7 +19,6 @@ import {
 } from 'antd';
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { hasPermission } from '../../auth/utils/isAuthenticated';
 import useAuth from '../../core/hooks/useAuth';
 import useSupplyMovement from '../../core/hooks/useSuppliesMovement';
 import useSuppliesMovements from '../../core/hooks/useSuppliesMovements';
@@ -43,7 +42,8 @@ export default function SupplyMovementList() {
   const [assignmentTitle, setAssignmentTitle] = useState<string>();
   const [accessDeniedError, setAccessDeniedError] = useState(false);
 
-  const { suppliesMovements, fetchSuppliesMovements } = useSuppliesMovements();
+  const { suppliesMovements, fetchSuppliesMovements, fetching } =
+    useSuppliesMovements();
 
   const { userAuth } = useAuth();
 
@@ -71,6 +71,7 @@ export default function SupplyMovementList() {
   return (
     <WrapperDefault title="Lista de Movimento de Recursos">
       <Table<Supply.PagedModelSupplyMovementModel>
+        loading={fetching}
         dataSource={suppliesMovements?._embedded?.suppliesMovements}
         columns={[
           { title: 'ID', dataIndex: 'id', width: 60 },
@@ -104,7 +105,6 @@ export default function SupplyMovementList() {
                 <>
                   {' '}
                   <Checkbox
-                    disabled={!hasPermission('VACATE_SUPPLIES', userAuth)}
                     onChange={async () => {
                       await vacateSupplyMovement(movement?.id);
                     }}
@@ -144,7 +144,6 @@ export default function SupplyMovementList() {
               <Space size={'middle'}>
                 <Tooltip title={'Editar'}>
                   <Button
-                    disabled={!hasPermission('EDIT_SUPPLIES', userAuth)}
                     type={'link'}
                     icon={<EditOutlined />}
                     onClick={() =>
@@ -156,9 +155,6 @@ export default function SupplyMovementList() {
                 </Tooltip>
 
                 <DoubleConfirm
-                  deactivatePermission={
-                    !hasPermission('EDIT_SUPPLIES', userAuth)
-                  }
                   popConfirmTitle="Remover Movimento?"
                   popConfirmContent="Deseja mesmo remover este movimento?"
                   onConfirm={async () => {
@@ -170,17 +166,13 @@ export default function SupplyMovementList() {
                   }}
                 >
                   <Tooltip title={'Excluir'} placement="bottom">
-                    <Button
-                      disabled={!hasPermission('EDIT_SUPPLIES', userAuth)}
-                      type="link"
-                    >
+                    <Button type="link">
                       <DeleteOutlined />
                     </Button>
                   </Tooltip>
                 </DoubleConfirm>
                 <Tooltip title={'Devolver'}>
                   <Button
-                    disabled={!hasPermission('GIVE_BACK_SUPPLIES', userAuth)}
                     type={'link'}
                     onClick={() => {
                       setMovement({
@@ -195,9 +187,6 @@ export default function SupplyMovementList() {
                 </Tooltip>
 
                 <DoubleConfirm
-                  deactivatePermission={
-                    !hasPermission('END_SUPPLY_ALLOCATED', userAuth)
-                  }
                   popConfirmTitle="Utilizou o recurso alocado?"
                   popConfirmContent="Tem certeza que o recurso alocado foi utilizado?"
                   onConfirm={async () => {
@@ -212,12 +201,7 @@ export default function SupplyMovementList() {
                     title={'Finalizar Recurso Alocado'}
                     placement="bottom"
                   >
-                    <Button
-                      disabled={
-                        !hasPermission('END_SUPPLY_ALLOCATED', userAuth)
-                      }
-                      type="link"
-                    >
+                    <Button type="link">
                       <MinusOutlined />
                     </Button>
                   </Tooltip>
@@ -226,11 +210,7 @@ export default function SupplyMovementList() {
                   <Link
                     to={`/movimento-recursos/detalhes/${supplyMovement?.id}`}
                   >
-                    <Button
-                      disabled={!hasPermission('CONSULT_SUPPLIES', userAuth)}
-                      type={'link'}
-                      icon={<EyeOutlined />}
-                    />
+                    <Button type={'link'} icon={<EyeOutlined />} />
                   </Link>
                 </Tooltip>
               </Space>

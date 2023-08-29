@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Supply } from '../../sdk/@types';
 import { SupplyService } from '../../sdk/services';
-import Search from 'antd/es/transfer/search';
+import getThunkStatus from '../utils/getThunkStatus';
 
 type PA<T> = PayloadAction<T>;
 
@@ -17,10 +17,7 @@ const initialState: SupplyState = {
 
 export const getAllSupplies = createAsyncThunk(
   'supplies/getAllSupplies',
-  async (
-    search: Supply.Query,
-    { rejectWithValue, dispatch },
-  ) => {
+  async (search: Supply.Query, { rejectWithValue, dispatch }) => {
     try {
       const supplies = await SupplyService.getAllSupplies(search);
       dispatch(storeSupplies(supplies));
@@ -34,7 +31,7 @@ export const removeSupply = createAsyncThunk(
   'supplies/removeSupply',
   async (supplyId: number, { dispatch }) => {
     await SupplyService.deleteExistingSupply(supplyId);
-    await dispatch(getAllSupplies({}));
+    await dispatch(getAllSupplies({page: 0, size: 4, sort: ['asc']}));
   },
 );
 
@@ -48,6 +45,24 @@ const SupplySlice = createSlice({
     clearSupplies(state) {
       state.list = [];
     },
+  },
+
+  extraReducers(builder) {
+    const { error, loading, success } = getThunkStatus([
+      getAllSupplies,
+      removeSupply,
+    ]);
+
+    builder
+      .addMatcher(error, (state) => {
+        state.fetching = false;
+      })
+      .addMatcher(success, (state) => {
+        state.fetching = false;
+      })
+      .addMatcher(loading, (state) => {
+        state.fetching = true;
+      });
   },
 });
 

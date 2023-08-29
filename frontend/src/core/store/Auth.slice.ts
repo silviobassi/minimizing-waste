@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { User } from '../../sdk/@types';
 import { UserService } from '../../sdk/services';
+import getThunkStatus from '../utils/getThunkStatus';
 
 type PA<T> = PayloadAction<T>;
 
@@ -18,8 +19,8 @@ export const fetchUser = createAsyncThunk(
   'auth/getUser',
   async (userId: number, { rejectWithValue, dispatch }) => {
     try {
-      const user =  await UserService.getDetailedUser(userId);
-      dispatch(storeUser(user))
+      const user = await UserService.getDetailedUser(userId);
+      dispatch(storeUser(user));
     } catch (error) {
       return rejectWithValue({ ...error });
     }
@@ -36,6 +37,21 @@ const authSlice = createSlice({
     clearUser(state) {
       state.user = null;
     },
+  },
+
+  extraReducers(builder) {
+    const { error, loading, success } = getThunkStatus([fetchUser]);
+
+    builder
+      .addMatcher(error, (state) => {
+        state.fetching = false;
+      })
+      .addMatcher(success, (state) => {
+        state.fetching = false;
+      })
+      .addMatcher(loading, (state) => {
+        state.fetching = true;
+      });
   },
 });
 

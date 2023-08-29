@@ -31,7 +31,7 @@ export default function TaskDetailedView() {
     params.assignmentId,
   ]);
 
-  if (accessDeniedError) return <AccessDenied />;
+  if (accessDeniedError) return <AccessDenied>Você não pode executar essa operação!</AccessDenied>;
 
   if (isNaN(Number(params.assignmentId))) return <Navigate to={'/tarefas'} />;
 

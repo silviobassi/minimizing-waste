@@ -18,7 +18,8 @@ import { Communication } from '../../sdk';
 import NotificationDescription from '../components/NotificationDescription';
 
 export default function ApprovedTasksNotification() {
-  const { assignmentsApproved, fetchAssignmentsApproved } = useCommunications();
+  const { assignmentsApproved, fetchAssignmentsApproved, fetching } =
+    useCommunications();
   const [page, setPage] = useState<number>(0);
   useEffect(() => {
     fetchAssignmentsApproved(page);
@@ -29,6 +30,7 @@ export default function ApprovedTasksNotification() {
       <Col xs={24}>
         <Card type="inner" title={'Tarefas Expiradas'}>
           <List
+          loading={fetching}
             pagination={{
               onChange: (page: number) => setPage(page - 1),
               total: assignmentsApproved?.page?.totalElements,
@@ -45,7 +47,7 @@ export default function ApprovedTasksNotification() {
                   <Col xs={24} lg={7}>
                     <Typography.Title
                       level={4}
-                      style={{marginBottom: 20 , textDecoration: 'underline' }}
+                      style={{ marginBottom: 20, textDecoration: 'underline' }}
                     >
                       {assignmentNotification?.title}
                     </Typography.Title>

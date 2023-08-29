@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Role } from '../../sdk/@types';
 import { RoleService } from '../../sdk/services';
+import getThunkStatus from '../utils/getThunkStatus';
 
 type PA<T> = PayloadAction<T>;
 
@@ -68,6 +69,24 @@ const RolesNotOrGrantedSlice = createSlice({
     clearRolesNotOrGranted(state) {
       state.list = [];
     },
+  },
+  extraReducers(builder) {
+    const { error, loading, success } = getThunkStatus([
+      getAllRolesNotOrGranted,
+      associateRoleToUser,
+      disassociateRoleToUser,
+    ]);
+
+    builder
+      .addMatcher(error, (state) => {
+        state.fetching = false;
+      })
+      .addMatcher(success, (state) => {
+        state.fetching = false;
+      })
+      .addMatcher(loading, (state) => {
+        state.fetching = true;
+      });
   },
 });
 

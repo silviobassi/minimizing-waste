@@ -17,7 +17,7 @@ import { Communication } from '../../sdk';
 import NotificationDescription from '../components/NotificationDescription';
 
 export default function CompletionOfTasksNotification() {
-  const { assignmentsCompleted, fetchAssignmentsCompleted } =
+  const { assignmentsCompleted, fetchAssignmentsCompleted, fetching } =
     useCommunications();
 
   const [page, setPage] = useState<number>(0);
@@ -31,6 +31,7 @@ export default function CompletionOfTasksNotification() {
       <Col xs={24}>
         <Card type="inner" title={'Tarefas Expiradas'}>
           <List
+          loading={fetching}
             pagination={{
               onChange: (page: number) => setPage(page - 1),
               total: assignmentsCompleted?.page?.totalElements,

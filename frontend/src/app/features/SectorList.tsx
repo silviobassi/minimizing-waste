@@ -2,7 +2,6 @@ import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
 import { Button, Space, Table, Tooltip, notification } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { hasPermission } from '../../auth/utils/isAuthenticated';
 import useAuth from '../../core/hooks/useAuth';
 import useSector from '../../core/hooks/useSector';
 import useSectors from '../../core/hooks/useSectors';
@@ -12,7 +11,7 @@ import DoubleConfirm from '../components/DoubleConfirm';
 import WrapperDefault from '../components/WrapperDefault';
 export default function SectorList() {
   const navigate = useNavigate();
-  const { sectors, fetchSectors } = useSectors();
+  const { sectors, fetchSectors, fetching } = useSectors();
   const { userAuth } = useAuth();
 
   const { removeSector } = useSector();
@@ -36,6 +35,7 @@ export default function SectorList() {
   return (
     <WrapperDefault title="Edição de Setor">
       <Table<Sector.Collection>
+        loading={fetching}
         rowKey="id"
         dataSource={sectors?._embedded?.sectors}
         columns={[
@@ -50,7 +50,6 @@ export default function SectorList() {
               <Space size={'middle'}>
                 <Tooltip title={'Editar'}>
                   <Button
-                    disabled={!hasPermission('EDIT_SECTORS', userAuth)}
                     type={'link'}
                     shape={'circle'}
                     icon={<EditOutlined />}
@@ -59,9 +58,6 @@ export default function SectorList() {
                 </Tooltip>
 
                 <DoubleConfirm
-                  deactivatePermission={
-                    !hasPermission('EDIT_SECTORS', userAuth)
-                  }
                   popConfirmTitle="Remover Setor?"
                   popConfirmContent="Deseja mesmo remover este Setor?"
                   onConfirm={async () => {
@@ -73,10 +69,7 @@ export default function SectorList() {
                   }}
                 >
                   <Tooltip title={'Excluir'} placement="bottom">
-                    <Button
-                      disabled={!hasPermission('EDIT_SECTORS', userAuth)}
-                      type="link"
-                    >
+                    <Button type="link">
                       <DeleteOutlined />
                     </Button>
                   </Tooltip>

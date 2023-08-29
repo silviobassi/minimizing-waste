@@ -27,67 +27,72 @@ export default function useCommunications() {
     Communication.AssignmentNotification[]
   >([]);
 
+  const [fetching, setFetching] = useState<boolean>(false);
+
   const fetchAvailableSupplies = useCallback(async (page: number) => {
+    setFetching(true);
     await NotificationService.getAvailableSupplies({
       page: page,
       sort: ['asc'],
-      size: 2
+      size: 2,
     }).then(setAvailableSupplies);
+    setFetching(false);
   }, []);
 
   const fetchAvailableAssignedTasks = useCallback(async (page: number) => {
+    setFetching(true);
     await NotificationService.getAvailableAssignedTasks({
       page: page,
       sort: ['asc'],
       size: 2,
-      assign: 'assignedTasks'
+      assign: 'assignedTasks',
     }).then(setAvailableAssignedTasks);
+    setFetching(false);
   }, []);
 
   const fetchAvailableUnassignedTasks = useCallback(async (page: number) => {
+    setFetching(true);
     await NotificationService.getAvailableUnassignedTasks({
       page: page,
       sort: ['asc'],
       size: 2,
-      assign: 'unassignTasks'
+      assign: 'unassignTasks',
     }).then(setAvailableUnassignedTasks);
+    setFetching(false);
   }, []);
 
-  const fetchAssignmentsExpired = useCallback(
-    async (page: number) => {
-      await NotificationService.getAssignmentsExpired({
-        page: page,
-        sort: ['asc'],
-        size: 2,
-        currentDate: new Date().toISOString()
-      }).then(setAssignmentsExpired);
-    },
-    [],
-  );
+  const fetchAssignmentsExpired = useCallback(async (page: number) => {
+    setFetching(true);
+    await NotificationService.getAssignmentsExpired({
+      page: page,
+      sort: ['asc'],
+      size: 2,
+      currentDate: new Date().toISOString(),
+    }).then(setAssignmentsExpired);
+    setFetching(false);
+  }, []);
 
-  const fetchAssignmentsApproved = useCallback(
-    async (page: number) => {
-      await NotificationService.getAssignmentsApproved({
-        page: page,
-        sort: ['asc'],
-        size: 2,
-        approved: true
-      }).then(setAssignmentsApproved);
-    },
-    [],
-  );
+  const fetchAssignmentsApproved = useCallback(async (page: number) => {
+    setFetching(true);
+    await NotificationService.getAssignmentsApproved({
+      page: page,
+      sort: ['asc'],
+      size: 2,
+      approved: true,
+    }).then(setAssignmentsApproved);
+    setFetching(false);
+  }, []);
 
-  const fetchAssignmentsCompleted = useCallback(
-    async (page: number) => {
-      await NotificationService.getAssignmentsCompleted({
-        page: page,
-        sort: ['asc'],
-        size: 2,
-        completed: true
-      }).then(setAssignmentsCompleted);
-    },
-    [],
-  );
+  const fetchAssignmentsCompleted = useCallback(async (page: number) => {
+    setFetching(true);
+    await NotificationService.getAssignmentsCompleted({
+      page: page,
+      sort: ['asc'],
+      size: 2,
+      completed: true,
+    }).then(setAssignmentsCompleted);
+    setFetching(false);
+  }, []);
 
   return {
     fetchAvailableSupplies,
@@ -102,5 +107,6 @@ export default function useCommunications() {
     assignmentsExpired,
     assignmentsApproved,
     assignmentsCompleted,
+    fetching,
   };
 }

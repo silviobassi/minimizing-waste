@@ -49,7 +49,7 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
     @Autowired
     private PagedResourcesAssembler<SupplyMovement> pagedResourcesAssembler;
 
-    @CheckSecurity.Supplies.CanConsult
+    @CheckSecurity.SuppliesMovements.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public PagedModel<SupplyMovementModel> all(@PageableDefault(size = 2) Pageable pageable){
@@ -58,7 +58,7 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
         return pagedResourcesAssembler.toModel(supplyPage, supplyMovementAssembler);
     }
 
-    @CheckSecurity.Supplies.CanEdit
+    @CheckSecurity.SuppliesMovements.CanEdit
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     public SupplyMovementModel create(@RequestBody @Valid SupplyMovementInput supplyMovementInput){
@@ -69,7 +69,7 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
         return supplyMovementAssembler.toModel(supplyMovement);
     }
 
-    @CheckSecurity.Supplies.CanEdit
+    @CheckSecurity.SuppliesMovements.CanEdit
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{supplyMovementId}")
     public SupplyMovementModel update(@RequestBody @Valid SupplyMovementInput supplyMovementInput,
@@ -81,20 +81,21 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
         return supplyMovementAssembler.toModel(supplyMovementService.create(currentSupplyMovement));
     }
 
-    @CheckSecurity.Supplies.CanEdit
+    @CheckSecurity.SuppliesMovements.CanEdit
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{supplyMovementId}")
     public void delete(@PathVariable Long supplyMovementId){
         supplyMovementService.delete(supplyMovementId);
     }
 
+    @CheckSecurity.SuppliesMovements.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{supplyMovementId}")
     public SupplyMovementModel findById(@PathVariable Long supplyMovementId){
         return supplyMovementAssembler.toModel(supplyMovementService.findOrFail(supplyMovementId));
     }
 
-    @CheckSecurity.Supplies.CanGiveBack
+    @CheckSecurity.SuppliesMovements.CanGiveBack
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/give-back/{supplyMovementId}")
     public SupplyMovementDevolvedModel giveBackSupply(
@@ -106,7 +107,7 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
         return supplyMovementDevolvedAssembler.toModel(supplyMovementService.giveBackSupply(supplyMovement));
     }
 
-    @CheckSecurity.Supplies.CanVacate
+    @CheckSecurity.SuppliesMovements.CanVacate
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/vacancies/{supplyMovementId}")
     public ResponseEntity<Void> vacateSupply(@PathVariable Long supplyMovementId){
@@ -115,7 +116,7 @@ public class SupplyMovementController implements SupplyMovementControllerOpenApi
         return ResponseEntity.noContent().build();
     }
 
-    @CheckSecurity.Supplies.CanEndSupply
+    @CheckSecurity.SuppliesMovements.CanEndSupply
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/end/{supplyMovementId}/supply")
     public ResponseEntity<Void> endSupplyAllocated(@PathVariable Long supplyMovementId){

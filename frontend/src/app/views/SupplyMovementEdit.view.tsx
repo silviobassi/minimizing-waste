@@ -26,7 +26,7 @@ export default function SupplyMovementEditView() {
         throw err;
       });
   }, [fetchSupplyMovement, params.supplyMovementId]);
-  if (accessDeniedError) return <AccessDenied />;
+  if (accessDeniedError) return <AccessDenied>Você não pode executar essa operação</AccessDenied>;
   if (isNaN(Number(params.supplyMovementId)))
     return <Navigate to={'/movimento-recursos'} />;
 

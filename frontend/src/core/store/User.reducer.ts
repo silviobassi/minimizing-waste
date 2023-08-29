@@ -36,7 +36,7 @@ export const removeUser = createAsyncThunk(
   'users/removeUser',
   async (userId: number, { dispatch }) => {
     await UserService.deleteExistingUser(userId);
-    await dispatch(getAllUsers(0));
+    await dispatch(getAllUsers({}));
   },
 );
 

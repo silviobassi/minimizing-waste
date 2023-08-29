@@ -23,5 +23,6 @@ export default function useSupplyMovements() {
   return {
     fetchSuppliesMovements,
     suppliesMovements,
+    fetching
   };
 }

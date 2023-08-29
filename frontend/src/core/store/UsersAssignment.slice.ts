@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Assignment, User } from '../../sdk/@types';
 import { AssignmentService, UserService } from '../../sdk/services';
+import getThunkStatus from '../utils/getThunkStatus';
 
 type PA<T> = PayloadAction<T>;
 
@@ -23,12 +24,12 @@ export const associateEmployee = createAsyncThunk(
       notice,
       assignmentId,
       employeeResponsibleId,
-      page
+      page,
     }: {
       notice: Assignment.AssignmentNotificationInput;
       assignmentId: number;
       employeeResponsibleId: number;
-      page: number
+      page: number;
     },
     { dispatch, rejectWithValue },
   ) => {
@@ -43,7 +44,7 @@ export const associateEmployee = createAsyncThunk(
         getAllUsersAssignmentAssign({ page, assigned: false, assignmentId }),
       );
     } catch (error: any) {
-      return rejectWithValue({...error})
+      return rejectWithValue({ ...error });
     }
   },
 );
@@ -55,12 +56,12 @@ export const disassociateEmployee = createAsyncThunk(
       notice,
       assignmentId,
       employeeResponsibleId,
-      page
+      page,
     }: {
       notice: Assignment.AssignmentNotificationInput;
       assignmentId: number;
       employeeResponsibleId: number;
-      page: number
+      page: number;
     },
     { dispatch, rejectWithValue },
   ) => {
@@ -75,7 +76,7 @@ export const disassociateEmployee = createAsyncThunk(
         getAllUsersAssignmentAssign({ page, assigned: true, assignmentId }),
       );
     } catch (error: any) {
-      return rejectWithValue({...error})
+      return rejectWithValue({ ...error });
     }
   },
 );
@@ -132,6 +133,26 @@ const UsersAssignmentSlice = createSlice({
     storeAssignment(state, action: PA<Assignment.AssignmentModel>) {
       state.assignment = action.payload;
     },
+  },
+
+  extraReducers(builder) {
+    const { error, loading, success } = getThunkStatus([
+      associateEmployee,
+      disassociateEmployee,
+      getAssignment,
+      getAllUsersAssignmentAssign,
+    ]);
+
+    builder
+      .addMatcher(error, (state) => {
+        state.fetching = false;
+      })
+      .addMatcher(success, (state) => {
+        state.fetching = false;
+      })
+      .addMatcher(loading, (state) => {
+        state.fetching = true;
+      });
   },
 });
 

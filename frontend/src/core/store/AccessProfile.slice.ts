@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Role } from '../../sdk/@types';
 import { RoleService } from '../../sdk/services';
+import getThunkStatus from '../utils/getThunkStatus';
 
 type PA<T> = PayloadAction<T>;
 
@@ -30,7 +31,7 @@ export const removeRoles = createAsyncThunk(
   'roles/removeRoles',
   async (roleId: number, { dispatch }) => {
     await RoleService.deleteExistingRole(roleId);
-    await dispatch(getAllRoles(0));
+    await dispatch(getAllRoles({}));
   },
 );
 
@@ -45,7 +46,26 @@ const RoleSlice = createSlice({
       state.list = [];
     },
   },
+
+  extraReducers(builder) {
+    const { error, loading, success } = getThunkStatus([
+      getAllRoles,
+      removeRoles,
+    ]);
+
+    builder
+      .addMatcher(error, (state) => {
+        state.fetching = false;
+      })
+      .addMatcher(success, (state) => {
+        state.fetching = false;
+      })
+      .addMatcher(loading, (state) => {
+        state.fetching = true;
+      });
+  },
 });
+
 
 export const { storeRoles, clearRoles } = RoleSlice.actions;
 

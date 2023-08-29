@@ -1,10 +1,9 @@
 import { SaveOutlined, StopOutlined } from '@ant-design/icons';
 import { Form, Input, notification } from 'antd';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { hasPermission } from '../../auth/utils/isAuthenticated';
 import useAuth from '../../core/hooks/useAuth';
 import { Sector, SectorService } from '../../sdk';
-import CustomError from '../../sdk/CustomError';
 import AccessDenied from '../components/AccessDenied';
 import ButtonForm from '../components/ButtonForm';
 import WrapperDefault from '../components/WrapperDefault';
@@ -18,8 +17,9 @@ interface SectorFormDefaultProps {
 export default function SectorForm(props: SectorFormDefaultProps) {
   const [form] = Form.useForm<Sector.Input>();
   const { userAuth } = useAuth();
+  const [fetching, setFetching] = useState<boolean>(false);
 
-  if (!hasPermission('EDIT_SECTORS', userAuth))
+  if (userAuth?.role?.permissions.some(permission => permission === "EDIT_SECTORS"))
     return (
       <AccessDenied>
         Você não tem permissão para executar essa operação!
@@ -39,37 +39,19 @@ export default function SectorForm(props: SectorFormDefaultProps) {
         onFinish={async (sector: Sector.Input) => {
           if (props.sector) {
             form.setFieldValue('name', '');
+
             return props.onUpdate && props.onUpdate(sector);
           }
-          
-          try {
-            await SectorService.createSector(sector).then(
-              (sector: Sector.SectorModel) => {
-                notification.success({
-                  message: 'Sucesso',
-                  description: `Setor ${sector?.name} criado com sucesso`,
-                });
-              },
-            );
-            form.resetFields();
-          } catch (error) {
-            if (error instanceof CustomError) {
-              if (error.data?.objects) {
-                form.setFields(
-                  error.data.objects.map((error: any) => {
-                    return {
-                      name: error.name?.split('.') as string[],
-                      errors: [error.userMessage],
-                    };
-                  }),
-                );
-              }
-            } else {
-              notification.error({
-                message: 'Houve um erro',
+
+          await SectorService.createSector(sector).then(
+            (sector: Sector.SectorModel) => {
+              notification.success({
+                message: 'Sucesso',
+                description: `Setor ${sector?.name} criado com sucesso`,
               });
-            }
-          }
+            },
+          )
+          form.resetFields();
         }}
       >
         <Form.Item

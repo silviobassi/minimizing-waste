@@ -19,9 +19,7 @@ import { Assignment, AssignmentService, WorkStation } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
 import WrapperDefault from '../components/WrapperDefault';
 
-import { hasPermission } from '../../auth/utils/isAuthenticated';
 import useAuth from '../../core/hooks/useAuth';
-import AccessDenied from '../components/AccessDenied';
 
 type AssignmentFormType = Assignment.AssignmentModel;
 interface AssignmentFormDefaultProps {
@@ -40,13 +38,6 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
   const dateFormat = 'DD/MM/YYYY';
   const { fetchWorkStations, workStations } = useWorkStations();
   const { userAuth } = useAuth();
-
-  if (hasPermission('EDIT_ASSIGNMENTS', userAuth))
-    return (
-      <AccessDenied>
-        Você não tem permissão para executar essa operação!
-      </AccessDenied>
-    );
 
   const option = useCallback(() => {
     return fetchOptions();

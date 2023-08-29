@@ -21,14 +21,13 @@ import AccessDenied from '../components/AccessDenied';
 import WrapperDefault from '../components/WrapperDefault';
 
 import { Link } from 'react-router-dom';
-import { hasPermission } from '../../auth/utils/isAuthenticated';
 import useAuth from '../../core/hooks/useAuth';
 import useSupplies from '../../core/hooks/useSupplies';
 import useSupply from '../../core/hooks/useSupply';
 import DoubleConfirm from '../components/DoubleConfirm';
 
 export default function SupplyList() {
-  const { supplies, fetchSupplies } = useSupplies();
+  const { supplies, fetchSupplies, fetching } = useSupplies();
   const { removeSupply } = useSupply();
   const [page, setPage] = useState<number>(0);
   const { userAuth } = useAuth();
@@ -37,7 +36,7 @@ export default function SupplyList() {
   const [accessDeniedError, setAccessDeniedError] = useState(false);
 
   useEffect(() => {
-    fetchSupplies({ page, size: 4, sort: ['asc'], supplyName }).catch((err) => {
+    fetchSupplies({ page: page, size: 4, sort: ['asc'], supplyName }).catch((err) => {
       if (err?.data?.status === 403) {
         setAccessDeniedError(true);
         return;
@@ -74,6 +73,7 @@ export default function SupplyList() {
   return (
     <WrapperDefault title="Lista de Recursos">
       <Table<Supply.PagedModelSummary>
+        loading={fetching}
         rowKey="id"
         dataSource={supplies?._embedded?.supplies}
         columns={[
@@ -192,17 +192,10 @@ export default function SupplyList() {
               <Space size={'middle'}>
                 <Tooltip title={'Editar'}>
                   <Link to={`/recursos/editar/${supply.id}`}>
-                    <Button
-                      disabled={!hasPermission('EDIT_SUPPLIES', userAuth)}
-                      type={'link'}
-                      icon={<EditOutlined />}
-                    />
+                    <Button type={'link'} icon={<EditOutlined />} />
                   </Link>
                 </Tooltip>
                 <DoubleConfirm
-                  deactivatePermission={
-                    !hasPermission('EDIT_SUPPLIES', userAuth)
-                  }
                   popConfirmTitle="Remover Recurso?"
                   popConfirmContent="Deseja mesmo remover este recurso?"
                   onConfirm={async () => {
@@ -214,10 +207,7 @@ export default function SupplyList() {
                   }}
                 >
                   <Tooltip title={'Excluir'} placement="bottom">
-                    <Button
-                      disabled={!hasPermission('EDIT_SUPPLIES', userAuth)}
-                      type="link"
-                    >
+                    <Button type="link">
                       <DeleteOutlined />
                     </Button>
                   </Tooltip>
@@ -226,11 +216,7 @@ export default function SupplyList() {
                 <Tooltip title={'Ver Detalhes'}>
                   <Link to={`/recursos/${supply.id}/detalhes`}>
                     {' '}
-                    <Button
-                      disabled={!hasPermission('CONSULT_SUPPLIES', userAuth)}
-                      type={'link'}
-                      icon={<EyeOutlined />}
-                    />
+                    <Button type={'link'} icon={<EyeOutlined />} />
                   </Link>
                 </Tooltip>
               </Space>

@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { WorkStation } from '../../sdk/@types';
 import { WorkStationService } from '../../sdk/services';
+import getThunkStatus from '../utils/getThunkStatus';
 
 type PA<T> = PayloadAction<T>;
 
@@ -30,7 +31,7 @@ export const removeWorkStation = createAsyncThunk(
   'work-stations/removeWorkStation',
   async (workStationId: number, { dispatch }) => {
     await WorkStationService.deleteExistingWorkStation(workStationId);
-    await dispatch(getAllWorkStations({ page: 0, size: 4, sort: ['asc'] }));
+    await dispatch(getAllWorkStations({page: 0, size: 4, sort: ['asc']}));
   },
 );
 
@@ -44,6 +45,24 @@ const WorkStationSlice = createSlice({
     clearWorkStations(state) {
       state.list = [];
     },
+  },
+
+  extraReducers(builder) {
+    const { error, loading, success } = getThunkStatus([
+      getAllWorkStations,
+      removeWorkStation,
+    ]);
+
+    builder
+      .addMatcher(error, (state) => {
+        state.fetching = false;
+      })
+      .addMatcher(success, (state) => {
+        state.fetching = false;
+      })
+      .addMatcher(loading, (state) => {
+        state.fetching = true;
+      });
   },
 });
 

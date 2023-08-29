@@ -17,7 +17,7 @@ import { Communication } from '../../sdk';
 import NotificationDescription from '../components/NotificationDescription';
 
 export default function ApprovedTasks() {
-  const { assignmentsExpired, fetchAssignmentsExpired } = useCommunications();
+  const { assignmentsExpired, fetchAssignmentsExpired, fetching } = useCommunications();
   const [page, setPage] = useState<number>(0);
   useEffect(() => {
     fetchAssignmentsExpired(page);
@@ -28,6 +28,7 @@ export default function ApprovedTasks() {
       <Col xs={24}>
         <Card type="inner" title={'Tarefas Expiradas'}>
           <List
+          loading={fetching}
             pagination={{
               onChange: (page: number) => setPage(page - 1),
               total: assignmentsExpired?.page?.totalElements,

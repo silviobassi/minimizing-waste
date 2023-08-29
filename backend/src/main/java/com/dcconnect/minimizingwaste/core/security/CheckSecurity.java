@@ -115,7 +115,34 @@ public @interface CheckSecurity {
         @interface CanVacate {
         }
 
-        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('END_SUPPLY_ALLOCATED')")
+    }
+
+    @interface SuppliesMovements {
+        @PreAuthorize("hasAuthority('SCOPE_READ') and hasAuthority('CONSULT_SUPPLIES_MOVEMENTS')")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface CanConsult {
+        }
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('EDIT_SUPPLIES_MOVEMENTS')")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface CanEdit {
+        }
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('GIVE_BACK_SUPPLIES_MOVEMENTS')")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface CanGiveBack {
+        }
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('VACATE_SUPPLIES_MOVEMENTS')")
+        @Retention(RetentionPolicy.RUNTIME)
+        @Target(ElementType.METHOD)
+        @interface CanVacate {
+        }
+
+        @PreAuthorize("hasAuthority('SCOPE_WRITE') and hasAuthority('END_SUPPLY_ALLOCATED_MOVEMENTS')")
         @Retention(RetentionPolicy.RUNTIME)
         @Target(ElementType.METHOD)
         @interface CanEndSupply {

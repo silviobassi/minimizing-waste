@@ -35,7 +35,7 @@ export default function WorkStationForm(props: WorkStationFormDefaultProps) {
 
   const { userAuth } = useAuth();
 
-  if (!hasPermission('EDIT_WOK_STATIONS', userAuth))
+  if (hasPermission('EDIT_WOK_STATIONS', userAuth))
     return (
       <AccessDenied>
         Você não tem permissão para executar essa operação!

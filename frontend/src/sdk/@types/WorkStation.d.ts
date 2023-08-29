@@ -11,5 +11,6 @@ export namespace WorkStation {
     page?: number;
     size?: number;
     sort?: ['asc' | 'desc'];
+    workStationName?: string | undefined
   };
 }

@@ -3,8 +3,19 @@ import {
   EditOutlined,
   SearchOutlined,
 } from '@ant-design/icons';
-import { Button, Card, Input, Space, Tooltip, notification } from 'antd';
+import {
+  Button,
+  Card,
+  Descriptions,
+  Divider,
+  Input,
+  Row,
+  Space,
+  Tooltip,
+  notification,
+} from 'antd';
 import Table, { ColumnProps } from 'antd/es/table';
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../core/hooks/useAuth';
@@ -21,20 +32,23 @@ export default function WorkStationList() {
   const [workStationName, setWorkStationName] = useState<string>();
   const { workStations, fetchWorkStations, fetching } = useWorkStations();
   const { userAuth } = useAuth();
-
+  const { xs } = useBreakpoint();
   const { removeWorkStation } = useWorkStation();
   const [page, setPage] = useState<number>(0);
   useEffect(() => {
-    fetchWorkStations({ page, size: 4, sort: ['asc'], workStationName }).catch(
-      (err) => {
-        if (err?.data?.status === 403) {
-          setAccessDeniedError(true);
-          return;
-        }
+    fetchWorkStations({
+      page,
+      size: 4,
+      sort: ['asc'],
+      workStationName,
+    }).catch((err) => {
+      if (err?.data?.status === 403) {
+        setAccessDeniedError(true);
+        return;
+      }
 
-        throw err;
-      },
-    );
+      throw err;
+    });
   }, [fetchWorkStations, page, workStationName]);
 
   if (accessDeniedError)
@@ -62,65 +76,152 @@ export default function WorkStationList() {
   });
 
   return (
-    <WrapperDefault title="Lista de Estações de Trabalho">
-      <Table<WorkStation.Collection>
-        loading={fetching}
-        rowKey="id"
-        dataSource={workStations?._embedded?.workStations}
-        columns={[
-          { title: 'ID', dataIndex: 'id', width: 60 },
-          {
-            title: 'Nome',
-            dataIndex: 'name',
-            ...getColumnSearchProps('name', 'Nome'),
-          },
-          { title: 'localização', dataIndex: 'localization' },
-          { title: 'Setor', dataIndex: ['sector', 'name'] },
-          {
-            title: 'Ações',
-            dataIndex: 'actions',
-            align: 'center',
-            width: 200,
-            render: (_: any, workstation) => (
-              <Space size={'middle'}>
-                <Tooltip title={'Editar'}>
-                  <Button
-                    type={'link'}
-                    shape={'circle'}
-                    icon={<EditOutlined />}
-                    onClick={() =>
-                      navigate(`/estacao-de-trabalho/editar/${workstation.id}`)
-                    }
-                  />
-                </Tooltip>
+    <>
+      <Button
+        style={xs ? { width: '100%' } : { display: 'flex' }}
+        type={'primary'}
+        size={'large'}
+        onClick={(_) => navigate('/estacao-de-trabalho/criar')}
+      >
+        CRIAR ESTAÇÃO DE TRABALHO
+      </Button>
+      <Divider />
+      <WrapperDefault title="Lista de Estações de Trabalho">
+        {xs && (
+          <Input
+            onChange={(e) => setWorkStationName(e.target.value)}
+            placeholder="Buscar por Nome"
+            type="text"
+            style={{ width: '100%', marginBottom: 30, marginTop: 20 }}
+          />
+        )}
+        <Table<WorkStation.Collection>
+          loading={fetching}
+          rowKey="id"
+          dataSource={workStations?._embedded?.workStations}
+          columns={[
+            {
+              title: 'ESTAÇÕES DE TRABALHO',
+              responsive: ['xs'],
+              render(workStation: WorkStation.Collection) {
+                return (
+                  <Space direction="vertical">
+                    <Descriptions column={1} size={'small'}>
+                      <Descriptions.Item label={'Nome'}>
+                        <Row> {workStation.name}</Row>
+                      </Descriptions.Item>
+                      <Descriptions.Item label={'Setor'}>
+                        {workStation.sector?.name}
+                      </Descriptions.Item>
+                      <Descriptions.Item label={'Localização'}>
+                        {workStation.localization}
+                      </Descriptions.Item>
 
-                <DoubleConfirm
-                  popConfirmTitle="Remover Estação de Trabalho?"
-                  popConfirmContent="Deseja mesmo remover esta estação de trabalho?"
-                  onConfirm={async () => {
-                    await removeWorkStation(Number(workstation.id));
-                    notification.success({
-                      message: 'Sucesso',
-                      description: `Estação de trabalho ${workstation.name}  removida com sucesso`,
-                    });
-                  }}
-                >
-                  <Tooltip title={'Excluir'} placement="bottom">
-                    <Button type="link">
-                      <DeleteOutlined />
-                    </Button>
+                      <Descriptions.Item label={'Ações'}>
+                        <>
+                          <Tooltip title={'Editar'}>
+                            <Button
+                              type={'link'}
+                              shape={'circle'}
+                              icon={<EditOutlined />}
+                              onClick={() =>
+                                navigate(
+                                  `/estacao-de-trabalho/editar/${workStation.id}`,
+                                )
+                              }
+                            />
+                          </Tooltip>
+
+                          <DoubleConfirm
+                            popConfirmTitle="Remover Estação de Trabalho?"
+                            popConfirmContent="Deseja mesmo remover esta estação de trabalho?"
+                            onConfirm={async () => {
+                              await removeWorkStation(Number(workStation.id));
+                              notification.success({
+                                message: 'Sucesso',
+                                description: `Estação de trabalho ${workStation.name}  removida com sucesso`,
+                              });
+                            }}
+                          >
+                            <Tooltip title={'Excluir'} placement="bottom">
+                              <Button type="link">
+                                <DeleteOutlined />
+                              </Button>
+                            </Tooltip>
+                          </DoubleConfirm>
+                        </>
+                      </Descriptions.Item>
+                    </Descriptions>
+                  </Space>
+                );
+              },
+            },
+            { title: 'ID', dataIndex: 'id', width: 60, responsive: ['sm'] },
+            {
+              title: 'Nome',
+              dataIndex: 'name',
+              responsive: ['sm'],
+              ...getColumnSearchProps('name', 'Nome'),
+            },
+            {
+              title: 'localização',
+              dataIndex: 'localization',
+              responsive: ['sm'],
+            },
+            {
+              title: 'Setor',
+              dataIndex: ['sector', 'name'],
+              responsive: ['sm'],
+            },
+            {
+              title: 'Ações',
+              dataIndex: 'actions',
+              align: 'center',
+              width: 200,
+              responsive: ['sm'],
+              render: (_: any, workstation) => (
+                <>
+                  <Tooltip title={'Editar'}>
+                    <Button
+                      type={'link'}
+                      shape={'circle'}
+                      icon={<EditOutlined />}
+                      onClick={() =>
+                        navigate(
+                          `/estacao-de-trabalho/editar/${workstation.id}`,
+                        )
+                      }
+                    />
                   </Tooltip>
-                </DoubleConfirm>
-              </Space>
-            ),
-          },
-        ]}
-        pagination={{
-          onChange: (page: number) => setPage(page - 1),
-          total: workStations?.page?.totalElements,
-          pageSize: 4,
-        }}
-      />
-    </WrapperDefault>
+
+                  <DoubleConfirm
+                    popConfirmTitle="Remover Estação de Trabalho?"
+                    popConfirmContent="Deseja mesmo remover esta estação de trabalho?"
+                    onConfirm={async () => {
+                      await removeWorkStation(Number(workstation.id));
+                      notification.success({
+                        message: 'Sucesso',
+                        description: `Estação de trabalho ${workstation.name}  removida com sucesso`,
+                      });
+                    }}
+                  >
+                    <Tooltip title={'Excluir'} placement="bottom">
+                      <Button type="link">
+                        <DeleteOutlined />
+                      </Button>
+                    </Tooltip>
+                  </DoubleConfirm>
+                </>
+              ),
+            },
+          ]}
+          pagination={{
+            onChange: (page: number) => setPage(page - 1),
+            total: workStations?.page?.totalElements,
+            pageSize: 4,
+          }}
+        />
+      </WrapperDefault>
+    </>
   );
 }

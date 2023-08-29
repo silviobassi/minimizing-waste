@@ -1,7 +1,7 @@
 import {
   EyeInvisibleOutlined,
   EyeTwoTone,
-  SaveOutlined,
+  KeyOutlined,
   StopOutlined,
 } from '@ant-design/icons';
 import {
@@ -80,7 +80,7 @@ export default function ChangedPasswordView() {
               </Form.Item>
 
               <ButtonForm
-                icon={{ create: <SaveOutlined />, cancel: <StopOutlined /> }}
+                icon={{ create: <KeyOutlined />, cancel: <StopOutlined /> }}
                 label={{
                   save: 'ALTERAR',
                   cancel: 'CANCELAR',

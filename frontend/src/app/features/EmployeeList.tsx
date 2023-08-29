@@ -2,13 +2,23 @@ import {
   DeleteOutlined,
   EditOutlined,
   EyeOutlined,
+  SearchOutlined,
   UserOutlined,
 } from '@ant-design/icons';
-import { Avatar, Button, Space, Table, Tag, Tooltip, notification } from 'antd';
+import {
+  Avatar,
+  Button,
+  Card,
+  Input,
+  Table,
+  Tag,
+  Tooltip,
+  notification,
+} from 'antd';
+import { ColumnProps } from 'antd/es/table';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { hasPermission } from '../../auth/utils/isAuthenticated';
 import useAuth from '../../core/hooks/useAuth';
 import useUser from '../../core/hooks/useUser';
 import useUsers from '../../core/hooks/useUsers';
@@ -27,20 +37,50 @@ export default function EmployeeList() {
   const [accessDeniedError, setAccessDeniedError] = useState(false);
   const { removeUser } = useUser();
   const { userAuth } = useAuth();
+  const [userCpf, setUserCpf] = useState<string>('');
+  const [userName, setUserName] = useState<string>('');
 
   useEffect(() => {
-    fetchUsers({ page, size: 4, sort: ['asc'] }).catch((err) => {
-      if (err?.data?.status === 403) {
-        setAccessDeniedError(true);
-        return;
-      }
+    fetchUsers({ page, size: 4, sort: ['asc'], userCpf, userName }).catch(
+      (err) => {
+        if (err?.data?.status === 403) {
+          setAccessDeniedError(true);
+          return;
+        }
 
-      throw err;
-    });
-  }, [fetchUsers, page]);
+        throw err;
+      },
+    );
+  }, [fetchUsers, page, userCpf, userName]);
 
   if (accessDeniedError)
     return <AccessDenied>Você não pode visualizar esses dados!</AccessDenied>;
+
+  const getColumnSearchProps = (
+    dataIndex: keyof User.PagedModelDetailed,
+    displayName?: string,
+  ): ColumnProps<User.PagedModelDetailed> => ({
+    filterDropdown: ({}) => (
+      <Card>
+        <Input
+          type="text"
+          //@ts-ignore
+          placeholder={`Buscar ${displayName || dataIndex}`}
+          onChange={(e) => {
+            let value = e.target.value;
+            if (dataIndex === 'cpf') {
+              setUserCpf(value);
+              return;
+            }
+            setUserName(value);
+          }}
+        />
+      </Card>
+    ),
+    filterIcon: (filtered: boolean) => (
+      <SearchOutlined style={{ color: filtered ? '#0099ff' : undefined }} />
+    ),
+  });
 
   return (
     <WrapperDefault title="Lista de Colaboradores">
@@ -51,9 +91,10 @@ export default function EmployeeList() {
         columns={[
           { title: 'ID', dataIndex: 'id', width: 60 },
           {
-            title: 'CPF',
+            title: 'Avatar',
             dataIndex: 'avatarUrl',
             width: 60,
+
             render(avatarUrl: string) {
               return (
                 <Avatar src={avatarUrl}>
@@ -62,11 +103,17 @@ export default function EmployeeList() {
               );
             },
           },
-          { title: 'Nome', dataIndex: 'name', width: 450 },
+          {
+            title: 'Nome',
+            dataIndex: 'name',
+            width: 450,
+            ...getColumnSearchProps('name', 'Nome'),
+          },
           {
             title: 'CPF',
             dataIndex: 'cpf',
             width: 150,
+            ...getColumnSearchProps('cpf', 'CPF'),
             render(cpf: string) {
               return cpfToFormat(cpf);
             },
@@ -107,25 +154,20 @@ export default function EmployeeList() {
             title: 'Ações',
             dataIndex: 'id',
             align: 'center',
-            width: 200,
+            width: 300,
             render: (_: any, user) => (
-              <Space size={'middle'}>
+              <>
                 <Tooltip title={'Editar'}>
                   <Link to={`/colaborador/editar/${user.id}`}>
-                    <Button
-                     
-                      type={'link'}
-                      icon={<EditOutlined />}
-                    />
+                    <Button type={'link'} icon={<EditOutlined />} />
                   </Link>
                 </Tooltip>
 
                 <DoubleConfirm
-                  
                   popConfirmTitle="Remover Colaborador?"
                   popConfirmContent="Deseja mesmo remover este colaborador?"
                   onConfirm={async () => {
-                    console.log(user.id)
+                    console.log(user.id);
                     await removeUser(Number(user.id));
                     notification.success({
                       message: 'Sucesso',
@@ -134,10 +176,7 @@ export default function EmployeeList() {
                   }}
                 >
                   <Tooltip title={'Excluir'} placement="bottom">
-                    <Button
-                  
-                      type="link"
-                    >
+                    <Button type="link">
                       <DeleteOutlined />
                     </Button>
                   </Tooltip>
@@ -145,14 +184,10 @@ export default function EmployeeList() {
 
                 <Tooltip title={'Ver Detalhes'}>
                   <Link to={`/colaborador/${user.id}/detalhes`}>
-                    <Button
-                     
-                      type={'link'}
-                      icon={<EyeOutlined />}
-                    />
+                    <Button type={'link'} icon={<EyeOutlined />} />
                   </Link>
                 </Tooltip>
-              </Space>
+              </>
             ),
           },
         ]}

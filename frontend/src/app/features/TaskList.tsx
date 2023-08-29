@@ -11,6 +11,7 @@ import {
   Checkbox,
   Col,
   DatePicker,
+  Descriptions,
   Divider,
   Form,
   Input,
@@ -24,6 +25,7 @@ import {
 } from 'antd';
 import locale from 'antd/es/date-picker/locale/pt_BR';
 import { ColumnProps } from 'antd/es/table';
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import { format } from 'date-fns';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
@@ -49,7 +51,7 @@ export default function TaskList() {
   const [deadline, setDeadline] = useState<string>('');
   const [assignmentTitle, setAssignmentTitle] = useState<string | undefined>();
   const { userAuth } = useAuth();
-
+  const { xs, md, sm, lg } = useBreakpoint();
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -69,6 +71,8 @@ export default function TaskList() {
       //throw err;
     });
     //2023-08-23T00:00:00Z
+
+    console.log(startDate);
   }, [
     fetchAssignments,
     page,
@@ -128,21 +132,20 @@ export default function TaskList() {
       </Card>
     ),
     filterIcon: (filtered: boolean) => (
-      <SearchOutlined
-        onClick={() => {
-          form.setFieldValue('name', '');
-          setAssignmentTitle('');
-        }}
-        style={{ color: filtered ? '#0099ff' : undefined }}
-      />
+      <SearchOutlined style={{ color: filtered ? '#0099ff' : undefined }} />
     ),
   });
 
   return (
     <>
-      <Row justify={'space-between'} gutter={30}>
-        <Col xs={24} lg={4}>
+      <Row justify={'space-between'} gutter={20}>
+        <Col xs={24} lg={5}>
           <Button
+            style={
+              xs || sm
+                ? { width: '100%', marginBottom: 20 }
+                : { marginBottom: 0 }
+            }
             type={'primary'}
             size={'large'}
             onClick={() => navigate('/tarefa/criar')}
@@ -150,9 +153,9 @@ export default function TaskList() {
             CRIAR TAREFAS
           </Button>
         </Col>
-        <Col xs={24} lg={7}>
+        <Col xs={24} lg={11}>
           <Form>
-            <Form.Item label="Tipo da Tarefa" name="nature">
+            <Form.Item name="search">
               <Select
                 onChange={(e) => setSearchDate(e)}
                 size="large"
@@ -172,7 +175,7 @@ export default function TaskList() {
           </Form>
         </Col>
 
-        <Col xs={24} lg={6}>
+        <Col xs={24} lg={8}>
           {search[searchDate]}
         </Col>
       </Row>
@@ -183,34 +186,174 @@ export default function TaskList() {
         </Col>
       </Row>
       <WrapperDefault title="Lista de Tarefas">
+        {xs && (
+          <Input
+            onChange={(e) => setAssignmentTitle(e.target.value)}
+            placeholder="Buscar por Título"
+            type="text"
+            style={{ width: '100%', marginBottom: 30, marginTop: 20 }}
+          />
+        )}
         <Table<Assignment.PagedModelAssignment>
           loading={fetching}
           dataSource={assignments?._embedded?.assignments}
           columns={[
-            { title: 'ID', dataIndex: 'id', width: 60 },
+            {
+              title: 'Recursos',
+              responsive: ['xs'],
+              render(assignment: Assignment.PagedModelAssignment) {
+                return (
+                  <Space direction="vertical">
+                    <Descriptions column={1} size={'small'}>
+                      <Descriptions.Item label={'Título'}>
+                        <Row>{assignment?.title}</Row>
+                      </Descriptions.Item>
+                      <Descriptions.Item label={'Estação'}>
+                        {assignment?.workStation?.name}
+                      </Descriptions.Item>
+                      <Descriptions.Item label={'Prazo Conclusão'}>
+                        <Space size={'small'} direction="vertical">
+                          {moment(assignment?.startDate).format('DD/MM/YYYY')}
+                          {moment(assignment?.deadline).format('DD/MM/YYYY')}
+                        </Space>
+                      </Descriptions.Item>
+                      <Space direction="vertical" size={'middle'}></Space>
+                      <Descriptions.Item label={'Finalização'}>
+                        {assignment?.endDate ? (
+                          moment(assignment?.endDate).format('DD/MM/YYYY')
+                        ) : (
+                          <Tag color="green">A FINALIZAR</Tag>
+                        )}
+                      </Descriptions.Item>
+                      <Descriptions.Item>
+                        <Space
+                          size={'small'}
+                          style={{ marginBottom: 15, marginTop: 15 }}
+                        >
+                          <Checkbox
+                            checked={assignment?.completed}
+                            onChange={async () => {
+                              await toggleComplete(
+                                { completed: !assignment?.completed },
+                                assignment.id,
+                              );
+                            }}
+                          >
+                            {assignment?.completed ? (
+                              <Tag color="blue">FINALIZADA</Tag>
+                            ) : (
+                              <Tag color="red">PENDENTE</Tag>
+                            )}
+                          </Checkbox>
+                          <Checkbox
+                            checked={assignment?.approved}
+                            onChange={async () => {
+                              if (assignment?.approved) {
+                                await toggleApprove(
+                                  { approved: !assignment?.approved },
+                                  assignment.id,
+                                );
+                              } else {
+                                await toggleApprove(
+                                  {
+                                    approved: !assignment?.approved,
+                                    endDate: new Date().toISOString(),
+                                  },
+                                  assignment.id,
+                                );
+                              }
+                            }}
+                          >
+                            {assignment?.approved ? (
+                              <Tag color="blue">APROVADA</Tag>
+                            ) : (
+                              <Tag color="red">PENDENTE</Tag>
+                            )}
+                          </Checkbox>
+                        </Space>
+                      </Descriptions.Item>
+                      <Descriptions.Item label={'Ações'}>
+                        <Tooltip title={'Editar'}>
+                          <Button
+                            type={'link'}
+                            icon={<EditOutlined />}
+                            onClick={() =>
+                              navigate(`/tarefa/editar/${assignment.id}`)
+                            }
+                          />
+                        </Tooltip>
+
+                        <DoubleConfirm
+                          popConfirmTitle="Remover Tarefa?"
+                          popConfirmContent="Deseja mesmo remover esta tarefa?"
+                          onConfirm={async () => {
+                            await removeAssignment(Number(assignment.id));
+                            notification.success({
+                              message: 'Sucesso',
+                              description: `Tarefa ${assignment.title}  removida com sucesso`,
+                            });
+                          }}
+                        >
+                          <Tooltip title={'Excluir'} placement="bottom">
+                            <Button type="link">
+                              <DeleteOutlined />
+                            </Button>
+                          </Tooltip>
+                        </DoubleConfirm>
+
+                        <Tooltip title={'Atribuir Tarefa'}>
+                          <Button
+                            type={'link'}
+                            icon={<ReconciliationOutlined />}
+                            onClick={() =>
+                              navigate(`/tarefa/${assignment.id}/atribuicao`)
+                            }
+                          />
+                        </Tooltip>
+                        <Tooltip title={'Desatribuir Tarefa'}>
+                          <Button
+                            type={'link'}
+                            icon={<ReconciliationOutlined />}
+                            onClick={() =>
+                              navigate(`/tarefa/${assignment.id}/desatribuicao`)
+                            }
+                          />
+                        </Tooltip>
+                        <Tooltip title={'Ver Detalhes'}>
+                          <Link to={`/tarefas/${assignment.id}/detalhes`}>
+                            <Button type={'link'} icon={<EyeOutlined />} />
+                          </Link>
+                        </Tooltip>
+                      </Descriptions.Item>
+                    </Descriptions>
+                  </Space>
+                );
+              },
+            },
+            { title: 'ID', dataIndex: 'id', width: 60, responsive: ['sm'] },
             {
               title: 'Título',
               dataIndex: 'title',
+              responsive: ['sm'],
               ...getColumnSearchProps('title', 'Título'),
             },
             {
               title: 'Estação de Trabalho',
               dataIndex: ['workStation', 'name'],
+              responsive: ['sm'],
             },
             {
               title: 'Prazo para Conclusão',
               dataIndex: 'startDate',
               align: 'center',
               width: 300,
+              responsive: ['sm'],
               render(_: any, assignment) {
                 return `${format(
                   new Date(assignment?.startDate),
-                  'dd/MM/yyyy - HH:ss',
-                )}  - 
-                ${format(
-                  new Date(assignment?.deadline),
-                  'dd/MM/yyyy - HH:ss',
-                )}`;
+                  'dd/MM/yyyy',
+                )}  a 
+                ${format(new Date(assignment?.deadline), 'dd/MM/yyyy')}`;
               },
             },
 
@@ -219,9 +362,10 @@ export default function TaskList() {
               dataIndex: 'endDate',
               align: 'center',
               width: 200,
+              responsive: ['sm'],
               render(endDate: string) {
                 return endDate ? (
-                  format(new Date(endDate), 'dd/MM/yyyy - HH:ss')
+                  format(new Date(endDate), 'dd/MM/yyyy')
                 ) : (
                   <Tag color="green">A FINALIZAR</Tag>
                 );
@@ -232,6 +376,7 @@ export default function TaskList() {
               title: 'Finalização',
               dataIndex: 'completed',
               align: 'center',
+              responsive: ['sm'],
               render(_: any, assignment) {
                 return (
                   <Checkbox
@@ -256,6 +401,7 @@ export default function TaskList() {
               title: 'Verificação',
               dataIndex: 'approved',
               align: 'center',
+              responsive: ['sm'],
               render(_: any, assignment) {
                 return (
                   <Checkbox
@@ -292,8 +438,9 @@ export default function TaskList() {
               dataIndex: 'actions',
               align: 'center',
               width: 200,
+              responsive: ['sm'],
               render: (_: any, assignment) => (
-                <Space size={'middle'}>
+                <Space size={'small'}>
                   <Tooltip title={'Editar'}>
                     <Button
                       type={'link'}

@@ -1,9 +1,13 @@
 import { Sector } from '../@types/Sector';
 import Service from '../Service';
+import { generateQueryString } from '../utils';
 
 class SectorService extends Service {
-  static getAllSectors() {
-    return this.Http.get<Sector.Collection>('/sectors').then(this.getData);
+  static getAllSectors(search: Sector.Query) {
+    const queryString = generateQueryString(search);
+    return this.Http.get<Sector.Collection>(
+      '/sectors'.concat(queryString),
+    ).then(this.getData);
   }
 
   static getSector(sectorId: number) {

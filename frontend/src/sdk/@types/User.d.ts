@@ -30,6 +30,7 @@ export namespace User {
     size?: number;
     sort?: ['asc' | 'desc'];
     assigned?: boolean;
-    workStationName?: string;
+    userName?: string;
+    userCpf?: string;
   };
 }

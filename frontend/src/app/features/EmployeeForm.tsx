@@ -18,7 +18,11 @@ import { User } from '../../sdk/@types';
 import WrapperDefault from '../components/WrapperDefault';
 const { RangePicker } = DatePicker;
 
-import { UserOutlined } from '@ant-design/icons';
+import {
+  EyeInvisibleOutlined,
+  EyeTwoTone,
+  UserOutlined,
+} from '@ant-design/icons';
 import { MaskedInput } from 'antd-mask-input';
 import { useCallback, useEffect, useState } from 'react';
 import useAuth from '../../core/hooks/useAuth';
@@ -198,8 +202,15 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
           </Col>
           {!props.isCurrentUser && (
             <Col xs={24} xl={8}>
-              <Form.Item label="Senha:*" name={'password'}>
-                <Input size="large" placeholder="ex: hd746¨0^k" />
+              <Form.Item label="Senha" name={'password'}>
+                <Input.Password
+                  size="large"
+                  type="password"
+                  placeholder="nova senha"
+                  iconRender={(visible) =>
+                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                  }
+                />
               </Form.Item>
             </Col>
           )}

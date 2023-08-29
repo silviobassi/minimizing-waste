@@ -17,9 +17,9 @@ const initialState: SectorState = {
 
 export const getAllSectors = createAsyncThunk(
   'sectors/getAllSectors',
-  async (_: any, { rejectWithValue, dispatch }) => {
+  async (search: Sector.Query, { rejectWithValue, dispatch }) => {
     try {
-      const sectors = await SectorService.getAllSectors();
+      const sectors = await SectorService.getAllSectors(search);
       dispatch(storeSectors(sectors));
     } catch (error: any) {
       return rejectWithValue({ ...error });

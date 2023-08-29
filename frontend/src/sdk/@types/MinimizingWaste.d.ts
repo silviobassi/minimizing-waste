@@ -297,19 +297,7 @@ export interface components {
       /** @example https://localhost:8080/directory/92352jfç2efk05iy45yrlkfmsdgjlkdrf_file */
       avatarUrl?: string;
     };
-    PermissionDetailedModel: {
-      /**
-       * Format: int64
-       * @example 1
-       */
-      id?: number;
-      /** @example CONSULT_SUPPLIES */
-      name?: string;
-      /** @example Permite Consultar Recursos */
-      description?: string;
-      _links?: components['schemas']['Links'];
-    };
-    RoleDetailedModel: {
+    RoleSummaryModel: {
       /**
        * Format: int64
        * @example 1
@@ -317,7 +305,6 @@ export interface components {
       id?: number;
       /** @example Engenheiro */
       name?: string;
-      permissions?: components['schemas']['PermissionDetailedModel'][];
       _links?: components['schemas']['Links'];
     };
     UserDetailedModel: {
@@ -347,7 +334,7 @@ export interface components {
        * @example 2023-01-03T22:08:00Z
        */
       createdAt?: string;
-      role?: components['schemas']['RoleDetailedModel'];
+      role?: components['schemas']['RoleSummaryModel'];
       _links?: components['schemas']['Links'];
     };
     PasswordInput: {
@@ -578,6 +565,29 @@ export interface components {
       /** @example Engenheiro */
       name: string;
     };
+    PermissionDetailedModel: {
+      /**
+       * Format: int64
+       * @example 1
+       */
+      id?: number;
+      /** @example CONSULT_SUPPLIES */
+      name?: string;
+      /** @example Permite Consultar Recursos */
+      description?: string;
+      _links?: components['schemas']['Links'];
+    };
+    RoleDetailedModel: {
+      /**
+       * Format: int64
+       * @example 1
+       */
+      id?: number;
+      /** @example Engenheiro */
+      name?: string;
+      permissions?: components['schemas']['PermissionDetailedModel'][];
+      _links?: components['schemas']['Links'];
+    };
     AssignmentInput: {
       /** @example Revestimento dos Banheiros */
       title: string;
@@ -706,16 +716,6 @@ export interface components {
       _embedded?: {
         roles?: components['schemas']['RoleSummaryModel'][];
       };
-      _links?: components['schemas']['Links'];
-    };
-    RoleSummaryModel: {
-      /**
-       * Format: int64
-       * @example 1
-       */
-      id?: number;
-      /** @example Engenheiro */
-      name?: string;
       _links?: components['schemas']['Links'];
     };
     PagedModelUserAssignedModel: {

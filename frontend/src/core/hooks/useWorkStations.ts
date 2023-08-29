@@ -1,7 +1,8 @@
-import { useCallback, useState } from 'react';
+import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store';
 import * as WorkStationActions from '../store/WorkStation.slice';
+import { User } from '../../sdk';
 
 export default function useWorkStations() {
   const dispatch = useDispatch<AppDispatch>();
@@ -14,9 +15,9 @@ export default function useWorkStations() {
 
 
   const fetchWorkStations = useCallback(
-    async (page?: number, size?: number) => {
+    async (search: User.Query) => {
       return dispatch(
-        WorkStationActions.getAllWorkStations({ page, size }),
+        WorkStationActions.getAllWorkStations(search),
       ).unwrap();
     },
     [dispatch],

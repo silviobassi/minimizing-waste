@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Supply } from '../../sdk/@types';
 import { SupplyService } from '../../sdk/services';
+import Search from 'antd/es/transfer/search';
 
 type PA<T> = PayloadAction<T>;
 
@@ -17,15 +18,11 @@ const initialState: SupplyState = {
 export const getAllSupplies = createAsyncThunk(
   'supplies/getAllSupplies',
   async (
-    { page, size }: { page?: number; size?: number },
+    search: Supply.Query,
     { rejectWithValue, dispatch },
   ) => {
     try {
-      const supplies = await SupplyService.getAllSupplies({
-        page: page,
-        sort: ['asc'],
-        size: size,
-      });
+      const supplies = await SupplyService.getAllSupplies(search);
       dispatch(storeSupplies(supplies));
     } catch (error: any) {
       return rejectWithValue({ ...error });
@@ -37,7 +34,7 @@ export const removeSupply = createAsyncThunk(
   'supplies/removeSupply',
   async (supplyId: number, { dispatch }) => {
     await SupplyService.deleteExistingSupply(supplyId);
-    await dispatch(getAllSupplies({ page: 0, size: 4 }));
+    await dispatch(getAllSupplies({}));
   },
 );
 

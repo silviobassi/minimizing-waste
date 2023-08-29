@@ -30,7 +30,7 @@ export namespace Supply {
   export type DevolvedSupplyModel = MinimizingWaste.components['schemas']['SupplyMovementDevolvedModel']
 
   export type Query = {
-    supplyName?: number;
+    supplyName?: string;
     page?: number;
     size?: number;
     sort?: ['asc' | 'desc'];

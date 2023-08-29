@@ -21,15 +21,11 @@ const initialState: UserState = {
 export const getAllUsers: User.PagedModelDetailed = createAsyncThunk(
   'user/getAllUsers',
   async (
-    { page, size }: { page?: number; size?: number },
+    search: User.Query,
     { rejectWithValue },
   ) => {
     try {
-      return await UserService.getAllUsers({
-        page: page,
-        sort: ['asc'],
-        size: size,
-      });
+      return await UserService.getAllUsers(search);
     } catch (error: any) {
       return rejectWithValue({ ...error });
     }

@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch, RootState } from '../store';
 import * as AssignmentActions from '../store/Assignment.slice';
 import * as UsersAssignmentActions from '../store/UsersAssignment.slice';
+import { Assignment } from '../../sdk';
 
 export default function useAssignments() {
   const dispatch = useDispatch<AppDispatch>();
@@ -13,8 +14,8 @@ export default function useAssignments() {
   const fetching = useSelector((state: RootState) => state.assignment.fetching);
 
   const fetchAssignments = useCallback(
-    async (page: number) => {
-      return dispatch(AssignmentActions.getAllAssignments(page)).unwrap();
+    async (search: Assignment.Query) => {
+      return dispatch(AssignmentActions.getAllAssignments(search)).unwrap();
     },
     [dispatch],
   );

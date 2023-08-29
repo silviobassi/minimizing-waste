@@ -1,4 +1,9 @@
-import { SaveOutlined, StopOutlined } from '@ant-design/icons';
+import {
+  EyeInvisibleOutlined,
+  EyeTwoTone,
+  SaveOutlined,
+  StopOutlined,
+} from '@ant-design/icons';
 import {
   Card,
   Col,
@@ -44,7 +49,7 @@ export default function ChangedPasswordView() {
                     if (status === 204) {
                       notification.success({
                         message: 'Sucesso',
-                        description: `${userAuth?.user?.name}, sua senha foi alterada com sucesso`,
+                        description: `${userAuth?.name}, sua senha foi alterada com sucesso`,
                       });
                     }
                   },
@@ -54,10 +59,24 @@ export default function ChangedPasswordView() {
               }}
             >
               <Form.Item label="Senha Atual" name={'currentPassword'}>
-                <Input size="large" type="password" placeholder="senha atual" />
+                <Input.Password
+                  size="large"
+                  type="password"
+                  placeholder="senha atual"
+                  iconRender={(visible) =>
+                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                  }
+                />
               </Form.Item>
               <Form.Item label="Nova Senha" name={'newPassword'}>
-                <Input size="large" type="password" placeholder="nova senha" />
+                <Input.Password
+                  size="large"
+                  type="password"
+                  placeholder="nova senha"
+                  iconRender={(visible) =>
+                    visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
+                  }
+                />
               </Form.Item>
 
               <ButtonForm

@@ -127,10 +127,10 @@ insert into supplies_movement (create_at, not_busy, movable, allocated_quantity,
 values (utc_timestamp(), true, true, 1, 5, 2, 2, 3);
 
 insert into assignments (title, start_date, end_date, deadline, completed, approved, nature, work_station_id, approval_description, notification_id)
-values ('Revestimento de Banheiros', utc_timestamp(), utc_timestamp(), utc_timestamp(), true, false, 'OBRAS', 1,
+values ('Revestimento de Banheiros', '2023-08-21 17:51:58.000000', '2023-08-23 17:51:58.000000', '2023-08-27 17:51:58.000000', true, false, 'OBRAS', 1,
         'Rejuntar novamente os banheiros, pois estão mau rejuntados. Trocar um revestimento que estã descascado em uma das pontas', 1);
 insert into assignments (title, start_date, end_date, deadline, completed, approved, nature, work_station_id, approval_description, notification_id)
-values ('Instalação de Porcelanato', utc_timestamp(), null, utc_timestamp(), false, false, 'OBRAS', 2,
+values ('Instalação de Porcelanato', '2023-06-02 17:51:58.000000', null, '2023-07-21 17:51:58.000000', false, false, 'OBRAS', 2,
         '3 Porcelanatos marcados devem ser trocados, pois estão sem argamassa', 2);
 insert into assignments (title, start_date, end_date, deadline, completed, approved, nature, work_station_id, approval_description, notification_id)
 values ('Organização de Materiais Espalhados', utc_timestamp(), utc_timestamp(), utc_timestamp(), true, true, 'LIMPEZA', 2,

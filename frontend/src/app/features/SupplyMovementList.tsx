@@ -39,6 +39,8 @@ export default function SupplyMovementList() {
     id: number;
     supplyName: string;
   }>();
+
+  const [assignmentTitle, setAssignmentTitle] = useState<string>();
   const [accessDeniedError, setAccessDeniedError] = useState(false);
 
   const { suppliesMovements, fetchSuppliesMovements } = useSuppliesMovements();
@@ -53,7 +55,7 @@ export default function SupplyMovementList() {
   } = useSupplyMovement();
 
   useEffect(() => {
-    fetchSuppliesMovements(page).catch((err) => {
+    fetchSuppliesMovements({ page, size: 4, sort: ['asc'] }).catch((err) => {
       if (err?.data?.status === 403) {
         setAccessDeniedError(true);
         return;
@@ -224,9 +226,11 @@ export default function SupplyMovementList() {
                   <Link
                     to={`/movimento-recursos/detalhes/${supplyMovement?.id}`}
                   >
-                    <Button disabled={
-                        !hasPermission('CONSULT_SUPPLIES', userAuth)
-                      } type={'link'} icon={<EyeOutlined />} />
+                    <Button
+                      disabled={!hasPermission('CONSULT_SUPPLIES', userAuth)}
+                      type={'link'}
+                      icon={<EyeOutlined />}
+                    />
                   </Link>
                 </Tooltip>
               </Space>

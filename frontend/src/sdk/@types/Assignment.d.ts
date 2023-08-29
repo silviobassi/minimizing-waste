@@ -18,5 +18,9 @@ export namespace Assignment {
     page?: number;
     size?: number;
     sort?: ['asc' | 'desc'];
+    assignmentTitle?: string;
+    startDate?: string;
+    endDate?: string;
+    deadline?: string
   };
 }

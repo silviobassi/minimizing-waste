@@ -16,16 +16,9 @@ const initialState: WorkStationState = {
 
 export const getAllWorkStations = createAsyncThunk(
   'work-stations/getAllWorkStations',
-  async (
-    { page, size }: { page?: number; size?: number },
-    { rejectWithValue, dispatch },
-  ) => {
+  async (search: WorkStation.Query, { rejectWithValue, dispatch }) => {
     try {
-      const workStations = await WorkStationService.getAllWorkStations({
-        page: page,
-        size: size,
-        sort: ['asc'],
-      });
+      const workStations = await WorkStationService.getAllWorkStations(search);
       dispatch(storeWorkStations(workStations));
     } catch (error: any) {
       return rejectWithValue({ ...error });
@@ -37,7 +30,7 @@ export const removeWorkStation = createAsyncThunk(
   'work-stations/removeWorkStation',
   async (workStationId: number, { dispatch }) => {
     await WorkStationService.deleteExistingWorkStation(workStationId);
-    await dispatch(getAllWorkStations({ page: 0, size: 4 }));
+    await dispatch(getAllWorkStations({ page: 0, size: 4, sort: ['asc'] }));
   },
 );
 

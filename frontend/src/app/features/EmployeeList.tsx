@@ -29,7 +29,7 @@ export default function EmployeeList() {
   const { userAuth } = useAuth();
 
   useEffect(() => {
-    fetchUsers(page, 4).catch((err) => {
+    fetchUsers({ page, size: 4, sort: ['asc'] }).catch((err) => {
       if (err?.data?.status === 403) {
         setAccessDeniedError(true);
         return;

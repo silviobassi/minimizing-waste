@@ -13,8 +13,8 @@ export default function useUsers() {
   const fetching = useSelector((state: RootState) => state.user.fetching);
 
   const fetchUsers = useCallback(
-    async (page?: number, size?: number) => {
-      return dispatch(UserActions.getAllUsers({ page, size })).unwrap();
+    async (search: User.Query) => {
+      return dispatch(UserActions.getAllUsers(search)).unwrap();
     },
     [dispatch],
   );

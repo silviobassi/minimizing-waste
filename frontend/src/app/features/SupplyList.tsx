@@ -1,13 +1,20 @@
-import { DeleteOutlined, EditOutlined, EyeOutlined } from '@ant-design/icons';
+import {
+  DeleteOutlined,
+  EditOutlined,
+  EyeOutlined,
+  SearchOutlined,
+} from '@ant-design/icons';
 import {
   Button,
+  Card,
   Descriptions,
+  Input,
   Space,
   Tooltip,
   Typography,
   notification,
 } from 'antd';
-import Table from 'antd/es/table';
+import Table, { ColumnProps } from 'antd/es/table';
 import { useEffect, useState } from 'react';
 import { Supply } from '../../sdk/@types';
 import AccessDenied from '../components/AccessDenied';
@@ -26,10 +33,11 @@ export default function SupplyList() {
   const [page, setPage] = useState<number>(0);
   const { userAuth } = useAuth();
 
+  const [supplyName, setSupplyName] = useState<string>();
   const [accessDeniedError, setAccessDeniedError] = useState(false);
 
   useEffect(() => {
-    fetchSupplies(page, 4).catch((err) => {
+    fetchSupplies({ page, size: 4, sort: ['asc'], supplyName }).catch((err) => {
       if (err?.data?.status === 403) {
         setAccessDeniedError(true);
         return;
@@ -37,10 +45,31 @@ export default function SupplyList() {
 
       throw err;
     });
-  }, [fetchSupplies, page]);
+  }, [fetchSupplies, page, supplyName]);
 
   if (accessDeniedError)
     return <AccessDenied>Você não pode visualizar esses dados!</AccessDenied>;
+
+  const getColumnSearchProps = (
+    dataIndex: keyof Supply.PagedModelSummary,
+    displayName?: string,
+  ): ColumnProps<Supply.PagedModelSummary> => ({
+    filterDropdown: ({}) => (
+      <Card>
+        <Input
+          type="text"
+          //@ts-ignore
+          placeholder={`Buscar ${displayName || dataIndex}`}
+          onChange={(e) => {
+            setSupplyName(e.target.value);
+          }}
+        />
+      </Card>
+    ),
+    filterIcon: (filtered: boolean) => (
+      <SearchOutlined style={{ color: filtered ? '#0099ff' : undefined }} />
+    ),
+  });
 
   return (
     <WrapperDefault title="Lista de Recursos">
@@ -96,6 +125,7 @@ export default function SupplyList() {
             dataIndex: 'name',
             fixed: 'left',
             responsive: ['sm'],
+            ...getColumnSearchProps('name', 'Nome'),
           },
           {
             title: 'Embalagem',

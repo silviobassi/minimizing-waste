@@ -37,6 +37,6 @@ public class UserDetailedModel extends RepresentationModel<UserDetailedModel> {
 
     @Schema(example = "2023-01-03T22:08Z")
     private OffsetDateTime createdAt;
-    private RoleDetailedModel role;
+    private RoleSummaryModel role;
 
 }

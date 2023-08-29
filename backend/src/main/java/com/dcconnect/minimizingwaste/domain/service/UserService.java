@@ -40,7 +40,6 @@ public class UserService {
         Optional<User> currentUserByEmail = userRepository.findByEmail(user.getEmail());
         Optional<User> currentUserByCpf = userRepository.findByCpf(user.getCpf());
 
-
         existsEmailAndCpf(user, currentUserByEmail, currentUserByCpf);
 
         fileAvatarStorageService.removeIfExistingOldAvatar(user);

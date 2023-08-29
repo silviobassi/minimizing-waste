@@ -41,7 +41,7 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
   const { fetchWorkStations, workStations } = useWorkStations();
   const { userAuth } = useAuth();
 
-  if (!hasPermission('EDIT_SUPPLIES', userAuth))
+  if (hasPermission('EDIT_ASSIGNMENTS', userAuth))
     return (
       <AccessDenied>
         Você não tem permissão para executar essa operação!
@@ -66,7 +66,7 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
   }
 
   useEffect(() => {
-    fetchWorkStations();
+    fetchWorkStations({});
   }, [fetchWorkStations]);
 
   return (

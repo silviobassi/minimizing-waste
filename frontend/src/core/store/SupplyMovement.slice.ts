@@ -16,13 +16,9 @@ const initialState: SupplyMovementState = {
 
 export const getAllSuppliesMovements = createAsyncThunk(
   'supplies-movements/getAllSuppliesMovements',
-  async (page: number, { rejectWithValue, dispatch }) => {
+  async (search: Supply.Query, { rejectWithValue, dispatch }) => {
     try {
-      const movements = await SupplyMovementService.getAllSuppliesMovement({
-        page: page,
-        sort: ['asc'],
-        size: 4,
-      });
+      const movements = await SupplyMovementService.getAllSuppliesMovement(search);
       dispatch(storeSuppliesMovements(movements));
     } catch (error: any) {
       return rejectWithValue({ ...error });
@@ -34,7 +30,7 @@ export const removeSupplyMovement = createAsyncThunk(
   'supplies-movements/removeSupplyMovement',
   async (supplyMovementId: number, { dispatch }) => {
     await SupplyMovementService.deleteExistingSupplyMovement(supplyMovementId);
-    await dispatch(getAllSuppliesMovements(0));
+    await dispatch(getAllSuppliesMovements({ page: 0, size: 4, sort: ['asc'] }));
   },
 );
 

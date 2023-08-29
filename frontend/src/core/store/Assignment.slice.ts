@@ -16,13 +16,9 @@ const initialState: AssignmentState = {
 
 export const getAllAssignments = createAsyncThunk(
   'assignments/getAllUsersAssignmentAssign',
-  async (page: number, { rejectWithValue, dispatch }) => {
+  async (search: Assignment.Query, { rejectWithValue, dispatch }) => {
     try {
-      const assignments = await AssignmentService.getAllAssignments({
-        page: page,
-        sort: ['asc'],
-        size: 4,
-      });
+      const assignments = await AssignmentService.getAllAssignments(search);
       dispatch(storeAssignments(assignments));
     } catch (error: any) {
       return rejectWithValue({ ...error });
@@ -34,7 +30,7 @@ export const removeAssignment = createAsyncThunk(
   'assignments/removeAssignment',
   async (assignmentId: number, { dispatch }) => {
     await AssignmentService.deleteExistingAssignment(assignmentId);
-    await dispatch(getAllAssignments(0));
+    await dispatch(getAllAssignments({ page: 0, size: 4, sort: ['asc'] }));
   },
 );
 

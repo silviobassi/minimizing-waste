@@ -1,5 +1,5 @@
 import { Layout } from 'antd';
-import logo from '../../assets/logo_mw.svg';
+import logo from '../../assets/logo.svg';
 import MenuLayout from '../layouts/MenuLayout';
 
 const { Sider } = Layout;

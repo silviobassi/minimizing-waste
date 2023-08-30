@@ -14,7 +14,11 @@ import DefaultLayout from './app/layouts';
 import { store } from './core/store/index';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-  <ConfigProvider theme={{}} locale={ptBR}>
+  <ConfigProvider
+  locale={ptBR}
+  theme={{
+    }}
+>
     <Router>
       <Provider store={store}>
         <DefaultLayout>

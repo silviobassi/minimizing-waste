@@ -17,6 +17,6 @@ public class AssignmentApprovedInput {
     private Boolean approved;
 
     @Schema(example = "2023-01-20T13:00:33Z")
-    private OffsetDateTime endDate;
+    private OffsetDateTime approveDate;
 
 }

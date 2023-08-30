@@ -18,6 +18,7 @@ public class Assignment extends BaseEntity {
     private String title;
     private OffsetDateTime startDate;
     private OffsetDateTime endDate;
+    private OffsetDateTime approveDate;
     private OffsetDateTime deadline;
     private Boolean completed;
     private Boolean approved;

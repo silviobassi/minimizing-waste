@@ -26,6 +26,8 @@ public class AssignmentDefaultModel extends RepresentationModel<AssignmentDefaul
     private OffsetDateTime deadline;
     @Schema(example = "2023-01-20T13:00:33Z")
     private OffsetDateTime endDate;
+    @Schema(example = "2023-01-20T13:00:33Z")
+    private OffsetDateTime approveDate;
     @Schema(example = "true")
     private boolean completed;
     @Schema(example = "false")

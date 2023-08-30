@@ -1,5 +1,10 @@
 #root > section.ant-layout {
   min-height: 100vh;
+  
+}
+
+main.ant-layout-content {
+  background-color: #F5F5F5;
 }
 
 .menu-home {
@@ -10,6 +15,7 @@
   align-items: 'center';
   color: '#fff';
   background-color: '#001529';
+  position: fixed;
 }
 
 @media screen and (max-width: 1190px){

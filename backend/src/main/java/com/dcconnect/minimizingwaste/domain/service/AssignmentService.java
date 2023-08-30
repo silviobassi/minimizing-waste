@@ -121,6 +121,7 @@ public class AssignmentService {
 
         if(!currentAssignment.getApproved()){
             currentAssignment.setCompleted(false);
+            currentAssignment.setEndDate(null);
         }
 
         assignmentRepository.save(currentAssignment);

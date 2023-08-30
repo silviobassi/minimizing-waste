@@ -45,7 +45,7 @@ export default function HeaderLayout() {
       ),
     },
     {
-      key: '1',
+      key: '2',
       label: (
         <>
           <Typography.Text>NÍVEL DE ACESSO</Typography.Text>
@@ -53,15 +53,15 @@ export default function HeaderLayout() {
       ),
     },
     {
-      key: '1',
+      key: '3',
       label: <Tag color="blue">{userAuth?.role?.name}</Tag>,
     },
     {
-      key: '1',
+      key: '4',
       label: <Divider style={{ margin: '15px 0' }} />,
     },
     {
-      key: '6',
+      key: '5',
       label: (
         <Link
           to={`/colaborador/editar/${userAuth?.id}`}
@@ -76,7 +76,7 @@ export default function HeaderLayout() {
     },
 
     {
-      key: '7',
+      key: '6',
       label: (
         <Link to={`/user/alteracao-de-senha`} style={{ color: elementColor }}>
           <Space direction="horizontal">

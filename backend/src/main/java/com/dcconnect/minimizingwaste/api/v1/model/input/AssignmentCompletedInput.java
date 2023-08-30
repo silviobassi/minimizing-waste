@@ -6,6 +6,8 @@ import lombok.Setter;
 
 import jakarta.validation.constraints.NotNull;
 
+import java.time.OffsetDateTime;
+
 @Setter
 @Getter
 public class AssignmentCompletedInput {
@@ -14,6 +16,6 @@ public class AssignmentCompletedInput {
     @NotNull
     private Boolean completed;
 
-
-
+    @Schema(example = "2023-01-20T13:00:33Z")
+    private OffsetDateTime endDate;
 }

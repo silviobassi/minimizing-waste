@@ -1,0 +1,1 @@
+alter table assignments add column approve_date datetime(6) null after end_date;

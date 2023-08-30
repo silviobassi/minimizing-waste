@@ -12,7 +12,7 @@ export default function ContentLayout(props: ContentLayoutProps) {
   } = theme.useToken();
 
   return (
-    <Content style={{ margin: '24px 16px 0' }}>
+    <Content style={{ margin: '24px 16px 0'}}>
       <div
         style={{
           padding: 24,

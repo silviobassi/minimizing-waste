@@ -2,12 +2,9 @@ package com.dcconnect.minimizingwaste.infrastructure.spec;
 
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
 import com.dcconnect.minimizingwaste.domain.repository.filter.AssignmentFilter;
-import jakarta.persistence.criteria.Expression;
+import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
-import jakarta.persistence.criteria.Predicate;
-
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 
 public class AssignmentSpecs {
@@ -21,15 +18,14 @@ public class AssignmentSpecs {
                 predicates.add(builder.like(root.get("title"), assignmentFilter.getAssignmentTitle()+"%"));
             }
             if(assignmentFilter.getStartDate() != null && assignmentFilter.getEndDate() != null){
-                predicates.add(builder.between(root.get("startDate"), assignmentFilter.getStartDate(),
-                        assignmentFilter.getEndDate()));
+                predicates.add(builder.and(builder.between(root.get("startDate"), assignmentFilter.getStartDate(),
+                        assignmentFilter.getEndDate()), builder.isNotNull(root.get("endDate"))));
 
 
             }
             if(assignmentFilter.getStartDate() != null && assignmentFilter.getDeadline() != null){
-                predicates.add(builder.and(builder.between(root.get("deadline"),
-                                assignmentFilter.getStartDate(), assignmentFilter.getDeadline()),
-                        builder.isNotNull(root.get("deadline"))));
+                predicates.add(builder.between(root.get("deadline"),
+                        assignmentFilter.getStartDate(), assignmentFilter.getDeadline()));
             }
 
 

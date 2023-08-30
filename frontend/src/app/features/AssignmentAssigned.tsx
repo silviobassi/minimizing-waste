@@ -56,7 +56,7 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
   return (
     <WrapperDefault title="Atribuição de Tarefas">
       <Row justify={'space-between'}>
-        <Col xs={24} xl={9}>
+        <Col xs={24} lg={9}>
           <Divider orientation="left">TAREFA A ATRIBUIR</Divider>
 
           <Descriptions column={1} bordered size="small">

@@ -5,6 +5,7 @@ import { Role } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
 import { RoleService } from '../../sdk/services';
 import ButtonForm from '../components/ButtonForm';
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 
 type RoleType = Role.Detailed;
 
@@ -18,6 +19,7 @@ export default function AccessProfileForm(
 ) {
   const [form] = Form.useForm<Role.Input>();
   const { userAuth } = useAuth();
+  
 
   return (
     <Row justify={'start'}>

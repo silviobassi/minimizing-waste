@@ -1,19 +1,10 @@
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  InputNumber,
-  Row,
-  Select,
-  Space,
-  notification,
-} from 'antd';
+import { SaveOutlined, StopOutlined } from '@ant-design/icons';
+import { Col, Form, Input, InputNumber, Row, Select, notification } from 'antd';
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import useAuth from '../../core/hooks/useAuth';
 import { Supply, SupplyService } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
+import ButtonForm from '../components/ButtonForm';
 import WrapperDefault from '../components/WrapperDefault';
 
 interface SupplyFormDefaultProps {
@@ -342,23 +333,14 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
             </Form.Item>
           </Col>
         </Row>
-        <Form.Item style={{ marginTop: 10 }}>
-          <Space direction="horizontal">
-            <Button
-              type="primary"
-              htmlType="submit"
-              icon={props.iconButton.register}
-            >
-              {props.labelRegister}
-            </Button>
-            <Link to={'/recursos'}>
-              {' '}
-              <Button type="primary" danger icon={props.iconButton.cancel}>
-                Cancelar
-              </Button>
-            </Link>
-          </Space>
-        </Form.Item>
+        <ButtonForm
+          icon={{ create: <SaveOutlined />, cancel: <StopOutlined /> }}
+          label={{
+            save: props.supply ? 'EDITAR' : 'CRIAR',
+            cancel: 'CANCELAR',
+          }}
+          link={{ cancel: '/recursos' }}
+        />
       </Form>
     </WrapperDefault>
   );

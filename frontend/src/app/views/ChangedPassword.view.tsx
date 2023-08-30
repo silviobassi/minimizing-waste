@@ -14,6 +14,7 @@ import {
   Typography,
   notification,
 } from 'antd';
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import AuthService from '../../auth/Authorization.service';
 import useAuth from '../../core/hooks/useAuth';
 import usePageTitle from '../../core/usePageTitle';
@@ -23,6 +24,7 @@ import WrapperDefault from '../components/WrapperDefault';
 
 export default function ChangedPasswordView() {
   usePageTitle('Alteração de Senha');
+  const { xs, sm, md } = useBreakpoint();
 
   const { userAuth } = useAuth();
 
@@ -30,15 +32,9 @@ export default function ChangedPasswordView() {
 
   return (
     <WrapperDefault title="ALTERAÇÃO DE SENHA DO USUÁRIO LOGADO">
-      <Row justify={'center'} gutter={40}>
-        <Col xs={24} lg={12}>
-          <Card
-            style={{
-              margin: 40,
-              padding: 15,
-              boxShadow: '1px 0px 37px 0px rgba(232,232,232,1)',
-            }}
-          >
+      <Row justify={'center'}>
+        <Col xs={24} sm={20} lg={12}>
+          <Card style={{ boxShadow: '1px 0px 37px 0px rgba(232,232,232,1)' }}>
             <Form
               layout="vertical"
               form={form}

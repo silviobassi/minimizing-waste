@@ -21,7 +21,6 @@ import {
 import { Link } from 'react-router-dom';
 import AuthService from '../../auth/Authorization.service';
 import useAuth from '../../core/hooks/useAuth';
-import BreadcrumbLayout from './BreadcrumbLayout';
 const { Header } = Layout;
 
 export default function HeaderLayout() {
@@ -128,18 +127,19 @@ export default function HeaderLayout() {
   return (
     <Header
       style={{
-        padding: '0 35px',
+        padding: 0,
         background: colorBgContainer,
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        position: 'sticky',
+        top: 0,
+        zIndex: 1,
+      
       }}
     >
-      <BreadcrumbLayout />
       <div
         style={{
           display: 'flex',
-          justifyContent: 'flex-end',
+          marginTop: 12,
+          justifyContent: 'end',
           alignItems: 'center',
           gap: 30,
         }}

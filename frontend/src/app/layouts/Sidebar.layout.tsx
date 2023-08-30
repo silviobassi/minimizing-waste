@@ -1,5 +1,4 @@
 import { Layout } from 'antd';
-import logo from '../../assets/logo.svg';
 import MenuLayout from '../layouts/MenuLayout';
 
 const { Sider } = Layout;
@@ -7,22 +6,13 @@ const { Sider } = Layout;
 export default function SiderBarLayout() {
   return (
     <Sider
-      theme="light"
+      theme="dark"
       breakpoint="lg"
       collapsedWidth="0"
-      
+      width={230}
+     
     >
-      <div style={{ borderRight: '1px solid #d7e2ed', width: 220 }}>
-        <img
-          src={logo}
-          style={{
-            display: 'block',
-            width: 120,
-            height: 64,
-            margin: '0 auto',
-          }}
-        />
-      </div>
+      <div className="demo-logo-vertical" />
 
       <MenuLayout />
     </Sider>

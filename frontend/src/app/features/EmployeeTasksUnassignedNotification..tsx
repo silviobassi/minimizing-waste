@@ -10,6 +10,7 @@ import {
   Typography,
 } from 'antd';
 
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import { format } from 'date-fns';
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
@@ -20,6 +21,8 @@ import NotificationDescription from '../components/NotificationDescription';
 export default function EmployeeTasksUnassignedNotification() {
   const { availableUnassignedTasks, fetchAvailableUnassignedTasks, fetching } =
     useCommunications();
+
+  const {xs, sm} = useBreakpoint();
   const [page, setPage] = useState<number>(0);
   useEffect(() => {
     fetchAvailableUnassignedTasks(page);
@@ -29,7 +32,7 @@ export default function EmployeeTasksUnassignedNotification() {
     <>
       <Row>
         <Col xs={24}>
-          <Card type="inner" title="Recursos Disponìveis">
+        
             <List
               loading={fetching}
               pagination={{
@@ -42,11 +45,13 @@ export default function EmployeeTasksUnassignedNotification() {
               }
               rowKey={'id'}
               renderItem={(item: Communication.AssignmentNotification) => (
-                <List.Item>
+                <List.Item style={
+                  xs || sm ? { padding: '25px 0px' } : { padding: '40px 0px' }
+                }>
                   <Row justify={'space-between'} gutter={40}>
-                    <Col xs={24} lg={7}>
+                    <Col xs={24} lg={12}>
                       <Typography.Title
-                        level={4}
+                        level={xs ? 5 : 4}
                         style={{
                           marginBottom: 20,
                           textDecoration: 'underline',
@@ -64,12 +69,26 @@ export default function EmployeeTasksUnassignedNotification() {
                         </Descriptions.Item>
                       </Descriptions>
                       <Link to={`/tarefa/${item.id}/atribuicao`}>
-                        <Button type="primary" style={{ marginTop: 20 }}>
+                        <Button type="primary" style={
+                            xs
+                              ? {
+                                  marginTop: 20,
+                                  marginBottom: 20,
+                                  width: '100%',
+                                }
+                              : sm
+                              ? {
+                                  marginTop: 20,
+                                  marginBottom: 20,
+                                  display: 'flex',
+                                }
+                              : { display: 'flex' }
+                          }>
                           Alocar Colaboradores
                         </Button>
                       </Link>
                     </Col>
-                    <Col xs={24} lg={9}>
+                    <Col xs={24} lg={12}>
                       <Descriptions column={1} size="small" bordered>
                         <Descriptions.Item label={'Estação de Trabalho'}>
                           {item.workStation?.name}
@@ -83,7 +102,7 @@ export default function EmployeeTasksUnassignedNotification() {
                       </Descriptions>
                     </Col>
 
-                    <Col xs={24} lg={8}>
+                    <Col xs={24} lg={24}>
                       <NotificationDescription
                         notification={item?.notification}
                       />
@@ -92,7 +111,7 @@ export default function EmployeeTasksUnassignedNotification() {
                 </List.Item>
               )}
             />
-          </Card>
+        
         </Col>
       </Row>
     </>

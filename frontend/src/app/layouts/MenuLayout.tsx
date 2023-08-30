@@ -106,12 +106,12 @@ export default function MenuLayout() {
   ];
 
   return (
-    <Menu
-      style={{ minHeight: '100%', paddingTop: 20, width: 220 }}
-      theme="dark"
-      mode="inline"
-      defaultSelectedKeys={['4']}
-      items={items}
-    />
+    
+        <Menu
+          theme="dark"
+          mode="inline"
+          defaultSelectedKeys={['4']}
+          items={items}
+        />
   );
 }

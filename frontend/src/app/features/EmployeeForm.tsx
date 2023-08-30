@@ -1,6 +1,5 @@
 import {
   Avatar,
-  Button,
   Col,
   DatePicker,
   Divider,
@@ -8,7 +7,6 @@ import {
   Input,
   Row,
   Select,
-  Space,
   Upload,
   notification,
 } from 'antd';
@@ -21,13 +19,17 @@ const { RangePicker } = DatePicker;
 import {
   EyeInvisibleOutlined,
   EyeTwoTone,
+  SaveOutlined,
+  StopOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import { MaskedInput } from 'antd-mask-input';
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import { useCallback, useEffect, useState } from 'react';
 import useAuth from '../../core/hooks/useAuth';
 import CustomError from '../../sdk/CustomError';
 import { AvatarService, UserService } from '../../sdk/services';
+import ButtonForm from '../components/ButtonForm';
 
 type UserFormType = User.Detailed;
 interface TaskFormDefaultProps {
@@ -48,7 +50,7 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
   const [avatarUrl, setAvatarUrl] = useState(props.user?.avatarUrl || '');
   const [filename, setFilename] = useState<string>('');
   const { userAuth } = useAuth();
-
+  const { xs, sm, md, lg } = useBreakpoint();
   const handleAvatarUpload = useCallback(async (file: File) => {
     const avatarSource = await AvatarService.upload(file);
     setAvatarUrl(avatarSource);
@@ -128,44 +130,51 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
         <Divider orientation="left">DADOS PESSOAIS</Divider>
         <Row justify={'space-between'} gutter={40}>
           <Col xs={24} lg={3}>
-            <ImageCrop rotationSlider cropShape={'round'} showGrid aspect={1}>
-              <Upload
-                maxCount={1}
-                onRemove={() => {
-                  AvatarService.remove(filename);
-                  setAvatarUrl('');
-                  form.setFieldsValue({
-                    avatarUrl: '',
-                  });
-                }}
-                beforeUpload={(file) => {
-                  if (avatarUrl?.avatarUrl) AvatarService.remove(filename);
-                  handleAvatarUpload(file);
-                  return false;
-                }}
-                fileList={[
-                  ...(avatarUrl
-                    ? [
-                        {
-                          name: 'Avatar',
-                          uid: '',
-                        },
-                      ]
-                    : []),
-                ]}
-              >
-                <Avatar
-                  style={{ cursor: 'pointer' }}
-                  icon={<UserOutlined />}
-                  src={
-                    avatarUrl.avatarUrl
-                      ? avatarUrl.avatarUrl
-                      : props.user?.avatarUrl
-                  }
-                  size={128}
-                />
-              </Upload>
-            </ImageCrop>
+            <div
+              style={
+                xs || sm || md ? { display: 'flex', justifyContent: 'center' } : {}
+              }
+            >
+              <ImageCrop rotationSlider cropShape={'round'} showGrid aspect={1}>
+                <Upload
+                  maxCount={1}
+                  onRemove={() => {
+                    AvatarService.remove(filename);
+                    setAvatarUrl('');
+                    form.setFieldsValue({
+                      avatarUrl: '',
+                    });
+                  }}
+                  beforeUpload={(file) => {
+                    if (avatarUrl?.avatarUrl) AvatarService.remove(filename);
+                    handleAvatarUpload(file);
+                    return false;
+                  }}
+                  fileList={[
+                    ...(avatarUrl
+                      ? [
+                          {
+                            name: 'Avatar',
+                            uid: '',
+                          },
+                        ]
+                      : []),
+                  ]}
+                >
+                  <Avatar
+                    style={{ cursor: 'pointer' }}
+                    icon={<UserOutlined />}
+                    src={
+                      avatarUrl.avatarUrl
+                        ? avatarUrl.avatarUrl
+                        : props.user?.avatarUrl
+                    }
+                    size={xs ? 80 : sm ? 100 : 128}
+                  />
+                </Upload>
+              </ImageCrop>
+            </div>
+
             <Form.Item name={'avatarUrl'} hidden>
               <Input hidden />
             </Form.Item>
@@ -262,25 +271,14 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
             </Form.Item>
           </Col>
         </Row>
-        <Form.Item style={{ marginTop: 40 }}>
-          <Space direction="horizontal">
-            <Button
-              type="primary"
-              icon={props.iconButton.register}
-              htmlType="submit"
-            >
-              {props.labelRegister}
-            </Button>
-            <Button
-              type="primary"
-              danger
-              icon={props.iconButton.cancel}
-              onClick={() => navigate('/colaboradores')}
-            >
-              Cancelar
-            </Button>
-          </Space>
-        </Form.Item>
+        <ButtonForm
+          icon={{ create: <SaveOutlined />, cancel: <StopOutlined /> }}
+          label={{
+            save: props.user ? 'EDITAR' : 'CRIAR',
+            cancel: 'CANCELAR',
+          }}
+          link={{ cancel: '/colaboradores' }}
+        />
       </Form>
     </WrapperDefault>
   );

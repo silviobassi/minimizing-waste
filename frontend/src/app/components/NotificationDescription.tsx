@@ -1,4 +1,5 @@
 import { Card, Descriptions, Typography } from 'antd';
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import { format } from 'date-fns';
 import { Communication } from '../../sdk/@types';
 
@@ -9,11 +10,12 @@ interface NotificationDescriptionsProps {
 export default function NotificationDescription(
   props: NotificationDescriptionsProps,
 ) {
+  const { xs } = useBreakpoint();
   return (
     <>
       {props?.notification && (
         <Card>
-          <Typography.Title level={3}>Observação:</Typography.Title>
+          <Typography.Title level={xs ? 5 : 3}>Observação:</Typography.Title>
           <Descriptions column={1} size="small">
             <Descriptions.Item label={<strong>Título</strong>}>
               <Typography.Paragraph>

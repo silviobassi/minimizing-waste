@@ -8,7 +8,7 @@ interface WrapperDefaultProps {
 
 export default function WrapperDefault(props: WrapperDefaultProps) {
   return (
-    <Card type="inner" title={props.title} style={{height: '100%'}}>
+    <Card type="inner" title={props.title} >
       {props.children}
     </Card>
   );

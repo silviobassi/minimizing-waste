@@ -225,6 +225,13 @@ export default function TaskList() {
                           <Tag color="green">A FINALIZAR</Tag>
                         )}
                       </Descriptions.Item>
+                      <Descriptions.Item label={'Aprovação'}>
+                        {assignment?.approveDate ? (
+                          moment(assignment?.approveDate).format('DD/MM/YYYY')
+                        ) : (
+                          <Tag color="green">A APROVAR</Tag>
+                        )}
+                      </Descriptions.Item>
                       <Descriptions.Item>
                         <Space
                           size={'small'}
@@ -233,8 +240,18 @@ export default function TaskList() {
                           <Checkbox
                             checked={assignment?.completed}
                             onChange={async () => {
+                              if (assignment?.completed) {
+                                await toggleComplete(
+                                  { completed: !assignment?.completed },
+                                  assignment.id,
+                                );
+                                return;
+                              }
                               await toggleComplete(
-                                { completed: !assignment?.completed },
+                                {
+                                  completed: !assignment?.completed,
+                                  endDate: new Date().toISOString(),
+                                },
                                 assignment.id,
                               );
                             }}
@@ -253,15 +270,16 @@ export default function TaskList() {
                                   { approved: !assignment?.approved },
                                   assignment.id,
                                 );
-                              } else {
-                                await toggleApprove(
-                                  {
-                                    approved: !assignment?.approved,
-                                    endDate: new Date().toISOString(),
-                                  },
-                                  assignment.id,
-                                );
+
+                                return;
                               }
+                              await toggleApprove(
+                                {
+                                  approved: !assignment?.approved,
+                                  approveDate: new Date().toISOString(),
+                                },
+                                assignment.id,
+                              );
                             }}
                           >
                             {assignment?.approved ? (
@@ -336,17 +354,14 @@ export default function TaskList() {
               dataIndex: 'title',
               responsive: ['sm'],
               ...getColumnSearchProps('title', 'Título'),
+              width: 400
             },
-            {
-              title: 'Estação de Trabalho',
-              dataIndex: ['workStation', 'name'],
-              responsive: ['sm'],
-            },
+           
             {
               title: 'Prazo para Conclusão',
               dataIndex: 'startDate',
               align: 'center',
-              width: 300,
+              width: 350,
               responsive: ['sm'],
               render(_: any, assignment) {
                 return `${format(
@@ -361,13 +376,28 @@ export default function TaskList() {
               title: 'Data da Finalização',
               dataIndex: 'endDate',
               align: 'center',
-              width: 200,
+              width: 60,
               responsive: ['sm'],
               render(endDate: string) {
                 return endDate ? (
                   format(new Date(endDate), 'dd/MM/yyyy')
                 ) : (
                   <Tag color="green">A FINALIZAR</Tag>
+                );
+              },
+            },
+
+            {
+              title: 'Data da Aprovação',
+              dataIndex: 'approveDate',
+              align: 'center',
+              width: 60,
+              responsive: ['sm'],
+              render(approveDate: string) {
+                return approveDate ? (
+                  format(new Date(approveDate), 'dd/MM/yyyy')
+                ) : (
+                  <Tag color="green">A APROVAR</Tag>
                 );
               },
             },
@@ -382,8 +412,18 @@ export default function TaskList() {
                   <Checkbox
                     checked={assignment?.completed}
                     onChange={async () => {
+                      if (assignment?.completed) {
+                        await toggleComplete(
+                          { completed: !assignment?.completed },
+                          assignment.id,
+                        );
+                        return;
+                      }
                       await toggleComplete(
-                        { completed: !assignment?.completed },
+                        {
+                          completed: !assignment?.completed,
+                          endDate: new Date().toISOString(),
+                        },
                         assignment.id,
                       );
                     }}
@@ -412,15 +452,16 @@ export default function TaskList() {
                           { approved: !assignment?.approved },
                           assignment.id,
                         );
-                      } else {
-                        await toggleApprove(
-                          {
-                            approved: !assignment?.approved,
-                            endDate: new Date().toISOString(),
-                          },
-                          assignment.id,
-                        );
+
+                        return;
                       }
+                      await toggleApprove(
+                        {
+                          approved: !assignment?.approved,
+                          approveDate: new Date().toISOString(),
+                        },
+                        assignment.id,
+                      );
                     }}
                   >
                     {assignment?.approved ? (

@@ -43,7 +43,7 @@ export default function WorkStationForm(props: WorkStationFormDefaultProps) {
     );
 
   useEffect(() => {
-    fetchSectors();
+    fetchSectors({});
     form.resetFields();
   }, [fetchSectors, props.workStation]);
 

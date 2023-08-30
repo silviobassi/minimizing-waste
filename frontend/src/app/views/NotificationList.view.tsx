@@ -1,18 +1,17 @@
-import { Col, Divider, Form, Row, Select } from 'antd';
+import { Col, Form, Row, Select } from 'antd';
 import { useEffect, useState } from 'react';
 import usePageTitle from '../../core/usePageTitle';
 import ApprovedTasksNotification from '../features/ApprovedTasksNotification';
 import CompletionOfTasksNotification from '../features/CompletionOfTasksNotification';
 import EmployeeTasksAssignedNotification from '../features/EmployeeTasksAssignedNotification.tsx';
+import EmployeeTasksUnassignedNotification from '../features/EmployeeTasksUnassignedNotification.';
 import ExpiredTasksNotification from '../features/ExpiredTasksNotification';
 import SupplyAvailableNotification from '../features/SupplyAvailableAssignedNotification';
-import EmployeeTasksUnassignedNotification from '../features/EmployeeTasksUnassignedNotification.';
 
 export default function NotificationListView() {
   usePageTitle('Listas de Notificações');
   const [notificationType, setNotificationType] = useState<any>('available');
   const [accessDeniedError, setAccessDeniedError] = useState(false);
-  
 
   useEffect(() => {
     // implementar o component de acesso negado
@@ -24,7 +23,7 @@ export default function NotificationListView() {
     approvedTasks: <ApprovedTasksNotification />,
     expiredTasks: <ExpiredTasksNotification />,
     assignedTasks: <EmployeeTasksAssignedNotification />,
-    unassignedTasks: <EmployeeTasksUnassignedNotification />
+    unassignedTasks: <EmployeeTasksUnassignedNotification />,
   };
 
   const handleChange = (value: string) => {
@@ -34,9 +33,9 @@ export default function NotificationListView() {
   return (
     <>
       <Row justify={'start'}>
-        <Col xs={7}>
+        <Col xs={24} md={17} lg={9}>
           <Form layout="vertical">
-            <Form.Item label="Tipo da Notificações:*">
+            <Form.Item label="Notificações:*">
               <Select
                 size="large"
                 defaultValue="available"
@@ -72,11 +71,7 @@ export default function NotificationListView() {
           </Form>
         </Col>
       </Row>
-      <Row>
-        <Col xs={24}>
-          <Divider />
-        </Col>
-      </Row>
+
       {notifications[notificationType]}
     </>
   );

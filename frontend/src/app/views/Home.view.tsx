@@ -11,14 +11,16 @@ import { Col, Row } from 'antd';
 import usePageTitle from '../../core/usePageTitle';
 import MenuHomePage from '../components/MenuHomePage';
 import WrapperDefault from '../components/WrapperDefault';
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 
 export default function HomeView() {
   usePageTitle('Home');
+  
 
   return (
     <WrapperDefault title="Home">
       <Row justify={'start'} gutter={20} style={{ marginBottom: 20 }}>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={24} sm={8} md={12} lg={8}>
           <MenuHomePage
             link="/setor/criar"
             labelColor="#fff"
@@ -28,7 +30,7 @@ export default function HomeView() {
             CRIAR SETOR
           </MenuHomePage>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={24} sm={8} md={12} lg={8}>
           <MenuHomePage
             link="/estacao-de-trabalho/criar"
             labelColor="#fff"
@@ -38,7 +40,7 @@ export default function HomeView() {
             CRIAR ESTAÇÃO DE TRABALHO
           </MenuHomePage>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={24} sm={8} md={12} lg={8}>
           <MenuHomePage
             link="/recursos/criar"
             labelColor="#fff"
@@ -48,7 +50,7 @@ export default function HomeView() {
             CRIAR RECURSO
           </MenuHomePage>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={24} sm={8} md={12} lg={8}>
           {' '}
           <MenuHomePage
             link="/movimento-recursos/criar"
@@ -59,9 +61,8 @@ export default function HomeView() {
             CRIAR MOVIMENTO DE RECURSO
           </MenuHomePage>
         </Col>
-      </Row>
-      <Row gutter={20}>
-        <Col xs={24} sm={12} lg={6}>
+
+        <Col xs={24} sm={8} md={12} lg={8}>
           <MenuHomePage
             link="/tarefa/criar"
             labelColor="#fff"
@@ -71,7 +72,7 @@ export default function HomeView() {
             CRIAR TAREFA
           </MenuHomePage>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={24} sm={8} md={12} lg={8}>
           <MenuHomePage
             link="/tarefa/criar"
             labelColor="#fff"
@@ -81,7 +82,7 @@ export default function HomeView() {
             CRIAR COLABORADOR
           </MenuHomePage>
         </Col>
-        <Col xs={24} sm={12} lg={6}>
+        <Col xs={24}>
           <MenuHomePage
             link="/notificacoes"
             labelColor="#fff"

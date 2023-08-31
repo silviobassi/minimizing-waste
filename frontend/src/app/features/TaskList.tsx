@@ -48,6 +48,7 @@ export default function TaskList() {
   const [searchDate, setSearchDate] = useState<string>('');
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
+  const [approveDate, setApproveDate] = useState<string>('');
   const [deadline, setDeadline] = useState<string>('');
   const [assignmentTitle, setAssignmentTitle] = useState<string | undefined>();
   const { userAuth } = useAuth();
@@ -62,6 +63,7 @@ export default function TaskList() {
       assignmentTitle,
       startDate,
       endDate,
+      approveDate,
       deadline,
     }).catch((err) => {
       if (err?.data?.status === 403) {
@@ -95,6 +97,17 @@ export default function TaskList() {
         onChange={(_, date: string[]) => {
           setStartDate(moment(date[0]).toISOString());
           setEndDate(moment(date[1]).toISOString());
+        }}
+      />
+    ),
+    approved: (
+      <DatePicker.RangePicker
+        locale={locale}
+        style={{ display: 'flex', justifySelf: 'end' }}
+        size="large"
+        onChange={(_, date: string[]) => {
+          setStartDate(moment(date[0]).toISOString());
+          setApproveDate(moment(date[1]).toISOString());
         }}
       />
     ),
@@ -164,6 +177,10 @@ export default function TaskList() {
                   {
                     label: 'TAREFAS COM DATAS DE FINALIZAÇÃO',
                     value: 'concluded',
+                  },
+                  {
+                    label: 'TAREFAS COM DATAS DE APROVAÇÃO',
+                    value: 'approved',
                   },
                   {
                     label: 'PRAZO PARA CONCLUSÃO DA TAREFA',
@@ -354,9 +371,9 @@ export default function TaskList() {
               dataIndex: 'title',
               responsive: ['sm'],
               ...getColumnSearchProps('title', 'Título'),
-              width: 400
+              width: 400,
             },
-           
+
             {
               title: 'Prazo para Conclusão',
               dataIndex: 'startDate',

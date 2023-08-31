@@ -32,6 +32,8 @@ public class Assignment extends BaseEntity {
     @JoinColumn(name = "work_station_id")
     private WorkStation workStation;
 
+    private String specificPoint;
+
     @ManyToMany
     @JoinTable(name = "assignments_employees",
     joinColumns = @JoinColumn(name = "assignment_id"),

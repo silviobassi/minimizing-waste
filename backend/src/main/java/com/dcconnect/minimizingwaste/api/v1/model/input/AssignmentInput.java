@@ -16,7 +16,11 @@ public class AssignmentInput {
     @Schema(example = "Revestimento dos Banheiros")
     @NotBlank
     private String title;
-    @Schema(example = "2022-12-28T13:00:33Z")
+    @Schema(example = "Revestimento")
+
+    @NotBlank
+    private String specificPoint;
+    @Schema(example = "Banheiro 01")
     @NotNull
     private OffsetDateTime startDate;
     @Schema(example = "2023-01-20T13:00:33Z")

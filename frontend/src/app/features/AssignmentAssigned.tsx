@@ -1,5 +1,4 @@
 import {
-  Avatar,
   Button,
   Col,
   Descriptions,
@@ -11,21 +10,18 @@ import {
   Row,
   Space,
   Tag,
+  Typography,
   notification,
 } from 'antd';
 
 import { format } from 'date-fns';
 
-import {
-  UserAddOutlined,
-  UserDeleteOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
+import { UserAddOutlined, UserDeleteOutlined } from '@ant-design/icons';
 import TextArea from 'antd/es/input/TextArea';
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import { useMemo, useState } from 'react';
 import { Assignment, User } from '../../sdk';
 import CustomError from '../../sdk/CustomError';
-import { phoneToFormat } from '../../sdk/utils/generateFormatterData';
 import EmployeesResponsible from '../components/EmployeesResponsible';
 import WrapperDefault from '../components/WrapperDefault';
 
@@ -39,7 +35,7 @@ interface AssignmentAssignedProps {
     notification: Assignment.AssignmentNotificationInput,
     employeeId: number,
     employeeName: any,
-  ) => any;
+  ) => Promise<any>;
   onPage: (page: number) => any;
   assign: boolean;
 }
@@ -48,17 +44,16 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [form] = Form.useForm<Assignment.AssignmentNotificationInput>();
   const [user, setUser] = useState<{ id: number; name: string }>();
-
+  const { xs, sm } = useBreakpoint();
   const employee = useMemo(() => {
     return user;
   }, [user]);
 
   return (
     <WrapperDefault title="Atribuição de Tarefas">
-      <Row justify={'space-between'}>
-        <Col xs={24} lg={9}>
+      <Row justify={'space-between'} gutter={60}>
+        <Col xs={24} lg={12}>
           <Divider orientation="left">TAREFA A ATRIBUIR</Divider>
-
           <Descriptions column={1} bordered size="small">
             <Descriptions.Item label={'Prazo para Conclusão'}>
               <Space direction="horizontal">
@@ -77,86 +72,105 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
               {props?.assignment?.workStation?.name}
             </Descriptions.Item>
           </Descriptions>
-          <Divider orientation="left">Responsáveis pela Tarefa</Divider>
-          {props?.assignment?.employeesResponsible.map(
-            (employee: User.Assigned, key: number) => {
-              return (
-                <EmployeesResponsible
-                  key={key}
-                  isAssignScreen={true}
-                  employeeResponsible={employee}
-                />
-              );
-            },
+
+          {xs || sm ? (
+            <Typography.Title level={5} style={{ marginTop: 30 }}>
+              RESPONSÁVEIS PELA TAREFA
+            </Typography.Title>
+          ) : (
+            <Divider orientation="left">RESPONSÁVEIS PELA TAREFA</Divider>
           )}
-        </Col>
-        <Col xs={24} xl={12}>
-          <Divider orientation="left">
-            {props.assign
-              ? 'COLABORADORES QUE PODEM SER ATRIBUÍDOS'
-              : 'COLABORADORES QUE PODEM SER DESATRIBUÍDOS'}
-          </Divider>
 
           <List
+            style={xs || sm ? { marginBottom: 40 } : {}}
+            itemLayout={'vertical'}
+            pagination={{ pageSize: 4 }}
+            dataSource={props?.assignment?.employeesResponsible}
+            renderItem={(employee: User.Assigned, index) => (
+              <List.Item key={index}>
+                <EmployeesResponsible employeeResponsible={employee} />
+              </List.Item>
+            )}
+          />
+        </Col>
+        <Col xs={24} lg={12}>
+          {!xs || sm ? (
+            <Divider orientation="left">
+              {props.assign ? (
+                <div>COLABORADORES QUE PODEM SER ATRIBUÍDOS</div>
+              ) : (
+                <div>COLABORADORES QUE PODEM SER DESATRIBUÍDOS</div>
+              )}
+            </Divider>
+          ) : props.assign ? (
+            <Typography.Title level={5}>
+              COLABORADORES QUE PODEM SER ATRIBUÍDOS
+            </Typography.Title>
+          ) : (
+            <Typography.Title level={5}>
+              COLABORADORES QUE PODEM SER DESATRIBUÍDOS
+            </Typography.Title>
+          )}
+
+          <List
+            size={'small'}
             className="demo-loadmore-list"
-            itemLayout="horizontal"
+            itemLayout={'vertical'}
             dataSource={props?.users?._embedded?.users}
             renderItem={(employee: User.Assigned) => (
               <>
-                <List.Item
-                  actions={[
-                    props.assign ? (
-                      <Button
-                        type="primary"
-                        onClick={() => {
-                          setOpen(true);
-                          setUser({
-                            ...user,
-                            name: employee?.name,
-                            id: employee?.id,
-                          });
-                        }}
-                      >
-                        ATRIBUIR
-                      </Button>
-                    ) : (
-                      <Button
-                        type="primary"
-                        danger
-                        onClick={() => {
-                          setOpen(true);
-                          setUser({
-                            ...user,
-                            name: employee?.name,
-                            id: employee?.id,
-                          });
-                        }}
-                      >
-                        DESATRIBUIR
-                      </Button>
-                    ),
-                  ]}
-                >
-                  <List.Item.Meta
-                    avatar={
-                      <Avatar size={'large'} src={employee?.avatarUrl}>
-                        <UserOutlined />
-                      </Avatar>
-                    }
-                    title={<a href="#">{employee?.name}</a>}
-                    description={
-                      <>
-                        <span>
-                          <strong>Cargo: </strong>
-                          {employee?.office} | <strong>Função: </strong>
-                          {employee?.occupation}
-                        </span>
-                        <br />
-                        <strong>WhatsApp: </strong>
-                        {phoneToFormat(employee?.whatsApp)}
-                      </>
-                    }
-                  />
+                <List.Item>
+                  <Row>
+                    <Col xs={24} lg={20}>
+                      <EmployeesResponsible employeeResponsible={employee} />
+                    </Col>
+                    <Col xs={24} lg={4}>
+                      {props.assign ? (
+                        <Space
+                          direction="vertical"
+                          style={xs ? { width: '100%' } : {}}
+                        >
+                          <Button
+                            style={{ minWidth: 100 }}
+                            block
+                            type="primary"
+                            onClick={() => {
+                              setOpen(true);
+                              setUser({
+                                ...user,
+                                name: employee?.name,
+                                id: employee?.id,
+                              });
+                            }}
+                          >
+                            ATRIBUIR
+                          </Button>{' '}
+                        </Space>
+                      ) : (
+                        <Space
+                          direction="vertical"
+                          style={xs ? { width: '100%' } : {}}
+                        >
+                          <Button
+                            style={{ minWidth: 100 }}
+                            block
+                            type="primary"
+                            danger
+                            onClick={() => {
+                              setOpen(true);
+                              setUser({
+                                ...user,
+                                name: employee?.name,
+                                id: employee?.id,
+                              });
+                            }}
+                          >
+                            DESATRIBUIR
+                          </Button>
+                        </Space>
+                      )}
+                    </Col>
+                  </Row>
                 </List.Item>
               </>
             )}

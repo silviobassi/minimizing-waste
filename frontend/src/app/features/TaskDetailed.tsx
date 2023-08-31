@@ -68,6 +68,12 @@ export default function TaskDetailed(props: AssignmentProps) {
             <Descriptions.Item label={'Estação de Trabalho'}>
               {props?.assignment?.workStation?.name}
             </Descriptions.Item>
+            <Descriptions.Item label={'Localização da Estação de Trabalho'}>
+              {props?.assignment?.workStation?.localization}
+            </Descriptions.Item>
+            <Descriptions.Item label={'Ponto específico da tarefa'}>
+              {props?.assignment?.specificPoint}
+            </Descriptions.Item>
             <Descriptions.Item label={'Finalizada?'}>
               <Space direction="horizontal">
                 {props?.assignment?.completed ? (

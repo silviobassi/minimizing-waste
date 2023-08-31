@@ -1,4 +1,5 @@
 import { Button, Form, Space } from 'antd';
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import { useNavigate } from 'react-router-dom';
 
 interface ButtonFormProps {
@@ -10,14 +11,17 @@ interface ButtonFormProps {
 export default function ButtonForm(props: ButtonFormProps) {
 
   const navigate = useNavigate();
+ const {xs, sm} = useBreakpoint()
+
+ const isOrNotBlock = xs ? 'block' : ''
 
   return (
     <Form.Item style={{ marginTop: 40 }}>
-      <Space direction="horizontal">
-        <Button type="primary" icon={props.icon.create} htmlType={'submit'}>
+      <Space size={'middle'} direction={xs ? 'vertical' : 'horizontal'} style={xs || sm ?  {width: '100%'} : {}}>
+        <Button type="primary" icon={props.icon.create} htmlType={'submit'} block>
           {props.label.save}
         </Button>
-        <Button type="primary" danger icon={props.icon.cancel} onClick={() => navigate(props.link?.cancel)}>
+        <Button type="primary" danger block icon={props.icon.cancel} onClick={() => navigate(props.link?.cancel)}>
           {props.label.cancel}
         </Button>
       </Space>

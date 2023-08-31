@@ -21,6 +21,7 @@ export namespace Assignment {
     assignmentTitle?: string;
     startDate?: string;
     endDate?: string;
+    approveDate?: string,
     deadline?: string
   };
 }

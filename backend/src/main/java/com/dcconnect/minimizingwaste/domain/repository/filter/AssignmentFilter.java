@@ -16,6 +16,8 @@ public class AssignmentFilter {
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private OffsetDateTime endDate;
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+    private OffsetDateTime approveDate;
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     private OffsetDateTime deadline;
     private Boolean completed;
     private Boolean approved;

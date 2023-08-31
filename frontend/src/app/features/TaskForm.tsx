@@ -130,31 +130,29 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
         }}
       >
         <Row justify={'space-between'} gutter={30}>
-          <Col xs={24} xl={15}>
+          <Col xs={24} xl={8}>
             <Form.Item label="Título" name="title">
               <Input size="large" placeholder="ex: Título" />
             </Form.Item>
           </Col>
-          <Col xs={24} xl={9}>
-            <Form.Item label="Data de Início" name="startDate">
-              <DatePicker
-                style={{ width: '100%' }}
-                locale={locale}
-                format={dateFormat}
-                size="large"
-              />
+          <Col xs={24} xl={8}>
+            <Form.Item label="Ponto Específico da Tarefa" name="specificPoint">
+              <Input size="large" placeholder="e.g: Banheiro 01" />
             </Form.Item>
           </Col>
-        </Row>
-
-        <Row justify={'space-between'} gutter={30}>
           <Col xs={24} xl={8}>
-            <Form.Item label="Prazo para Conclusão" name="deadline">
-              <DatePicker
-                style={{ width: '100%' }}
-                locale={locale}
-                format={dateFormat}
+            <Form.Item label="Estação de Trabalho" name={['workStation', 'id']}>
+              <Select
                 size="large"
+                showSearch
+                placeholder="Selecione a Estação de Trabalho"
+                optionFilterProp="children"
+                filterOption={(input, option: any) =>
+                  (option?.label ?? '')
+                    .toLowerCase()
+                    .includes(input.toLowerCase())
+                }
+                options={option()}
               />
             </Form.Item>
           </Col>
@@ -174,22 +172,27 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
             </Form.Item>
           </Col>
           <Col xs={24} xl={8}>
-            <Form.Item label="Estação de Trabalho" name={['workStation', 'id']}>
-              <Select
+            <Form.Item label="Data de Início" name="startDate">
+              <DatePicker
+                style={{ width: '100%' }}
+                locale={locale}
+                format={dateFormat}
                 size="large"
-                showSearch
-                placeholder="Selecione a Estação de Trabalho"
-                optionFilterProp="children"
-                filterOption={(input, option: any) =>
-                  (option?.label ?? '')
-                    .toLowerCase()
-                    .includes(input.toLowerCase())
-                }
-                options={option()}
+              />
+            </Form.Item>
+          </Col>
+          <Col xs={24} xl={8}>
+            <Form.Item label="Prazo para Conclusão" name="deadline">
+              <DatePicker
+                style={{ width: '100%' }}
+                locale={locale}
+                format={dateFormat}
+                size="large"
               />
             </Form.Item>
           </Col>
         </Row>
+
         <Divider orientation="left">NOTIFICAÇÃO</Divider>
         <Row justify={'space-between'} gutter={30}>
           <Col xs={24} lg={12}>
@@ -204,7 +207,13 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
           </Col>
           <Col xs={24}>
             <Form.Item label="Razão" name={['notification', 'reason']}>
-              <TextArea size="large" placeholder="e.g: Razão" />
+              <TextArea
+                rows={4}
+                maxLength={300}
+                size="large"
+                placeholder="e.g: Razão"
+                showCount
+              />
             </Form.Item>
           </Col>
         </Row>

@@ -20,6 +20,8 @@ public class AssignmentDefaultModel extends RepresentationModel<AssignmentDefaul
     private Long id;
     @Schema(example = "Revestimento dos Banheiros")
     private String title;
+    @Schema(example = "Banheiro 01")
+    private String specificPoint;
     @Schema(example = "2022-12-28T13:00:33Z")
     private OffsetDateTime startDate;
     @Schema(example = "2023-01-20T13:00:33Z")

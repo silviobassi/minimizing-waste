@@ -18,10 +18,13 @@ public class AssignmentSpecs {
                 predicates.add(builder.like(root.get("title"), assignmentFilter.getAssignmentTitle()+"%"));
             }
             if(assignmentFilter.getStartDate() != null && assignmentFilter.getEndDate() != null){
-                predicates.add(builder.and(builder.between(root.get("startDate"), assignmentFilter.getStartDate(),
+                predicates.add(builder.and(builder.between(root.get("endDate"), assignmentFilter.getStartDate(),
                         assignmentFilter.getEndDate()), builder.isNotNull(root.get("endDate"))));
+            }
 
-
+            if(assignmentFilter.getStartDate() != null && assignmentFilter.getApproveDate() != null){
+                predicates.add(builder.and(builder.between(root.get("approveDate"), assignmentFilter.getStartDate(),
+                        assignmentFilter.getApproveDate()), builder.isNotNull(root.get("approveDate"))));
             }
             if(assignmentFilter.getStartDate() != null && assignmentFilter.getDeadline() != null){
                 predicates.add(builder.between(root.get("deadline"),

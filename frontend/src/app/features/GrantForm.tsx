@@ -2,10 +2,10 @@ import { LockTwoTone, StopOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Row, Select, SelectProps, Space } from 'antd';
 import { useCallback, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Permission, Role, User } from '../../sdk';
-import WrapperDefault from '../components/WrapperDefault';
 import { hasPermission } from '../../auth/utils/isAuthenticated';
 import useAuth from '../../core/hooks/useAuth';
+import { Permission, Role, User } from '../../sdk';
+import WrapperDefault from '../components/WrapperDefault';
 
 type GrantingPermissionsType = Permission.CollectionDetailedModel;
 
@@ -24,7 +24,7 @@ interface GrantingPermissionsFormDefaultProps {
     roleId: number,
     permissionId: number,
     permission: string,
-  ) => any;
+  ) => Promise<any>;
 }
 export default function GrantForm(props: GrantingPermissionsFormDefaultProps) {
   const [form] = Form.useForm();
@@ -38,13 +38,14 @@ export default function GrantForm(props: GrantingPermissionsFormDefaultProps) {
     name: string;
   }>();
 
-  const {userAuth} = useAuth()
+  const [fetching, setFetching] = useState<boolean>();
 
+  const { userAuth } = useAuth();
 
   const access: { id: number; name: string } | undefined = useMemo(() => {
     return roleOrUser;
   }, [{ ...roleOrUser }]);
-
+  //@ts-ignore
   const permissionOrRole: { id: number; description: string } = useMemo(() => {
     return receivePermissionOrRole;
   }, [{ ...receivePermissionOrRole }]);
@@ -82,7 +83,11 @@ export default function GrantForm(props: GrantingPermissionsFormDefaultProps) {
 
   return (
     <WrapperDefault title={props.title}>
-      <Form form={form} layout="vertical" disabled={!hasPermission('EDIT_SECTORS', userAuth)}>
+      <Form
+        form={form}
+        layout="vertical"
+        disabled={!hasPermission('EDIT_SECTORS', userAuth)}
+      >
         <Row gutter={30}>
           <Col xs={24} lg={8}>
             <Form.Item

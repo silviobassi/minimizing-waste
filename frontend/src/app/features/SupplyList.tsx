@@ -28,6 +28,7 @@ import useAuth from '../../core/hooks/useAuth';
 import useSupplies from '../../core/hooks/useSupplies';
 import useSupply from '../../core/hooks/useSupply';
 import DoubleConfirm from '../components/DoubleConfirm';
+import ReloadList from '../components/ReloadList';
 
 export default function SupplyList() {
   const { supplies, fetchSupplies, fetching } = useSupplies();
@@ -78,14 +79,22 @@ export default function SupplyList() {
 
   return (
     <>
-      <Button
-        style={xs ? { width: '100%' } : { display: 'flex' }}
-        type={'primary'}
-        size={'large'}
-        onClick={(_) => navigate('/recursos/criar')}
+      <Space
+        style={{ width: '100%' }}
+        direction={xs ? 'vertical' : 'horizontal'}
+        size={'middle'}
       >
-        CRIAR RECURSO
-      </Button>
+        <ReloadList onReload={fetchSupplies} />
+        <Button
+          style={xs ? { width: '100%' } : { display: 'flex' }}
+          type={'primary'}
+          size={'large'}
+          onClick={(_) => navigate('/recursos/criar')}
+        >
+          CRIAR RECURSO
+        </Button>
+      </Space>
+
       <Divider />
       <WrapperDefault title="Lista de Recursos">
         {xs && (

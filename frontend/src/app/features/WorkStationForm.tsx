@@ -1,20 +1,13 @@
-import {
-  Button,
-  Col,
-  Form,
-  Input,
-  Row,
-  Select,
-  Space,
-  notification,
-} from 'antd';
-import { useEffect } from 'react';
+import { EditOutlined, SaveOutlined, StopOutlined } from '@ant-design/icons';
+import { Col, Form, Input, Row, Select, notification } from 'antd';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { hasPermission } from '../../auth/utils/isAuthenticated';
 import useAuth from '../../core/hooks/useAuth';
 import useSectors from '../../core/hooks/useSectors';
 import { Sector, WorkStation, WorkStationService } from '../../sdk';
-import CustomError from '../../sdk/CustomError';
 import AccessDenied from '../components/AccessDenied';
+import ButtonForm from '../components/ButtonForm';
 import WrapperDefault from '../components/WrapperDefault';
 
 type WorkStationFormType = WorkStation.WorkStationModel;
@@ -34,6 +27,9 @@ export default function WorkStationForm(props: WorkStationFormDefaultProps) {
   const { sectors, fetchSectors } = useSectors();
 
   const { userAuth } = useAuth();
+
+  const [fetching, setFetching] = useState<boolean>();
+  const navigate = useNavigate();
 
   if (hasPermission('EDIT_WOK_STATIONS', userAuth))
     return (
@@ -65,55 +61,21 @@ export default function WorkStationForm(props: WorkStationFormDefaultProps) {
         form={form}
         initialValues={props.workStation}
         onFinish={async (workStation: WorkStation.Input) => {
-          try {
-            if (props.workStation) {
-              return props.onUpdate && props.onUpdate(workStation);
-            }
-
-            await WorkStationService.createWorkStation(workStation).then(
-              (workStation: WorkStation.WorkStationModel) =>
-                notification.success({
-                  message: 'Sucesso',
-                  description: `Estação de trabalho ${workStation?.name}  criada com sucesso`,
-                }),
-            );
-          } catch (error: any) {
-            if (error instanceof CustomError) {
-              if (error.data?.objects) {
-                form.setFields(
-                  error.data.objects.map((error: any) => {
-                    return {
-                      name: error.name
-                        ?.split(/(\.|\[|\])/gi)
-                        .filter(
-                          (str: string) =>
-                            str !== '.' &&
-                            str !== '[' &&
-                            str !== ']' &&
-                            str !== '',
-                        )
-                        .map((str: string) =>
-                          isNaN(Number(str)) ? str : Number(str),
-                        ) as string[],
-                      errors: [error.userMessage],
-                    };
-                  }),
-                );
-              } else {
-                notification.error({
-                  message: error.message,
-                  description:
-                    error.data?.detail === 'Network Error'
-                      ? 'Erro de Rede'
-                      : error.data?.detail,
-                });
-              }
-            } else {
-              notification.error({
-                message: `Houve um erro: ${error.message}`,
-              });
-            }
+          if (props.workStation) {
+            return props.onUpdate && props.onUpdate(workStation);
           }
+
+          setFetching(true);
+          await WorkStationService.createWorkStation(workStation)
+            .then((workStation: WorkStation.WorkStationModel) =>
+              notification.success({
+                message: 'Sucesso',
+                description: `Estação de trabalho ${workStation?.name}  criada com sucesso`,
+              }),
+            )
+            .finally(() => setFetching(false));
+          form.resetFields();
+          return navigate('/estacoes-de-trabalho');
         }}
       >
         <Row justify={'space-between'} gutter={40}>
@@ -145,20 +107,19 @@ export default function WorkStationForm(props: WorkStationFormDefaultProps) {
           </Col>
         </Row>
 
-        <Form.Item style={{ marginTop: 10 }}>
-          <Space direction="horizontal">
-            <Button
-              type="primary"
-              htmlType="submit"
-              icon={props.iconButton.register}
-            >
-              {props.labelRegister}
-            </Button>
-            <Button type="primary" danger icon={props.iconButton.cancel}>
-              Cancelar
-            </Button>
-          </Space>
-        </Form.Item>
+        <ButtonForm
+          loading={fetching}
+          icon={{
+            create: props.workStation ? <EditOutlined /> : <SaveOutlined />,
+            cancel: <StopOutlined />,
+            edit: <EditOutlined />,
+          }}
+          label={{
+            save: props.workStation ? 'EDITAR' : 'CRIAR',
+            cancel: 'CANCELAR',
+          }}
+          link={{ cancel: '/estacoes-de-trabalho' }}
+        />
       </Form>
     </WrapperDefault>
   );

@@ -36,6 +36,7 @@ import useAuth from '../../core/hooks/useAuth';
 import { Assignment } from '../../sdk/@types';
 import AccessDenied from '../components/AccessDenied';
 import DoubleConfirm from '../components/DoubleConfirm';
+import ReloadList from '../components/ReloadList';
 import WrapperDefault from '../components/WrapperDefault';
 
 export default function TaskList() {
@@ -151,20 +152,26 @@ export default function TaskList() {
 
   return (
     <>
-      <Row justify={'space-between'} gutter={20}>
+      <Row justify={'space-between'} gutter={20} align={'middle'}>
         <Col xs={24} lg={5}>
-          <Button
-            style={
-              xs || sm
-                ? { width: '100%', marginBottom: 20 }
-                : { marginBottom: 0 }
-            }
-            type={'primary'}
-            size={'large'}
-            onClick={() => navigate('/tarefa/criar')}
+          <Space
+            style={{ width: '100%' }}
+            direction={xs ? 'vertical' : 'horizontal'}
           >
-            CRIAR TAREFAS
-          </Button>
+            <ReloadList onReload={fetchAssignments} />
+            <Button
+              style={
+                xs || sm
+                  ? { width: '100%', marginBottom: 20 }
+                  : { marginBottom: 0 }
+              }
+              type={'primary'}
+              size={'large'}
+              onClick={() => navigate('/tarefa/criar')}
+            >
+              CRIAR TAREFAS
+            </Button>
+          </Space>
         </Col>
         <Col xs={24} lg={11}>
           <Form>
@@ -197,11 +204,8 @@ export default function TaskList() {
         </Col>
       </Row>
 
-      <Row>
-        <Col xs={24}>
-          <Divider />
-        </Col>
-      </Row>
+      <Divider />
+
       <WrapperDefault title="Lista de Tarefas">
         {xs && (
           <Input

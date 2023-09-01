@@ -44,7 +44,7 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
   const [open, setOpen] = useState<boolean>(false);
   const [form] = Form.useForm<Assignment.AssignmentNotificationInput>();
   const [user, setUser] = useState<{ id: number; name: string }>();
-  const { xs, sm } = useBreakpoint();
+  const { xs, sm, lg } = useBreakpoint();
   const employee = useMemo(() => {
     return user;
   }, [user]);
@@ -52,7 +52,7 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
   return (
     <WrapperDefault title="Atribuição de Tarefas">
       <Row justify={'space-between'} gutter={60}>
-        <Col xs={24} lg={12}>
+        <Col xs={24} xl={12}>
           <Divider orientation="left">TAREFA A ATRIBUIR</Divider>
           <Descriptions column={1} bordered size="small">
             <Descriptions.Item label={'Prazo para Conclusão'}>
@@ -86,23 +86,13 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
             itemLayout={'vertical'}
             pagination={{ pageSize: 4 }}
             dataSource={props?.assignment?.employeesResponsible}
-            renderItem={(employee: User.Assigned, index) => (
-              <List.Item key={index}>
-                <EmployeesResponsible employeeResponsible={employee} />
-              </List.Item>
+            renderItem={(employee: User.Assigned) => (
+              <EmployeesResponsible employeeResponsible={employee} />
             )}
           />
         </Col>
-        <Col xs={24} lg={12}>
-          {!xs || sm ? (
-            <Divider orientation="left">
-              {props.assign ? (
-                <div>COLABORADORES QUE PODEM SER ATRIBUÍDOS</div>
-              ) : (
-                <div>COLABORADORES QUE PODEM SER DESATRIBUÍDOS</div>
-              )}
-            </Divider>
-          ) : props.assign ? (
+        <Col xs={24} sm={24} xl={12}>
+          {props.assign ? (
             <Typography.Title level={5}>
               COLABORADORES QUE PODEM SER ATRIBUÍDOS
             </Typography.Title>
@@ -118,61 +108,40 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
             itemLayout={'vertical'}
             dataSource={props?.users?._embedded?.users}
             renderItem={(employee: User.Assigned) => (
-              <>
-                <List.Item>
-                  <Row>
-                    <Col xs={24} lg={20}>
-                      <EmployeesResponsible employeeResponsible={employee} />
-                    </Col>
-                    <Col xs={24} lg={4}>
-                      {props.assign ? (
-                        <Space
-                          direction="vertical"
-                          style={xs ? { width: '100%' } : {}}
-                        >
-                          <Button
-                            style={{ minWidth: 100 }}
-                            block
-                            type="primary"
-                            onClick={() => {
-                              setOpen(true);
-                              setUser({
-                                ...user,
-                                name: employee?.name,
-                                id: employee?.id,
-                              });
-                            }}
-                          >
-                            ATRIBUIR
-                          </Button>{' '}
-                        </Space>
-                      ) : (
-                        <Space
-                          direction="vertical"
-                          style={xs ? { width: '100%' } : {}}
-                        >
-                          <Button
-                            style={{ minWidth: 100 }}
-                            block
-                            type="primary"
-                            danger
-                            onClick={() => {
-                              setOpen(true);
-                              setUser({
-                                ...user,
-                                name: employee?.name,
-                                id: employee?.id,
-                              });
-                            }}
-                          >
-                            DESATRIBUIR
-                          </Button>
-                        </Space>
-                      )}
-                    </Col>
-                  </Row>
-                </List.Item>
-              </>
+              <EmployeesResponsible employeeResponsible={employee}>
+                {props.assign ? (
+                  <Button
+                    block={xs || sm ? true : false}
+                    type="primary"
+                    onClick={() => {
+                      setOpen(true);
+                      setUser({
+                        ...user,
+                        name: employee?.name,
+                        id: employee?.id,
+                      });
+                    }}
+                  >
+                    ATRIBUIR
+                  </Button>
+                ) : (
+                  <Button
+                    block={xs || sm ? true : false}
+                    type="primary"
+                    danger
+                    onClick={() => {
+                      setOpen(true);
+                      setUser({
+                        ...user,
+                        name: employee?.name,
+                        id: employee?.id,
+                      });
+                    }}
+                  >
+                    DESATRIBUIR
+                  </Button>
+                )}
+              </EmployeesResponsible>
             )}
             pagination={{
               onChange: props.onPage,

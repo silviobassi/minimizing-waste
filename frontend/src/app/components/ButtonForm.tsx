@@ -6,6 +6,8 @@ interface ButtonFormProps {
   icon: { create?: any; edit?: any; cancel?: any };
   label: { save: string; cancel: string };
   link: {save?: string, cancel: string}
+  loading?: boolean
+  redirect?: () => any
 }
 
 export default function ButtonForm(props: ButtonFormProps) {
@@ -18,7 +20,7 @@ export default function ButtonForm(props: ButtonFormProps) {
   return (
     <Form.Item style={{ marginTop: 40 }}>
       <Space size={'middle'} direction={xs ? 'vertical' : 'horizontal'} style={xs || sm ?  {width: '100%'} : {}}>
-        <Button type="primary" icon={props.icon.create} htmlType={'submit'} block>
+        <Button onClick={props.redirect} loading={props.loading} type="primary" icon={props.icon.create} htmlType={'submit'} block>
           {props.label.save}
         </Button>
         <Button type="primary" danger block icon={props.icon.cancel} onClick={() => navigate(props.link?.cancel)}>

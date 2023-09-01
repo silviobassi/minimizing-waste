@@ -1,16 +1,9 @@
 package com.dcconnect.minimizingwaste.domain.service;
 
-import com.dcconnect.minimizingwaste.domain.exception.BusinessException;
-import com.dcconnect.minimizingwaste.domain.exception.EntityInUseException;
-import com.dcconnect.minimizingwaste.domain.exception.RoleNotFoundException;
-import com.dcconnect.minimizingwaste.domain.model.Permission;
 import com.dcconnect.minimizingwaste.domain.model.Role;
 import com.dcconnect.minimizingwaste.domain.repository.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 

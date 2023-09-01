@@ -1,5 +1,5 @@
+import { EditOutlined, SaveOutlined, StopOutlined } from '@ant-design/icons';
 import {
-  Button,
   Checkbox,
   Col,
   Divider,
@@ -8,29 +8,23 @@ import {
   InputNumber,
   Row,
   Select,
-  Space,
   notification,
 } from 'antd';
 import TextArea from 'antd/es/input/TextArea';
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import { useCallback, useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import useAuth from '../../core/hooks/useAuth';
 import useSupplies from '../../core/hooks/useSupplies';
 import useUsers from '../../core/hooks/useUsers';
 import useWorkStations from '../../core/hooks/useWorkStations';
 import { Supply, SupplyMovementService } from '../../sdk';
-import CustomError from '../../sdk/CustomError';
+import ButtonForm from '../components/ButtonForm';
 import WrapperDefault from '../components/WrapperDefault';
 
 type SupplyMovementFormType = Supply.MovementModel;
 
 interface SupplyMovementFormProps {
-  labelRegister: string;
-  iconButton: {
-    register: React.ReactNode;
-    cancel: React.ReactNode;
-  };
   title: string;
   supplyMovement?: SupplyMovementFormType;
   onUpdate?: (supplyMovement: Supply.MovementInput) => SupplyMovementFormType;
@@ -44,6 +38,9 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
   const { workStations, fetchWorkStations } = useWorkStations();
   const { supplies, fetchSupplies } = useSupplies();
   const [checked, setChecked] = useState<boolean>(false);
+
+  const [fetching, setFetching] = useState<boolean>();
+  const navigate = useNavigate();
 
   const { userAuth } = useAuth();
 
@@ -99,51 +96,17 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
           if (props.supplyMovement)
             return props.onUpdate && props.onUpdate(movement);
 
-          try {
-            await SupplyMovementService.createSupplyMovement(movement).then(
-              (movement: Supply.MovementModel) =>
-                notification.success({
-                  message: 'Sucesso',
-                  description: `Movimento do Recurso ${movement?.supply?.name} criado com sucesso`,
-                }),
-            );
-          } catch (error: any) {
-            if (error instanceof CustomError) {
-              if (error.data?.objects) {
-                form.setFields(
-                  error.data.objects.map((error: any) => {
-                    return {
-                      name: error.name
-                        ?.split(/(\.|\[|\])/gi)
-                        .filter(
-                          (str: string) =>
-                            str !== '.' &&
-                            str !== '[' &&
-                            str !== ']' &&
-                            str !== '',
-                        )
-                        .map((str: string) =>
-                          isNaN(Number(str)) ? str : Number(str),
-                        ) as string[],
-                      errors: [error.userMessage],
-                    };
-                  }),
-                );
-              } else {
-                notification.error({
-                  message: error.message,
-                  description:
-                    error.data?.detail === 'Network Error'
-                      ? 'Erro de Rede'
-                      : error.data?.detail,
-                });
-              }
-            } else {
-              notification.error({
-                message: `Houve um erro: ${error.message}`,
-              });
-            }
-          }
+          setFetching(true);
+          await SupplyMovementService.createSupplyMovement(movement)
+            .then((movement: Supply.MovementModel) =>
+              notification.success({
+                message: 'Sucesso',
+                description: `Movimento do Recurso ${movement?.supply?.name} criado com sucesso`,
+              }),
+            )
+            .finally(() => setFetching(false));
+          form.resetFields();
+          return navigate('/movimento-recursos');
         }}
       >
         <Row justify={'space-between'} gutter={50}>
@@ -273,22 +236,18 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
           </Col>
         </Row>
 
-        <Form.Item>
-          <Space direction="horizontal">
-            <Button
-              type="primary"
-              htmlType="submit"
-              icon={props.iconButton.register}
-            >
-              {props.labelRegister}
-            </Button>
-            <Link to={'/movimento-recursos'}>
-              <Button type="primary" danger icon={props.iconButton.cancel}>
-                Cancelar
-              </Button>
-            </Link>
-          </Space>
-        </Form.Item>
+        <ButtonForm
+          loading={fetching}
+          icon={{
+            create: props.supplyMovement ? <EditOutlined /> : <SaveOutlined />,
+            cancel: <StopOutlined />,
+          }}
+          label={{
+            save: props.supplyMovement ? 'EDITAR' : 'CRIAR',
+            cancel: 'CANCELAR',
+          }}
+          link={{ cancel: '/movimento-recursos' }}
+        />
       </Form>
     </WrapperDefault>
   );

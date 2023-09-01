@@ -36,7 +36,16 @@ public class RoleService {
 
     @Transactional
     public Role create(Role role){
+
+        Optional<Role> roleCurrent = roleRepository.findByName(role.getName());
+
+        if(roleCurrent.isPresent() && !roleCurrent.get().equals(role)){
+            throw new BusinessException(
+                    String.format("Já existe um perfil de acesso cadastrado com o nome %s", role.getName()));
+        }
+
         return roleRepository.save(role);
+
     }
 
     @Transactional

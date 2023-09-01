@@ -19,6 +19,7 @@ import WrapperDefault from '../components/WrapperDefault';
 
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import useAccessProfile from '../../core/hooks/useAccessProfile';
+import ReloadList from '../components/ReloadList';
 
 export default function AccessProfileList() {
   const navigate = useNavigate();
@@ -45,15 +46,23 @@ export default function AccessProfileList() {
 
   return (
     <>
-      <Link to={'/perfil-de-acesso/criar'}>
-        <Button
-          type={'primary'}
-          size={'large'}
-          style={xs ? { width: '100%' } : { display: 'flex' }}
-        >
-          CRIAR PERFIL DE ACESSO
-        </Button>
-      </Link>
+      <Space
+        style={{ width: '100%' }}
+        direction={xs ? 'vertical' : 'horizontal'}
+        size={'middle'}
+      >
+        <ReloadList onReload={fetchRoles} />
+        <Link to={'/perfil-de-acesso/criar'}>
+          <Button
+            type={'primary'}
+            size={'large'}
+            block={xs ? true : false}
+            style={xs ? { width: '100%' } : { display: 'flex' }}
+          >
+            CRIAR PERFIL DE ACESSO
+          </Button>
+        </Link>
+      </Space>
       <Divider />
       <WrapperDefault title="Edição de Perfis de Acesso">
         <Table<Role.CollectionDetailed>

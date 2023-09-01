@@ -29,6 +29,7 @@ import useSuppliesMovements from '../../core/hooks/useSuppliesMovements';
 import { Supply } from '../../sdk/@types';
 import AccessDenied from '../components/AccessDenied';
 import DoubleConfirm from '../components/DoubleConfirm';
+import ReloadList from '../components/ReloadList';
 import WrapperDefault from '../components/WrapperDefault';
 
 export default function SupplyMovementList() {
@@ -73,14 +74,22 @@ export default function SupplyMovementList() {
 
   return (
     <>
-      <Button
-        style={xs ? { width: '100%' } : { display: 'flex' }}
-        type={'primary'}
-        size={'large'}
-        onClick={() => navigate('/movimento-recursos/criar')}
+      <Space
+        style={{ width: '100%' }}
+        direction={xs ? 'vertical' : 'horizontal'}
+        size={'middle'}
       >
-        CRIAR MOVIMENTO DE RECURSO
-      </Button>
+        <ReloadList onReload={fetchSuppliesMovements} />
+        <Button
+          style={xs ? { width: '100%' } : { display: 'flex' }}
+          type={'primary'}
+          size={'large'}
+          onClick={() => navigate('/movimento-recursos/criar')}
+        >
+          CRIAR MOVIMENTO DE RECURSO
+        </Button>
+      </Space>
+
       <Divider />
       <WrapperDefault title="MOVIMENTO DE RECURSOS">
         <Table<Supply.PagedModelSupplyMovementModel>

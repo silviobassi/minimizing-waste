@@ -24,6 +24,7 @@ import useWorkStations from '../../core/hooks/useWorkStations';
 import { User, WorkStation } from '../../sdk/@types';
 import AccessDenied from '../components/AccessDenied';
 import DoubleConfirm from '../components/DoubleConfirm';
+import ReloadList from '../components/ReloadList';
 import WrapperDefault from '../components/WrapperDefault';
 
 export default function WorkStationList() {
@@ -35,11 +36,13 @@ export default function WorkStationList() {
   const { xs } = useBreakpoint();
   const { removeWorkStation } = useWorkStation();
   const [page, setPage] = useState<number>(0);
+
   useEffect(() => {
     fetchWorkStations({
       page,
       size: 4,
       sort: ['asc'],
+      //@ts-ignore
       workStationName,
     }).catch((err) => {
       if (err?.data?.status === 403) {
@@ -77,14 +80,22 @@ export default function WorkStationList() {
 
   return (
     <>
-      <Button
-        style={xs ? { width: '100%' } : { display: 'flex' }}
-        type={'primary'}
-        size={'large'}
-        onClick={(_) => navigate('/estacao-de-trabalho/criar')}
+      <Space
+        style={{ width: '100%' }}
+        direction={xs ? 'vertical' : 'horizontal'}
+        size={'middle'}
       >
-        CRIAR ESTAÇÃO DE TRABALHO
-      </Button>
+        <ReloadList onReload={fetchWorkStations} />
+        <Button
+          style={xs ? { width: '100%' } : { display: 'flex' }}
+          type={'primary'}
+          size={'large'}
+          onClick={(_) => navigate('/estacao-de-trabalho/criar')}
+        >
+          CRIAR ESTAÇÃO DE TRABALHO
+        </Button>
+      </Space>
+
       <Divider />
       <WrapperDefault title="Lista de Estações de Trabalho">
         {xs && (

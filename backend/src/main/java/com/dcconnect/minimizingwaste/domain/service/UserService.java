@@ -107,7 +107,7 @@ public class UserService {
         Role role = roleService.findOrFail(roleId);
 
         if(user.getRole() != null){
-            throw new BusinessException(String.format("%s, cada usuário só pode ter um tipo de acesso",
+            throw new BusinessException(String.format("O usuário %s já tem um tipo de acesso",
                     user.getName()));
         }
 

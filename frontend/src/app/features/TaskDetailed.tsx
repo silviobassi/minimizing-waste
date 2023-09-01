@@ -111,11 +111,14 @@ export default function TaskDetailed(props: AssignmentProps) {
             props?.assignment?.employeesResponsible.map(
               (employee: User.Assigned, key: number) => {
                 return (
-                  <EmployeesResponsible
-                    key={key}
-                    isAssignScreen={false}
-                    employeeResponsible={employee}
-                  />
+                  <>
+                    <EmployeesResponsible
+                      key={key}
+                      isAssignScreen={false}
+                      employeeResponsible={employee}
+                    />
+                    <Divider />
+                  </>
                 );
               },
             )

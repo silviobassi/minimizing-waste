@@ -1,7 +1,7 @@
 import { EditOutlined, StopOutlined } from '@ant-design/icons';
 import { notification } from 'antd';
 import { useEffect, useState } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import useSector from '../../core/hooks/useSector';
 import usePageTitle from '../../core/usePageTitle';
 import { Sector, SectorService } from '../../sdk';
@@ -14,6 +14,7 @@ export default function SetorEditView() {
   const params = useParams<{ sectorId: string }>();
   const { sector, fetchSector, notFound } = useSector();
   const [accessDeniedError, setAccessDeniedError] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (params.sectorId && !isNaN(Number(params.sectorId)))
@@ -40,22 +41,18 @@ export default function SetorEditView() {
     );
 
   function handleSectorUpdate(sector: Sector.Input) {
+
     SectorService.updateExistingSector(sector, Number(params.sectorId)).then(
       (sector: Sector.SectorModel) => {
         notification.success({
           message: `Setor ${sector?.name} atualizado com sucesso.`,
         });
       },
-    );
+    )
   }
 
   return (
     <SectorForm
-      labelRegister="EDITAR"
-      iconButton={{
-        register: <EditOutlined />,
-        cancel: <StopOutlined />,
-      }}
       title="Edição de Setor"
       sector={sector}
       onUpdate={handleSectorUpdate}

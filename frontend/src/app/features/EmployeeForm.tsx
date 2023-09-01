@@ -17,6 +17,7 @@ import WrapperDefault from '../components/WrapperDefault';
 const { RangePicker } = DatePicker;
 
 import {
+  EditOutlined,
   EyeInvisibleOutlined,
   EyeTwoTone,
   SaveOutlined,
@@ -27,7 +28,6 @@ import { MaskedInput } from 'antd-mask-input';
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import { useCallback, useEffect, useState } from 'react';
 import useAuth from '../../core/hooks/useAuth';
-import CustomError from '../../sdk/CustomError';
 import { AvatarService, UserService } from '../../sdk/services';
 import ButtonForm from '../components/ButtonForm';
 
@@ -56,6 +56,8 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
     setAvatarUrl(avatarSource);
   }, []);
 
+  const [fetching, setFetching] = useState<boolean>();
+
   useEffect(() => {
     form.setFieldsValue({
       avatarUrl: avatarUrl.avatarUrl || undefined,
@@ -70,60 +72,26 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
         autoComplete="off"
         form={form}
         onFinish={async (user: User.Input | User.UpdateInput) => {
-          try {
-            const userDTO: User.Input | User.UpdateInput = {
-              ...user,
-              whatsApp: user.whatsApp
-                ? user.whatsApp.replace(/\D/g, '')
-                : user.whatsApp,
-              cpf: user.cpf ? user.cpf.replace(/\D/g, '') : user.cpf,
-            };
+          const userDTO: User.Input | User.UpdateInput = {
+            ...user,
+            whatsApp: user.whatsApp
+              ? user.whatsApp.replace(/\D/g, '')
+              : user.whatsApp,
+            cpf: user.cpf ? user.cpf.replace(/\D/g, '') : user.cpf,
+          };
 
-            if (props.user) return props.onUpdate && props.onUpdate(userDTO);
+          if (props.user) return props.onUpdate && props.onUpdate(userDTO);
 
-            await UserService.createUser(userDTO);
-
-            notification.success({
-              message: 'Sucesso',
-              description: `Colaborador ${user?.name} criado com sucesso`,
-            });
-          } catch (error: any) {
-            if (error instanceof CustomError) {
-              if (error.data?.objects) {
-                form.setFields(
-                  error.data.objects.map((error: any) => {
-                    return {
-                      name: error.name
-                        ?.split(/(\.|\[|\])/gi)
-                        .filter(
-                          (str: string) =>
-                            str !== '.' &&
-                            str !== '[' &&
-                            str !== ']' &&
-                            str !== '',
-                        )
-                        .map((str: string) =>
-                          isNaN(Number(str)) ? str : Number(str),
-                        ) as string[],
-                      errors: [error.userMessage],
-                    };
-                  }),
-                );
-              } else {
-                notification.error({
-                  message: error.message,
-                  description:
-                    error.data?.detail === 'Network Error'
-                      ? 'Erro de Rede'
-                      : error.data?.detail,
-                });
-              }
-            } else {
-              notification.error({
-                message: `Houve um erro: ${error.message}`,
-              });
-            }
-          }
+          setFetching(true);
+          await UserService.createUser(userDTO).finally(() =>
+            setFetching(false),
+          );
+          notification.success({
+            message: 'Sucesso',
+            description: `Colaborador ${user?.name} criado com sucesso`,
+          });
+          form.resetFields();
+          return navigate('/colaboradores')
         }}
         initialValues={props.user}
       >
@@ -132,7 +100,9 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
           <Col xs={24} lg={3}>
             <div
               style={
-                xs || sm || md ? { display: 'flex', justifyContent: 'center' } : {}
+                xs || sm || md
+                  ? { display: 'flex', justifyContent: 'center' }
+                  : {}
               }
             >
               <ImageCrop rotationSlider cropShape={'round'} showGrid aspect={1}>
@@ -272,7 +242,11 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
           </Col>
         </Row>
         <ButtonForm
-          icon={{ create: <SaveOutlined />, cancel: <StopOutlined /> }}
+          loading={fetching}
+          icon={{
+            create: props.user ? <EditOutlined /> : <SaveOutlined />,
+            cancel: <StopOutlined />,
+          }}
           label={{
             save: props.user ? 'EDITAR' : 'CRIAR',
             cancel: 'CANCELAR',

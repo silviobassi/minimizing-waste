@@ -1,11 +1,11 @@
-import { SaveOutlined, StopOutlined } from '@ant-design/icons';
+import { EditOutlined, SaveOutlined, StopOutlined } from '@ant-design/icons';
 import { Col, Form, Input, Row, notification } from 'antd';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useAuth from '../../core/hooks/useAuth';
 import { Role } from '../../sdk';
-import CustomError from '../../sdk/CustomError';
 import { RoleService } from '../../sdk/services';
 import ButtonForm from '../components/ButtonForm';
-import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 
 type RoleType = Role.Detailed;
 
@@ -19,8 +19,8 @@ export default function AccessProfileForm(
 ) {
   const [form] = Form.useForm<Role.Input>();
   const { userAuth } = useAuth();
-  
-
+  const [fetching, setFetching] = useState<boolean>();
+  const navigate = useNavigate();
   return (
     <Row justify={'start'}>
       <Col xs={24}>
@@ -29,34 +29,20 @@ export default function AccessProfileForm(
           form={form}
           initialValues={props.role}
           onFinish={async (role: Role.Input) => {
-            try {
-              if (props.role) {
-                return props.onUpdate && props.onUpdate(role);
-              }
-              await RoleService.createRole(role).then((role: Role.Detailed) => {
+            if (props.role) {
+              return props.onUpdate && props.onUpdate(role);
+            }
+
+            setFetching(true);
+            await RoleService.createRole(role)
+              .then((role: Role.Detailed) => {
                 notification.success({
                   message: 'Sucesso',
                   description: `Role ${role?.name} criado com sucesso`,
                 });
-              });
-            } catch (error) {
-              if (error instanceof CustomError) {
-                if (error.data?.objects) {
-                  form.setFields(
-                    error.data.objects.map((error: any) => {
-                      return {
-                        name: error.name?.split('.') as string[],
-                        errors: [error.userMessage],
-                      };
-                    }),
-                  );
-                }
-              } else {
-                notification.error({
-                  message: 'Houve um erro',
-                });
-              }
-            }
+              })
+              .finally(() => setFetching(false));
+            form.resetFields();
           }}
         >
           <Form.Item label="Nome" name={'name'}>
@@ -64,7 +50,12 @@ export default function AccessProfileForm(
           </Form.Item>
 
           <ButtonForm
-            icon={{ create: <SaveOutlined />, cancel: <StopOutlined /> }}
+            redirect={() => navigate('/perfis-de-acesso')}
+            loading={fetching}
+            icon={{
+              create: props.role ? <EditOutlined /> : <SaveOutlined />,
+              cancel: <StopOutlined />,
+            }}
             label={{
               save: props.role ? 'EDITAR' : 'CRIAR',
               cancel: 'CANCELAR',

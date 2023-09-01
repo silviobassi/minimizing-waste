@@ -36,6 +36,7 @@ import {
 } from '../../sdk/utils/generateFormatterData';
 import AccessDenied from '../components/AccessDenied';
 import DoubleConfirm from '../components/DoubleConfirm';
+import ReloadList from '../components/ReloadList';
 import WrapperDefault from '../components/WrapperDefault';
 
 export default function EmployeeList() {
@@ -93,14 +94,22 @@ export default function EmployeeList() {
 
   return (
     <>
-      <Button
-        style={xs ? { width: '100%' } : { display: 'flex' }}
-        type={'primary'}
-        size={'large'}
-        onClick={() => navigate('/colaborador/criar')}
+      <Space
+        style={{ width: '100%' }}
+        direction={xs ? 'vertical' : 'horizontal'}
+        size={'middle'}
       >
-        CRIAR COLABORADORES
-      </Button>
+        <ReloadList onReload={fetchUsers} />
+        <Button
+          style={xs ? { width: '100%' } : { display: 'flex' }}
+          type={'primary'}
+          size={'large'}
+          onClick={() => navigate('/colaborador/criar')}
+        >
+          CRIAR COLABORADORES
+        </Button>
+      </Space>
+
       <Divider />
       <WrapperDefault title="Lista de Colaboradores">
         {xs && (
@@ -144,9 +153,7 @@ export default function EmployeeList() {
                         </Col>
                         <Col xs={19}>
                           {' '}
-                          <Descriptions.Item>
-                            {user?.name}
-                          </Descriptions.Item>
+                          <Descriptions.Item>{user?.name}</Descriptions.Item>
                         </Col>
                       </Row>
                       <Descriptions.Item label="CPF:">
@@ -167,40 +174,40 @@ export default function EmployeeList() {
                           <Tag color="red">SEM ACESSO</Tag>
                         )}
                       </Descriptions.Item>
-                 
+
                       <Descriptions.Item label={'Ações'}>
-                      <>
-                  <Tooltip title={'Editar'}>
-                    <Link to={`/colaborador/editar/${user.id}`}>
-                      <Button type={'link'} icon={<EditOutlined />} />
-                    </Link>
-                  </Tooltip>
+                        <>
+                          <Tooltip title={'Editar'}>
+                            <Link to={`/colaborador/editar/${user.id}`}>
+                              <Button type={'link'} icon={<EditOutlined />} />
+                            </Link>
+                          </Tooltip>
 
-                  <DoubleConfirm
-                    popConfirmTitle="Remover Colaborador?"
-                    popConfirmContent="Deseja mesmo remover este colaborador?"
-                    onConfirm={async () => {
-                      console.log(user.id);
-                      await removeUser(Number(user.id));
-                      notification.success({
-                        message: 'Sucesso',
-                        description: `Tarefa ${user.name}  removida com sucesso`,
-                      });
-                    }}
-                  >
-                    <Tooltip title={'Excluir'} placement="bottom">
-                      <Button type="link">
-                        <DeleteOutlined />
-                      </Button>
-                    </Tooltip>
-                  </DoubleConfirm>
+                          <DoubleConfirm
+                            popConfirmTitle="Remover Colaborador?"
+                            popConfirmContent="Deseja mesmo remover este colaborador?"
+                            onConfirm={async () => {
+                              console.log(user.id);
+                              await removeUser(Number(user.id));
+                              notification.success({
+                                message: 'Sucesso',
+                                description: `Tarefa ${user.name}  removida com sucesso`,
+                              });
+                            }}
+                          >
+                            <Tooltip title={'Excluir'} placement="bottom">
+                              <Button type="link">
+                                <DeleteOutlined />
+                              </Button>
+                            </Tooltip>
+                          </DoubleConfirm>
 
-                  <Tooltip title={'Ver Detalhes'}>
-                    <Link to={`/colaborador/${user.id}/detalhes`}>
-                      <Button type={'link'} icon={<EyeOutlined />} />
-                    </Link>
-                  </Tooltip>
-                </>
+                          <Tooltip title={'Ver Detalhes'}>
+                            <Link to={`/colaborador/${user.id}/detalhes`}>
+                              <Button type={'link'} icon={<EyeOutlined />} />
+                            </Link>
+                          </Tooltip>
+                        </>
                       </Descriptions.Item>
                     </Descriptions>
                   </Space>

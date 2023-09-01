@@ -1,8 +1,9 @@
-import { SaveOutlined, StopOutlined } from '@ant-design/icons';
+import { EditOutlined, SaveOutlined, StopOutlined } from '@ant-design/icons';
 import { Form, Input, notification } from 'antd';
 import { useEffect, useState } from 'react';
-import { hasPermission } from '../../auth/utils/isAuthenticated';
+import { useNavigate } from 'react-router-dom';
 import useAuth from '../../core/hooks/useAuth';
+import useSector from '../../core/hooks/useSector';
 import { Sector, SectorService } from '../../sdk';
 import AccessDenied from '../components/AccessDenied';
 import ButtonForm from '../components/ButtonForm';
@@ -17,9 +18,15 @@ interface SectorFormDefaultProps {
 export default function SectorForm(props: SectorFormDefaultProps) {
   const [form] = Form.useForm<Sector.Input>();
   const { userAuth } = useAuth();
+  const { fetchingSector } = useSector();
   const [fetching, setFetching] = useState<boolean>(false);
-
-  if (userAuth?.role?.permissions.some(permission => permission === "EDIT_SECTORS"))
+  const navigate = useNavigate();
+  //@ts-ignore
+  if (
+    userAuth?.role?.permissions.some(
+      (permission) => permission === 'EDIT_SECTORS',
+    )
+  )
     return (
       <AccessDenied>
         Você não tem permissão para executar essa operação!
@@ -39,19 +46,22 @@ export default function SectorForm(props: SectorFormDefaultProps) {
         onFinish={async (sector: Sector.Input) => {
           if (props.sector) {
             form.setFieldValue('name', '');
-
             return props.onUpdate && props.onUpdate(sector);
           }
 
-          await SectorService.createSector(sector).then(
-            (sector: Sector.SectorModel) => {
+          setFetching(true);
+          await SectorService.createSector(sector)
+            .then((sector: Sector.SectorModel) => {
               notification.success({
                 message: 'Sucesso',
                 description: `Setor ${sector?.name} criado com sucesso`,
               });
-            },
-          )
-          form.resetFields();
+            })
+            .finally(() => {
+              setFetching(false);
+            });
+
+            return navigate('/setores')
         }}
       >
         <Form.Item
@@ -67,7 +77,11 @@ export default function SectorForm(props: SectorFormDefaultProps) {
           <Input placeholder="ex:nome do setor" size="large" />
         </Form.Item>
         <ButtonForm
-          icon={{ create: <SaveOutlined />, cancel: <StopOutlined /> }}
+          loading={fetching}
+          icon={{
+            create: props.sector ? <EditOutlined /> : <SaveOutlined />,
+            cancel: <StopOutlined />,
+          }}
           label={{
             save: props.sector ? 'EDITAR' : 'CRIAR',
             cancel: 'CANCELAR',

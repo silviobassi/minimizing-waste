@@ -25,6 +25,7 @@ import useSectors from '../../core/hooks/useSectors';
 import { Sector } from '../../sdk/@types';
 import AccessDenied from '../components/AccessDenied';
 import DoubleConfirm from '../components/DoubleConfirm';
+import ReloadList from '../components/ReloadList';
 import WrapperDefault from '../components/WrapperDefault';
 export default function SectorList() {
   const navigate = useNavigate();
@@ -72,14 +73,21 @@ export default function SectorList() {
 
   return (
     <>
-      <Button
-        style={xs ? { width: '100%' } : { display: 'flex' }}
-        type={'primary'}
-        size={'large'}
-        onClick={(_) => navigate('/setor/criar')}
+      <Space
+        style={{ width: '100%' }}
+        direction={xs ? 'vertical' : 'horizontal'}
+        size={'middle'}
       >
-        CRIAR SETOR
-      </Button>
+        <ReloadList onReload={fetchSectors} />
+        <Button
+          style={xs ? { width: '100%' } : { display: 'flex' }}
+          type={'primary'}
+          size={'large'}
+          onClick={(_) => navigate('/setor/criar')}
+        >
+          CRIAR SETOR
+        </Button>
+      </Space>
       <Divider />
       <WrapperDefault title="Edição de Setor">
         <Row justify={'center'}></Row>

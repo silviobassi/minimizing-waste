@@ -1,15 +1,15 @@
 import { useCallback, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { Sector } from '../../sdk/@types';
 import { ResourceNotFoundError } from '../../sdk/errors';
 import { SectorService } from '../../sdk/services';
-import * as SectorActions from '../store/Sector.slice'
-import { useDispatch } from 'react-redux';
 import { AppDispatch } from '../store';
+import * as SectorActions from '../store/Sector.slice';
 
 export default function useSector() {
   const [sector, setSector] = useState<Sector.SectorModel>();
   const [notFound, setNotFound] = useState<boolean>(false);
-  const dispatch = useDispatch<AppDispatch>()
+  const dispatch = useDispatch<AppDispatch>();
 
   const fetchSector = useCallback(async (sectorId: number) => {
     try {
@@ -29,6 +29,7 @@ export default function useSector() {
     },
     [dispatch],
   );
+
 
   return {
     fetchSector,

@@ -1,9 +1,9 @@
-import { SaveOutlined, StopOutlined } from '@ant-design/icons';
+import { EditOutlined, SaveOutlined, StopOutlined } from '@ant-design/icons';
 import { Col, Form, Input, InputNumber, Row, Select, notification } from 'antd';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useAuth from '../../core/hooks/useAuth';
 import { Supply, SupplyService } from '../../sdk';
-import CustomError from '../../sdk/CustomError';
 import ButtonForm from '../components/ButtonForm';
 import WrapperDefault from '../components/WrapperDefault';
 
@@ -24,7 +24,9 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
   const [form] = Form.useForm<any>();
 
   const { userAuth } = useAuth();
+  const [fetching, setFetching] = useState<boolean>();
 
+  const navigate = useNavigate();
   const supply: any = {
     material: (
       <Form.Item
@@ -115,80 +117,51 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
         onFinish={async (
           supply: Supply.MaterialInput | Supply.EquipmentInput,
         ) => {
-          try {
-            const supplyDTO = {
-              ...supply,
-              supplyDescription: {
-                measure: parseFloat(supply.supplyDescription?.measure),
-                measureUnitType: supply.supplyDescription?.measureUnitType,
-                quantity: supply.supplyDescription?.quantity,
-                packing: supply.supplyDescription?.packing,
-              },
-            };
+          const supplyDTO = {
+            ...supply,
+            supplyDescription: {
+              measure: parseFloat(supply.supplyDescription?.measure),
+              measureUnitType: supply.supplyDescription?.measureUnitType,
+              quantity: supply.supplyDescription?.quantity,
+              packing: supply.supplyDescription?.packing,
+            },
+          };
 
-            if (supplyKind === 'material') {
-              if (props.supply) {
-                return (
-                  props.onUpdateMaterial && props.onUpdateMaterial(supplyDTO)
-                );
-              }
-              await SupplyService.createSupplyMaterial(supplyDTO).then(
-                (supply: Supply.MaterialModel) =>
-                  notification.success({
-                    message: 'Sucesso',
-                    description: `Recurso ${supply?.name}  criado com sucesso`,
-                  }),
-              );
-            } else {
-              if (props.supply) {
-                return (
-                  props.onUpdateEquipment && props.onUpdateEquipment(supplyDTO)
-                );
-              }
-              await SupplyService.createSupplyEquipment(supplyDTO).then(
-                (supply: Supply.EquipmentModel) =>
-                  notification.success({
-                    message: 'Sucesso',
-                    description: `Recurso ${supply?.name}  criado com sucesso`,
-                  }),
+          if (supplyKind === 'material') {
+            if (props.supply) {
+              return (
+                props.onUpdateMaterial && props.onUpdateMaterial(supplyDTO)
               );
             }
-          } catch (error: any) {
-            if (error instanceof CustomError) {
-              if (error.data?.objects) {
-                form.setFields(
-                  error.data.objects.map((error: any) => {
-                    return {
-                      name: error.name
-                        ?.split(/(\.|\[|\])/gi)
-                        .filter(
-                          (str: string) =>
-                            str !== '.' &&
-                            str !== '[' &&
-                            str !== ']' &&
-                            str !== '',
-                        )
-                        .map((str: string) =>
-                          isNaN(Number(str)) ? str : Number(str),
-                        ) as string[],
-                      errors: [error.userMessage],
-                    };
-                  }),
-                );
-              } else {
-                notification.error({
-                  message: error.message,
-                  description:
-                    error.data?.detail === 'Network Error'
-                      ? 'Erro de Rede'
-                      : error.data?.detail,
-                });
-              }
-            } else {
-              notification.error({
-                message: `Houve um erro: ${error.message}`,
-              });
+            setFetching(true);
+            await SupplyService.createSupplyMaterial(supplyDTO)
+              .then((supply: Supply.MaterialModel) =>
+                notification.success({
+                  message: 'Sucesso',
+                  description: `Recurso ${supply?.name}  criado com sucesso`,
+                }),
+              )
+              .finally(() => setFetching(false));
+            form.resetFields();
+            return navigate('/recursos');
+          } else {
+            if (props.supply) {
+              return (
+                props.onUpdateEquipment && props.onUpdateEquipment(supplyDTO)
+              );
             }
+
+            setFetching(true);
+            await SupplyService.createSupplyEquipment(supplyDTO)
+              .then((supply: Supply.EquipmentModel) =>
+                notification.success({
+                  message: 'Sucesso',
+                  description: `Recurso ${supply?.name}  criado com sucesso`,
+                }),
+              )
+              .finally(() => setFetching(false));
+            form.resetFields();
+            return navigate('/recursos');
           }
         }}
       >
@@ -334,7 +307,11 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
           </Col>
         </Row>
         <ButtonForm
-          icon={{ create: <SaveOutlined />, cancel: <StopOutlined /> }}
+          loading={fetching}
+          icon={{
+            create: props.supply ? <EditOutlined /> : <SaveOutlined />,
+            cancel: <StopOutlined />,
+          }}
           label={{
             save: props.supply ? 'EDITAR' : 'CRIAR',
             cancel: 'CANCELAR',

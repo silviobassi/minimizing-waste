@@ -1,5 +1,4 @@
 import {
-  Button,
   Col,
   DatePicker,
   Divider,
@@ -7,27 +6,22 @@ import {
   Input,
   Row,
   Select,
-  Space,
   notification,
 } from 'antd';
 import locale from 'antd/es/date-picker/locale/pt_BR';
 import TextArea from 'antd/es/input/TextArea';
-import { useCallback, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useWorkStations from '../../core/hooks/useWorkStations';
 import { Assignment, AssignmentService, WorkStation } from '../../sdk';
-import CustomError from '../../sdk/CustomError';
 import WrapperDefault from '../components/WrapperDefault';
 
+import { EditOutlined, SaveOutlined, StopOutlined } from '@ant-design/icons';
 import useAuth from '../../core/hooks/useAuth';
+import ButtonForm from '../components/ButtonForm';
 
 type AssignmentFormType = Assignment.AssignmentModel;
 interface AssignmentFormDefaultProps {
-  labelRegister: string;
-  iconButton: {
-    register: React.ReactNode;
-    cancel: React.ReactNode;
-  };
   title: string;
   assignment?: AssignmentFormType;
   onUpdate?: (user: Assignment.AssignmentInput) => AssignmentFormType;
@@ -38,6 +32,8 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
   const dateFormat = 'DD/MM/YYYY';
   const { fetchWorkStations, workStations } = useWorkStations();
   const { userAuth } = useAuth();
+  const [fetching, setFetching] = useState<boolean>();
+  const navigate = useNavigate();
 
   const option = useCallback(() => {
     return fetchOptions();
@@ -67,66 +63,32 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
         form={form}
         initialValues={props.assignment}
         onFinish={async (assignment: Assignment.AssignmentInput) => {
-          try {
-            const assignmentDTO: Assignment.AssignmentInput = {
-              ...assignment,
-              nature: assignment.nature?.toUpperCase(),
-              startDate: assignment.startDate
-                ? new Date(assignment.startDate).toISOString()
-                : '',
-              deadline: assignment.deadline
-                ? new Date(assignment.deadline).toISOString()
-                : '',
-            };
+          const assignmentDTO: Assignment.AssignmentInput = {
+            ...assignment,
+            nature: assignment.nature?.toUpperCase(),
+            startDate: assignment.startDate
+              ? new Date(assignment.startDate).toISOString()
+              : '',
+            deadline: assignment.deadline
+              ? new Date(assignment.deadline).toISOString()
+              : '',
+          };
 
-            if (props.assignment) {
-              return props.onUpdate && props.onUpdate(assignmentDTO);
-            }
-
-            await AssignmentService.createAssignment(assignmentDTO).then(
-              (assignment: Assignment.AssignmentModel) =>
-                notification.success({
-                  message: 'Sucesso',
-                  description: `Tarefa ${assignment?.title}  criada com sucesso`,
-                }),
-            );
-          } catch (error: any) {
-            if (error instanceof CustomError) {
-              if (error.data?.objects) {
-                form.setFields(
-                  error.data.objects.map((error: any) => {
-                    return {
-                      name: error.name
-                        ?.split(/(\.|\[|\])/gi)
-                        .filter(
-                          (str: string) =>
-                            str !== '.' &&
-                            str !== '[' &&
-                            str !== ']' &&
-                            str !== '',
-                        )
-                        .map((str: string) =>
-                          isNaN(Number(str)) ? str : Number(str),
-                        ) as string[],
-                      errors: [error.userMessage],
-                    };
-                  }),
-                );
-              } else {
-                notification.error({
-                  message: error.message,
-                  description:
-                    error.data?.detail === 'Network Error'
-                      ? 'Erro de Rede'
-                      : error.data?.detail,
-                });
-              }
-            } else {
-              notification.error({
-                message: `Houve um erro: ${error.message}`,
-              });
-            }
+          if (props.assignment) {
+            return props.onUpdate && props.onUpdate(assignmentDTO);
           }
+
+          setFetching(true);
+          await AssignmentService.createAssignment(assignmentDTO)
+            .then((assignment: Assignment.AssignmentModel) =>
+              notification.success({
+                message: 'Sucesso',
+                description: `Tarefa ${assignment?.title}  criada com sucesso`,
+              }),
+            )
+            .finally(() => setFetching(false));
+          form.resetFields();
+          return navigate('/tarefas');
         }}
       >
         <Row justify={'space-between'} gutter={30}>
@@ -218,23 +180,18 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
           </Col>
         </Row>
 
-        <Form.Item style={{ marginTop: 10 }}>
-          <Space direction="horizontal">
-            <Button
-              type="primary"
-              htmlType="submit"
-              icon={props.iconButton.register}
-            >
-              {props.labelRegister}
-            </Button>
-            <Link to={'/tarefas'}>
-              {' '}
-              <Button type="primary" danger icon={props.iconButton.cancel}>
-                Cancelar
-              </Button>
-            </Link>
-          </Space>
-        </Form.Item>
+        <ButtonForm
+          loading={fetching}
+          icon={{
+            create: props.assignment ? <EditOutlined /> : <SaveOutlined />,
+            cancel: <StopOutlined />,
+          }}
+          label={{
+            save: props.assignment ? 'EDITAR' : 'CRIAR',
+            cancel: 'CANCELAR',
+          }}
+          link={{ cancel: '/tarefas' }}
+        />
       </Form>
     </WrapperDefault>
   );

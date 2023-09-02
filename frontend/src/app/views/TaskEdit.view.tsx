@@ -1,8 +1,7 @@
-import { EditOutlined, StopOutlined } from '@ant-design/icons';
 import { Skeleton, notification } from 'antd';
 import moment from 'moment';
 import { useCallback, useEffect, useState } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import useUsersAssignments from '../../core/hooks/useUsersAssignment';
 import usePageTitle from '../../core/usePageTitle';
 import { Assignment, AssignmentService } from '../../sdk';
@@ -18,6 +17,7 @@ export default function TaskEditView() {
   const params = useParams<{ assignmentId: string }>();
   const { assignment, fetchAssignment, notFound } = useUsersAssignments();
 
+  const navigate = useNavigate();
   useEffect(() => {
     if (params.assignmentId && !isNaN(Number(params.assignmentId)))
       fetchAssignment(Number(params.assignmentId)).catch((err) => {
@@ -56,14 +56,17 @@ export default function TaskEditView() {
       </AccessDenied>
     );
 
-  function handleAssignmentUpdate(assignment: Assignment.AssignmentInput) {
-    AssignmentService.updateExistingAssignment(
+  async function handleAssignmentUpdate(
+    assignment: Assignment.AssignmentInput,
+  ) {
+    await AssignmentService.updateExistingAssignment(
       assignment,
       Number(params.assignmentId),
     ).then((assignment: Assignment.AssignmentModel) => {
       notification.success({
         message: `Tarefa ${assignment?.title} atualizada com sucesso.`,
       });
+      navigate('/tarefas')
     });
   }
 
@@ -71,11 +74,6 @@ export default function TaskEditView() {
 
   return (
     <TaskForm
-      labelRegister="EDITAR"
-      iconButton={{
-        register: <EditOutlined />,
-        cancel: <StopOutlined />,
-      }}
       title="Edição de Tarefa"
       onUpdate={handleAssignmentUpdate}
       assignment={transformAssignmentData(assignment)}

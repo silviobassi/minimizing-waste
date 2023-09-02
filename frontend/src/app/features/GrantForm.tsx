@@ -1,7 +1,8 @@
 import { LockTwoTone, StopOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Row, Select, SelectProps, Space } from 'antd';
+import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import { useCallback, useMemo, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { hasPermission } from '../../auth/utils/isAuthenticated';
 import useAuth from '../../core/hooks/useAuth';
 import { Permission, Role, User } from '../../sdk';
@@ -28,6 +29,7 @@ interface GrantingPermissionsFormDefaultProps {
 }
 export default function GrantForm(props: GrantingPermissionsFormDefaultProps) {
   const [form] = Form.useForm();
+  const navigate = useNavigate();
   const [notGranted, setNotGranted] = useState<string>('');
   const [receivePermissionOrRole, setReceivePermissionOrRole] = useState<{
     id: number;
@@ -50,6 +52,8 @@ export default function GrantForm(props: GrantingPermissionsFormDefaultProps) {
     return receivePermissionOrRole;
   }, [{ ...receivePermissionOrRole }]);
 
+  const { xs } = useBreakpoint();
+
   const labels = useCallback((firstLabel: string, secondLabel: string) => {
     return props.profile.includes('REVOKE_ROLE') ||
       props.profile.includes('GRANT_ROLE')
@@ -63,6 +67,7 @@ export default function GrantForm(props: GrantingPermissionsFormDefaultProps) {
   const perm: any = {
     permission: (
       <Select
+        loading={fetching}
         size="large"
         style={{ width: '100%' }}
         onChange={(value, option: any) => {
@@ -139,27 +144,42 @@ export default function GrantForm(props: GrantingPermissionsFormDefaultProps) {
             )}
           </Col>
         </Row>
-        <Space>
+        <Space
+          direction={xs ? 'vertical' : 'horizontal'}
+          style={{ width: '100%' }}
+        >
           <Button
+            block={xs ? true : false}
+            loading={fetching}
             type="primary"
             onClick={() => {
+              setFetching(true);
               if (props.optionsAllNotOrGranted && props.optionsRoleOrUser)
                 form.setFieldValue('grant', '');
               return (
                 props.onGrantingPermissions &&
-                props.onGrantingPermissions(
-                  Number(access?.id),
-                  Number(permissionOrRole?.id),
-                  permissionOrRole?.description,
-                )
+                props
+                  .onGrantingPermissions(
+                    Number(access?.id),
+                    Number(permissionOrRole?.id),
+                    permissionOrRole?.description,
+                  )
+                  .finally(() => {
+                    setFetching(false);
+                  })
               );
             }}
             icon={<LockTwoTone />}
           >
             {props.isNotGranted ? 'CONCEDER' : 'REVOGAR'}
           </Button>
-          <Link to={'/'}>
-            <Button type="primary" danger icon={<StopOutlined />}>
+          <Link to={'/perfis-de-acesso'}>
+            <Button
+              block={xs ? true : false}
+              type="primary"
+              danger
+              icon={<StopOutlined />}
+            >
               CANCELAR
             </Button>
           </Link>

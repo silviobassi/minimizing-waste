@@ -3,28 +3,26 @@ import { Form, Input, notification } from 'antd';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import useAuth from '../../core/hooks/useAuth';
-import useSector from '../../core/hooks/useSector';
-import { Sector, SectorService } from '../../sdk';
+import { Permission, Sector, SectorService } from '../../sdk';
 import AccessDenied from '../components/AccessDenied';
 import ButtonForm from '../components/ButtonForm';
 import WrapperDefault from '../components/WrapperDefault';
 type SectorType = Sector.SectorModel;
 interface SectorFormDefaultProps {
   title: string;
-  onUpdate?: (sector: Sector.Input) => SectorType;
+  onUpdate?: (sector: Sector.Input) => Promise<SectorType>;
   sector?: SectorType;
 }
 
 export default function SectorForm(props: SectorFormDefaultProps) {
   const [form] = Form.useForm<Sector.Input>();
   const { userAuth } = useAuth();
-  const { fetchingSector } = useSector();
   const [fetching, setFetching] = useState<boolean>(false);
   const navigate = useNavigate();
   //@ts-ignore
   if (
     userAuth?.role?.permissions.some(
-      (permission) => permission === 'EDIT_SECTORS',
+      (permission: Permission.DetailedModel) => permission === 'EDIT_SECTORS',
     )
   )
     return (
@@ -44,24 +42,27 @@ export default function SectorForm(props: SectorFormDefaultProps) {
         form={form}
         initialValues={props.sector}
         onFinish={async (sector: Sector.Input) => {
-          if (props.sector) {
-            form.setFieldValue('name', '');
-            return props.onUpdate && props.onUpdate(sector);
-          }
-
           setFetching(true);
+          if (props.sector)
+            return (
+              props.onUpdate &&
+              props.onUpdate(sector).finally(() => {
+                setFetching(false);
+              })
+            );
+
           await SectorService.createSector(sector)
             .then((sector: Sector.SectorModel) => {
               notification.success({
                 message: 'Sucesso',
                 description: `Setor ${sector?.name} criado com sucesso`,
               });
+              navigate('/setores');
             })
             .finally(() => {
               setFetching(false);
+              form.resetFields();
             });
-
-            return navigate('/setores')
         }}
       >
         <Form.Item
@@ -69,12 +70,12 @@ export default function SectorForm(props: SectorFormDefaultProps) {
           name={'name'}
           rules={[
             {
-              required: false,
+              required: true,
               message: 'o campo é obrigatório',
             },
           ]}
         >
-          <Input placeholder="ex:nome do setor" size="large" />
+          <Input placeholder="e.g.:nome do setor" size="large" />
         </Form.Item>
         <ButtonForm
           loading={fetching}

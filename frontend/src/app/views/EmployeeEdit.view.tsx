@@ -1,21 +1,21 @@
 import { SaveOutlined, StopOutlined } from '@ant-design/icons';
 import { Skeleton, notification } from 'antd';
 import { useEffect, useState } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import useUser from '../../core/hooks/useUser';
 import usePageTitle from '../../core/usePageTitle';
 import { UserService } from '../../sdk';
 import { User } from '../../sdk/@types';
+import AccessDenied from '../components/AccessDenied';
 import ElementNotFound from '../components/ElementNotFound';
 import EmployeeForm from '../features/EmployeeForm';
-import AccessDenied from '../components/AccessDenied';
 
 export default function EmployeeEditView() {
   usePageTitle('Edição de Colaborador');
   const params = useParams<{ userId: string }>();
   const { user, fetchUser, notFound } = useUser();
   const [accessDeniedError, setAccessDeniedError] = useState<boolean>(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (params.userId && !isNaN(Number(params.userId)))
       fetchUser(Number(params.userId)).catch((err) => {
@@ -33,14 +33,22 @@ export default function EmployeeEditView() {
   if (notFound)
     return <ElementNotFound description="O Colaborador não foi encontrado!" />;
 
-  if (accessDeniedError) return <AccessDenied />;
+  if (accessDeniedError)
+    return (
+      <AccessDenied>
+        Você não tem permissão para executar essa operação.
+      </AccessDenied>
+    );
 
-  function handleUserUpdate(user: User.UpdateInput) {
-    UserService.updateExistingUser(Number(params.userId), user).then(() => {
-      notification.success({
-        message: `Colaborador ${user?.name} atualizado com sucesso.`,
-      });
-    });
+  async function handleUserUpdate(user: User.UpdateInput) {
+    await UserService.updateExistingUser(Number(params.userId), user).then(
+      () => {
+        notification.success({
+          message: `Colaborador ${user?.name} atualizado com sucesso.`,
+        });
+        navigate('/colaboradores');
+      },
+    );
   }
 
   if (!user) return <Skeleton />;

@@ -14,8 +14,12 @@ interface SupplyFormDefaultProps {
     cancel: React.ReactNode;
   };
   title: string;
-  onUpdateMaterial: (supply: Supply.MaterialInput) => Supply.MaterialModel;
-  onUpdateEquipment: (supply: Supply.EquipmentInput) => Supply.EquipmentModel;
+  onUpdateMaterial: (
+    supply: Supply.MaterialInput,
+  ) => Promise<Supply.MaterialModel>;
+  onUpdateEquipment: (
+    supply: Supply.EquipmentInput,
+  ) => Promise<Supply.EquipmentModel>;
   supply: Supply.Detailed;
 }
 
@@ -127,41 +131,51 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
             },
           };
 
+          setFetching(true);
           if (supplyKind === 'material') {
             if (props.supply) {
               return (
-                props.onUpdateMaterial && props.onUpdateMaterial(supplyDTO)
+                props.onUpdateMaterial &&
+                props.onUpdateMaterial(supplyDTO).finally(() => {
+                  setFetching(false);
+                })
               );
             }
-            setFetching(true);
             await SupplyService.createSupplyMaterial(supplyDTO)
-              .then((supply: Supply.MaterialModel) =>
+              .then((supply: Supply.MaterialModel) => {
                 notification.success({
                   message: 'Sucesso',
                   description: `Recurso ${supply?.name}  criado com sucesso`,
                 }),
-              )
-              .finally(() => setFetching(false));
-            form.resetFields();
-            return navigate('/recursos');
+                  navigate('/recursos');
+              })
+              .finally(() => {
+                setFetching(false);
+                form.resetFields();
+              });
           } else {
             if (props.supply) {
               return (
-                props.onUpdateEquipment && props.onUpdateEquipment(supplyDTO)
+                props.onUpdateEquipment &&
+                props.onUpdateEquipment(supplyDTO).finally(() => {
+                  setFetching(false);
+                  form.resetFields();
+                })
               );
             }
 
-            setFetching(true);
             await SupplyService.createSupplyEquipment(supplyDTO)
-              .then((supply: Supply.EquipmentModel) =>
+              .then((supply: Supply.EquipmentModel) => {
                 notification.success({
                   message: 'Sucesso',
                   description: `Recurso ${supply?.name}  criado com sucesso`,
-                }),
-              )
-              .finally(() => setFetching(false));
-            form.resetFields();
-            return navigate('/recursos');
+                });
+                navigate('/recursos');
+              })
+              .finally(() => {
+                setFetching(false);
+                form.resetFields();
+              });
           }
         }}
       >

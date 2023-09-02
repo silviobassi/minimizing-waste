@@ -9,6 +9,7 @@ import CustomError from '../sdk/CustomError';
 import AccessProfileCreateView from './views/AccessProfileCreate.view';
 import AccessProfileEditView from './views/AccessProfileEdit.view';
 import AccessProfileListView from './views/AccessProfileList.view';
+import ChangedPasswordView from './views/ChangedPassword.view';
 import EmployeeCreateView from './views/EmployeeCreate.view';
 import EmployeeDetailedView from './views/EmployeeDetailed.view';
 import EmployeeEditView from './views/EmployeeEdit.view';
@@ -38,7 +39,6 @@ import TaskUnassignView from './views/TaskUnassign.view';
 import WorkStationCreateView from './views/WorkStationCreate.view';
 import WorkStationEditView from './views/WorkStationEdit.view';
 import WorkStationListView from './views/WorkStationList.view';
-import ChangedPasswordView from './views/ChangedPassword.view'
 
 export default function Routes() {
   useEffect(() => {
@@ -59,8 +59,11 @@ export default function Routes() {
           });
         }
       } else {
+        reason?.data?.objects?.forEach((object: { userMessage: string }) => {
+          message.error(object.userMessage);
+        });
         notification.error({
-          message: `${reason.message}`,
+          message: reason?.message || 'Houve um erro',
         });
       }
     };

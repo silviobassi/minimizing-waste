@@ -19,7 +19,7 @@ interface WorkStationFormDefaultProps {
   };
   title: string;
   workStation?: WorkStationFormType;
-  onUpdate?: (workStation: WorkStation.Input) => WorkStationFormType;
+  onUpdate?: (workStation: WorkStation.Input) => Promise<WorkStationFormType>;
 }
 
 export default function WorkStationForm(props: WorkStationFormDefaultProps) {
@@ -61,36 +61,70 @@ export default function WorkStationForm(props: WorkStationFormDefaultProps) {
         form={form}
         initialValues={props.workStation}
         onFinish={async (workStation: WorkStation.Input) => {
+          setFetching(true);
           if (props.workStation) {
-            return props.onUpdate && props.onUpdate(workStation);
+            return (
+              props.onUpdate &&
+              props.onUpdate(workStation).finally(() => {
+                setFetching(false);
+              })
+            );
           }
 
-          setFetching(true);
           await WorkStationService.createWorkStation(workStation)
-            .then((workStation: WorkStation.WorkStationModel) =>
+            .then((workStation: WorkStation.WorkStationModel) => {
               notification.success({
                 message: 'Sucesso',
                 description: `Estação de trabalho ${workStation?.name}  criada com sucesso`,
               }),
-            )
-            .finally(() => setFetching(false));
-          form.resetFields();
-          return navigate('/estacoes-de-trabalho');
+                navigate('/estacoes-de-trabalho');
+            })
+            .finally(() => {
+              setFetching(false);
+              form.resetFields();
+            });
         }}
       >
         <Row justify={'space-between'} gutter={40}>
           <Col xs={24} xl={8}>
-            <Form.Item label="Nome:*" name={'name'}>
+            <Form.Item
+              label="Nome:*"
+              name={'name'}
+              rules={[
+                {
+                  required: true,
+                  message: 'O nome da Estação de Trabalho é obrigatório',
+                },
+              ]}
+            >
               <Input placeholder="e.g: nome" size="large" />
             </Form.Item>
           </Col>
           <Col xs={24} xl={8}>
-            <Form.Item label="Localização:*" name={'localization'}>
+            <Form.Item
+              label="Localização:*"
+              name={'localization'}
+              rules={[
+                {
+                  required: true,
+                  message: 'A localização é obrigatória',
+                },
+              ]}
+            >
               <Input placeholder="e.g: localização" size="large" />
             </Form.Item>
           </Col>
           <Col xs={24} xl={8}>
-            <Form.Item label="Selecione o Setor:*" name={['sector', 'id']}>
+            <Form.Item
+              label="Selecione o Setor:*"
+              name={['sector', 'id']}
+              rules={[
+                {
+                  required: true,
+                  message: 'O Setor é obrigatório',
+                },
+              ]}
+            >
               <Select
                 size="large"
                 showSearch

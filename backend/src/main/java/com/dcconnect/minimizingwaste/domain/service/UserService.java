@@ -19,7 +19,7 @@ import java.util.Optional;
 public class UserService {
 
 
-    public static final String PERMISSIONS_CANNOT_BE_UNASSIGNED = "A role do Administrador não pode ser revogadas";
+    public static final String PERMISSIONS_CANNOT_BE_UNASSIGNED = "A role do Administrador não pode ser revogada";
 
     @Autowired
     private UserRepository userRepository;
@@ -105,6 +105,10 @@ public class UserService {
     public void associateRole(Long userId, Long roleId){
         User user = findOrFail(userId);
         Role role = roleService.findOrFail(roleId);
+
+        if(role.getName().equals("Administrador")){
+            throw new BusinessException("O sistema só pode ter um Administrador");
+        }
 
         if(user.getRole() != null){
             throw new BusinessException(String.format("O usuário %s já tem um tipo de acesso",

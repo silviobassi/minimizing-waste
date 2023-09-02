@@ -4,6 +4,7 @@ import usePageTitle from '../../core/usePageTitle';
 import { Permission, Role } from '../../sdk';
 
 import { notification, type SelectProps } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import usePermission from '../../core/hooks/usePermission';
 import usePermissions from '../../core/hooks/usePermissions';
 import AccessDenied from '../components/AccessDenied';
@@ -16,7 +17,7 @@ export default function RevokePermissionsView() {
   const { permissionsNotOrGranted, fetchPermissionsAllNotOrGranted } =
     usePermissions();
   const { revokingPermissions } = usePermission();
-
+  const navigate = useNavigate();
   useEffect(() => {
     fetchRoles().catch((err) => {
       if (err?.data?.status === 403) {
@@ -61,7 +62,7 @@ export default function RevokePermissionsView() {
     return options;
   }
 
-  function revokePermissions(
+  async function revokePermissions(
     roleId: number,
     permissionId: number,
     permission: string,
@@ -71,12 +72,13 @@ export default function RevokePermissionsView() {
         message: 'Informe o perfil de acesso ou a permissão para a revogação',
       });
     }
-    revokingPermissions(roleId, permissionId).then((res: any) =>
+    await revokingPermissions(roleId, permissionId).then((res: any) => {
       notification.success({
         message: 'Sucesso',
         description: `Permissão ${permission} revogada com sucesso`,
       }),
-    );
+        navigate('/perfis-de-acesso');
+    });
   }
   return (
     <GrantForm

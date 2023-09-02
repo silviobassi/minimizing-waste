@@ -4,6 +4,7 @@ import usePageTitle from '../../core/usePageTitle';
 import { Permission, Role } from '../../sdk';
 
 import { notification, type SelectProps } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import usePermission from '../../core/hooks/usePermission';
 import usePermissions from '../../core/hooks/usePermissions';
 import AccessDenied from '../components/AccessDenied';
@@ -17,6 +18,7 @@ export default function GrantPermissionsView() {
     usePermissions();
   const { grantingPermissions } = usePermission();
 
+  const navigate = useNavigate();
   useEffect(() => {
     fetchRoles().catch((err) => {
       if (err?.data?.status === 403) {
@@ -61,7 +63,7 @@ export default function GrantPermissionsView() {
     return options;
   }
 
-  function grantPermissions(
+  async function grantPermissions(
     roleId: number,
     permissionId: number,
     permission: string,
@@ -71,12 +73,13 @@ export default function GrantPermissionsView() {
         message: 'Informe o perfil de acesso ou a permissão para a concessão',
       });
     }
-    grantingPermissions(roleId, permissionId).then((res: any) =>
+    await grantingPermissions(roleId, permissionId).then((res: any) => {
       notification.success({
         message: 'Sucesso',
         description: `Permissão ${permission} concedida com sucesso`,
       }),
-    );
+        navigate('/perfis-de-acesso');
+    });
   }
   return (
     <GrantForm

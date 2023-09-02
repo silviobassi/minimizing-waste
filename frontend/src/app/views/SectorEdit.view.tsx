@@ -1,5 +1,5 @@
 import { EditOutlined, StopOutlined } from '@ant-design/icons';
-import { notification } from 'antd';
+import { FormInstance, notification } from 'antd';
 import { useEffect, useState } from 'react';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import useSector from '../../core/hooks/useSector';
@@ -40,13 +40,13 @@ export default function SetorEditView() {
       </AccessDenied>
     );
 
-  function handleSectorUpdate(sector: Sector.Input) {
-
-    SectorService.updateExistingSector(sector, Number(params.sectorId)).then(
+  async function handleSectorUpdate(sector: Sector.Input) {
+    await SectorService.updateExistingSector(sector, Number(params.sectorId)).then(
       (sector: Sector.SectorModel) => {
         notification.success({
           message: `Setor ${sector?.name} atualizado com sucesso.`,
         });
+        navigate('/setores')
       },
     )
   }

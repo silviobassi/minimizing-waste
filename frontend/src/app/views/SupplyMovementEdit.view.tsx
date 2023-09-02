@@ -1,7 +1,6 @@
-import { SaveOutlined, StopOutlined } from '@ant-design/icons';
 import { notification } from 'antd';
 import { useEffect, useState } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import useSupplyMovement from '../../core/hooks/useSuppliesMovement';
 import usePageTitle from '../../core/usePageTitle';
 import { Supply, SupplyMovementService } from '../../sdk';
@@ -15,6 +14,7 @@ export default function SupplyMovementEditView() {
   const { supplyMovement, fetchSupplyMovement, notFound } = useSupplyMovement();
   const [accessDeniedError, setAccessDeniedError] = useState<boolean>(false);
 
+  const navigate = useNavigate();
   useEffect(() => {
     if (params.supplyMovementId && !isNaN(Number(params.supplyMovementId)))
       fetchSupplyMovement(Number(params.supplyMovementId)).catch((err) => {
@@ -26,7 +26,8 @@ export default function SupplyMovementEditView() {
         throw err;
       });
   }, [fetchSupplyMovement, params.supplyMovementId]);
-  if (accessDeniedError) return <AccessDenied>Você não pode executar essa operação</AccessDenied>;
+  if (accessDeniedError)
+    return <AccessDenied>Você não pode executar essa operação</AccessDenied>;
   if (isNaN(Number(params.supplyMovementId)))
     return <Navigate to={'/movimento-recursos'} />;
 
@@ -34,26 +35,21 @@ export default function SupplyMovementEditView() {
     return (
       <ElementNotFound description="O Movimento do Recurso não foi encontrado!" />
     );
-  
 
-  function handleSupplyMovementUpdate(movement: Supply.MovementInput) {
-    SupplyMovementService.updateExistingSupplyMovement(
+  async function handleSupplyMovementUpdate(movement: Supply.MovementInput) {
+    await SupplyMovementService.updateExistingSupplyMovement(
       movement,
       Number(params.supplyMovementId),
     ).then((movement: Supply.MovementModel) => {
       notification.success({
         message: `Movimento do recurso ${movement?.supply?.name} atualizado com sucesso.`,
       });
+      navigate('/movimento-recursos');
     });
   }
 
   return (
     <SupplyMovementForm
-      labelRegister="EDITAR"
-      iconButton={{
-        register: <SaveOutlined />,
-        cancel: <StopOutlined />,
-      }}
       title="Edição de Movimento de Recursos"
       supplyMovement={supplyMovement}
       onUpdate={handleSupplyMovementUpdate}

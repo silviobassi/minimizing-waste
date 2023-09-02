@@ -27,7 +27,9 @@ type SupplyMovementFormType = Supply.MovementModel;
 interface SupplyMovementFormProps {
   title: string;
   supplyMovement?: SupplyMovementFormType;
-  onUpdate?: (supplyMovement: Supply.MovementInput) => SupplyMovementFormType;
+  onUpdate?: (
+    supplyMovement: Supply.MovementInput,
+  ) => Promise<SupplyMovementFormType>;
 }
 
 export default function SupplyMovementForm(props: SupplyMovementFormProps) {
@@ -91,22 +93,27 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
         layout={'vertical'}
         form={form}
         onFinish={async (movement: Supply.MovementInput) => {
-          console.log(movement);
-
-          if (props.supplyMovement)
-            return props.onUpdate && props.onUpdate(movement);
-
           setFetching(true);
+          if (props.supplyMovement)
+            return (
+              props.onUpdate &&
+              props.onUpdate(movement).finally(() => {
+                setFetching(false);
+              })
+            );
+
           await SupplyMovementService.createSupplyMovement(movement)
-            .then((movement: Supply.MovementModel) =>
+            .then((movement: Supply.MovementModel) => {
               notification.success({
                 message: 'Sucesso',
                 description: `Movimento do Recurso ${movement?.supply?.name} criado com sucesso`,
               }),
-            )
-            .finally(() => setFetching(false));
-          form.resetFields();
-          return navigate('/movimento-recursos');
+                navigate('/movimento-recursos');
+            })
+            .finally(() => {
+              setFetching(false);
+              form.resetFields();
+            });
         }}
       >
         <Row justify={'space-between'} gutter={50}>
@@ -133,6 +140,12 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
               </Col>
               <Col xs={24} xl={8}>
                 <Form.Item
+                  rules={[
+                    {
+                      required: true,
+                      message: 'A quantidade reservada é obrigatória',
+                    },
+                  ]}
                   name={'reservedQuantity'}
                   label="Quantidade Reservada:"
                 >
@@ -148,6 +161,12 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
               <Col xs={24} xl={16}>
                 {' '}
                 <Form.Item
+                  rules={[
+                    {
+                      required: true,
+                      message: 'O Responsável é obrigatório',
+                    },
+                  ]}
                   name={['employeeResponsible', 'id']}
                   label="Colaborador Responsável:"
                 >
@@ -161,12 +180,22 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
                         .toLowerCase()
                         .includes(input.toLowerCase())
                     }
+                    //@ts-ignore
                     options={options(users?._embedded?.users)}
                   />
                 </Form.Item>
               </Col>
               <Col xs={24} xl={12}>
-                <Form.Item name={['supply', 'id']} label="Recurso:">
+                <Form.Item
+                  name={['supply', 'id']}
+                  label="Recurso:"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'O recurso é obrigatório',
+                    },
+                  ]}
+                >
                   <Select
                     size="large"
                     showSearch
@@ -183,6 +212,12 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
               </Col>
               <Col xs={24} xl={12}>
                 <Form.Item
+                  rules={[
+                    {
+                      required: true,
+                      message: 'A Estação de Trabalho é obrigatória',
+                    },
+                  ]}
                   name={['workStation', 'id']}
                   label="Estação de Trabalho*"
                 >
@@ -206,7 +241,16 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
             <Divider orientation="left">NOTIFICAÇÃO</Divider>
             <Row justify={'space-between'} gutter={30}>
               <Col xs={24}>
-                <Form.Item name={['notification', 'title']} label="Título:">
+                <Form.Item
+                  name={['notification', 'title']}
+                  label="Título:"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'O Título é obrigatório',
+                    },
+                  ]}
+                >
                   <Input
                     placeholder="ex: Revestimento do Bloco B"
                     size="large"
@@ -214,7 +258,16 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
                 </Form.Item>
               </Col>
               <Col xs={24}>
-                <Form.Item name={['notification', 'goal']} label="Objetivo:">
+                <Form.Item
+                  name={['notification', 'goal']}
+                  label="Objetivo:"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'O objetivo é obrigatório',
+                    },
+                  ]}
+                >
                   <Input
                     placeholder="ex: Regularização de paredes concluídas"
                     size="large"
@@ -222,7 +275,16 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
                 </Form.Item>
               </Col>
               <Col xs={24}>
-                <Form.Item name={['notification', 'reason']} label="Razão:">
+                <Form.Item
+                  name={['notification', 'reason']}
+                  label="Razão:"
+                  rules={[
+                    {
+                      required: true,
+                      message: 'A razão é orbigatória',
+                    },
+                  ]}
+                >
                   <TextArea
                     rows={4}
                     maxLength={300}

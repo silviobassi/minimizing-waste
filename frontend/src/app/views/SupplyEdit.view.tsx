@@ -1,7 +1,7 @@
 import { EditOutlined, StopOutlined } from '@ant-design/icons';
 import { Skeleton, notification } from 'antd';
 import { useEffect, useState } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import useSupply from '../../core/hooks/useSupply';
 import usePageTitle from '../../core/usePageTitle';
 import { Supply, SupplyService } from '../../sdk';
@@ -15,6 +15,7 @@ export default function SupplyEditView() {
   const params = useParams<{ supplyId: string }>();
   const { supply, fetchSupply, notFound } = useSupply();
   const [accessDeniedError, setAccessDeniedError] = useState<boolean>(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (params.supplyId && !isNaN(Number(params.supplyId)))
@@ -35,25 +36,27 @@ export default function SupplyEditView() {
   if (accessDeniedError)
     return <AccessDenied>Você não pode executar essa operação!</AccessDenied>;
 
-  function handleSupplyMaterialUpdate(supply: Supply.MaterialInput) {
-    SupplyService.updateExistingSupplyMaterial(
+  async function handleSupplyMaterialUpdate(supply: Supply.MaterialInput) {
+    await SupplyService.updateExistingSupplyMaterial(
       supply,
       Number(params.supplyId),
     ).then((supply: Supply.MaterialModel) => {
       notification.success({
         message: `Recurso ${supply?.name} atualizado com sucesso.`,
       });
+      navigate('/recursos');
     });
   }
 
-  function handleSupplyEquipmentUpdate(supply: Supply.EquipmentInput) {
-    SupplyService.updateExistingSupplyEquipment(
+  async function handleSupplyEquipmentUpdate(supply: Supply.EquipmentInput) {
+    await SupplyService.updateExistingSupplyEquipment(
       supply,
       Number(params.supplyId),
     ).then((supply: Supply.EquipmentModel) => {
       notification.success({
         message: `Recurso ${supply?.name} atualizado com sucesso.`,
       });
+      navigate('/recursos');
     });
   }
 

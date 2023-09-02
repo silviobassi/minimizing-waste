@@ -1,6 +1,6 @@
 import { Skeleton, notification } from 'antd';
 import { useEffect, useState } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 
 import usePageTitle from '../../core/usePageTitle';
 import { Role } from '../../sdk/@types';
@@ -16,6 +16,7 @@ export default function AccessProfileEditView() {
   const { role, fetchRole, notFound } = useAccessProfile();
   const [accessDeniedError, setAccessDeniedError] = useState<boolean>(false);
 
+  const navigate = useNavigate();
   useEffect(() => {
     if (params.roleId && !isNaN(Number(params.roleId)))
       fetchRole(Number(params.roleId)).catch((err) => {
@@ -44,11 +45,13 @@ export default function AccessProfileEditView() {
       </AccessDenied>
     );
 
-  function handleUserUpdate(role: Role.Input) {
-    RoleService.updateExistingRole(Number(params.roleId), role).then(() => {
+  async function handleUserUpdate(role: Role.Input) {
+    await RoleService.updateExistingRole(Number(params.roleId), role).then(() => {
       notification.success({
         message: `Colaborador ${role?.name} atualizado com sucesso.`,
       });
+
+      navigate('/perfis-de-acesso')
     });
   }
 

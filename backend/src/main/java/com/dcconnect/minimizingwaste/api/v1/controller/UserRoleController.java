@@ -4,6 +4,8 @@ import com.dcconnect.minimizingwaste.api.v1.assembler.UserRoleAssembler;
 import com.dcconnect.minimizingwaste.api.v1.model.RoleSummaryModel;
 import com.dcconnect.minimizingwaste.api.v1.openapi.UserRoleControllerOpenApi;
 import com.dcconnect.minimizingwaste.core.security.CheckSecurity;
+import com.dcconnect.minimizingwaste.domain.model.Role;
+import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.service.UserRoleService;
 import com.dcconnect.minimizingwaste.domain.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;

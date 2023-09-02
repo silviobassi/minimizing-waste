@@ -1,5 +1,6 @@
 import { SelectProps, notification } from 'antd';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useRole from '../../core/hooks/useRole';
 import useRoles from '../../core/hooks/useRoles';
 import useUsers from '../../core/hooks/useUsers';
@@ -14,7 +15,7 @@ export default function RevokeRoleView() {
   const { fetchRolesAllNotOrGranted, rolesNotOrGranted } = useRoles();
   const { allUsersSummary, fetchUsersSummary } = useUsers();
   const { revokingRoles } = useRole();
-
+  const navigate = useNavigate();
   useEffect(() => {
     fetchUsersSummary().catch((err) => {
       if (err?.data?.status === 403) {
@@ -47,7 +48,8 @@ export default function RevokeRoleView() {
   });
 
   function fetchOptions() {
-    const options: User.Summary= [];
+    const options: User.Summary = [];
+    //@ts-ignore
     allUsersSummary?._embedded?.users.map((user: User.SummaryNameModel) => {
       options.push({
         label: user.name,
@@ -57,18 +59,19 @@ export default function RevokeRoleView() {
     return options;
   }
 
-  function revokeRoles(userId: number, roleId: number, role: string) {
+  async function revokeRoles(userId: number, roleId: number, role: string) {
     if (isNaN(Number(userId)) || isNaN(Number(roleId))) {
       return notification.error({
         message: 'Informe o usuário ou a role para a revogação',
       });
     }
-    revokingRoles(userId, roleId).then((res: any) =>
+    await revokingRoles(userId, roleId).then((res: any) => {
       notification.success({
         message: 'Sucesso',
         description: `Role ${role} revogada com sucesso`,
       }),
-    );
+        navigate('/perfis-de-acesso');
+    });
   }
   return (
     <GrantForm

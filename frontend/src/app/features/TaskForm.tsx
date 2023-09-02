@@ -24,7 +24,7 @@ type AssignmentFormType = Assignment.AssignmentModel;
 interface AssignmentFormDefaultProps {
   title: string;
   assignment?: AssignmentFormType;
-  onUpdate?: (user: Assignment.AssignmentInput) => AssignmentFormType;
+  onUpdate?: (user: Assignment.AssignmentInput) => Promise<AssignmentFormType>;
 }
 
 export default function TaskForm(props: AssignmentFormDefaultProps) {
@@ -73,37 +73,69 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
               ? new Date(assignment.deadline).toISOString()
               : '',
           };
-
-          if (props.assignment) {
-            return props.onUpdate && props.onUpdate(assignmentDTO);
-          }
-
           setFetching(true);
+          if (props.assignment) {
+            return (
+              props.onUpdate &&
+              props.onUpdate(assignmentDTO).finally(() => {
+                setFetching(false);
+              })
+            );
+          }
           await AssignmentService.createAssignment(assignmentDTO)
-            .then((assignment: Assignment.AssignmentModel) =>
+            .then((assignment: Assignment.AssignmentModel) => {
               notification.success({
                 message: 'Sucesso',
                 description: `Tarefa ${assignment?.title}  criada com sucesso`,
               }),
-            )
-            .finally(() => setFetching(false));
-          form.resetFields();
-          return navigate('/tarefas');
+                navigate('/tarefas');
+            })
+            .finally(() => {
+              setFetching(false);
+              form.resetFields();
+            });
         }}
       >
         <Row justify={'space-between'} gutter={30}>
           <Col xs={24} xl={8}>
-            <Form.Item label="Título" name="title">
+            <Form.Item
+              label="Título"
+              name="title"
+              rules={[
+                {
+                  required: true,
+                  message: 'O Título é obrigatório',
+                },
+              ]}
+            >
               <Input size="large" placeholder="ex: Título" />
             </Form.Item>
           </Col>
           <Col xs={24} xl={8}>
-            <Form.Item label="Ponto Específico da Tarefa" name="specificPoint">
+            <Form.Item
+              label="Ponto Específico"
+              name="specificPoint"
+              rules={[
+                {
+                  required: true,
+                  message: 'O ponto específico é obrigatório',
+                },
+              ]}
+            >
               <Input size="large" placeholder="e.g: Banheiro 01" />
             </Form.Item>
           </Col>
           <Col xs={24} xl={8}>
-            <Form.Item label="Estação de Trabalho" name={['workStation', 'id']}>
+            <Form.Item
+              label="Estação de Trabalho"
+              name={['workStation', 'id']}
+              rules={[
+                {
+                  required: true,
+                  message: 'A Estação de Trabalho é obrigatória',
+                },
+              ]}
+            >
               <Select
                 size="large"
                 showSearch
@@ -119,7 +151,21 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
             </Form.Item>
           </Col>
           <Col xs={24} xl={8}>
-            <Form.Item label="Tipo da Tarefa" name="nature">
+            <Form.Item
+              label="Tipo da Tarefa"
+              name="nature"
+              rules={[
+                {
+                  required: true,
+                  message: 'O tipo da tarefa é obrigatório',
+                },
+                {
+                  type: 'enum',
+                  enum: ['Limpeza', 'Obras'],
+                  message: 'A unidade de medida precisa ser: Limpeza ou Obras',
+                },
+              ]}
+            >
               <Select
                 size="large"
                 placeholder="Selecione o Tipo da Tarefa"
@@ -134,7 +180,16 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
             </Form.Item>
           </Col>
           <Col xs={24} xl={8}>
-            <Form.Item label="Data de Início" name="startDate">
+            <Form.Item
+              label="Data de Início"
+              name="startDate"
+              rules={[
+                {
+                  required: true,
+                  message: 'A data de in início é obrigatória',
+                },
+              ]}
+            >
               <DatePicker
                 style={{ width: '100%' }}
                 locale={locale}
@@ -144,7 +199,16 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
             </Form.Item>
           </Col>
           <Col xs={24} xl={8}>
-            <Form.Item label="Prazo para Conclusão" name="deadline">
+            <Form.Item
+              label="Prazo para Conclusão"
+              name="deadline"
+              rules={[
+                {
+                  required: true,
+                  message: 'O prazo para a conclusão é obrigatório',
+                },
+              ]}
+            >
               <DatePicker
                 style={{ width: '100%' }}
                 locale={locale}
@@ -158,17 +222,44 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
         <Divider orientation="left">NOTIFICAÇÃO</Divider>
         <Row justify={'space-between'} gutter={30}>
           <Col xs={24} lg={12}>
-            <Form.Item label="Título" name={['notification', 'title']}>
+            <Form.Item
+              label="Título"
+              name={['notification', 'title']}
+              rules={[
+                {
+                  required: true,
+                  message: 'O título é obrigatório',
+                },
+              ]}
+            >
               <Input size="large" placeholder="e.g: Título" />
             </Form.Item>
           </Col>
           <Col xs={24} lg={12}>
-            <Form.Item label="Objetivo" name={['notification', 'goal']}>
+            <Form.Item
+              label="Objetivo"
+              name={['notification', 'goal']}
+              rules={[
+                {
+                  required: true,
+                  message: 'O objetivo é obrigatório',
+                },
+              ]}
+            >
               <Input size="large" placeholder="e.g: Objetivo" />
             </Form.Item>
           </Col>
           <Col xs={24}>
-            <Form.Item label="Razão" name={['notification', 'reason']}>
+            <Form.Item
+              label="Razão"
+              name={['notification', 'reason']}
+              rules={[
+                {
+                  required: true,
+                  message: 'A razão é obrigatória',
+                },
+              ]}
+            >
               <TextArea
                 rows={4}
                 maxLength={300}

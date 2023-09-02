@@ -29,19 +29,15 @@ import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import { useCallback, useEffect, useState } from 'react';
 import useAuth from '../../core/hooks/useAuth';
 import { AvatarService, UserService } from '../../sdk/services';
+import { cpfValidate } from '../../sdk/utils/generateFormatterData';
 import ButtonForm from '../components/ButtonForm';
 
 type UserFormType = User.Detailed;
 interface TaskFormDefaultProps {
-  labelRegister: string;
-  iconButton: {
-    register: React.ReactNode;
-    cancel: React.ReactNode;
-  };
   isCurrentUser?: boolean;
   title: string;
   user?: UserFormType;
-  onUpdate?: (user: User.UpdateInput) => any;
+  onUpdate?: (user: User.UpdateInput) => Promise<User.Detailed>;
 }
 
 export default function EmployeeForm(props: TaskFormDefaultProps) {
@@ -65,6 +61,16 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
     setFilename(avatarUrl?.avatarUrl?.split('/').pop());
   }, [avatarUrl, form, filename]);
 
+  async function handleCpfValidate(cpf: string): Promise<boolean> {
+    const response: boolean = await cpfValidate(
+      cpf.replace('.', '').replace('-', '').replace('.', ''),
+    );
+    if (!response) {
+      return Promise.reject(response);
+    }
+    return Promise.resolve(true);
+  }
+
   return (
     <WrapperDefault title={props.title}>
       <Form
@@ -80,18 +86,27 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
             cpf: user.cpf ? user.cpf.replace(/\D/g, '') : user.cpf,
           };
 
-          if (props.user) return props.onUpdate && props.onUpdate(userDTO);
-
           setFetching(true);
-          await UserService.createUser(userDTO).finally(() =>
-            setFetching(false),
-          );
-          notification.success({
-            message: 'Sucesso',
-            description: `Colaborador ${user?.name} criado com sucesso`,
-          });
-          form.resetFields();
-          return navigate('/colaboradores')
+          if (props.user)
+            return (
+              props.onUpdate &&
+              props.onUpdate(userDTO).finally(() => {
+                setFetching(false);
+              })
+            );
+
+          await UserService.createUser(userDTO)
+            .then(() => {
+              notification.success({
+                message: 'Sucesso',
+                description: `Colaborador ${user?.name} criado com sucesso`,
+              });
+              navigate('/colaboradores');
+            })
+            .finally(() => {
+              setFetching(false);
+              form.resetFields();
+            });
         }}
         initialValues={props.user}
       >
@@ -150,12 +165,21 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
             </Form.Item>
           </Col>
           <Col xs={24} xl={11}>
-            <Form.Item label="Nome:*" name={'name'}>
+            <Form.Item
+              label="Nome:"
+              name={'name'}
+              rules={[
+                {
+                  required: true,
+                  message: 'O nome é obrigatório',
+                },
+              ]}
+            >
               <Input size="large" placeholder="ex: João dos Santos" />
             </Form.Item>
           </Col>
           <Col xs={24} xl={10}>
-            <Form.Item label="CPF:*" name={'cpf'}>
+            <Form.Item label="CPF:" name={'cpf'}>
               <MaskedInput
                 size="large"
                 mask={'000.000.000-00'}
@@ -166,12 +190,34 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
         </Row>
         <Row justify={'space-between'} gutter={40}>
           <Col xs={24} xl={props.isCurrentUser ? 12 : 8}>
-            <Form.Item label="Email:*" name={'email'}>
+            <Form.Item
+              label="Email:*"
+              name={'email'}
+              rules={[
+                {
+                  required: true,
+                  message: 'O email é obrigatório',
+                },
+                {
+                  type: 'email',
+                  message: 'O email é inválido',
+                },
+              ]}
+            >
               <Input size="large" placeholder="ex: joaosantos@email.com" />
             </Form.Item>
           </Col>
           <Col xs={24} xl={props.isCurrentUser ? 12 : 8}>
-            <Form.Item label="WhatsApp:*" name={'whatsApp'}>
+            <Form.Item
+              label="WhatsApp:*"
+              name={'whatsApp'}
+              rules={[
+                {
+                  required: true,
+                  message: 'O whatsApp é obrigatório',
+                },
+              ]}
+            >
               <MaskedInput
                 size="large"
                 mask="(00) 00000-0000"
@@ -181,7 +227,16 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
           </Col>
           {!props.isCurrentUser && (
             <Col xs={24} xl={8}>
-              <Form.Item label="Senha" name={'password'}>
+              <Form.Item
+                label="Senha"
+                name={'password'}
+                rules={[
+                  {
+                    required: true,
+                    message: 'A senha é obrigatória',
+                  },
+                ]}
+              >
                 <Input.Password
                   size="large"
                   type="password"
@@ -197,17 +252,57 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
         <Divider orientation="left">DADOS PROFISSIONAIS</Divider>
         <Row justify={'space-between'} gutter={40}>
           <Col xs={24} xl={8}>
-            <Form.Item label="Cargo:*" name={'office'}>
+            <Form.Item
+              label="Cargo:"
+              name={'office'}
+              rules={[
+                {
+                  required: true,
+                  message: 'O cargo é obrigatório',
+                },
+              ]}
+            >
               <Input size="large" placeholder="ex: Azulejista" />
             </Form.Item>
           </Col>
           <Col xs={24} xl={8}>
-            <Form.Item label="Função:*" name={'occupation'}>
+            <Form.Item
+              label="Função:"
+              name={'occupation'}
+              rules={[
+                {
+                  required: true,
+                  message: 'A função é obrigatória',
+                },
+              ]}
+            >
               <Input size="large" placeholder="ex: Instalador de gesso" />
             </Form.Item>
           </Col>
           <Col xs={24} xl={8}>
-            <Form.Item label="Escolaridade*" name={'literate'}>
+            <Form.Item
+              label="Escolaridade:"
+              name={'literate'}
+              rules={[
+                {
+                  required: true,
+                  message: 'A escolaridade é obrigatória',
+                },
+                {
+                  type: 'enum',
+                  enum: [
+                    'Curso Superior completo',
+                    'Curso Superior Incompleto',
+                    'Ensino Médio',
+                    'Ensino Fundamental',
+                    'Ensino Básico',
+                    'Não Alfabetizado',
+                  ],
+                  message:
+                    'A escolaridade precisa ser:Curso Superior completo, Curso Superior Incompleto, Ensino Médio, Ensino Fundamental, Ensino Básico ou Não Alfabetizado',
+                },
+              ]}
+            >
               <Select
                 size="large"
                 defaultValue="Selecione a Escolaridade"

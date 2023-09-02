@@ -1,7 +1,7 @@
 import { EditOutlined, StopOutlined } from '@ant-design/icons';
 import { notification } from 'antd';
 import { useEffect, useState } from 'react';
-import { Navigate, useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import useWorkStation from '../../core/hooks/useWorkStation';
 import usePageTitle from '../../core/usePageTitle';
 import { WorkStation, WorkStationService } from '../../sdk';
@@ -15,7 +15,7 @@ export default function WorkStationEditView() {
   const params = useParams<{ workStationId: string }>();
   const { workStation, fetchWorkStation, notFound } = useWorkStation();
   const [accessDeniedError, setAccessDeniedError] = useState<boolean>(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     if (params.workStationId && !isNaN(Number(params.workStationId)))
       fetchWorkStation(Number(params.workStationId)).catch((err) => {
@@ -36,16 +36,18 @@ export default function WorkStationEditView() {
       <ElementNotFound description="A Estação de Trabalho não foi encontrada!" />
     );
 
-  if (accessDeniedError) return <AccessDenied />;
+  if (accessDeniedError)
+    return <AccessDenied>Você não pode executar essa operação.</AccessDenied>;
 
-  function handleWorkStationUpdate(workStation: WorkStation.Input) {
-    WorkStationService.updateExistingWorkStation(
+  async function handleWorkStationUpdate(workStation: WorkStation.Input) {
+    await WorkStationService.updateExistingWorkStation(
       workStation,
       Number(params.workStationId),
     ).then((workStation: WorkStation.WorkStationModel) => {
       notification.success({
         message: `Tarefa ${workStation?.name} atualizada com sucesso.`,
       });
+      navigate('/estacoes-de-trabalho');
     });
   }
 

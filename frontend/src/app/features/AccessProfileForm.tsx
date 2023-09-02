@@ -10,7 +10,7 @@ import ButtonForm from '../components/ButtonForm';
 type RoleType = Role.Detailed;
 
 interface AccessProfileFormDefaultProps {
-  onUpdate?: (role: Role.Input) => RoleType;
+  onUpdate?: (role: Role.Input) => Promise<RoleType>;
   role?: RoleType;
 }
 
@@ -29,20 +29,29 @@ export default function AccessProfileForm(
           form={form}
           initialValues={props.role}
           onFinish={async (role: Role.Input) => {
+            setFetching(true);
             if (props.role) {
-              return props.onUpdate && props.onUpdate(role);
+              return (
+                props.onUpdate &&
+                props.onUpdate(role).finally(() => {
+                  setFetching(false);
+                  form.resetFields();
+                })
+              );
             }
 
-            setFetching(true);
             await RoleService.createRole(role)
               .then((role: Role.Detailed) => {
                 notification.success({
                   message: 'Sucesso',
                   description: `Role ${role?.name} criado com sucesso`,
                 });
+                navigate('/perfis-de-acesso');
               })
-              .finally(() => setFetching(false));
-            form.resetFields();
+              .finally(() => {
+                setFetching(false);
+                form.resetFields();
+              });
           }}
         >
           <Form.Item label="Nome" name={'name'}>
@@ -50,7 +59,6 @@ export default function AccessProfileForm(
           </Form.Item>
 
           <ButtonForm
-            redirect={() => navigate('/perfis-de-acesso')}
             loading={fetching}
             icon={{
               create: props.role ? <EditOutlined /> : <SaveOutlined />,

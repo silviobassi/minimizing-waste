@@ -11,7 +11,7 @@ public interface RoleRepository extends CustomJpaRepository<Role, Long> {
 
     @Query("select r from Role r where r not in (select r from User u join u.role r where  u.id = :userId )")
     List<Role> findAllNotGranted(@Param("userId") Long userId);
-    @Query("select r from Role r where r in (select r from User u join u.role r where  u.id = :userId )")
+    @Query("select r from Role r where r in (select r from User u join u.role r where  u.id = :userId  )")
     List<Role> findAllGranted(@Param("userId") Long userId);
 
 

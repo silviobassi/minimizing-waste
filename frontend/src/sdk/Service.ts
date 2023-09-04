@@ -19,6 +19,7 @@ class Service {
     ) => AxiosRequestConfig | Promise<AxiosRequestConfig>,
     onRejected?: (error: any) => any,
   ) {
+    //@ts-ignore
     Http.interceptors.request.use(onFulfilled, onRejected);
   }
 

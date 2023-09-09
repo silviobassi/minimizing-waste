@@ -1,35 +1,27 @@
 version: "3.9"
 
 networks:
-  minimizing-network:
+  minimizing_network:
     driver: bridge
 
 services:
   minimizing-mysql:
-      image: mysql:8.0
-      environment:
-        MYSQL_ALLOW_EMPTY_PASSWORD: 'yes'
-      ports:
-        - "3306:3306"
-      networks:
-        - minimizing-network
+    image: mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+    ports:
+      - "3306:3306"
+    networks:
+      - minimizing_network
 
   minimizing-api:
-    image: silviobassi/minimizing-waste-api
-    command: ["/wait-for-it.sh", "minimizing-mysql:3306", "-t", "30",  "--", "java", "-jar", "minimizing-waste-api.jar"]
+    image: minimizing-api
+    command: ["/wait-for-it.sh", "-t", "30", "minimizing-mysql:3306", "--", "java", "-jar", "minimizing-api.jar"]
     environment:
       DB_HOST: minimizing-mysql
+    ports:
+      - "8080:8080"
     networks:
-      - minimizing-network
+      - minimizing_network
     depends_on:
       - minimizing-mysql
-
-  minimizing-proxy:
-    build: ./nginx
-    image: minimizing-proxy
-    ports:
-      - "8080:80"
-    networks:
-      - minimizing-network
-    depends_on:
-      - minimizing-api

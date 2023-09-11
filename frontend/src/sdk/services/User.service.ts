@@ -5,6 +5,7 @@ import { generateQueryString } from '../utils';
 class UserService extends Service {
   static getAllUsers(search: User.Query): User.PagedModelDetailed {
     const queryString = generateQueryString(search);
+   
     return this.Http.get<User.PagedModelDetailed[]>(
       '/users'.concat(queryString),
     ).then(this.getData);

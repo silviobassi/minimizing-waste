@@ -4,6 +4,8 @@ import handleAxiosResponseSuccess from './utils/handleAxiosResponseSuccess';
 
 const Http = axios.create();
 
+const API_BASE_URL = import.meta.env.VITE_REACT_APP_API_BASE_URL
+
 class Service {
   public static Http = Http;
   protected static getData = getData;
@@ -41,7 +43,7 @@ function getStatus<T>(res: AxiosResponse<T>) {
   return res.status;
 }
 
-Http.defaults.baseURL = 'http://localhost:8080/v1';
+Http.defaults.baseURL = API_BASE_URL;
 
 Http.interceptors.response.use(
   handleAxiosResponseSuccess,

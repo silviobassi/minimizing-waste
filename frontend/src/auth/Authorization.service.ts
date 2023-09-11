@@ -3,8 +3,14 @@ import pkceChallenge from 'pkce-challenge';
 
 import qs from 'qs';
 
+const APP_CLIENT_URI = import.meta.env.VITE_REACT_APP_CLIENT_URI;
+const APP_AUTH_SERVER = import.meta.env.VITE_REACT_APP_AUTH_SERVER;
+const APP_CLIENT_ID = import.meta.env.VITE_REACT_APP_CLIENT_ID
+const APP_CLIENT_PASSWORD = import.meta.env.VITE_REACT_APP_CLIENT_PASSWORD
+const APP_STATE = import.meta.env.VITE_REACT_APP_STATE
+
 const authServer = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: APP_AUTH_SERVER,
 });
 
 authServer.interceptors.response.use(undefined, async (error) => {
@@ -31,7 +37,7 @@ export interface OAuthAuthorizationTokenResponse {
 export default class AuthService {
   public static imperativelySendToLogout() {
     window.localStorage.clear();
-    window.location.href = `http://localhost:8080/logout?redirect=http://127.0.0.1:5173`;
+    window.location.href = `${APP_AUTH_SERVER}/logout?redirect=${APP_CLIENT_URI}`;
   }
 
   public static async renewToken(config: {
@@ -48,7 +54,7 @@ export default class AuthService {
       .post<OAuthAuthorizationTokenResponse>('/oauth2/token', formUrlEncoded, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          Authorization: `Basic ${btoa('minimizing-web:web123')}`,
+          Authorization: `Basic ${btoa(`${APP_CLIENT_ID}:${APP_CLIENT_PASSWORD}`)}`,
         },
       })
       .then((res) => res.data);
@@ -72,7 +78,7 @@ export default class AuthService {
       .post<OAuthAuthorizationTokenResponse>('/oauth2/token', encodedData, {
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
-          Authorization: `Basic ${btoa('minimizing-web:web123')}`,
+          Authorization: `Basic ${btoa(`${APP_CLIENT_ID}:${APP_CLIENT_PASSWORD}`)}`,
         },
       })
       .then((res) => res.data);
@@ -81,15 +87,15 @@ export default class AuthService {
   public static getLoginScreenUrl(codeChallenge: string) {
     const config = qs.stringify({
       response_type: 'code',
-      client_id: 'minimizing-web',
-      state: 'abc',
+      client_id: APP_CLIENT_ID,
+      state: APP_STATE,
       redirect_uri: `${window.location.origin}/authorize`,
       scope: 'READ WRITE',
       code_challenge: codeChallenge,
       code_challenge_method: 'S256',
     });
 
-    return `http://localhost:8080/oauth2/authorize?${config}`;
+    return `${APP_AUTH_SERVER}/oauth2/authorize?${config}`;
   }
 
   public static async imperativelySendToLoginScreen() {

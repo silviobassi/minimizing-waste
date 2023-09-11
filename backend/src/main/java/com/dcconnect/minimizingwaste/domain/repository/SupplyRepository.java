@@ -19,9 +19,9 @@ public interface SupplyRepository extends CustomJpaRepository<Supply, Long>, Sup
     Page<Supply> findAll(Specification<Supply> specification, Pageable pageable);
 
     @Query(value = "select sm from SupplyMovement sm join fetch sm.workStation w " +
-            "join fetch w.sector join fetch sm.supply s join fetch s.supplyDescription join fetch sm.notification",
-    countQuery = "select count(sm) from SupplyMovement sm join sm.workStation w " +
-            "join w.sector join  sm.supply s join s.supplyDescription  join  sm.notification")
+            "join fetch w.sector join fetch sm.supply s join fetch s.supplyDescription",
+            countQuery = "select count(sm) from SupplyMovement sm join sm.workStation w " +
+                    "join w.sector join  sm.supply s join s.supplyDescription")
     Page<SupplyMovement> findAllSupplyMovements(Pageable pageable);
 
     @Query(value = "from SupplyMovement sm join fetch sm.supply s  join fetch sm.workStation w " +

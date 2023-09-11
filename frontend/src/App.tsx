@@ -1,5 +1,4 @@
 import Routes from './app/routes';
-
 import { notification } from 'antd';
 import jwtDecode from 'jwt-decode';
 import { useEffect } from 'react';
@@ -9,15 +8,16 @@ import { Authentication } from './auth/Auth';
 import AuthService from './auth/Authorization.service';
 import useAuth from './core/hooks/useAuth';
 
-
 function App() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
   const { fetchUser } = useAuth();
 
+  const APP_CLIENT_URI = import.meta.env.VITE_REACT_APP_CLIENT_URI
 
   useEffect(() => {
+
     async function identify() {
       const isInAuthorizationRoute = window.location.pathname === '/authorize';
       const code = new URLSearchParams(window.location.search).get('code');
@@ -47,7 +47,8 @@ function App() {
           await AuthService.getFirstAccessTokens({
             code,
             codeVerifier,
-            redirectUri: 'http://127.0.0.1:5173/authorize',
+            redirectUri: `${APP_CLIENT_URI}/authorize`,
+            
           });
 
         AuthService.setAccessToken(access_token);

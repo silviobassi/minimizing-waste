@@ -33,10 +33,12 @@ export default function EmployeeTasksAssignedNotification() {
           <List
             loading={fetching}
             dataSource={
+                //@ts-ignore
               availableAssignedTasks?._embedded?.notificationsAssignments
             }
             pagination={{
               onChange: (page: number) => setPage(page - 1),
+                //@ts-ignore
               total: availableAssignedTasks?.page?.totalElements,
               pageSize: 2,
             }}

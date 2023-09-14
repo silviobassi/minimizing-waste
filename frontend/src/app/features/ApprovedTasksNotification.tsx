@@ -34,9 +34,11 @@ export default function ApprovedTasksNotification() {
           loading={fetching}
           pagination={{
             onChange: (page: number) => setPage(page - 1),
+            //@ts-ignore
             total: assignmentsApproved?.page?.totalElements,
             pageSize: 2,
           }}
+          //@ts-ignore
           dataSource={assignmentsApproved?._embedded?.notificationsAssignments}
           renderItem={(
             assignmentNotification: Communication.AssignmentNotification,

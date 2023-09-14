@@ -65,8 +65,6 @@ export default function SupplyEditView() {
   return (
     <SupplyForm
       title="Edição de Recurso"
-      labelRegister="EDITAR"
-      iconButton={{ register: <EditOutlined />, cancel: <StopOutlined /> }}
       onUpdateMaterial={handleSupplyMaterialUpdate}
       onUpdateEquipment={handleSupplyEquipmentUpdate}
       supply={supply}

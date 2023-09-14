@@ -34,9 +34,11 @@ export default function ApprovedTasks() {
           loading={fetching}
           pagination={{
             onChange: (page: number) => setPage(page - 1),
+              //@ts-ignore
             total: assignmentsExpired?.page?.totalElements,
             pageSize: 2,
           }}
+            //@ts-ignore
           dataSource={assignmentsExpired?._embedded?.notificationsAssignments}
           renderItem={(
             assignmentNotification: Communication.AssignmentNotification,

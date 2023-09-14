@@ -21,7 +21,7 @@ export const fetchUser = createAsyncThunk(
     try {
       const user = await UserService.getDetailedUser(userId);
       dispatch(storeUser(user));
-    } catch (error) {
+    } catch (error: any) {
       return rejectWithValue({ ...error });
     }
   },

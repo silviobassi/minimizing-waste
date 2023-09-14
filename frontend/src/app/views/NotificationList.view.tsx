@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import usePageTitle from '../../core/usePageTitle';
 import ApprovedTasksNotification from '../features/ApprovedTasksNotification';
 import CompletionOfTasksNotification from '../features/CompletionOfTasksNotification';
-import EmployeeTasksAssignedNotification from '../features/EmployeeTasksAssignedNotification.tsx';
+import EmployeeTasksAssignedNotification from '../features/EmployeeTasksAssignedNotification';
 import EmployeeTasksUnassignedNotification from '../features/EmployeeTasksUnassignedNotification.';
 import ExpiredTasksNotification from '../features/ExpiredTasksNotification';
 import SupplyAvailableNotification from '../features/SupplyAvailableAssignedNotification';

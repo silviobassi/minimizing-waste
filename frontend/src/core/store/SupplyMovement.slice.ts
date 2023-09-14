@@ -31,7 +31,7 @@ export const removeSupplyMovement = createAsyncThunk(
   'supplies-movements/removeSupplyMovement',
   async (supplyMovementId: number, { dispatch }) => {
     await SupplyMovementService.deleteExistingSupplyMovement(supplyMovementId);
-    await dispatch(getAllSuppliesMovements({}));
+    await dispatch(getAllSuppliesMovements({page: 0, size: 4, sort: ['asc']}));
   },
 );
 

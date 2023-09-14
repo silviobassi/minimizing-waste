@@ -33,9 +33,11 @@ export default function CompletionOfTasksNotification() {
           loading={fetching}
           pagination={{
             onChange: (page: number) => setPage(page - 1),
+            //@ts-ignore
             total: assignmentsCompleted?.page?.totalElements,
             pageSize: 2,
           }}
+          //@ts-ignore
           dataSource={assignmentsCompleted?._embedded?.notificationsAssignments}
           renderItem={(
             assignmentNotification: Communication.AssignmentNotification,

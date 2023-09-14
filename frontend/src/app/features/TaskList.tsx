@@ -7,7 +7,6 @@ import {
 } from '@ant-design/icons';
 import {
   Button,
-  Card,
   Checkbox,
   Col,
   DatePicker,
@@ -130,20 +129,16 @@ export default function TaskList() {
     displayName?: string,
   ): ColumnProps<Assignment.PagedModelAssignment> => ({
     filterDropdown: ({}) => (
-      <Card>
-        <Form form={form}>
-          <Form.Item name={'name'}>
-            <Input
-              type="text"
-              //@ts-ignore
-              placeholder={`Buscar ${displayName || dataIndex}`}
-              onChange={(e) => {
-                setAssignmentTitle(e.target.value);
-              }}
-            />
-          </Form.Item>
-        </Form>
-      </Card>
+      <Form.Item name={'name'}>
+        <Input
+          type="text"
+          //@ts-ignore
+          placeholder={`Buscar ${displayName || dataIndex}`}
+          onChange={(e) => {
+            setAssignmentTitle(e.target.value);
+          }}
+        />
+      </Form.Item>
     ),
     filterIcon: (filtered: boolean) => (
       <SearchOutlined style={{ color: filtered ? '#0099ff' : undefined }} />
@@ -173,34 +168,37 @@ export default function TaskList() {
             </Button>
           </Space>
         </Col>
-        <Col xs={24} lg={11}>
+        <Col xs={24} lg={19}>
           <Form>
-            <Form.Item name="search">
-              <Select
-                onChange={(e) => setSearchDate(e)}
-                size="large"
-                placeholder="Selecione o Tipo da Pesquisa"
-                options={[
-                  {
-                    label: 'TAREFAS COM DATAS DE FINALIZAÇÃO',
-                    value: 'concluded',
-                  },
-                  {
-                    label: 'TAREFAS COM DATAS DE APROVAÇÃO',
-                    value: 'approved',
-                  },
-                  {
-                    label: 'PRAZO PARA CONCLUSÃO DA TAREFA',
-                    value: 'finished',
-                  },
-                ]}
-              />
-            </Form.Item>
+            <Row justify={'space-between'} gutter={30}>
+              <Col xs={24} lg={12}>
+                <Form.Item name="search">
+                  <Select
+                    onChange={(e) => setSearchDate(e)}
+                    size="large"
+                    placeholder="Selecione o Tipo da Pesquisa"
+                    options={[
+                      {
+                        label: 'TAREFAS COM DATAS DE FINALIZAÇÃO',
+                        value: 'concluded',
+                      },
+                      {
+                        label: 'TAREFAS COM DATAS DE APROVAÇÃO',
+                        value: 'approved',
+                      },
+                      {
+                        label: 'PRAZO PARA CONCLUSÃO DA TAREFA',
+                        value: 'finished',
+                      },
+                    ]}
+                  />
+                </Form.Item>
+              </Col>
+              <Col xs={24} lg={12}>
+                {search[searchDate]}
+              </Col>
+            </Row>
           </Form>
-        </Col>
-
-        <Col xs={24} lg={8}>
-          {search[searchDate]}
         </Col>
       </Row>
 
@@ -217,6 +215,7 @@ export default function TaskList() {
         )}
         <Table<Assignment.PagedModelAssignment>
           loading={fetching}
+            //@ts-ignore
           dataSource={assignments?._embedded?.assignments}
           columns={[
             {
@@ -560,6 +559,7 @@ export default function TaskList() {
           ]}
           pagination={{
             onChange: (page: number) => setPage(page - 1),
+              //@ts-ignore
             total: assignments?.page?.totalElements,
             pageSize: 4,
           }}

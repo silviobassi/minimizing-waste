@@ -8,19 +8,14 @@ import ButtonForm from '../components/ButtonForm';
 import WrapperDefault from '../components/WrapperDefault';
 
 interface SupplyFormDefaultProps {
-  labelRegister: string;
-  iconButton: {
-    register: React.ReactNode;
-    cancel: React.ReactNode;
-  };
   title: string;
-  onUpdateMaterial: (
+  onUpdateMaterial?: (
     supply: Supply.MaterialInput,
   ) => Promise<Supply.MaterialModel>;
-  onUpdateEquipment: (
+  onUpdateEquipment?: (
     supply: Supply.EquipmentInput,
   ) => Promise<Supply.EquipmentModel>;
-  supply: Supply.Detailed;
+  supply?: Supply.Detailed;
 }
 
 export default function SupplyForm(props: SupplyFormDefaultProps) {

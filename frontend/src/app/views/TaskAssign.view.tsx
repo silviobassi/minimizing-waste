@@ -82,6 +82,7 @@ export default function TaskAssignView() {
     <AssignmentAssigned
       users={usersAssignmentAssign}
       assignment={assignment}
+      //@ts-ignore
       onAssigned={handleAssignmentAssign}
       onPage={(page: number) => setPage(page - 1)}
       assign={true}

@@ -22,10 +22,12 @@ export default function SupplyAvailableAssignedNotification() {
           <List
             loading={fetching}
             dataSource={
+                //@ts-ignore
               availableSupplies?._embedded?.supplyMovementNotifications
             }
             pagination={{
               onChange: (page: number) => setPage(page - 1),
+                //@ts-ignore
               total: availableSupplies?.page?.totalElements,
               pageSize: 2,
             }}

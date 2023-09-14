@@ -1,6 +1,7 @@
 export type { Assignment } from './Assignment';
 export type { Avatar } from './Avatar';
 export type { Communication } from './Communication';
+ //@ts-ignore
 export type { MinimizingWaste } from './MinimizingWaste';
 export type { Permission } from './Permission';
 export type { Role } from './Role';

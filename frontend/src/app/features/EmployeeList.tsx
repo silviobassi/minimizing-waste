@@ -130,6 +130,7 @@ export default function EmployeeList() {
         )}
         <Table<User.PagedModelDetailed>
           loading={fetching}
+            //@ts-ignore
           dataSource={users?._embedded?.users}
           rowKey="id"
           columns={[
@@ -325,6 +326,7 @@ export default function EmployeeList() {
           ]}
           pagination={{
             onChange: (page: number) => setPage(page - 1),
+              //@ts-ignore
             total: users?.page?.totalElements,
             pageSize: 4,
           }}

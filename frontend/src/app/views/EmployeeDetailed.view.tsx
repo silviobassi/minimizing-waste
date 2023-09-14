@@ -56,7 +56,7 @@ export default function EmployeeDetailedView() {
 
   if (notFound)
     return <ElementNotFound description="Colaborador não encontrado" />;
-  if (accessDeniedError) return <AccessDenied />;
+  if (accessDeniedError) return <AccessDenied>Você não tem permissão para executar esta operação!</AccessDenied>;
   if (!user) return <Skeleton />;
 
   return (

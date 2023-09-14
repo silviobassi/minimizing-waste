@@ -29,7 +29,6 @@ import useSuppliesMovements from '../../core/hooks/useSuppliesMovements';
 import { Supply } from '../../sdk/@types';
 import AccessDenied from '../components/AccessDenied';
 import DoubleConfirm from '../components/DoubleConfirm';
-import ReloadList from '../components/ReloadList';
 import WrapperDefault from '../components/WrapperDefault';
 
 export default function SupplyMovementList() {
@@ -79,7 +78,6 @@ export default function SupplyMovementList() {
         direction={xs ? 'vertical' : 'horizontal'}
         size={'middle'}
       >
-        <ReloadList onReload={fetchSuppliesMovements} />
         <Button
           style={xs ? { width: '100%' } : { display: 'flex' }}
           type={'primary'}
@@ -398,6 +396,7 @@ export default function SupplyMovementList() {
             autoComplete="off"
             form={form}
             onFinish={async (supplyMovement: Supply.DevolvedSupplyInput) => {
+                //@ts-ignore
               await giveBackSupplyMovement(movement?.id, supplyMovement);
               notification.success({
                 message: 'Sucesso',

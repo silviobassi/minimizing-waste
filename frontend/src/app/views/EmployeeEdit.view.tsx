@@ -59,8 +59,6 @@ export default function EmployeeEditView() {
       onUpdate={handleUserUpdate}
       isCurrentUser={true}
       title="Edição de Colaborador"
-      labelRegister="EDITAR"
-      iconButton={{ register: <SaveOutlined />, cancel: <StopOutlined /> }}
     />
   );
 }

@@ -8,8 +8,6 @@ export default function EmployeeCreateView() {
   return (
     <EmployeeForm
       title="Criação de Colaborador"
-      labelRegister="CRIAR"
-      iconButton={{ register: <SaveOutlined />, cancel: <StopOutlined /> }}
     />
   );
 }

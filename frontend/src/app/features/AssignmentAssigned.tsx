@@ -34,7 +34,7 @@ interface AssignmentAssignedProps {
   onAssigned?: (
     notification: Assignment.AssignmentNotificationInput,
     employeeId: number,
-    employeeName: any,
+    employeeName: string,
   ) => Promise<any>;
   onPage: (page: number) => any;
   assign: boolean;
@@ -164,6 +164,7 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
               notice: Assignment.AssignmentNotificationInput,
             ) => {
               try {
+                //@ts-ignore
                 props.onAssigned(notice, Number(employee?.id), employee?.name);
                 form.resetFields();
                 setOpen(false);

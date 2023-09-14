@@ -98,6 +98,7 @@ public class S3FileAvatarStorageService implements FileAvatarStorageService {
 
     @Override
     public void removeIfExistingOldAvatar(User user) {
+        // Verificar se a foto atual não foi alterada e não removê-la
         if(user.isNotNew() && user.isCurrentAvatarUrl()){
             String oldFilename = getFilenameOfUrl(user.getCurrentAvatarUrl());
             if(Objects.nonNull(oldFilename))

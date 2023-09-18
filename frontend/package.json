@@ -1,5 +1,4 @@
 {
-  "homepage": "https://silviobassi.github.io/minimizing-frontend",
   "name": "minimizing-waste",
   "private": true,
   "version": "0.0.0",
@@ -8,9 +7,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint . --ext .ts,.tsx",
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
+    "lint": "eslint . --ext .ts,.tsx"
   },
   "dependencies": {
     "@ant-design/icons": "^4.8.0",
@@ -21,7 +18,6 @@
     "antd-mask-input": "^2.0.7",
     "axios": "^1.2.1",
     "date-fns": "^2.29.3",
-    "gh-pages": "^6.0.0",
     "jwt-decode": "^3.1.2",
     "moment": "^2.29.4",
     "pkce-challenge": "^3.0.0",

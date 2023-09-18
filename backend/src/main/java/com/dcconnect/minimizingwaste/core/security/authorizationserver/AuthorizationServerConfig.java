@@ -64,9 +64,7 @@ public class AuthorizationServerConfig {
                 })
                 .apply(authorizationServerConfigurer);
 
-        return  http.formLogin(customizer -> customizer.loginPage("/login")
-                .defaultSuccessUrl(redirectProperties.getClient(), true)
-        ).build();
+        return  http.formLogin(customizer -> customizer.loginPage("/login")).build();
     }
 
     @Bean

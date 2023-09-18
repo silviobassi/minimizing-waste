@@ -99,6 +99,11 @@ public class SupplyMovementService {
             throw new BusinessException(String.format(THERE_IS_NO_SUPPLY_TO_FINALIZE,
                     supplyMovement.getAllocatedQuantity()));
         }
+
+        if(supplyMovement.getSupply().isEquipment()){
+            supplyMovement.decreaseAllocated();
+            throw new BusinessException("Equipamentos não podem ser finalizados");
+        }
         supplyMovement.decreaseSupply();
         supplyMovement.decreaseAllocated();
         supplyRepository.create(supplyMovement);

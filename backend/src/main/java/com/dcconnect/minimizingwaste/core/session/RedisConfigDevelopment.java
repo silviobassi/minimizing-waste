@@ -8,28 +8,19 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.serializer.JdkSerializationRedisSerializer;
 import org.springframework.session.MapSessionRepository;
-import org.springframework.session.Session;
 import org.springframework.session.SessionRepository;
 import org.springframework.session.data.redis.RedisIndexedSessionRepository;
 import org.springframework.session.data.redis.config.annotation.web.http.EnableRedisHttpSession;
 
 import java.util.HashMap;
-@Profile("homologation")
+
+@Profile("development")
 @Configuration
-@EnableRedisHttpSession
-public class RedisConfig {
+public class RedisConfigDevelopment {
 
     @Bean
-    @Primary
-    public SessionRepository redisIndexedSessionRepository (RedisTemplate<String, Object> redisTemplate) {
-        return  new RedisIndexedSessionRepository(redisTemplate);
+    public SessionRepository<?> sessionRepository() {
+        return new MapSessionRepository(new HashMap<>());
     }
 
-    @Bean
-    public RedisTemplate<String, Object> redisDefaultTemplate(RedisConnectionFactory redisConnectionFactory) {
-        RedisTemplate<String, Object> template = new RedisTemplate<>();
-        template.setConnectionFactory(redisConnectionFactory);
-        template.setKeySerializer(new JdkSerializationRedisSerializer());
-        return template;
-    }
 }

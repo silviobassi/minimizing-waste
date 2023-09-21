@@ -38,12 +38,7 @@ spring:
           introspection-uri: http://localhost:8080/oauth2/introspect
           client-id: minimizing-web
           client-secret: web123
-  data:
-    redis:
-      port: 6379
-      host: ${REDIS_HOST:localhost}
 
-springdoc:
   packages-to-scan: com.dcconnect.minimizingwaste.api
   paths-to-match: /v1/**
   oAuthFlow:
@@ -84,4 +79,4 @@ minimizing-waste:
 
   security:
     redirect:
-      client: https://minimizing-waste.netlify.app
+      client: http://127.0.0.1:5173

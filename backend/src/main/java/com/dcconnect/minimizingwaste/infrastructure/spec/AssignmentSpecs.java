@@ -1,7 +1,10 @@
 package com.dcconnect.minimizingwaste.infrastructure.spec;
 
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
+import com.dcconnect.minimizingwaste.domain.model.Assignment_;
+import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.repository.filter.AssignmentFilter;
+import jakarta.persistence.criteria.Join;
 import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
@@ -12,7 +15,6 @@ public class AssignmentSpecs {
     public static Specification<Assignment> usingFilter(AssignmentFilter assignmentFilter){
         return (root, query, builder) -> {
             var predicates = new ArrayList<Predicate>();
-
 
             if(assignmentFilter.getAssignmentTitle() != null) {
                 predicates.add(builder.like(root.get("title"), assignmentFilter.getAssignmentTitle()+"%"));

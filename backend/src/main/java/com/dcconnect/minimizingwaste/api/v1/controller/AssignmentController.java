@@ -59,7 +59,7 @@ public class AssignmentController implements AssignmentControllerOpenApi {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public PagedModel<AssignmentDefaultModel> search(AssignmentFilter assignmentFilter,
-                                                     @PageableDefault(size = 10) Pageable pageable){
+                                                     @PageableDefault(size = 10) Pageable pageable) {
 
         Pageable translatedPage = pageableTranslate(pageable);
 
@@ -74,7 +74,7 @@ public class AssignmentController implements AssignmentControllerOpenApi {
     @CheckSecurity.Assignments.CanEdit
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public AssignmentModel create(@RequestBody @Valid AssignmentInput assignmentInput){
+    public AssignmentModel create(@RequestBody @Valid AssignmentInput assignmentInput) {
         Assignment assignment = assignmentDisassembler.toDomainObject(assignmentInput);
         assignment = assignmentService.create(assignment);
         return assignmentAssembler.toModel(assignment);
@@ -83,8 +83,8 @@ public class AssignmentController implements AssignmentControllerOpenApi {
     @CheckSecurity.Assignments.CanEdit
     @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{assignmentId}")
-    public AssignmentModel update(@PathVariable Long assignmentId, @RequestBody @Valid AssignmentInput assignmentInput){
-        Assignment assignment =  assignmentService.findOrFail(assignmentId);
+    public AssignmentModel update(@PathVariable Long assignmentId, @RequestBody @Valid AssignmentInput assignmentInput) {
+        Assignment assignment = assignmentService.findOrFail(assignmentId);
         assignmentDisassembler.copyToDomainModel(assignmentInput, assignment);
         assignment = assignmentService.create(assignment);
 
@@ -94,14 +94,14 @@ public class AssignmentController implements AssignmentControllerOpenApi {
     @CheckSecurity.Assignments.CanEdit
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping("/{assignmentId}")
-    public void delete(@PathVariable Long assignmentId){
+    public void delete(@PathVariable Long assignmentId) {
         assignmentService.delete(assignmentId);
     }
 
     @CheckSecurity.Assignments.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/{assignmentId}")
-    public AssignmentModel findOrFail(@PathVariable Long assignmentId){
+    public AssignmentModel findOrFail(@PathVariable Long assignmentId) {
         Assignment assignment = assignmentService.findOrFail(assignmentId);
 
         return assignmentAssembler.toModel(assignment);
@@ -111,9 +111,9 @@ public class AssignmentController implements AssignmentControllerOpenApi {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{assignmentId}/conclusion")
     public void completeAssignment(@RequestBody @Valid AssignmentCompletedInput assignmentCompletedInput,
-                                   @PathVariable Long assignmentId){
+                                   @PathVariable Long assignmentId) {
 
-        Assignment currentAssignment =  assignmentService.findOrFail(assignmentId);
+        Assignment currentAssignment = assignmentService.findOrFail(assignmentId);
         assignmentCompletedApprovedDisassembler.copyToDomainModel(assignmentCompletedInput, currentAssignment);
         assignmentService.completeAssignment(currentAssignment);
     }
@@ -122,13 +122,13 @@ public class AssignmentController implements AssignmentControllerOpenApi {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{assignmentId}/approval")
     public void approveAssignment(@RequestBody @Valid AssignmentApprovedInput assignmentApprovedInput,
-                                  @PathVariable Long assignmentId){
-        Assignment currentAssignment =  assignmentService.findOrFail(assignmentId);
+                                  @PathVariable Long assignmentId) {
+        Assignment currentAssignment = assignmentService.findOrFail(assignmentId);
         assignmentCompletedApprovedDisassembler.copyToDomainModel(assignmentApprovedInput, currentAssignment);
         assignmentService.approveAssignment(currentAssignment);
     }
 
-    private Pageable pageableTranslate(Pageable apiPageable){
+    private Pageable pageableTranslate(Pageable apiPageable) {
         var mapping = Map.of(
                 "title", "title",
                 "startDate", "startDate",

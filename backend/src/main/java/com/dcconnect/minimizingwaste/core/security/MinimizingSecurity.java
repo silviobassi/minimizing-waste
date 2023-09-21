@@ -1,5 +1,6 @@
 package com.dcconnect.minimizingwaste.core.security;
 
+import com.dcconnect.minimizingwaste.domain.model.Assignment;
 import com.dcconnect.minimizingwaste.domain.repository.AssignmentRepository;
 import com.dcconnect.minimizingwaste.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,10 @@ public class MinimizingSecurity {
         return assignmentRepository.existsByEmployeeResponsible(assignmentId, getUserId());
     }
 
+    public Assignment hasEmployeeResponsible(Long id){
+        return assignmentRepository.findById(id).orElseThrow();
+    }
+
 
     public boolean hasUserLogin(Long userId){
         if(userId == null)
@@ -55,7 +60,6 @@ public class MinimizingSecurity {
         return isScopeWrite() && (hasAuthority("COMPLETE_ASSIGNMENTS")
                 || hasAssignmentResponsible(assignmentId));
     }
-
     public boolean canChangedPassword(Long userId){
         return getUserId() != null && userId != null
                 && getUserId().equals(userId);

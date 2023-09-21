@@ -1,0 +1,16 @@
+version: "3.9"
+
+networks:
+  minimizing-network:
+    driver: bridge
+
+services:
+  minimizing-mysql:
+    image: mysql
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_ROOT_PASSWORD: ""
+    ports:
+      - "3306:3306"
+    networks:
+      - minimizing-network

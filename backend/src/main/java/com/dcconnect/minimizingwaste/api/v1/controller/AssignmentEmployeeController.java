@@ -16,8 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/assignments/{assignmentId}/employee-responsible")
@@ -37,7 +37,7 @@ public class AssignmentEmployeeController implements AssignmentEmployeeControlle
     @GetMapping
     public CollectionModel<UserDetailedModel> all(@PathVariable Long assignmentId){
         Assignment assignment = assignmentService.findOrFail(assignmentId);
-        List<User> users = assignment.getEmployeesResponsible().stream().collect(Collectors.toList());
+        List<User> users = new ArrayList<>(assignment.getEmployeesResponsible());
         return assignEmployeeAssembler.toCollectionModel(users, assignmentId);
     }
 

@@ -11,7 +11,7 @@ services:
       MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
       MYSQL_ROOT_PASSWORD: ""
     ports:
-      - "3306:3306"
+      - "13306:3306"
     networks:
       - minimizing-network
   
@@ -26,7 +26,7 @@ services:
     environment:
       DB_HOST: minimizing-mysql
       SPRING_DATA_REDIS_HOST: minimizing-redis
-      SPRING_PROFILES_ACTIVE: development
+      SPRING_PROFILES_ACTIVE: homologation
     networks:
       - minimizing-network
     depends_on:

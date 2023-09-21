@@ -17,8 +17,12 @@ public class SupplyMovementService {
 
     public static final String DEVOLVED_QUANTITY_GREATER_ALLOCATED =
             "A quantidade %d não pode ser maior do que a quantidade alocada %d.";
-    public static final String AVAILABLE_SUPPLY_NUMBER = "A quantidade de recurso disponível é %d";
-    public static final String THERE_IS_NO_SUPPLY_TO_FINALIZE = "Não há recurso a finalizar, pois a quantidade alocada é %d";
+    public static final String AVAILABLE_SUPPLY_NUMBER =
+            "A quantidade de recurso disponível é %d";
+    public static final String THERE_IS_NO_SUPPLY_TO_FINALIZE =
+            "Não há recurso a finalizar, pois a quantidade alocada é %d";
+    public static final String MOVEMENT_CANNOT_BE_ALLOCATED_IS_NOT_FREE =
+            "Movimento de código %d não liberado para a alocação de resurso";
 
     @Autowired
     private SupplyRepository supplyRepository;
@@ -39,6 +43,10 @@ public class SupplyMovementService {
         Supply supply = supplyService.findOrFail(supplyMovement.getSupply().getId());
         WorkStation workStation = workStationService.findOrFail(supplyMovement.getWorkStation().getId());
 
+        if(supplyMovement.isBusy() && supplyMovement.isQuantityReservedGreaterThanAllocated()){
+            throw new BusinessException(String.format(MOVEMENT_CANNOT_BE_ALLOCATED_IS_NOT_FREE, supplyMovement.getId()));
+        }
+        
         if(supplyMovement.isNew()){
             isReservedQuantityGreaterThanSupplyQuantity(supplyMovement, supply);
         }
@@ -74,7 +82,7 @@ public class SupplyMovementService {
         Supply supply = supplyService.findOrFail(supplyMovement.getSupply().getId());
         WorkStation workStation = workStationService.findOrFail(supplyMovement.getWorkStation().getId());
 
-        if(supplyMovement.getReservedQuantity() > supplyMovement.getAllocatedQuantity()){
+        if(supplyMovement.isQuantityReservedGreaterThanAllocated()){
             throw new BusinessException(String.format(DEVOLVED_QUANTITY_GREATER_ALLOCATED,
                     supplyMovement.getReservedQuantity(), supplyMovement.getAllocatedQuantity()));
         }

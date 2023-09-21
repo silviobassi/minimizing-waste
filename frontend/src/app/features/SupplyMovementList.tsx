@@ -2,6 +2,9 @@ import {
   DeleteOutlined,
   EditOutlined,
   EyeOutlined,
+  KeyOutlined,
+  LockOutlined,
+  LockTwoTone,
   MinusOutlined,
   RollbackOutlined,
 } from '@ant-design/icons';
@@ -132,9 +135,9 @@ export default function SupplyMovementList() {
                             checked={movement?.notBusy}
                           >
                             {movement?.notBusy ? (
-                              <Tag color="blue">DESOCUPADO</Tag>
+                              <Tag color="blue">LIBERADO</Tag>
                             ) : (
-                              <Tag color="red">OCUPADO</Tag>
+                              <Tag color="red">BLOQUEADO</Tag>
                             )}
                           </Checkbox>
                           {movement?.movable ? (
@@ -254,7 +257,7 @@ export default function SupplyMovementList() {
               responsive: ['sm'],
             },
             {
-              title: 'Desocupado?',
+              title: 'Liberado?',
               dataIndex: 'notBusy',
               align: 'center',
               responsive: ['sm'],
@@ -269,9 +272,9 @@ export default function SupplyMovementList() {
                       checked={movement?.notBusy}
                     >
                       {movement?.notBusy ? (
-                        <Tag color="blue">DESOCUPADO</Tag>
+                        <Tag color="blue">LIBERADO <KeyOutlined/></Tag>
                       ) : (
-                        <Tag color="red">OCUPADO</Tag>
+                        <Tag color="red">BLOQUEADO <LockOutlined/></Tag>
                       )}
                     </Checkbox>
                   </>
@@ -396,7 +399,7 @@ export default function SupplyMovementList() {
             autoComplete="off"
             form={form}
             onFinish={async (supplyMovement: Supply.DevolvedSupplyInput) => {
-                //@ts-ignore
+              //@ts-ignore
               await giveBackSupplyMovement(movement?.id, supplyMovement);
               notification.success({
                 message: 'Sucesso',

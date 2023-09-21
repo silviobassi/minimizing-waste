@@ -124,13 +124,13 @@ insert into users (name, cpf, email, whats_app, password, office, occupation, li
 
 
 insert into supplies_movement (create_at, not_busy, movable, allocated_quantity, notification_id, work_station_id, supply_id, employee_responsible_id)
-values (utc_timestamp(), true, false,1, 3, 5, 1, 2);
+values (utc_timestamp(), false, false,0, 3, 5, 1, 2);
 insert into supplies_movement (create_at, not_busy, movable, allocated_quantity, notification_id, work_station_id, supply_id, employee_responsible_id)
-values (utc_timestamp(), false, false, 1, 2, 3, 2, 3);
+values (utc_timestamp(), false, false, 0, 2, 3, 2, 3);
 insert into supplies_movement (create_at, not_busy, movable, allocated_quantity, notification_id, work_station_id, supply_id, employee_responsible_id)
-values (utc_timestamp(), false, true, 1, 1, 2, 3,2);
+values (utc_timestamp(), false, true, 0, 1, 2, 3,2);
 insert into supplies_movement (create_at, not_busy, movable, allocated_quantity, notification_id, work_station_id, supply_id, employee_responsible_id)
-values (utc_timestamp(), true, true, 1, 5, 2, 2, 3);
+values (utc_timestamp(), false, true, 0, 5, 2, 2, 3);
 
 insert into assignments (title, specific_point, start_date, deadline, completed, approved, nature, work_station_id, approval_description, notification_id)
 values ('Revestimento de Banheiros', 'Banheiros',  '2023-08-21 17:51:58.000000', '2023-08-27 17:51:58.000000', false, false, 'OBRAS', 1,

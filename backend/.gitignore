@@ -33,6 +33,6 @@ build/
 .vscode/
 
 ### Applications yml ###
-!**/src/main/resources/application-development.yml
-!**/src/main/resources/application-homologation.yml
-!**/src/main/resources/application.yml
+src/main/resources/application-development.yml
+src/main/resources/application-homologation.yml
+src/main/resources/application.yml

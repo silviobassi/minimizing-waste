@@ -141,12 +141,10 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
                 notification.success({
                   message: 'Sucesso',
                   description: `Recurso ${supply?.name}  criado com sucesso`,
-                }),
-                  navigate('/recursos');
+                })
               })
               .finally(() => {
                 setFetching(false);
-                form.resetFields();
               });
           } else {
             if (props.supply) {
@@ -154,7 +152,6 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
                 props.onUpdateEquipment &&
                 props.onUpdateEquipment(supplyDTO).finally(() => {
                   setFetching(false);
-                  form.resetFields();
                 })
               );
             }
@@ -169,7 +166,6 @@ export default function SupplyForm(props: SupplyFormDefaultProps) {
               })
               .finally(() => {
                 setFetching(false);
-                form.resetFields();
               });
           }
         }}

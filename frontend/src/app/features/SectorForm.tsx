@@ -61,7 +61,6 @@ export default function SectorForm(props: SectorFormDefaultProps) {
             })
             .finally(() => {
               setFetching(false);
-              form.resetFields();
             });
         }}
       >

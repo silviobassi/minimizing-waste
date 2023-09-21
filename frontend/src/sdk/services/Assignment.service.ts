@@ -6,7 +6,14 @@ class AssignmentService extends Service {
   static getAllAssignments(search: Assignment.Query) {
     const queryString = generateQueryString(search);
     return this.Http.get<Assignment.PagedModelAssignment>(
-      "/assignments".concat(queryString)
+      '/assignments'.concat(queryString),
+    ).then(this.getData);
+  }
+
+  static getAllAssignmentResponsible(search: Assignment.QueryResponsible) {
+    const queryString = generateQueryString(search);
+    return this.Http.get<Assignment.Responsible>(
+      '/assignments/responsible'.concat(queryString),
     ).then(this.getData);
   }
 

@@ -108,9 +108,8 @@ export default function GrantForm(props: GrantingPermissionsFormDefaultProps) {
               <Select
                 style={{ width: '100%' }}
                 onChange={(value, option: any) => {
-                  if (props.optionsAllNotOrGranted) {
+                  if (props.optionsAllNotOrGranted)
                     props.onPermissionsNotOrGranted(value);
-                  }
 
                   setRoleOrUser({
                     ...roleOrUser,

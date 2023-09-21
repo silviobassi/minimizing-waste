@@ -13,6 +13,8 @@ export namespace Assignment {
     MinimizingWaste.components['schemas']['AssignmentCompletedInput'];
   export type ApprovedInput =
     MinimizingWaste.components['schemas']['AssignmentApprovedInput'];
+  export type Responsible =
+    MinimizingWaste.components['schemas']['CollectionModelAssignmentResponsibleModel'];
 
   export type Query = {
     page?: number;
@@ -21,7 +23,12 @@ export namespace Assignment {
     assignmentTitle?: string;
     startDate?: string;
     endDate?: string;
-    approveDate?: string,
-    deadline?: string
+    approveDate?: string;
+    deadline?: string;
+  };
+
+  export type QueryResponsible = {
+    responsibleName?: string;
+    responsibleCpf?: string;
   };
 }

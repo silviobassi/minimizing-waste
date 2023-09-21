@@ -81,7 +81,6 @@ export default function WorkStationForm(props: WorkStationFormDefaultProps) {
             })
             .finally(() => {
               setFetching(false);
-              form.resetFields();
             });
         }}
       >

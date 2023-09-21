@@ -1,12 +1,12 @@
 import {
   ApartmentOutlined,
-  BankOutlined,
   FormOutlined,
   HomeOutlined,
   KeyOutlined,
   LockOutlined,
   NotificationOutlined,
   RetweetOutlined,
+  SearchOutlined,
   StockOutlined,
   TeamOutlined,
   UsergroupAddOutlined,
@@ -47,6 +47,11 @@ export default function MenuLayout() {
       label: <Link to={'/tarefas'}>Tarefas</Link>,
       key: 'tasks',
       icon: <FormOutlined />,
+    },
+    {
+      label: <Link to={'/tarefas/responsavel'}>Pesquisar Tarefas</Link>,
+      keys: 'tasksResponsible',
+      icon: <SearchOutlined />,
     },
     {
       label: <Link to={'/colaboradores'}>Colaboradores</Link>,
@@ -106,12 +111,11 @@ export default function MenuLayout() {
   ];
 
   return (
-    
-        <Menu
-          theme="dark"
-          mode="inline"
-          defaultSelectedKeys={['4']}
-          items={items}
-        />
+    <Menu
+      theme="dark"
+      mode="inline"
+      defaultSelectedKeys={['4']}
+      items={items}
+    />
   );
 }

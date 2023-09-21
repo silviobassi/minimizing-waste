@@ -76,6 +76,10 @@ const WorkStationListView = React.lazy(
   () => import('./views/WorkStationList.view'),
 );
 
+const AssignmentsResponsibleListView = React.lazy(
+  () => import('./views/AssignmentsResponsibleList.view'),
+);
+
 export default function Routes() {
   useEffect(() => {
     window.onunhandledrejection = ({ reason }) => {
@@ -189,6 +193,10 @@ export default function Routes() {
         />
 
         <Route path={'/tarefas'} element={<TaskListView />} />
+        <Route
+          path={'/tarefas/responsavel'}
+          element={<AssignmentsResponsibleListView />}
+        />
         <Route path={'/tarefa/criar'} element={<TaskCreateView />} />
         <Route
           path={'/tarefa/editar/:assignmentId'}

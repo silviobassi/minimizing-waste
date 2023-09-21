@@ -49,7 +49,7 @@ export default function SupplyAvailableAssignedNotification() {
                         textDecoration: 'underline',
                       }}
                     >
-                      {item.supply?.name}
+                      {item.supply?.name} - Código {item.supply?.id}
                     </Typography.Title>
                     <Descriptions
                       column={1}

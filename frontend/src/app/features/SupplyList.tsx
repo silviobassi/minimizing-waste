@@ -41,7 +41,7 @@ export default function SupplyList() {
   const { xs } = useBreakpoint();
   const navigate = useNavigate();
   useEffect(() => {
-    fetchSupplies({ page: page, size: 4, sort: ['asc'], supplyName }).catch(
+    fetchSupplies({ page: page, size: 4, sort: ["name", "desc"], supplyName }).catch(
       (err) => {
         if (err?.data?.status === 403) {
           setAccessDeniedError(true);

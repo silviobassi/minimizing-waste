@@ -33,6 +33,6 @@ export namespace Supply {
     supplyName?: string;
     page?: number;
     size?: number;
-    sort?: ['asc' | 'desc'];
+    sort?: [keyof SummaryModel,'asc' | 'desc'];
   };
 }

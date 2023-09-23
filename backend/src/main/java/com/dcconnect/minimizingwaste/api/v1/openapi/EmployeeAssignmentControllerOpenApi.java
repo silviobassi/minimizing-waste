@@ -1,18 +1,22 @@
 package com.dcconnect.minimizingwaste.api.v1.openapi;
 
 import com.dcconnect.minimizingwaste.api.v1.model.AssignmentResponsibleModel;
+import com.dcconnect.minimizingwaste.core.springdoc.PageableParameter;
 import com.dcconnect.minimizingwaste.domain.repository.filter.ResponsibleFilter;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.PagedModel;
 
 @Tag(name = "Assignments")
 public interface EmployeeAssignmentControllerOpenApi {
 
     @Operation(summary = "Lista as Tarefas de um determinado Responsável")
+    @PageableParameter
     @Parameter(
             in = ParameterIn.QUERY,
             name = "responsibleName",
@@ -27,5 +31,6 @@ public interface EmployeeAssignmentControllerOpenApi {
             description = "CPF do responsável pelas tarefas",
             schema = @Schema(type = "string")
     )
-    CollectionModel<AssignmentResponsibleModel> search(@Parameter(hidden = true) ResponsibleFilter responsibleFilter);
+   PagedModel<AssignmentResponsibleModel> search(@Parameter(hidden = true) ResponsibleFilter responsibleFilter,
+                                                 @Parameter(hidden = true) Pageable pageable);
 }

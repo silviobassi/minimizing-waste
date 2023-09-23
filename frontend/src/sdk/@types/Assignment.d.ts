@@ -30,5 +30,9 @@ export namespace Assignment {
   export type QueryResponsible = {
     responsibleName?: string;
     responsibleCpf?: string;
+    sort?: [keyof AssignmentModel, 'asc' | 'desc'];
+    page?: number;
+    size?: number;
+    sort?: ['asc' | 'desc'];
   };
 }

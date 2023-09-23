@@ -51,16 +51,20 @@ export default function EmployeeList() {
   const { xs } = useBreakpoint();
 
   useEffect(() => {
-    fetchUsers({ page, size: 4, sort: ['asc'], userCpf, userName }).catch(
-      (err) => {
-        if (err?.data?.status === 403) {
-          setAccessDeniedError(true);
-          return;
-        }
+    fetchUsers({
+      page,
+      size: 4,
+      sort: ['name', 'asc'],
+      userCpf,
+      userName,
+    }).catch((err) => {
+      if (err?.data?.status === 403) {
+        setAccessDeniedError(true);
+        return;
+      }
 
-        throw err;
-      },
-    );
+      throw err;
+    });
   }, [fetchUsers, page, userCpf, userName]);
 
   if (accessDeniedError)
@@ -130,7 +134,7 @@ export default function EmployeeList() {
         )}
         <Table<User.PagedModelDetailed>
           loading={fetching}
-            //@ts-ignore
+          //@ts-ignore
           dataSource={users?._embedded?.users}
           rowKey="id"
           columns={[
@@ -326,7 +330,7 @@ export default function EmployeeList() {
           ]}
           pagination={{
             onChange: (page: number) => setPage(page - 1),
-              //@ts-ignore
+            //@ts-ignore
             total: users?.page?.totalElements,
             pageSize: 4,
           }}

@@ -3,7 +3,7 @@ import { Button, Tooltip } from 'antd';
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 
 interface ReloadListProps {
-  onReload: (_: any) => Promise<any>;
+  onReload: (_: any) => Promise<any> | any;
 }
 
 export default function ReloadList(props: ReloadListProps) {

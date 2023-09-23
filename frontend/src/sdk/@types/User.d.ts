@@ -28,7 +28,7 @@ export namespace User {
   export type Query = {
     page?: number;
     size?: number;
-    sort?: ['asc' | 'desc'];
+    sort?: [keyof Detailed, 'asc' | 'desc'];
     assigned?: boolean;
     userName?: string;
     userCpf?: string;

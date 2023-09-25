@@ -67,6 +67,20 @@ public interface AssignmentControllerOpenApi {
             example = "false",
             schema = @Schema(type = "boolean")
     )
+    @Parameter(
+            in = ParameterIn.QUERY,
+            name = "responsibleCpf",
+            description = "Busca tarefas pelo nome do responsável",
+            example = "Instalação de Porcelanato",
+            schema = @Schema(type = "string")
+    )
+    @Parameter(
+            in = ParameterIn.QUERY,
+            name = "responsibleName",
+            description = "Busca tarefas pelo nome do responsável",
+            example = "Limpeza do Pavimento",
+            schema = @Schema(type = "string")
+    )
     PagedModel<AssignmentDefaultModel> search(@Parameter(hidden = true) AssignmentFilter assignmentFilter,
                                               @Parameter(hidden = true) Pageable pageable);
     @Operation(summary = "Cria uma nova tarefa")

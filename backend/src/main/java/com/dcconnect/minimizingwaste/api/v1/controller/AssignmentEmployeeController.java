@@ -29,9 +29,6 @@ public class AssignmentEmployeeController implements AssignmentEmployeeControlle
     @Autowired
     private AssignEmployeeAssembler assignEmployeeAssembler;
 
-    @Autowired
-    private AssignmentNotificationDisassembler assignmentNotificationDisassembler;
-
     @CheckSecurity.Assignments.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
@@ -45,23 +42,18 @@ public class AssignmentEmployeeController implements AssignmentEmployeeControlle
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{employeeResponsibleId}/associate")
     public ResponseEntity<Void> attachEmployee(@PathVariable Long assignmentId,
-                        @PathVariable Long employeeResponsibleId,
-                        @RequestBody @Valid AssignmentNotificationInput assignmentNotificationInput){
+                        @PathVariable Long employeeResponsibleId){
         Assignment currentAssignment = assignmentService.findOrFail(assignmentId);
-        assignmentNotificationDisassembler.copyToDomainModel(assignmentNotificationInput, currentAssignment);
-
         assignmentService.attachEmployee(employeeResponsibleId, currentAssignment);
         return ResponseEntity.noContent().build();
     }
 
     @CheckSecurity.Assignments.CanEdit
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PutMapping("/{employeeResponsibleId}/disassociate")
+    @DeleteMapping("/{employeeResponsibleId}/disassociate")
     public ResponseEntity<Void> detachEmployee(@PathVariable Long assignmentId,
-                                                 @PathVariable Long employeeResponsibleId,
-                                                 @RequestBody @Valid AssignmentNotificationInput assignmentNotificationInput){
+                                               @PathVariable Long employeeResponsibleId){
         Assignment currentAssignment = assignmentService.findOrFail(assignmentId);
-        assignmentNotificationDisassembler.copyToDomainModel(assignmentNotificationInput, currentAssignment);
         assignmentService.detachEmployee(employeeResponsibleId, currentAssignment);
 
         return ResponseEntity.noContent().build();

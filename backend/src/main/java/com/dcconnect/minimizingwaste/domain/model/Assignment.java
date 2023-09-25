@@ -4,6 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
+
 import java.time.OffsetDateTime;
 import java.util.HashSet;
 import java.util.Set;
@@ -34,29 +37,30 @@ public class Assignment extends BaseEntity {
 
     private String specificPoint;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "assignments_employees",
-    joinColumns = @JoinColumn(name = "assignment_id"),
-    inverseJoinColumns = @JoinColumn(name = "responsible_employee_id"))
+            joinColumns = @JoinColumn(name = "assignment_id"),
+            inverseJoinColumns = @JoinColumn(name = "responsible_employee_id"))
     private Set<User> employeesResponsible = new HashSet<>();
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "notification_id")
     private Notification notification;
 
-    public void addEmployeeResponsible(User employeeResponsible){
+    public void addEmployeeResponsible(User employeeResponsible) {
         getEmployeesResponsible().add(employeeResponsible);
     }
 
-    public void removeEmployeeResponsible(User employeeResponsible){
+    public void removeEmployeeResponsible(User employeeResponsible) {
         getEmployeesResponsible().remove(employeeResponsible);
     }
+
     @PrePersist
-    public void persist(){
-        if(completed == null)
+    public void persist() {
+        if (completed == null)
             setCompleted(false);
 
-        if(approved == null)
+        if (approved == null)
             setApproved(false);
     }
 }

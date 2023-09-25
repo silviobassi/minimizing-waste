@@ -39,11 +39,10 @@ export default function useUsersAssignments() {
   );
 
   const fetchUserAssignmentsAssigned = useCallback(
-    async (page: number, assigned: boolean, assignmentId: number) => {
+    async (search: Assignment.Query, assignmentId: number) => {
       return dispatch(
         UsersAssignmentActions.getAllUsersAssignmentAssign({
-          page,
-          assigned,
+          search,
           assignmentId,
         }),
       ).unwrap();
@@ -53,17 +52,15 @@ export default function useUsersAssignments() {
 
   const associateEmployee = useCallback(
     async (
-      notice: Assignment.AssignmentNotificationInput,
       assignmentId: number,
       employeeResponsibleId: number,
-      page: number,
+      search: Assignment.Query,
     ) => {
       return await dispatch(
         UsersAssignmentActions.associateEmployee({
-          notice,
           assignmentId,
           employeeResponsibleId,
-          page,
+          search,
         }),
       ).unwrap();
     },
@@ -72,17 +69,15 @@ export default function useUsersAssignments() {
 
   const disassociateEmployee = useCallback(
     async (
-      notice: Assignment.AssignmentNotificationInput,
       assignmentId: number,
       employeeResponsibleId: number,
-      page: number,
+      search: Assignment.Query,
     ) => {
       return await dispatch(
         UsersAssignmentActions.disassociateEmployee({
-          notice,
           assignmentId,
           employeeResponsibleId,
-          page,
+          search,
         }),
       ).unwrap();
     },

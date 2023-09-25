@@ -17,7 +17,15 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <ConfigProvider
   locale={ptBR}
   theme={{
-    }}
+    token: {
+      // Seed Token
+      colorPrimary: '#1677FF',
+      borderRadius: 2,
+
+      // Alias Token
+      colorBgContainer: '#d4e7f925',
+    },
+  }}
 >
     <Router>
       <Provider store={store}>

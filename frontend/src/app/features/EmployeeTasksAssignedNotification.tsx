@@ -33,12 +33,12 @@ export default function EmployeeTasksAssignedNotification() {
           <List
             loading={fetching}
             dataSource={
-                //@ts-ignore
+              //@ts-ignore
               availableAssignedTasks?._embedded?.notificationsAssignments
             }
             pagination={{
               onChange: (page: number) => setPage(page - 1),
-                //@ts-ignore
+              //@ts-ignore
               total: availableAssignedTasks?.page?.totalElements,
               pageSize: 2,
             }}
@@ -69,7 +69,7 @@ export default function EmployeeTasksAssignedNotification() {
                         </Space>
                       </Descriptions.Item>
                     </Descriptions>
-                    <Link to={`/tarefa/${item.id}/detalhes`}>
+                    <Link to={`/tarefas/${item.id}/detalhes`}>
                       <Button
                         type="primary"
                         style={

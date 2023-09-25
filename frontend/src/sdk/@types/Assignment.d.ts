@@ -1,5 +1,5 @@
 import { MinimizingWaste } from './MinimizingWaste';
-
+import {User} from './User'
 export namespace Assignment {
   export type AssignmentModel =
     MinimizingWaste.components['schemas']['AssignmentModel'];
@@ -19,20 +19,14 @@ export namespace Assignment {
   export type Query = {
     page?: number;
     size?: number;
-    sort?: ['asc' | 'desc'];
+    sort?: [keyof Assignment.AssignmentModel | User.Assigned, 'asc' | 'desc'];
     assignmentTitle?: string;
     startDate?: string;
     endDate?: string;
     approveDate?: string;
     deadline?: string;
-  };
-
-  export type QueryResponsible = {
+    assigned?: boolean
     responsibleName?: string;
     responsibleCpf?: string;
-    sort?: [keyof AssignmentModel, 'asc' | 'desc'];
-    page?: number;
-    size?: number;
-    sort?: ['asc' | 'desc'];
   };
 }

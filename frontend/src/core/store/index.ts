@@ -12,14 +12,12 @@ import rolesNotOrGrantedReducer from './Role.slice';
 import supplyMovementReducer from './SupplyMovement.slice';
 import usersAssignmentReducer from './UsersAssignment.slice';
 import workStationReducer from './WorkStation.slice';
-import assignmentsResponsibleReducer from './AssignmentResponsible.slice'
 
 const observeActions: Middleware = () => (next) => (action) => {
   if (isRejected(action)) {
     const ignoredActions = [
       'user/getAllUsers/rejected',
       'assignments/getAllUsersAssignmentAssign/rejected',
-      'assignments/getAllAssignmentsResponsible/rejected',
       'assignments/toggleComplete/rejected',
       'assignments/toggleApprove/rejected',
       'supplies-movements/getAllSuppliesMovements/rejected',
@@ -71,7 +69,6 @@ export const store = configureStore({
     roles: roleReducer,
     permissionsNotOrGranted: permissionsNotOrGrantedReducer,
     rolesNotOrGranted: rolesNotOrGrantedReducer,
-    assignmentsResponsible: assignmentsResponsibleReducer
   },
   middleware: function (getDefaultMiddlewares) {
     return getDefaultMiddlewares().concat(observeActions);

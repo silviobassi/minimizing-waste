@@ -1,5 +1,5 @@
 function generateQueryString (
-  params: {[key: string]: string | number | boolean | string[] | undefined }
+  params: {[key: string | number]: string | number | boolean | string[] | undefined }
 ): string {
   const convertedParams: {[key: string]: string} = {}
 

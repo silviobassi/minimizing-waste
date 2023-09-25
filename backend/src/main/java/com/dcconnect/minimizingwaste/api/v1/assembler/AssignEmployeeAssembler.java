@@ -33,8 +33,12 @@ public class AssignEmployeeAssembler extends RepresentationModelAssemblerSupport
         UserDetailedModel userDetailedModel = new UserDetailedModel();
         
         userDetailedModel.add(linkTo(methodOn(AssignmentEmployeeController.class)
-                .detachEmployee(getAssignmentId(), user.getId(), null))
+                .detachEmployee(getAssignmentId(), user.getId()))
                 .withRel("detach-employee"));
+
+        userDetailedModel.add(linkTo(methodOn(AssignmentEmployeeController.class)
+                .attachEmployee(getAssignmentId(), user.getId()))
+                .withRel("attach-employee"));
 
         modelMapper.map(user, userDetailedModel);
 

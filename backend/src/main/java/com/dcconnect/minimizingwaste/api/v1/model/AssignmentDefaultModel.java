@@ -39,6 +39,6 @@ public class AssignmentDefaultModel extends RepresentationModel<AssignmentDefaul
 
     private WorkStationModel workStation;
 
-    private List<UserDetailedModel> employeesResponsible;
+    //private List<UserDetailedModel> employeesResponsible;
 
 }

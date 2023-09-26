@@ -135,7 +135,9 @@ public class AssignmentController implements AssignmentControllerOpenApi {
                 "endDate", "endDate",
                 "deadline", "deadline",
                 "completed", "completed",
-                "approved", "approved"
+                "approved", "approved",
+                "name", "name",
+                "cpf", "cpf"
         );
 
         return PageableTranslator.translate(apiPageable, mapping);

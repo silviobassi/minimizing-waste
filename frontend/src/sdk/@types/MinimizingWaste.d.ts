@@ -878,7 +878,8 @@ export interface components {
        */
       nature?: 'LIMPEZA' | 'OBRAS';
       workStation?: components['schemas']['WorkStationModel'];
-      employeesResponsible?: components['schemas']['UserDetailedModel'][];
+      notification?: components['schemas']['NotificationModel'];
+      employeesResponsible?: components['schemas']['UserWhatsAppModel'][];
       _links?: components['schemas']['Links'];
     };
     PagedModelAssignmentDefaultModel: {
@@ -887,6 +888,18 @@ export interface components {
       };
       _links?: components['schemas']['Links'];
       page?: components['schemas']['PageMetadata'];
+    };
+    UserWhatsAppModel: {
+      /**
+       * Format: int64
+       * @example 1
+       */
+      id?: number;
+      /** @example Pedro Oliveira Bassi */
+      name?: string;
+      /** @example (17) 99999-9999) */
+      whatsApp?: string;
+      _links?: components['schemas']['Links'];
     };
     CollectionModelUserDetailedModel: {
       _embedded?: {

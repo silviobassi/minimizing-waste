@@ -1,10 +1,12 @@
 import {
   ApartmentOutlined,
+  BookOutlined,
   FormOutlined,
   HomeOutlined,
   KeyOutlined,
   LockOutlined,
   NotificationOutlined,
+  OrderedListOutlined,
   RetweetOutlined,
   SearchOutlined,
   StockOutlined,
@@ -44,15 +46,23 @@ export default function MenuLayout() {
     },
 
     {
-      label: <Link to={'/tarefas'}>Tarefas</Link>,
-      key: 'tasks',
-      icon: <FormOutlined />,
+      label: 'Gerenciamento de Tarefas',
+      key: 'task-manage',
+      icon: <BookOutlined />,
+      children: [
+        {
+          label: <Link to={'/tarefas'}>Tarefas</Link>,
+          key: 'tasks',
+          icon: <OrderedListOutlined />,
+        },
+        {
+          label: <Link to={'/tarefas/responsavel'}>Pesquisar Tarefas</Link>,
+          keys: 'Tarefas por Responsável',
+          icon: <SearchOutlined />,
+        },
+      ],
     },
-    {
-      label: <Link to={'/tarefas/responsavel'}>Pesquisar Tarefas</Link>,
-      keys: 'tasksResponsible',
-      icon: <SearchOutlined />,
-    },
+
     {
       label: <Link to={'/colaboradores'}>Colaboradores</Link>,
       key: 'users',

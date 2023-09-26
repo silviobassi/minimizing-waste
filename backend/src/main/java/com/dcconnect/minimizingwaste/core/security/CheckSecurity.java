@@ -81,10 +81,6 @@ public @interface CheckSecurity {
         @Target(ElementType.METHOD)
         @interface CanComplete { }
 
-        @PreAuthorize("hasAuthority('CONSULT_ASSIGNMENTS_RESPONSIBLE') && isAuthenticated()")
-        @Retention(RetentionPolicy.RUNTIME)
-        @Target(ElementType.METHOD)
-        @interface CanConsultResponsible { }
     }
 
     @interface Notifications {

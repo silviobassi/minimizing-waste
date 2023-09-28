@@ -2,13 +2,11 @@ package com.dcconnect.minimizingwaste.infrastructure.spec;
 
 import com.dcconnect.minimizingwaste.domain.model.*;
 import com.dcconnect.minimizingwaste.domain.repository.filter.AssignmentFilter;
-import jakarta.persistence.criteria.Fetch;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
-import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.*;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 public class AssignmentSpecs {
 
@@ -53,6 +51,14 @@ public class AssignmentSpecs {
 
             return builder.and(predicates.toArray(new Predicate[0]));
         };
+    }
+
+    public static Specification<Assignment> assignmentsUnassignedAssignment() {
+        return (root, query, builder) ->  builder.isEmpty(root.get("employeesResponsible"));
+    }
+
+    public static Specification<Assignment> assignmentsAssignedAssignment() {
+        return (root, query, builder) -> builder.isNotEmpty(root.get("employeesResponsible"));
     }
 
 }

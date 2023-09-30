@@ -55,8 +55,9 @@ export default function SectorList() {
     displayName?: string,
   ): ColumnProps<Sector.Collection> => ({
     filterDropdown: ({}) => (
-      <Card>
+      <Card style={{backgroundColor: '#D0E3F5'}}>
         <Input
+        style={{backgroundColor: '#E8EEF5'}}
           type="text"
           //@ts-ignore
           placeholder={`Buscar ${displayName || dataIndex}`}

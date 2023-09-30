@@ -30,7 +30,6 @@ public class Assignment extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Nature nature;
 
-
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "work_station_id")
     private WorkStation workStation;

@@ -41,7 +41,7 @@ export default function WorkStationList() {
     fetchWorkStations({
       page,
       size: 4,
-      sort: ['asc'],
+      sort: ['name','asc'],
       //@ts-ignore
       workStationName,
     }).catch((err) => {
@@ -62,16 +62,17 @@ export default function WorkStationList() {
     displayName?: string,
   ): ColumnProps<User.PagedModelDetailed> => ({
     filterDropdown: ({}) => (
-      <Card>
-        <Input
-          type="text"
-          //@ts-ignore
-          placeholder={`Buscar ${displayName || dataIndex}`}
-          onChange={(e) => {
-            setWorkStationName(e.target.value);
-          }}
-        />
-      </Card>
+      <Card style={{backgroundColor: '#D0E3F5'}}>
+      <Input
+      style={{backgroundColor: '#E8EEF5'}}
+        type="text"
+        //@ts-ignore
+        placeholder={`Buscar ${displayName || dataIndex}`}
+        onChange={(e) => {
+          setWorkStationName(e.target.value);
+        }}
+      />
+    </Card>
     ),
     filterIcon: (filtered: boolean) => (
       <SearchOutlined style={{ color: filtered ? '#0099ff' : undefined }} />

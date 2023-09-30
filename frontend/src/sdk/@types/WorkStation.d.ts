@@ -10,7 +10,7 @@ export namespace WorkStation {
   export type Query = {
     page?: number;
     size?: number;
-    sort?: ['asc' | 'desc'];
+    sort?: [keyof WorkStation.Collection, 'asc' | 'desc'];
     workStationName?: string | undefined
   };
 }

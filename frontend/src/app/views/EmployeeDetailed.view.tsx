@@ -1,4 +1,4 @@
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { DeleteOutlined, EditOutlined, KeyOutlined, LockOutlined } from '@ant-design/icons';
 import {
   Avatar,
   Button,
@@ -21,14 +21,13 @@ import usePageTitle from '../../core/usePageTitle';
 import WrapperDefault from '../components/WrapperDefault';
 
 import { format } from 'date-fns';
-import { User } from '../../sdk';
 import {
   cpfToFormat,
   phoneToFormat,
 } from '../../sdk/utils/generateFormatterData';
+import AccessDenied from '../components/AccessDenied';
 import DoubleConfirm from '../components/DoubleConfirm';
 import ElementNotFound from '../components/ElementNotFound';
-import AccessDenied from '../components/AccessDenied';
 
 export default function EmployeeDetailedView() {
   usePageTitle('Detalhes do Colaborador');
@@ -56,7 +55,12 @@ export default function EmployeeDetailedView() {
 
   if (notFound)
     return <ElementNotFound description="Colaborador não encontrado" />;
-  if (accessDeniedError) return <AccessDenied>Você não tem permissão para executar esta operação!</AccessDenied>;
+  if (accessDeniedError)
+    return (
+      <AccessDenied>
+        Você não tem permissão para executar esta operação!
+      </AccessDenied>
+    );
   if (!user) return <Skeleton />;
 
   return (
@@ -123,8 +127,13 @@ export default function EmployeeDetailedView() {
               {user?.literate}
             </Descriptions.Item>
             <Descriptions.Item label={'Nível de Acesso'}>
-            <Tag color="blue">{user?.role?.name.toUpperCase()}</Tag>
-              
+              {user?.role ? (
+                <Tag color="blue">{user?.role?.name.toUpperCase()}</Tag>
+              ) : (
+                <Tag color="red">
+                  AUTENTICADO
+                </Tag>
+              )}
             </Descriptions.Item>
           </Descriptions>
         </Col>

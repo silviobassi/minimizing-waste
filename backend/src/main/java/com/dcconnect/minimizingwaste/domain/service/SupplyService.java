@@ -15,8 +15,6 @@ import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
-
 @Service
 public class SupplyService {
 
@@ -26,12 +24,6 @@ public class SupplyService {
 
     @Transactional
     public Supply create(Supply supply){
-        Optional<Supply> supplyCurrent = supplyRepository.findByName(supply.getName());
-
-        if(supplyCurrent.isPresent() && !supplyCurrent.get().equals(supply)){
-            throw new BusinessException(
-                    String.format("Já existe um recurso cadastrado com o nome %s", supply.getName()));
-        }
         isNotEquipmentAndMaterial(supply);
         isNotBulkOrManipulation(supply);
         return supplyRepository.save(supply);

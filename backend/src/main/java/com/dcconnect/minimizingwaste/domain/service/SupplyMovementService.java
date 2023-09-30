@@ -112,7 +112,6 @@ public class SupplyMovementService {
             supplyMovement.decreaseAllocated();
             throw new BusinessException("Equipamentos não podem ser finalizados");
         }
-
         supplyMovement.decreaseSupply();
         supplyMovement.decreaseAllocated();
         supplyRepository.create(supplyMovement);

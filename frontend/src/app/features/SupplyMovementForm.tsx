@@ -18,7 +18,8 @@ import useAuth from '../../core/hooks/useAuth';
 import useSupplies from '../../core/hooks/useSupplies';
 import useUsers from '../../core/hooks/useUsers';
 import useWorkStations from '../../core/hooks/useWorkStations';
-import { Supply, SupplyMovementService } from '../../sdk';
+import { SupplyMovementService } from '../../sdk';
+import { Supply, User } from '../../sdk/@types';
 import ButtonForm from '../components/ButtonForm';
 import WrapperDefault from '../components/WrapperDefault';
 
@@ -47,9 +48,9 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
   const { userAuth } = useAuth();
 
   useEffect(() => {
-    fetchUsers({});
-    fetchWorkStations({});
-    fetchSupplies({});
+    fetchUsers({ sort: ['asc'] });
+    fetchWorkStations({ sort: ['asc'] });
+    fetchSupplies({ sort: ['asc'] });
 
     if (props.supplyMovement) {
       form.resetFields();
@@ -76,6 +77,20 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
     return fetchOptions(list);
   }, []);
   function fetchOptions(list: any) {
+    const options: any = [];
+    list?.map((item: any) => {
+      options.push({
+        label: `${item?.id} - ${item?.name}`,
+        value: item?.id,
+      });
+    });
+    return options;
+  }
+
+  const optionsUsers = useCallback((list: any) => {
+    return fetchOptionsUsers(list);
+  }, []);
+  function fetchOptionsUsers(list: User.Detailed) {
     const options: any = [];
     list?.map((item: any) => {
       options.push({
@@ -108,11 +123,10 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
                 message: 'Sucesso',
                 description: `Movimento do Recurso ${movement?.supply?.name} criado com sucesso`,
               }),
-                navigate('/movimento-recursos');
+              navigate('/movimento-recursos');
             })
             .finally(() => {
               setFetching(false);
-              form.resetFields();
             });
         }}
       >
@@ -130,7 +144,6 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
                     onChange={() => {
                       setChecked(!checked);
                       delete props.supplyMovement?.movable;
-                      console.log(checked);
                     }}
                     checked={checked}
                   >
@@ -181,7 +194,7 @@ export default function SupplyMovementForm(props: SupplyMovementFormProps) {
                         .includes(input.toLowerCase())
                     }
                     //@ts-ignore
-                    options={options(users?._embedded?.users)}
+                    options={optionsUsers(users?._embedded?.users)}
                   />
                 </Form.Item>
               </Col>

@@ -1,6 +1,5 @@
 package com.dcconnect.minimizingwaste.domain.service;
 
-import com.dcconnect.minimizingwaste.core.security.MinimizingSecurity;
 import com.dcconnect.minimizingwaste.domain.exception.AssignmentNotFoundException;
 import com.dcconnect.minimizingwaste.domain.exception.BusinessException;
 import com.dcconnect.minimizingwaste.domain.model.Assignment;
@@ -11,9 +10,7 @@ import com.dcconnect.minimizingwaste.domain.repository.AssignmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
-
 import org.springframework.transaction.annotation.Transactional;
-import java.util.List;
 
 @Service
 public class AssignmentService {

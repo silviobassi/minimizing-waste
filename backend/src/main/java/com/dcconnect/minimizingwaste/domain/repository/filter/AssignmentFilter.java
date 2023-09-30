@@ -21,5 +21,7 @@ public class AssignmentFilter {
     private OffsetDateTime deadline;
     private Boolean completed;
     private Boolean approved;
+    private String responsibleName;
+    private String responsibleCpf;
 
 }

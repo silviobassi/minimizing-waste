@@ -19,7 +19,6 @@ public class WorkStation extends BaseEntity{
     private String name;
     private String localization;
 
-    @JsonBackReference
     @ManyToOne(optional = false)
     @JoinColumn(name = "sector_id")
     private Sector sector;

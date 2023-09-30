@@ -10,7 +10,7 @@ export default function SiderBarLayout() {
       breakpoint="lg"
       collapsedWidth="0"
       width={230}
-     
+     collapsed={true}
     >
       <div className="demo-logo-vertical" />
 

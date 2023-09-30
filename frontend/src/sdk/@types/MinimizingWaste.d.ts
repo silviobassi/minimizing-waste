@@ -3,208 +3,210 @@
  * Do not make direct changes to the file.
  */
 
-
 export interface paths {
-  "/v1/work-stations/{workStationId}": {
+  '/v1/work-stations/{workStationId}': {
     /** Deleta uma estação de trabalho */
-    get: operations["findOrFail"];
+    get: operations['findOrFail'];
     /** Edita uma estação de trabalho */
-    put: operations["update"];
+    put: operations['update'];
     /** Deleta uma estação de trabalho */
-    delete: operations["delete"];
+    delete: operations['delete'];
   };
-  "/v1/users/{userId}": {
+  '/v1/users/{userId}': {
     /** Busca um usuário pelo ID */
-    get: operations["findOrFail_1"];
+    get: operations['findOrFail_1'];
     /** Edita um usuário */
-    put: operations["update_1"];
+    put: operations['update_1'];
     /** Deleta um usuário */
-    delete: operations["delete_1"];
+    delete: operations['delete_1'];
   };
-  "/v1/users/{userId}/roles/{roleId}": {
+  '/v1/users/{userId}/roles/{roleId}': {
     /** Associa um determinado role do usuário atual */
-    put: operations["associate"];
+    put: operations['associate'];
     /** Disassocia um determinado role do usuário atual */
-    delete: operations["disassociate"];
+    delete: operations['disassociate'];
   };
-  "/v1/users/{userId}/password": {
+  '/v1/users/{userId}/password': {
     /** Altera a Senha do usuário */
-    put: operations["changePassword"];
+    put: operations['changePassword'];
   };
-  "/v1/supplies/materials/{supplyId}": {
+  '/v1/supplies/materials/{supplyId}': {
     /** Edita um recurso do tipo material */
-    put: operations["updateMaterial"];
+    put: operations['updateMaterial'];
   };
-  "/v1/supplies/equipments/{supplyId}": {
+  '/v1/supplies/equipments/{supplyId}': {
     /** Edita um recurso do tipo equipamento */
-    put: operations["updateEquipment"];
+    put: operations['updateEquipment'];
   };
-  "/v1/supplies-movements/{supplyMovementId}": {
+  '/v1/supplies-movements/{supplyMovementId}': {
     /** Deleta um movimento de recurso */
-    get: operations["findById_1"];
+    get: operations['findById_1'];
     /** Edita um movimento de recurso */
-    put: operations["update_2"];
+    put: operations['update_2'];
     /** Deleta um movimento de recurso */
-    delete: operations["delete_3"];
+    delete: operations['delete_3'];
   };
-  "/v1/supplies-movements/give-back/{supplyMovementId}": {
+  '/v1/supplies-movements/give-back/{supplyMovementId}': {
     /** Devolve uma quantia de recurso */
-    put: operations["giveBackSupply"];
+    put: operations['giveBackSupply'];
   };
-  "/v1/sectors/{sectorId}": {
+  '/v1/sectors/{sectorId}': {
     /** Busca um setor pelo ID */
-    get: operations["findOrFail_2"];
+    get: operations['findOrFail_2'];
     /** Edita um setor */
-    put: operations["update_3"];
+    put: operations['update_3'];
     /** Deleta um setor */
-    delete: operations["delete_4"];
+    delete: operations['delete_4'];
   };
-  "/v1/roles/{roleId}": {
-    get: operations["findOrFail_3"];
+  '/v1/roles/{roleId}': {
+    get: operations['findOrFail_3'];
     /** Edita um role */
-    put: operations["update_4"];
+    put: operations['update_4'];
     /** Deleta um role */
-    delete: operations["delete_5"];
+    delete: operations['delete_5'];
   };
-  "/v1/roles/{roleId}/permissions/{permissionId}": {
+  '/v1/roles/{roleId}/permissions/{permissionId}': {
     /** Associa as permissões relacionadas ao role atual */
-    put: operations["associate_1"];
+    put: operations['associate_1'];
     /** Disassocia as permissões relacionadas ao role atual */
-    delete: operations["disassociate_1"];
+    delete: operations['disassociate_1'];
   };
-  "/v1/assignments/{assignmentId}": {
+  '/v1/assignments/{assignmentId}': {
     /** Busca uma taerfa pelo ID */
-    get: operations["findOrFail_4"];
+    get: operations['findOrFail_4'];
     /** Edita uma tarefa */
-    put: operations["update_5"];
+    put: operations['update_5'];
     /** Deleta uma tarefa */
-    delete: operations["delete_6"];
+    delete: operations['delete_6'];
   };
-  "/v1/assignments/{assignmentId}/employee-responsible/{employeeResponsibleId}/disassociate": {
-    /** Disassocia um colaborador a determinada tarefa */
-    put: operations["detachEmployee"];
-  };
-  "/v1/assignments/{assignmentId}/employee-responsible/{employeeResponsibleId}/associate": {
+  '/v1/assignments/{assignmentId}/employee-responsible/{employeeResponsibleId}/associate': {
     /** Associa um colaborador a determinada tarefa */
-    put: operations["attachEmployee"];
+    put: operations['attachEmployee'];
   };
-  "/v1/assignments/{assignmentId}/conclusion": {
+  '/v1/assignments/{assignmentId}/conclusion': {
     /** Conclui ou não uma tarefa */
-    put: operations["completeAssignment"];
+    put: operations['completeAssignment'];
   };
-  "/v1/assignments/{assignmentId}/approval": {
+  '/v1/assignments/{assignmentId}/approval': {
     /** Aprova ou reprova uma tarefa */
-    put: operations["approveAssignment"];
+    put: operations['approveAssignment'];
   };
-  "/v1/work-stations": {
+  '/v1/work-stations': {
     /** Lista as estações de trabalho */
-    get: operations["search"];
+    get: operations['search'];
     /** Cria uma nova estação de trabalho */
-    post: operations["create"];
+    post: operations['create'];
   };
-  "/v1/users": {
+  '/v1/users': {
     /** Lista os usuários */
-    get: operations["search_1"];
+    get: operations['search_1'];
     /** Cria um novo usuário */
-    post: operations["create_1"];
+    post: operations['create_1'];
   };
-  "/v1/users/upload/avatar": {
+  '/v1/users/upload/avatar': {
     /** Cria um avatar de usuário */
-    post: operations["upload"];
+    post: operations['upload'];
   };
-  "/v1/supplies/materials": {
+  '/v1/supplies/materials': {
     /** Cria um novo recurso do tipo material */
-    post: operations["createMaterial"];
+    post: operations['createMaterial'];
   };
-  "/v1/supplies/equipments": {
+  '/v1/supplies/equipments': {
     /** Cria um novo recurso do tipo equipamento */
-    post: operations["createEquipment"];
+    post: operations['createEquipment'];
   };
-  "/v1/supplies-movements": {
+  '/v1/supplies-movements': {
     /** Lista os movimentos de recursos */
-    get: operations["all"];
+    get: operations['all'];
     /** Cria um novo movimento de recurso */
-    post: operations["create_2"];
+    post: operations['create_2'];
   };
-  "/v1/sectors": {
+  '/v1/sectors': {
     /** Lista os setores */
-    get: operations["search_3"];
+    get: operations['search_3'];
     /** Cria um novo setor */
-    post: operations["create_3"];
+    post: operations['create_3'];
   };
-  "/v1/roles": {
+  '/v1/roles': {
     /** Lista os roles de acessos */
-    get: operations["all_1"];
+    get: operations['all_1'];
     /** Cria um role de acessos */
-    post: operations["create_4"];
+    post: operations['create_4'];
   };
-  "/v1/assignments": {
+  '/v1/assignments': {
     /** Lista as Tarefas */
-    get: operations["search_5"];
+    get: operations['search_5'];
     /** Cria uma nova tarefa */
-    post: operations["create_5"];
+    post: operations['create_5'];
   };
-  "/v1/users/{userId}/roles": {
+  '/v1/users/{userId}/roles': {
     /** Lista os roles associados ou não aos usuário atual */
-    get: operations["allNotOrGranted"];
+    get: operations['allNotOrGranted'];
   };
-  "/v1/users/{assignmentId}/assignments": {
+  '/v1/users/{assignmentId}/assignments': {
     /** Lista os usuários atribuídos ou não a tarefa atual */
-    get: operations["allAssigned"];
+    get: operations['allAssigned'];
   };
-  "/v1/users/summary": {
+  '/v1/users/summary': {
     /** Lista todos os usuários apenas com  seus espectivos nomes */
-    get: operations["findAllUserSummary"];
+    get: operations['findAllUserSummary'];
   };
-  "/v1/supplies": {
+  '/v1/supplies': {
     /** Lista recursos */
-    get: operations["search_2"];
+    get: operations['search_2'];
   };
-  "/v1/supplies/{supplyId}": {
+  '/v1/supplies/{supplyId}': {
     /** Busca um recurso por ID */
-    get: operations["findById"];
+    get: operations['findById'];
     /** Deleta um recurso */
-    delete: operations["delete_2"];
+    delete: operations['delete_2'];
   };
-  "/v1/supplies-movement/notifications/available": {
+  '/v1/supplies-movement/notifications/available': {
     /** Lista as notificações enviadas, por recursos atribuídos */
-    get: operations["findNotificationBySuppliesAvailable"];
+    get: operations['findNotificationBySuppliesAvailable'];
   };
-  "/v1/roles/{roleId}/permissions": {
+  '/v1/roles/{roleId}/permissions': {
     /** Lista as permissões relacionadas ao role atual */
-    get: operations["all_2"];
+    get: operations['all_2'];
   };
-  "/v1/roles/permissions": {
+  '/v1/roles/permissions': {
     /** Lista as permissões de role de acesso */
-    get: operations["all_3"];
+    get: operations['all_3'];
   };
-  "/v1/roles/permissions/{roleId}": {
+  '/v1/roles/permissions/{roleId}': {
     /** Lista as permissões de role de acesso não concedidas ao usuário atual */
-    get: operations["allNotOrGranted_1"];
+    get: operations['allNotOrGranted_1'];
   };
-  "/v1/notifications/assignments": {
+  '/v1/notifications/assignments': {
     /** Lista as notificações enviadas por tarefas atribuídas ou não atribuídas */
-    get: operations["findAllAssignedOrUnassigned"];
+    get: operations['findAllAssignedOrUnassigned'];
   };
-  "/v1/notifications/assignments/available": {
+  '/v1/notifications/assignments/available': {
     /** Lista as notificações enviadas, completas, aprovadas e por data */
-    get: operations["search_4"];
+    get: operations['search_4'];
   };
-  "/v1/assignments/{assignmentId}/employee-responsible": {
+  '/v1/assignments/{assignmentId}/employee-responsible': {
     /** Lista colaboradores atribuídos a respectivas tarefas */
-    get: operations["all_4"];
+    get: operations['all_4'];
   };
-  "/v1/users/remove/avatar/{filename}": {
+  '/hostcheck': {
+    get: operations['checkHost'];
+  };
+  '/v1/users/remove/avatar/{filename}': {
     /** Deleta um avatar de usuário */
-    delete: operations["remove"];
+    delete: operations['remove'];
   };
-  "/v1/supplies-movements/vacancies/{supplyMovementId}": {
+  '/v1/supplies-movements/vacancies/{supplyMovementId}': {
     /** Disponibiliza um movimento de recurso em estado ocioso */
-    delete: operations["vacateSupply"];
+    delete: operations['vacateSupply'];
   };
-  "/v1/supplies-movements/end/{supplyMovementId}/supply": {
+  '/v1/supplies-movements/end/{supplyMovementId}/supply': {
     /** Fim do recurso alocado */
-    delete: operations["endSupplyAllocated"];
+    delete: operations['endSupplyAllocated'];
+  };
+  '/v1/assignments/{assignmentId}/employee-responsible/{employeeResponsibleId}/disassociate': {
+    /** Disassocia um colaborador a determinada tarefa */
+    delete: operations['detachEmployee'];
   };
 }
 
@@ -238,7 +240,7 @@ export interface components {
        */
       timestamp?: string;
       /** @description Lista de objetos ou campos que geraram o erro */
-      objects?: components["schemas"]["ProblemObject"][];
+      objects?: components['schemas']['ProblemObject'][];
     };
     SectorIdInput: {
       /**
@@ -252,10 +254,10 @@ export interface components {
       name: string;
       /** @example Próximo ao Jardim da Fachada */
       localization: string;
-      sector: components["schemas"]["SectorIdInput"];
+      sector: components['schemas']['SectorIdInput'];
     };
     Links: {
-      [key: string]: components["schemas"]["Link"];
+      [key: string]: components['schemas']['Link'];
     };
     SectorModel: {
       /**
@@ -265,7 +267,7 @@ export interface components {
       id?: number;
       /** @example Acabamento */
       name?: string;
-      _links?: components["schemas"]["Links"];
+      _links?: components['schemas']['Links'];
     };
     WorkStationModel: {
       /**
@@ -277,8 +279,8 @@ export interface components {
       name?: string;
       /** @example Próximo ao Jardim da Fachada */
       localization?: string;
-      sector?: components["schemas"]["SectorModel"];
-      _links?: components["schemas"]["Links"];
+      sector?: components['schemas']['SectorModel'];
+      _links?: components['schemas']['Links'];
     };
     UserUpdateInput: {
       /** @example Pedro Oliveira Bassi */
@@ -308,7 +310,7 @@ export interface components {
       name?: string;
       /** @example Permite Consultar Recursos */
       description?: string;
-      _links?: components["schemas"]["Links"];
+      _links?: components['schemas']['Links'];
     };
     RoleDetailedModel: {
       /**
@@ -318,8 +320,8 @@ export interface components {
       id?: number;
       /** @example Engenheiro */
       name?: string;
-      permissions?: components["schemas"]["PermissionDetailedModel"][];
-      _links?: components["schemas"]["Links"];
+      permissions?: components['schemas']['PermissionDetailedModel'][];
+      _links?: components['schemas']['Links'];
     };
     UserDetailedModel: {
       /**
@@ -348,8 +350,8 @@ export interface components {
        * @example 2023-01-03T22:08:00Z
        */
       createdAt?: string;
-      role?: components["schemas"]["RoleDetailedModel"];
-      _links?: components["schemas"]["Links"];
+      role?: components['schemas']['RoleDetailedModel'];
+      _links?: components['schemas']['Links'];
     };
     PasswordInput: {
       /** @example 12k43jd8#* */
@@ -371,12 +373,19 @@ export interface components {
        * @example KG
        * @enum {string}
        */
-      measureUnitType: "UNIDADE" | "ML" | "LITRO" | "M2" | "M3" | "KG" | "TONELADA";
+      measureUnitType:
+        | 'UNIDADE'
+        | 'ML'
+        | 'LITRO'
+        | 'M2'
+        | 'M3'
+        | 'KG'
+        | 'TONELADA';
     };
     SupplyMaterialInput: {
       /** @example Recurso */
       name: string;
-      supplyDescription: components["schemas"]["SupplyDescriptionInput"];
+      supplyDescription: components['schemas']['SupplyDescriptionInput'];
       supplyType: string;
       manipulation: string;
     };
@@ -396,7 +405,14 @@ export interface components {
        * @example KG
        * @enum {string}
        */
-      measureUnitType?: "UNIDADE" | "ML" | "LITRO" | "M2" | "M3" | "KG" | "TONELADA";
+      measureUnitType?:
+        | 'UNIDADE'
+        | 'ML'
+        | 'LITRO'
+        | 'M2'
+        | 'M3'
+        | 'KG'
+        | 'TONELADA';
     };
     SupplyDetailedModel: {
       /**
@@ -410,24 +426,24 @@ export interface components {
        * @example EQUIPAMENTO
        * @enum {string}
        */
-      supplyType?: "MATERIAL" | "EQUIPAMENTO";
+      supplyType?: 'MATERIAL' | 'EQUIPAMENTO';
       /**
        * @example PEQUENO
        * @enum {string}
        */
-      bulk?: "PEQUENO" | "MÉDIO" | "GRANDE";
+      bulk?: 'PEQUENO' | 'MÉDIO' | 'GRANDE';
       /**
        * @example TRANSMUTÁVEL
        * @enum {string}
        */
-      manipulation?: "TRANSMUTÁVEL" | "IMUTÁVEL";
-      supplyDescription?: components["schemas"]["SupplyDescriptionDetailedModel"];
-      _links?: components["schemas"]["Links"];
+      manipulation?: 'TRANSMUTÁVEL' | 'IMUTÁVEL';
+      supplyDescription?: components['schemas']['SupplyDescriptionDetailedModel'];
+      _links?: components['schemas']['Links'];
     };
     SupplyEquipmentInput: {
       /** @example Recurso */
       name: string;
-      supplyDescription: components["schemas"]["SupplyDescriptionInput"];
+      supplyDescription: components['schemas']['SupplyDescriptionInput'];
       supplyType: string;
       bulk: string;
     };
@@ -454,10 +470,10 @@ export interface components {
        * @example 3
        */
       reservedQuantity: number;
-      notification: components["schemas"]["NotificationInput"];
-      workStation: components["schemas"]["WorkStationIdInput"];
-      supply: components["schemas"]["SupplyIdInput"];
-      employeeResponsible: components["schemas"]["UserIdInput"];
+      notification: components['schemas']['NotificationInput'];
+      workStation: components['schemas']['WorkStationIdInput'];
+      supply: components['schemas']['SupplyIdInput'];
+      employeeResponsible: components['schemas']['UserIdInput'];
     };
     UserIdInput: {
       /**
@@ -501,11 +517,11 @@ export interface components {
        * @example 20
        */
       allocatedQuantity?: number;
-      notification?: components["schemas"]["NotificationModel"];
-      workStation?: components["schemas"]["WorkStationModel"];
-      supply?: components["schemas"]["SupplySummaryModel"];
-      employeeResponsible?: components["schemas"]["UserAssignedModel"];
-      _links?: components["schemas"]["Links"];
+      notification?: components['schemas']['NotificationModel'];
+      workStation?: components['schemas']['WorkStationModel'];
+      supply?: components['schemas']['SupplySummaryModel'];
+      employeeResponsible?: components['schemas']['UserAssignedModel'];
+      _links?: components['schemas']['Links'];
     };
     /** @example 1 */
     SupplySummaryModel: {
@@ -516,8 +532,8 @@ export interface components {
       id?: number;
       /** @example Recurso */
       name?: string;
-      supplyDescription?: components["schemas"]["SupplyDescriptionDetailedModel"];
-      _links?: components["schemas"]["Links"];
+      supplyDescription?: components['schemas']['SupplyDescriptionDetailedModel'];
+      _links?: components['schemas']['Links'];
     };
     UserAssignedModel: {
       /**
@@ -535,7 +551,7 @@ export interface components {
       occupation?: string;
       /** @example https://localhost:8080/directory/lkdsfsdjlg439t74309jg3gikogiewrig_file */
       avatarUrl?: string;
-      _links?: components["schemas"]["Links"];
+      _links?: components['schemas']['Links'];
     };
     DevolvedSupplyMovementInput: {
       /**
@@ -555,8 +571,8 @@ export interface components {
        * @example 20
        */
       allocatedQuantity?: number;
-      supply?: components["schemas"]["SupplySummaryModel"];
-      _links?: components["schemas"]["Links"];
+      supply?: components['schemas']['SupplySummaryModel'];
+      _links?: components['schemas']['Links'];
     };
     SectorInput: {
       name: string;
@@ -579,8 +595,8 @@ export interface components {
       deadline: string;
       /** @example OBRAS */
       nature: string;
-      workStation: components["schemas"]["WorkStationIdInput"];
-      notification: components["schemas"]["NotificationInput"];
+      workStation: components['schemas']['WorkStationIdInput'];
+      notification: components['schemas']['NotificationInput'];
     };
     AssignmentModel: {
       /**
@@ -615,14 +631,11 @@ export interface components {
        * @example OBRAS
        * @enum {string}
        */
-      nature?: "LIMPEZA" | "OBRAS";
-      workStation?: components["schemas"]["WorkStationModel"];
-      notification?: components["schemas"]["NotificationModel"];
-      employeesResponsible?: components["schemas"]["UserAssignedModel"][];
-      _links?: components["schemas"]["Links"];
-    };
-    AssignmentNotificationInput: {
-      notification: components["schemas"]["NotificationInput"];
+      nature?: 'LIMPEZA' | 'OBRAS';
+      workStation?: components['schemas']['WorkStationModel'];
+      notification?: components['schemas']['NotificationModel'];
+      employeesResponsible?: components['schemas']['UserAssignedModel'][];
+      _links?: components['schemas']['Links'];
     };
     /** @description Representação da Conclusão da Tarefa */
     AssignmentCompletedInput: {
@@ -674,9 +687,9 @@ export interface components {
     };
     CollectionModelWorkStationModel: {
       _embedded?: {
-        workStations?: components["schemas"]["WorkStationModel"][];
+        workStations?: components['schemas']['WorkStationModel'][];
       };
-      _links?: components["schemas"]["Links"];
+      _links?: components['schemas']['Links'];
     };
     PageMetadata: {
       /** Format: int64 */
@@ -690,16 +703,16 @@ export interface components {
     };
     PagedModelUserDetailedModel: {
       _embedded?: {
-        users?: components["schemas"]["UserDetailedModel"][];
+        users?: components['schemas']['UserDetailedModel'][];
       };
-      _links?: components["schemas"]["Links"];
-      page?: components["schemas"]["PageMetadata"];
+      _links?: components['schemas']['Links'];
+      page?: components['schemas']['PageMetadata'];
     };
     CollectionModelRoleSummaryModel: {
       _embedded?: {
-        roles?: components["schemas"]["RoleSummaryModel"][];
+        roles?: components['schemas']['RoleSummaryModel'][];
       };
-      _links?: components["schemas"]["Links"];
+      _links?: components['schemas']['Links'];
     };
     RoleSummaryModel: {
       /**
@@ -709,20 +722,20 @@ export interface components {
       id?: number;
       /** @example Engenheiro */
       name?: string;
-      _links?: components["schemas"]["Links"];
+      _links?: components['schemas']['Links'];
     };
     PagedModelUserAssignedModel: {
       _embedded?: {
-        users?: components["schemas"]["UserAssignedModel"][];
+        users?: components['schemas']['UserAssignedModel'][];
       };
-      _links?: components["schemas"]["Links"];
-      page?: components["schemas"]["PageMetadata"];
+      _links?: components['schemas']['Links'];
+      page?: components['schemas']['PageMetadata'];
     };
     CollectionModelUserSummaryModel: {
       _embedded?: {
-        users?: components["schemas"]["UserSummaryModel"][];
+        users?: components['schemas']['UserSummaryModel'][];
       };
-      _links?: components["schemas"]["Links"];
+      _links?: components['schemas']['Links'];
     };
     UserSummaryModel: {
       /**
@@ -732,22 +745,22 @@ export interface components {
       id?: number;
       /** @example Pedro Oliveira Bassi */
       name?: string;
-      role?: components["schemas"]["RoleSummaryModel"];
-      _links?: components["schemas"]["Links"];
+      role?: components['schemas']['RoleSummaryModel'];
+      _links?: components['schemas']['Links'];
     };
     PagedModelSupplySummaryModel: {
       _embedded?: {
-        supplies?: components["schemas"]["SupplySummaryModel"][];
+        supplies?: components['schemas']['SupplySummaryModel'][];
       };
-      _links?: components["schemas"]["Links"];
-      page?: components["schemas"]["PageMetadata"];
+      _links?: components['schemas']['Links'];
+      page?: components['schemas']['PageMetadata'];
     };
     PagedModelSupplyMovementModel: {
       _embedded?: {
-        suppliesMovements?: components["schemas"]["SupplyMovementModel"][];
+        suppliesMovements?: components['schemas']['SupplyMovementModel'][];
       };
-      _links?: components["schemas"]["Links"];
-      page?: components["schemas"]["PageMetadata"];
+      _links?: components['schemas']['Links'];
+      page?: components['schemas']['PageMetadata'];
     };
     Pageable: {
       /** Format: int32 */
@@ -758,10 +771,10 @@ export interface components {
     };
     PagedModelSupplyMovementNotificationModel: {
       _embedded?: {
-        supplyMovementNotifications?: components["schemas"]["SupplyMovementNotificationModel"][];
+        supplyMovementNotifications?: components['schemas']['SupplyMovementNotificationModel'][];
       };
-      _links?: components["schemas"]["Links"];
-      page?: components["schemas"]["PageMetadata"];
+      _links?: components['schemas']['Links'];
+      page?: components['schemas']['PageMetadata'];
     };
     SupplyMovementNotificationModel: {
       /**
@@ -769,10 +782,10 @@ export interface components {
        * @example 1
        */
       id?: number;
-      supply?: components["schemas"]["SupplySummaryModel"];
-      workStation?: components["schemas"]["WorkStationDetailedModel"];
-      notification?: components["schemas"]["NotificationModel"];
-      _links?: components["schemas"]["Links"];
+      supply?: components['schemas']['SupplySummaryModel'];
+      workStation?: components['schemas']['WorkStationDetailedModel'];
+      notification?: components['schemas']['NotificationModel'];
+      _links?: components['schemas']['Links'];
     };
     WorkStationDetailedModel: {
       /**
@@ -784,28 +797,28 @@ export interface components {
       name?: string;
       /** @example Bloco G Apto 21 */
       localization?: string;
-      sector?: components["schemas"]["SectorModel"];
+      sector?: components['schemas']['SectorModel'];
     };
     SectorFilter: {
       sectorName?: string;
     };
     CollectionModelSectorModel: {
       _embedded?: {
-        sectors?: components["schemas"]["SectorModel"][];
+        sectors?: components['schemas']['SectorModel'][];
       };
-      _links?: components["schemas"]["Links"];
+      _links?: components['schemas']['Links'];
     };
     CollectionModelRoleDetailedModel: {
       _embedded?: {
-        roles?: components["schemas"]["RoleDetailedModel"][];
+        roles?: components['schemas']['RoleDetailedModel'][];
       };
-      _links?: components["schemas"]["Links"];
+      _links?: components['schemas']['Links'];
     };
     CollectionModelPermissionDetailedModel: {
       _embedded?: {
-        permissions?: components["schemas"]["PermissionDetailedModel"][];
+        permissions?: components['schemas']['PermissionDetailedModel'][];
       };
-      _links?: components["schemas"]["Links"];
+      _links?: components['schemas']['Links'];
     };
     AssignmentNotificationModel: {
       /** Format: int64 */
@@ -814,16 +827,16 @@ export interface components {
       title?: string;
       /** Format: date-time */
       deadline?: string;
-      workStation?: components["schemas"]["WorkStationDetailedModel"];
-      notification?: components["schemas"]["NotificationModel"];
-      _links?: components["schemas"]["Links"];
+      workStation?: components['schemas']['WorkStationDetailedModel'];
+      notification?: components['schemas']['NotificationModel'];
+      _links?: components['schemas']['Links'];
     };
     PagedModelAssignmentNotificationModel: {
       _embedded?: {
-        notificationsAssignments?: components["schemas"]["AssignmentNotificationModel"][];
+        notificationsAssignments?: components['schemas']['AssignmentNotificationModel'][];
       };
-      _links?: components["schemas"]["Links"];
-      page?: components["schemas"]["PageMetadata"];
+      _links?: components['schemas']['Links'];
+      page?: components['schemas']['PageMetadata'];
     };
     AssignmentDefaultModel: {
       /**
@@ -863,23 +876,36 @@ export interface components {
        * @example OBRAS
        * @enum {string}
        */
-      nature?: "LIMPEZA" | "OBRAS";
-      workStation?: components["schemas"]["WorkStationModel"];
-      employeesResponsible?: components["schemas"]["UserDetailedModel"][];
-      _links?: components["schemas"]["Links"];
+      nature?: 'LIMPEZA' | 'OBRAS';
+      workStation?: components['schemas']['WorkStationModel'];
+      notification?: components['schemas']['NotificationModel'];
+      employeesResponsible?: components['schemas']['UserWhatsAppModel'][];
+      _links?: components['schemas']['Links'];
     };
     PagedModelAssignmentDefaultModel: {
       _embedded?: {
-        assignments?: components["schemas"]["AssignmentDefaultModel"][];
+        assignments?: components['schemas']['AssignmentDefaultModel'][];
       };
-      _links?: components["schemas"]["Links"];
-      page?: components["schemas"]["PageMetadata"];
+      _links?: components['schemas']['Links'];
+      page?: components['schemas']['PageMetadata'];
+    };
+    UserWhatsAppModel: {
+      /**
+       * Format: int64
+       * @example 1
+       */
+      id?: number;
+      /** @example Pedro Oliveira Bassi */
+      name?: string;
+      /** @example (17) 99999-9999) */
+      whatsApp?: string;
+      _links?: components['schemas']['Links'];
     };
     CollectionModelUserDetailedModel: {
       _embedded?: {
-        users?: components["schemas"]["UserDetailedModel"][];
+        users?: components['schemas']['UserDetailedModel'][];
       };
-      _links?: components["schemas"]["Links"];
+      _links?: components['schemas']['Links'];
     };
     Link: {
       href?: string;
@@ -896,19 +922,19 @@ export interface components {
     /** @description Requisição inválida */
     BadRequestResponse: {
       content: {
-        "application/json": components["schemas"]["Problem"];
+        'application/json': components['schemas']['Problem'];
       };
     };
     /** @description Recurso não possui representação que poderia ser aceita pelo consumidor */
     NotAcceptableResponse: {
       content: {
-        "application/json": components["schemas"]["Problem"];
+        'application/json': components['schemas']['Problem'];
       };
     };
     /** @description Erro interno no servidor */
     InternalServerErrorResponse: {
       content: {
-        "application/json": components["schemas"]["Problem"];
+        'application/json': components['schemas']['Problem'];
       };
     };
   };
@@ -923,7 +949,6 @@ export type $defs = Record<string, never>;
 export type external = Record<string, never>;
 
 export interface operations {
-
   /** Deleta uma estação de trabalho */
   findOrFail: {
     parameters: {
@@ -939,13 +964,13 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["WorkStationModel"];
+          '*/*': components['schemas']['WorkStationModel'];
         };
       };
       /** @description Estação de Trabalho não encontrada */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -964,20 +989,20 @@ export interface operations {
     /** @description Representação de uma estação de trabalho editada */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["WorkStationInput"];
+        'application/json': components['schemas']['WorkStationInput'];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["WorkStationModel"];
+          '*/*': components['schemas']['WorkStationModel'];
         };
       };
       /** @description Setor não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1001,7 +1026,7 @@ export interface operations {
       /** @description Estação de Trabalho não encontrada */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1021,13 +1046,13 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["UserDetailedModel"];
+          '*/*': components['schemas']['UserDetailedModel'];
         };
       };
       /** @description Usuário não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1046,20 +1071,20 @@ export interface operations {
     /** @description Representação de um usuário editado */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["UserUpdateInput"];
+        'application/json': components['schemas']['UserUpdateInput'];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["UserDetailedModel"];
+          '*/*': components['schemas']['UserDetailedModel'];
         };
       };
       /** @description Usuário não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1083,13 +1108,13 @@ export interface operations {
       /** @description ID do colaborador inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
       /** @description Colaborador não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1114,7 +1139,7 @@ export interface operations {
       /** @description ID do usuário/role inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1139,13 +1164,13 @@ export interface operations {
       /** @description ID do usuário/role inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
       /** @description Usuário não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1164,7 +1189,7 @@ export interface operations {
     /** @description Representação de uma nova senha */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["PasswordInput"];
+        'application/json': components['schemas']['PasswordInput'];
       };
     };
     responses: {
@@ -1175,7 +1200,7 @@ export interface operations {
       /** @description Usuário não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1189,26 +1214,26 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["SupplyMaterialInput"];
+        'application/json': components['schemas']['SupplyMaterialInput'];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["SupplyDetailedModel"];
+          '*/*': components['schemas']['SupplyDetailedModel'];
         };
       };
       /** @description ID do recurso inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
       /** @description Recurso não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1222,26 +1247,26 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["SupplyEquipmentInput"];
+        'application/json': components['schemas']['SupplyEquipmentInput'];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["SupplyDetailedModel"];
+          '*/*': components['schemas']['SupplyDetailedModel'];
         };
       };
       /** @description ID do recurso inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
       /** @description Recurso não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1257,13 +1282,13 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["SupplyMovementModel"];
+          '*/*': components['schemas']['SupplyMovementModel'];
         };
       };
       /** @description Movimento de Recurso não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1282,20 +1307,20 @@ export interface operations {
     /** @description Representação de um recurso a editar */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["SupplyMovementInput"];
+        'application/json': components['schemas']['SupplyMovementInput'];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["SupplyMovementModel"];
+          '*/*': components['schemas']['SupplyMovementModel'];
         };
       };
       /** @description Colaborador não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1315,7 +1340,7 @@ export interface operations {
       /** @description Movimento de Recurso não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1334,14 +1359,14 @@ export interface operations {
     /** @description Representação do recurso a devolver */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["DevolvedSupplyMovementInput"];
+        'application/json': components['schemas']['DevolvedSupplyMovementInput'];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["SupplyMovementDevolvedModel"];
+          '*/*': components['schemas']['SupplyMovementDevolvedModel'];
         };
       };
     };
@@ -1361,19 +1386,19 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["SectorModel"];
+          '*/*': components['schemas']['SectorModel'];
         };
       };
       /** @description ID do setor inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
       /** @description Setor não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1392,26 +1417,26 @@ export interface operations {
     /** @description Representação de um setor editado */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["SectorInput"];
+        'application/json': components['schemas']['SectorInput'];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["SectorModel"];
+          '*/*': components['schemas']['SectorModel'];
         };
       };
       /** @description ID do setor inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
       /** @description Setor não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1435,13 +1460,13 @@ export interface operations {
       /** @description ID do setor inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
       /** @description Setor não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1460,7 +1485,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["RoleDetailedModel"];
+          '*/*': components['schemas']['RoleDetailedModel'];
         };
       };
     };
@@ -1478,26 +1503,26 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["RoleInput"];
+        'application/json': components['schemas']['RoleInput'];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["RoleDetailedModel"];
+          '*/*': components['schemas']['RoleDetailedModel'];
         };
       };
       /** @description ID do role  inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
       /** @description Role não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1521,13 +1546,13 @@ export interface operations {
       /** @description ID de uma role inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
       /** @description Role não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1550,13 +1575,13 @@ export interface operations {
       /** @description ID do role/permissão inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
       /** @description Role/permissão não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1579,13 +1604,13 @@ export interface operations {
       /** @description ID da role/permissão inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
       /** @description Grupo de role/permissão não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1602,13 +1627,13 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["AssignmentModel"];
+          '*/*': components['schemas']['AssignmentModel'];
         };
       };
       /** @description Tarefa não encontrada */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1627,20 +1652,20 @@ export interface operations {
     /** @description Representação de uma tarefa editada */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["AssignmentInput"];
+        'application/json': components['schemas']['AssignmentInput'];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["AssignmentModel"];
+          '*/*': components['schemas']['AssignmentModel'];
         };
       };
       /** @description Tarefa não encontrada */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1660,28 +1685,8 @@ export interface operations {
       /** @description Tarefa não encontrada */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
-      };
-    };
-  };
-  /** Disassocia um colaborador a determinada tarefa */
-  detachEmployee: {
-    parameters: {
-      path: {
-        assignmentId: number;
-        employeeResponsibleId: number;
-      };
-    };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AssignmentNotificationInput"];
-      };
-    };
-    responses: {
-      /** @description No Content */
-      204: {
-        content: never;
       };
     };
   };
@@ -1689,19 +1694,22 @@ export interface operations {
   attachEmployee: {
     parameters: {
       path: {
+        /** @description ID de uma tarefa */
         assignmentId: number;
+        /** @description ID de um responsável */
         employeeResponsibleId: number;
       };
     };
-    requestBody: {
-      content: {
-        "application/json": components["schemas"]["AssignmentNotificationInput"];
-      };
-    };
     responses: {
-      /** @description No Content */
+      /** @description Associação completada com sucesso */
       204: {
         content: never;
+      };
+      /** @description Responsável não encontrado */
+      404: {
+        content: {
+          '*/*': components['schemas']['Problem'];
+        };
       };
     };
   };
@@ -1715,7 +1723,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["AssignmentCompletedInput"];
+        'application/json': components['schemas']['AssignmentCompletedInput'];
       };
     };
     responses: {
@@ -1726,7 +1734,7 @@ export interface operations {
       /** @description Tarefa não encontrada */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1741,7 +1749,7 @@ export interface operations {
     };
     requestBody: {
       content: {
-        "application/json": components["schemas"]["AssignmentApprovedInput"];
+        'application/json': components['schemas']['AssignmentApprovedInput'];
       };
     };
     responses: {
@@ -1752,7 +1760,7 @@ export interface operations {
       /** @description Tarefa não encontrada */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1772,7 +1780,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["CollectionModelWorkStationModel"];
+          '*/*': components['schemas']['CollectionModelWorkStationModel'];
         };
       };
     };
@@ -1782,14 +1790,14 @@ export interface operations {
     /** @description Representação de uma nova estação de trabalho */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["WorkStationInput"];
+        'application/json': components['schemas']['WorkStationInput'];
       };
     };
     responses: {
       /** @description Created */
       201: {
         content: {
-          "*/*": components["schemas"]["WorkStationModel"];
+          '*/*': components['schemas']['WorkStationModel'];
         };
       };
     };
@@ -1814,7 +1822,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["PagedModelUserDetailedModel"];
+          '*/*': components['schemas']['PagedModelUserDetailedModel'];
         };
       };
     };
@@ -1824,14 +1832,14 @@ export interface operations {
     /** @description Representação de um novo usuário */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["UserInput"];
+        'application/json': components['schemas']['UserInput'];
       };
     };
     responses: {
       /** @description Created */
       201: {
         content: {
-          "*/*": components["schemas"]["UserDetailedModel"];
+          '*/*': components['schemas']['UserDetailedModel'];
         };
       };
     };
@@ -1840,14 +1848,14 @@ export interface operations {
   upload: {
     requestBody: {
       content: {
-        "multipart/form-data": components["schemas"]["AvatarInput"];
+        'multipart/form-data': components['schemas']['AvatarInput'];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["AvatarUrlModel"];
+          '*/*': components['schemas']['AvatarUrlModel'];
         };
       };
     };
@@ -1857,14 +1865,14 @@ export interface operations {
     /** @description Representação de um novo recurso */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["SupplyMaterialInput"];
+        'application/json': components['schemas']['SupplyMaterialInput'];
       };
     };
     responses: {
       /** @description Created */
       201: {
         content: {
-          "*/*": components["schemas"]["SupplyDetailedModel"];
+          '*/*': components['schemas']['SupplyDetailedModel'];
         };
       };
     };
@@ -1874,14 +1882,14 @@ export interface operations {
     /** @description Representação de um novo recurso */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["SupplyEquipmentInput"];
+        'application/json': components['schemas']['SupplyEquipmentInput'];
       };
     };
     responses: {
       /** @description Created */
       201: {
         content: {
-          "*/*": components["schemas"]["SupplyDetailedModel"];
+          '*/*': components['schemas']['SupplyDetailedModel'];
         };
       };
     };
@@ -1902,7 +1910,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["PagedModelSupplyMovementModel"];
+          '*/*': components['schemas']['PagedModelSupplyMovementModel'];
         };
       };
     };
@@ -1912,20 +1920,20 @@ export interface operations {
     /** @description Representação de uma novo movimento de recurso */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["SupplyMovementInput"];
+        'application/json': components['schemas']['SupplyMovementInput'];
       };
     };
     responses: {
       /** @description Created */
       201: {
         content: {
-          "*/*": components["schemas"]["SupplyMovementModel"];
+          '*/*': components['schemas']['SupplyMovementModel'];
         };
       };
       /** @description Estação de Trabalho não encontrada */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -1934,7 +1942,7 @@ export interface operations {
   search_3: {
     parameters: {
       query: {
-        sectorFilter: components["schemas"]["SectorFilter"];
+        sectorFilter: components['schemas']['SectorFilter'];
         /**
          * @description Nome do setor
          * @example Acabamento
@@ -1946,7 +1954,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["CollectionModelSectorModel"];
+          '*/*': components['schemas']['CollectionModelSectorModel'];
         };
       };
     };
@@ -1956,14 +1964,14 @@ export interface operations {
     /** @description Representação de um novo setor */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["SectorInput"];
+        'application/json': components['schemas']['SectorInput'];
       };
     };
     responses: {
       /** @description Created */
       201: {
         content: {
-          "*/*": components["schemas"]["SectorModel"];
+          '*/*': components['schemas']['SectorModel'];
         };
       };
     };
@@ -1974,7 +1982,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["CollectionModelRoleDetailedModel"];
+          '*/*': components['schemas']['CollectionModelRoleDetailedModel'];
         };
       };
     };
@@ -1984,14 +1992,14 @@ export interface operations {
     /** @description Representação de um novo role */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["RoleInput"];
+        'application/json': components['schemas']['RoleInput'];
       };
     };
     responses: {
       /** @description Created */
       201: {
         content: {
-          "*/*": components["schemas"]["RoleDetailedModel"];
+          '*/*': components['schemas']['RoleDetailedModel'];
         };
       };
     };
@@ -2009,7 +2017,7 @@ export interface operations {
          * @description Data de Início
          * @example 2023-01-10T15:00:00Z
          */
-        "A data inicial"?: Record<string, never>;
+        'A data inicial'?: Record<string, never>;
         /**
          * @description Data de Finalização
          * @example 2023-01-21T14:00:00Z
@@ -2019,17 +2027,27 @@ export interface operations {
          * @description Data final para conclusão
          * @example 2023-01-22T11:07:00Z
          */
-        "O prazo para conclusão"?: Record<string, never>;
+        'O prazo para conclusão'?: Record<string, never>;
         /**
          * @description Status de Finalização
          * @example true
          */
-        "A conclusão"?: boolean;
+        'A conclusão'?: boolean;
         /**
          * @description Status de Aprovação
          * @example false
          */
-        "A aprovação"?: boolean;
+        'A aprovação'?: boolean;
+        /**
+         * @description Busca tarefas pelo nome do responsável
+         * @example Instalação de Porcelanato
+         */
+        responsibleCpf?: string;
+        /**
+         * @description Busca tarefas pelo nome do responsável
+         * @example Limpeza do Pavimento
+         */
+        responsibleName?: string;
         /** @description Número da página (0..N). */
         page?: number;
         /** @description Quantidade de elementos por página */
@@ -2042,7 +2060,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["PagedModelAssignmentDefaultModel"];
+          '*/*': components['schemas']['PagedModelAssignmentDefaultModel'];
         };
       };
     };
@@ -2052,14 +2070,14 @@ export interface operations {
     /** @description Representação de um nova tarefa */
     requestBody: {
       content: {
-        "application/json": components["schemas"]["AssignmentInput"];
+        'application/json': components['schemas']['AssignmentInput'];
       };
     };
     responses: {
       /** @description Created */
       201: {
         content: {
-          "*/*": components["schemas"]["AssignmentModel"];
+          '*/*': components['schemas']['AssignmentModel'];
         };
       };
     };
@@ -2086,7 +2104,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["CollectionModelRoleSummaryModel"];
+          '*/*': components['schemas']['CollectionModelRoleSummaryModel'];
         };
       };
     };
@@ -2109,19 +2127,19 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["PagedModelUserAssignedModel"];
+          '*/*': components['schemas']['PagedModelUserAssignedModel'];
         };
       };
       /** @description ID da tarefa inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
       /** @description Tarefa não encontrada */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -2132,7 +2150,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["CollectionModelUserSummaryModel"];
+          '*/*': components['schemas']['CollectionModelUserSummaryModel'];
         };
       };
     };
@@ -2158,7 +2176,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["PagedModelSupplySummaryModel"];
+          '*/*': components['schemas']['PagedModelSupplySummaryModel'];
         };
       };
     };
@@ -2175,13 +2193,13 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["SupplyDetailedModel"];
+          '*/*': components['schemas']['SupplyDetailedModel'];
         };
       };
       /** @description Recurso não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -2202,7 +2220,7 @@ export interface operations {
       /** @description Recurso não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -2211,14 +2229,14 @@ export interface operations {
   findNotificationBySuppliesAvailable: {
     parameters: {
       query: {
-        pageable: components["schemas"]["Pageable"];
+        pageable: components['schemas']['Pageable'];
       };
     };
     responses: {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["PagedModelSupplyMovementNotificationModel"];
+          '*/*': components['schemas']['PagedModelSupplyMovementNotificationModel'];
         };
       };
     };
@@ -2234,19 +2252,19 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["CollectionModelPermissionDetailedModel"];
+          '*/*': components['schemas']['CollectionModelPermissionDetailedModel'];
         };
       };
       /** @description ID de um role  inválido */
       400: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
       /** @description Role não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -2257,7 +2275,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["CollectionModelPermissionDetailedModel"];
+          '*/*': components['schemas']['CollectionModelPermissionDetailedModel'];
         };
       };
     };
@@ -2285,13 +2303,13 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["CollectionModelPermissionDetailedModel"];
+          '*/*': components['schemas']['CollectionModelPermissionDetailedModel'];
         };
       };
       /** @description Role da permissão não encontrada */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -2311,7 +2329,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["PagedModelAssignmentNotificationModel"];
+          '*/*': components['schemas']['PagedModelAssignmentNotificationModel'];
         };
       };
     };
@@ -2321,9 +2339,9 @@ export interface operations {
     parameters: {
       query?: {
         /** @description Estado da tarefa completa (true|false). */
-        "A conclusão"?: boolean;
+        'A conclusão'?: boolean;
         /** @description Estado da tarefa aprovada (true|false). */
-        "A aprovação"?: boolean;
+        'A aprovação'?: boolean;
         /**
          * @description Data atual.
          * @example 2023-01-08T22:30:00Z
@@ -2335,7 +2353,7 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["PagedModelAssignmentNotificationModel"];
+          '*/*': components['schemas']['PagedModelAssignmentNotificationModel'];
         };
       };
     };
@@ -2344,6 +2362,7 @@ export interface operations {
   all_4: {
     parameters: {
       path: {
+        /** @description ID de uma tarefa */
         assignmentId: number;
       };
     };
@@ -2351,7 +2370,29 @@ export interface operations {
       /** @description OK */
       200: {
         content: {
-          "*/*": components["schemas"]["CollectionModelUserDetailedModel"];
+          '*/*': components['schemas']['CollectionModelUserDetailedModel'];
+        };
+      };
+      /** @description Associação completada com sucesso */
+      204: {
+        content: {
+          '*/*': components['schemas']['CollectionModelUserDetailedModel'];
+        };
+      };
+      /** @description Tarefa não encontrada */
+      404: {
+        content: {
+          '*/*': components['schemas']['CollectionModelUserDetailedModel'];
+        };
+      };
+    };
+  };
+  checkHost: {
+    responses: {
+      /** @description OK */
+      200: {
+        content: {
+          '*/*': string;
         };
       };
     };
@@ -2393,7 +2434,7 @@ export interface operations {
       /** @description Movimento de Recurso não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
         };
       };
     };
@@ -2413,7 +2454,30 @@ export interface operations {
       /** @description Movimento de Recurso não encontrado */
       404: {
         content: {
-          "*/*": components["schemas"]["Problem"];
+          '*/*': components['schemas']['Problem'];
+        };
+      };
+    };
+  };
+  /** Disassocia um colaborador a determinada tarefa */
+  detachEmployee: {
+    parameters: {
+      path: {
+        /** @description ID de uma tarefa */
+        assignmentId: number;
+        /** @description ID de um responsável */
+        employeeResponsibleId: number;
+      };
+    };
+    responses: {
+      /** @description Disassociação completada com sucesso */
+      204: {
+        content: never;
+      };
+      /** @description Responsável não encontrado */
+      404: {
+        content: {
+          '*/*': components['schemas']['Problem'];
         };
       };
     };

@@ -2,6 +2,8 @@ import {
   DeleteOutlined,
   EditOutlined,
   EyeOutlined,
+  KeyOutlined,
+  LockOutlined,
   SearchOutlined,
   UserOutlined,
 } from '@ant-design/icons';
@@ -51,38 +53,60 @@ export default function EmployeeList() {
   const { xs } = useBreakpoint();
 
   useEffect(() => {
-    fetchUsers({ page, size: 4, sort: ['asc'], userCpf, userName }).catch(
-      (err) => {
-        if (err?.data?.status === 403) {
-          setAccessDeniedError(true);
-          return;
-        }
+    fetchUsers({
+      page,
+      size: 4,
+      sort: ['name', 'asc'],
+      userCpf,
+      userName,
+    }).catch((err) => {
+      if (err?.data?.status === 403) {
+        setAccessDeniedError(true);
+        return;
+      }
 
-        throw err;
-      },
-    );
+      throw err;
+    });
   }, [fetchUsers, page, userCpf, userName]);
 
   if (accessDeniedError)
     return <AccessDenied>Você não pode visualizar esses dados!</AccessDenied>;
 
-  const getColumnSearchProps = (
+  const getColumnSearchNameProps = (
     dataIndex: keyof User.PagedModelDetailed,
     displayName?: string,
   ): ColumnProps<User.PagedModelDetailed> => ({
     filterDropdown: ({}) => (
-      <Card>
+      <Card style={{ backgroundColor: '#D0E3F5' }}>
         <Input
+          style={{ backgroundColor: '#E8EEF5' }}
           type="text"
           //@ts-ignore
           placeholder={`Buscar ${displayName || dataIndex}`}
           onChange={(e) => {
-            let value = e.target.value;
-            if (dataIndex === 'cpf') {
-              setUserCpf(value);
-              return;
-            }
-            setUserName(value);
+            setUserName(e.target.value);
+          }}
+        />
+      </Card>
+    ),
+    filterIcon: (filtered: boolean) => (
+      <SearchOutlined style={{ color: filtered ? '#0099ff' : undefined }} />
+    ),
+  });
+
+  const getColumnSearchCpfProps = (
+    dataIndex: keyof User.PagedModelDetailed,
+    displayName?: string,
+  ): ColumnProps<User.PagedModelDetailed> => ({
+    filterDropdown: ({}) => (
+      <Card style={{ backgroundColor: '#D0E3F5' }}>
+        <Input
+          style={{ backgroundColor: '#E8EEF5' }}
+          type="text"
+          //@ts-ignore
+          placeholder={`Buscar ${displayName || dataIndex}`}
+          onChange={(e) => {
+            setUserCpf(e.target.value);
           }}
         />
       </Card>
@@ -130,7 +154,7 @@ export default function EmployeeList() {
         )}
         <Table<User.PagedModelDetailed>
           loading={fetching}
-            //@ts-ignore
+          //@ts-ignore
           dataSource={users?._embedded?.users}
           rowKey="id"
           columns={[
@@ -172,7 +196,9 @@ export default function EmployeeList() {
                             {user?.role?.name.toUpperCase()}
                           </Tag>
                         ) : (
-                          <Tag color="red">SEM ACESSO</Tag>
+                          <Tag color="red">
+                            SEM ACESSO
+                          </Tag>
                         )}
                       </Descriptions.Item>
 
@@ -235,14 +261,14 @@ export default function EmployeeList() {
               dataIndex: 'name',
               width: 450,
               responsive: ['sm'],
-              ...getColumnSearchProps('name', 'Nome'),
+              ...getColumnSearchNameProps('name', 'Nome'),
             },
             {
               title: 'CPF',
               dataIndex: 'cpf',
               width: 150,
               responsive: ['sm'],
-              ...getColumnSearchProps('cpf', 'CPF'),
+              ...getColumnSearchCpfProps('cpf', 'CPF'),
               render(cpf: string) {
                 return cpfToFormat(cpf);
               },
@@ -274,9 +300,13 @@ export default function EmployeeList() {
                 return (
                   <>
                     {user?.role?.name ? (
-                      <Tag color="blue">{user?.role?.name.toUpperCase()}</Tag>
+                      <Tag color="blue">
+                        {user?.role?.name.toUpperCase()}
+                      </Tag>
                     ) : (
-                      <Tag color="red">{'sem acesso'.toUpperCase()}</Tag>
+                      <Tag color="red">
+                        AUTENTICADO
+                      </Tag>
                     )}
                   </>
                 );
@@ -326,7 +356,7 @@ export default function EmployeeList() {
           ]}
           pagination={{
             onChange: (page: number) => setPage(page - 1),
-              //@ts-ignore
+            //@ts-ignore
             total: users?.page?.totalElements,
             pageSize: 4,
           }}

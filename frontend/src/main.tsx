@@ -15,10 +15,35 @@ import { store } from './core/store/index';
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <ConfigProvider
-  locale={ptBR}
-  theme={{
+    locale={ptBR}
+    theme={{
+      token: {
+        // Seed Token
+        colorPrimary: '#1677FF',
+        borderRadius: 2,
+
+        // Alias Token
+        colorBgContainer: '#d4e7f925',
+
+        //@ts-ignore
+        Input: {
+          colorBgContainer: '#fff',
+        },
+        Select: {
+          colorBgContainer: '#fff',
+        },
+        InputNumber: {
+          colorBgContainer: '#fff',
+        },
+        Checkbox: {
+          colorBgContainer: '#fff',
+        },
+        DatePicker: {
+          colorBgContainer: '#fff',
+        },
+      },
     }}
->
+  >
     <Router>
       <Provider store={store}>
         <DefaultLayout>

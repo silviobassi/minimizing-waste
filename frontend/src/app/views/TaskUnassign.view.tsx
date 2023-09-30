@@ -4,7 +4,6 @@ import { useEffect, useState } from 'react';
 import { Navigate, useParams } from 'react-router-dom';
 import useUsersAssignments from '../../core/hooks/useUsersAssignment';
 import usePageTitle from '../../core/usePageTitle';
-import { Assignment } from '../../sdk';
 import AccessDenied from '../components/AccessDenied';
 import AssignmentAssigned from '../features/AssignmentAssigned';
 
@@ -29,16 +28,17 @@ export default function TaskUnassignView() {
       fetchAssignment(Number(params.assignmentId));
     }
 
-    fetchUserAssignmentsAssigned(page, true, Number(params.assignmentId)).catch(
-      (err) => {
-        if (err?.data?.status === 403) {
-          setAccessDeniedError(true);
-          return;
-        }
+    fetchUserAssignmentsAssigned(
+      { page, assigned: true, size: 4, sort: ['name', 'asc'] },
+      Number(params.assignmentId),
+    ).catch((err) => {
+      if (err?.data?.status === 403) {
+        setAccessDeniedError(true);
+        return;
+      }
 
-        throw err;
-      },
-    );
+      throw err;
+    });
   }, [
     fetchAssignment,
     params.assignmentId,
@@ -46,21 +46,17 @@ export default function TaskUnassignView() {
     page,
   ]);
 
-  function handleAssignmentUnassign(
-    notice: Assignment.AssignmentNotificationInput,
-    employeeId: number,
-    employeeName: string,
-  ) {
-    disassociateEmployee(
-      notice,
-      Number(params.assignmentId),
-      employeeId,
+  function handleAssignmentUnassign(employeeId: number, employeeName: string) {
+    disassociateEmployee(Number(params.assignmentId), employeeId, {
       page,
-    ).then((res) => {
+      assigned: true,
+      size: 4,
+      sort: ['name', 'asc']
+    }).then((res) => {
       notification.success({
         message: 'Sucesso',
         description: `Colaborador ${employeeName}
-          desatribuído com sucesso`,
+          desassociado com sucesso`,
       });
     });
   }
@@ -68,9 +64,8 @@ export default function TaskUnassignView() {
   if (isNaN(Number(params.assignmentId))) return <Navigate to={'/tarefas'} />;
 
   if (notFound) return <Card>tarefa não encontrada</Card>;
-  if (accessDeniedError) return <AccessDenied>
-    Você não pode executar essa operação!
-  </AccessDenied>;
+  if (accessDeniedError)
+    return <AccessDenied>Você não pode executar essa operação!</AccessDenied>;
 
   if (!assignment) return <Skeleton />;
 
@@ -78,10 +73,10 @@ export default function TaskUnassignView() {
     <AssignmentAssigned
       users={usersAssignmentAssign}
       assignment={assignment}
-       //@ts-ignore
+      //@ts-ignore
       onAssigned={handleAssignmentUnassign}
       onPage={(page: number) => setPage(page - 1)}
-      assign={false}
+      assign={true}
     />
   );
 }

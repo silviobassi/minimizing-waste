@@ -16,8 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/v1/assignments/{assignmentId}/employee-responsible")
@@ -29,15 +29,12 @@ public class AssignmentEmployeeController implements AssignmentEmployeeControlle
     @Autowired
     private AssignEmployeeAssembler assignEmployeeAssembler;
 
-    @Autowired
-    private AssignmentNotificationDisassembler assignmentNotificationDisassembler;
-
     @CheckSecurity.Assignments.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     public CollectionModel<UserDetailedModel> all(@PathVariable Long assignmentId){
         Assignment assignment = assignmentService.findOrFail(assignmentId);
-        List<User> users = assignment.getEmployeesResponsible().stream().collect(Collectors.toList());
+        List<User> users = new ArrayList<>(assignment.getEmployeesResponsible());
         return assignEmployeeAssembler.toCollectionModel(users, assignmentId);
     }
 
@@ -45,23 +42,18 @@ public class AssignmentEmployeeController implements AssignmentEmployeeControlle
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @PutMapping("/{employeeResponsibleId}/associate")
     public ResponseEntity<Void> attachEmployee(@PathVariable Long assignmentId,
-                        @PathVariable Long employeeResponsibleId,
-                        @RequestBody @Valid AssignmentNotificationInput assignmentNotificationInput){
+                        @PathVariable Long employeeResponsibleId){
         Assignment currentAssignment = assignmentService.findOrFail(assignmentId);
-        assignmentNotificationDisassembler.copyToDomainModel(assignmentNotificationInput, currentAssignment);
-
         assignmentService.attachEmployee(employeeResponsibleId, currentAssignment);
         return ResponseEntity.noContent().build();
     }
 
     @CheckSecurity.Assignments.CanEdit
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PutMapping("/{employeeResponsibleId}/disassociate")
+    @DeleteMapping("/{employeeResponsibleId}/disassociate")
     public ResponseEntity<Void> detachEmployee(@PathVariable Long assignmentId,
-                                                 @PathVariable Long employeeResponsibleId,
-                                                 @RequestBody @Valid AssignmentNotificationInput assignmentNotificationInput){
+                                               @PathVariable Long employeeResponsibleId){
         Assignment currentAssignment = assignmentService.findOrFail(assignmentId);
-        assignmentNotificationDisassembler.copyToDomainModel(assignmentNotificationInput, currentAssignment);
         assignmentService.detachEmployee(employeeResponsibleId, currentAssignment);
 
         return ResponseEntity.noContent().build();

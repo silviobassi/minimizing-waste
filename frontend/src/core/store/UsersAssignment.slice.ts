@@ -21,28 +21,24 @@ export const associateEmployee = createAsyncThunk(
   'users/associateEmployee',
   async (
     {
-      notice,
       assignmentId,
       employeeResponsibleId,
-      page,
+      search,
     }: {
-      notice: Assignment.AssignmentNotificationInput;
       assignmentId: number;
       employeeResponsibleId: number;
-      page: number;
+      search: Assignment.Query;
     },
     { dispatch, rejectWithValue },
   ) => {
     try {
       await AssignmentService.associateEmployee(
-        notice,
         assignmentId,
         employeeResponsibleId,
+        search,
       );
       await dispatch(getAssignment(assignmentId));
-      await dispatch(
-        getAllUsersAssignmentAssign({ page, assigned: false, assignmentId }),
-      );
+      await dispatch(getAllUsersAssignmentAssign({ search, assignmentId }));
     } catch (error: any) {
       return rejectWithValue({ ...error });
     }
@@ -53,28 +49,24 @@ export const disassociateEmployee = createAsyncThunk(
   'users/disassociateEmployee',
   async (
     {
-      notice,
       assignmentId,
       employeeResponsibleId,
-      page,
+      search,
     }: {
-      notice: Assignment.AssignmentNotificationInput;
       assignmentId: number;
       employeeResponsibleId: number;
-      page: number;
+      search: Assignment.Query;
     },
     { dispatch, rejectWithValue },
   ) => {
     try {
       await AssignmentService.disassociateEmployee(
-        notice,
         assignmentId,
         employeeResponsibleId,
+        search,
       );
       await dispatch(getAssignment(assignmentId));
-      await dispatch(
-        getAllUsersAssignmentAssign({ page, assigned: true, assignmentId }),
-      );
+      await dispatch(getAllUsersAssignmentAssign({ search, assignmentId }));
     } catch (error: any) {
       return rejectWithValue({ ...error });
     }
@@ -97,20 +89,14 @@ export const getAllUsersAssignmentAssign = createAsyncThunk(
   'users/getAllUsersAssignmentAssign',
   async (
     {
-      page,
-      assigned,
+      search,
       assignmentId,
-    }: { page: number; assigned: boolean; assignmentId: number },
+    }: { search: Assignment.Query; assignmentId: number },
     { rejectWithValue, dispatch },
   ) => {
     try {
       const usersAssignment = await UserService.getAllUsersAssigned(
-        {
-          page: page,
-          sort: ['asc'],
-          size: 4,
-          assigned: assigned,
-        },
+        search,
         assignmentId,
       );
       dispatch(storeUsersAssignment(usersAssignment));

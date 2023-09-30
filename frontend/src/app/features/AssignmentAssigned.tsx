@@ -4,24 +4,20 @@ import {
   Descriptions,
   Divider,
   Form,
-  Input,
   List,
-  Modal,
   Row,
   Space,
   Tag,
+  Tooltip,
   Typography,
-  notification,
 } from 'antd';
 
 import { format } from 'date-fns';
 
 import { UserAddOutlined, UserDeleteOutlined } from '@ant-design/icons';
-import TextArea from 'antd/es/input/TextArea';
 import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
-import { useMemo, useState } from 'react';
 import { Assignment, User } from '../../sdk';
-import CustomError from '../../sdk/CustomError';
+import DoubleConfirm from '../components/DoubleConfirm';
 import EmployeesResponsible from '../components/EmployeesResponsible';
 import WrapperDefault from '../components/WrapperDefault';
 
@@ -31,23 +27,22 @@ type AssignmentType = Assignment.AssignmentModel;
 interface AssignmentAssignedProps {
   users?: UserAssignedType;
   assignment?: AssignmentType;
-  onAssigned?: (
-    notification: Assignment.AssignmentNotificationInput,
-    employeeId: number,
-    employeeName: string,
-  ) => Promise<any>;
+  onAssigned?: (employeeId: number, employeeName: string) => Promise<any>;
   onPage: (page: number) => any;
   assign: boolean;
 }
 
 export default function AssignmentAssigned(props: AssignmentAssignedProps) {
-  const [open, setOpen] = useState<boolean>(false);
   const [form] = Form.useForm<Assignment.AssignmentNotificationInput>();
-  const [user, setUser] = useState<{ id: number; name: string }>();
   const { xs, sm, lg } = useBreakpoint();
-  const employee = useMemo(() => {
-    return user;
-  }, [user]);
+
+  const onConfirm: string = !props.assign
+    ? 'Deseja mesmo Associar este colaborador?'
+    : 'Deseja mesmo Desassociar este colaborador?';
+
+  const popConfirmTitle: string = !props.assign
+    ? 'Associar Colaborador?'
+    : 'Desassociar Colaborador?';
 
   return (
     <WrapperDefault title="Atribuição de Tarefas">
@@ -109,38 +104,29 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
             dataSource={props?.users?._embedded?.users}
             renderItem={(employee: User.Assigned) => (
               <EmployeesResponsible employeeResponsible={employee}>
-                {props.assign ? (
-                  <Button
-                    block={xs || sm ? true : false}
-                    type="primary"
-                    onClick={() => {
-                      setOpen(true);
-                      setUser({
-                        ...user,
-                        name: employee?.name,
-                        id: employee?.id,
-                      });
-                    }}
-                  >
-                    ATRIBUIR
-                  </Button>
-                ) : (
-                  <Button
-                    block={xs || sm ? true : false}
-                    type="primary"
-                    danger
-                    onClick={() => {
-                      setOpen(true);
-                      setUser({
-                        ...user,
-                        name: employee?.name,
-                        id: employee?.id,
-                      });
-                    }}
-                  >
-                    DESATRIBUIR
-                  </Button>
-                )}
+                <DoubleConfirm
+                  popConfirmTitle={popConfirmTitle}
+                  popConfirmContent={onConfirm}
+                  onConfirm={async () => {
+                    if (props.assignment)
+                      return (
+                        props.onAssigned &&
+                        props.onAssigned(Number(employee?.id), employee?.name)
+                      );
+                  }}
+                >
+                  <Tooltip title={'Excluir'} placement="bottom">
+                    {!props.assign ? (
+                      <Button type="primary">
+                        ASSOCIAR <UserAddOutlined />
+                      </Button>
+                    ) : (
+                      <Button type="primary" danger>
+                        DESASSOCIAR <UserDeleteOutlined />
+                      </Button>
+                    )}
+                  </Tooltip>
+                </DoubleConfirm>
               </EmployeesResponsible>
             )}
             pagination={{
@@ -150,134 +136,6 @@ export default function AssignmentAssigned(props: AssignmentAssignedProps) {
             }}
           />
         </Col>
-        <Modal
-          title="Notificação"
-          open={open}
-          footer={null}
-          onCancel={() => setOpen(false)}
-        >
-          <Form
-            layout="vertical"
-            autoComplete="off"
-            form={form}
-            onFinish={async (
-              notice: Assignment.AssignmentNotificationInput,
-            ) => {
-              try {
-                //@ts-ignore
-                props.onAssigned(notice, Number(employee?.id), employee?.name);
-                form.resetFields();
-                setOpen(false);
-              } catch (error: any) {
-                if (error instanceof CustomError) {
-                  if (error.data?.objects) {
-                    form.setFields(
-                      error.data.objects.map((error: any) => {
-                        return {
-                          name: error.name
-                            ?.split(/(\.|\[|\])/gi)
-                            .filter(
-                              (str: string) =>
-                                str !== '.' &&
-                                str !== '[' &&
-                                str !== ']' &&
-                                str !== '',
-                            )
-                            .map((str: string) =>
-                              isNaN(Number(str)) ? str : Number(str),
-                            ) as string[],
-                          errors: [error.userMessage],
-                        };
-                      }),
-                    );
-                  } else {
-                    notification.error({
-                      message: error.message,
-                      description:
-                        error.data?.detail === 'Network Error'
-                          ? 'Erro de Rede'
-                          : error.data?.detail,
-                    });
-                  }
-                } else {
-                  notification.error({
-                    message: `Houve um erro: ${error.message}`,
-                  });
-                }
-              }
-            }}
-          >
-            <Form.Item
-              label="Título:"
-              name={['notification', 'title']}
-              rules={[
-                {
-                  required: true,
-                  message: 'O título é obrigatório',
-                },
-              ]}
-            >
-              <Input size="large" placeholder="e.g.: Seu Título" />
-            </Form.Item>
-
-            <Form.Item
-              label="Objetivo:"
-              name={['notification', 'goal']}
-              rules={[
-                {
-                  required: true,
-                  message: 'O título é obrigatório',
-                },
-              ]}
-            >
-              <Input size="large" placeholder="e.g.: Seu objetivo" />
-            </Form.Item>
-            <Form.Item
-              label="Razão:"
-              name={['notification', 'reason']}
-              rules={[
-                {
-                  required: true,
-                  message: 'O motivo é obrigatório',
-                },
-              ]}
-            >
-              <TextArea
-                rows={6}
-                maxLength={300}
-                size="large"
-                placeholder="e.g.: Sua razão"
-                showCount
-              />
-            </Form.Item>
-            <Form.Item style={{ marginTop: 40 }}>
-              <Space direction="horizontal">
-                {props.assign ? (
-                  <Button
-                    type="primary"
-                    htmlType="submit"
-                    icon={<UserAddOutlined />}
-                  >
-                    ASSOCIAR
-                  </Button>
-                ) : (
-                  <Button
-                    type="primary"
-                    danger
-                    htmlType="submit"
-                    icon={<UserDeleteOutlined />}
-                  >
-                    DESASSOCIAR
-                  </Button>
-                )}
-
-                <Button danger onClick={() => setOpen(false)}>
-                  CANCELAR
-                </Button>
-              </Space>
-            </Form.Item>
-          </Form>
-        </Modal>
       </Row>
     </WrapperDefault>
   );

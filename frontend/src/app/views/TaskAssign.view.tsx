@@ -5,7 +5,6 @@ import { Navigate, useParams } from 'react-router-dom';
 
 import useUsersAssignments from '../../core/hooks/useUsersAssignment';
 import usePageTitle from '../../core/usePageTitle';
-import { Assignment } from '../../sdk';
 import AccessDenied from '../components/AccessDenied';
 import AssignmentAssigned from '../features/AssignmentAssigned';
 
@@ -30,8 +29,7 @@ export default function TaskAssignView() {
     }
 
     fetchUserAssignmentsAssigned(
-      page,
-      false,
+      { page, assigned: false },
       Number(params.assignmentId),
     ).catch((err) => {
       if (err?.data?.status === 403) {
@@ -48,33 +46,26 @@ export default function TaskAssignView() {
     page,
   ]);
 
-  function handleAssignmentAssign(
-    notice: Assignment.AssignmentNotificationInput,
-    employeeId: number,
-    employeeName: string,
-  ) {
-    associateEmployee(
-      notice,
-      Number(params.assignmentId),
-      employeeId,
+  function handleAssignmentAssign(employeeId: number, employeeName: string) {
+    associateEmployee(Number(params.assignmentId), employeeId, {
       page,
-    ).then((res) => {
+      assigned: false,
+      size: 4,
+      sort: ['name', 'asc']
+    }).then((res) => {
       notification.success({
         message: 'Sucesso',
         description: `Colaborador ${employeeName}
-          atribuído com sucesso`,
+          associado com sucesso`,
       });
     });
   }
 
-  
-
   if (isNaN(Number(params.assignmentId))) return <Navigate to={'/tarefas'} />;
 
   if (notFound) return <Card>tarefa não encontrada</Card>;
-  if (accessDeniedError) return <AccessDenied>
-    Você não pode executar essa operação!
-  </AccessDenied>
+  if (accessDeniedError)
+    return <AccessDenied>Você não pode executar essa operação!</AccessDenied>;
 
   if (!assignment) return <Skeleton />;
 
@@ -85,7 +76,7 @@ export default function TaskAssignView() {
       //@ts-ignore
       onAssigned={handleAssignmentAssign}
       onPage={(page: number) => setPage(page - 1)}
-      assign={true}
+      assign={false}
     />
   );
 }

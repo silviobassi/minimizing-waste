@@ -10,6 +10,7 @@ import com.dcconnect.minimizingwaste.domain.model.Assignment;
 import com.dcconnect.minimizingwaste.domain.repository.AssignmentRepository;
 import com.dcconnect.minimizingwaste.domain.repository.filter.AssignmentNotificationFilter;
 import com.dcconnect.minimizingwaste.infrastructure.spec.AssignmentNotificationSpecs;
+import com.dcconnect.minimizingwaste.infrastructure.spec.AssignmentSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/v1/notifications/assignments")
@@ -52,16 +54,19 @@ public class AssignmentNotificationController implements AssignmentNotificationC
     @CheckSecurity.Notifications.CanConsult
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
-    public PagedModel<AssignmentNotificationModel> findAllAssignedOrUnassigned(@RequestParam String assign,
-                                                                         @PageableDefault(size = 2) Pageable pageable){
+    public PagedModel<AssignmentNotificationModel> findAllAssignedOrUnassigned(
+            @RequestParam(required = false, defaultValue = "unassignedTasks") String assign,
+            @PageableDefault(size = 2) Pageable pageable){
 
-        if(assign.equals("assignedTasks")){
-            Page<Assignment> assignmentPageAssigned = assignmentRepository.findAllAssigned(pageable);
+        if(assign.equals("assignedTasks") ){
+            Page<Assignment> assignmentPageAssigned =
+                    assignmentRepository.findAll(AssignmentSpecs.assignmentsAssignedAssignment(),pageable);
             return pagedResourcesAssembler.toModel(new PageWrapper<>(assignmentPageAssigned, pageable),
                     assignmentNotificationAssembler);
         }
 
-        Page<Assignment> assignmentPageUnassigned = assignmentRepository.findAllUnassigned(pageable);
+        Page<Assignment> assignmentPageUnassigned =
+                assignmentRepository.findAll(AssignmentSpecs.assignmentsUnassignedAssignment(), pageable);
         return pagedResourcesAssembler.toModel(new PageWrapper<>(assignmentPageUnassigned, pageable),
                 assignmentNotificationAssembler);
     }

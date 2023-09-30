@@ -6,7 +6,7 @@ class AssignmentService extends Service {
   static getAllAssignments(search: Assignment.Query) {
     const queryString = generateQueryString(search);
     return this.Http.get<Assignment.PagedModelAssignment>(
-      "/assignments".concat(queryString)
+      '/assignments'.concat(queryString),
     ).then(this.getData);
   }
 
@@ -42,24 +42,28 @@ class AssignmentService extends Service {
   }
 
   static associateEmployee(
-    notice: Assignment.AssignmentNotificationInput,
     assignmentId: number,
     employeeResponsibleId: number,
+    search: Assignment.Query,
   ) {
+    const queryString = generateQueryString(search);
     return this.Http.put<{}>(
-      `/assignments/${assignmentId}/employee-responsible/${employeeResponsibleId}/associate`,
-      notice,
+      `/assignments/${assignmentId}/employee-responsible/${employeeResponsibleId}/associate`.concat(
+        queryString,
+      ),
     ).then(this.getStatus);
   }
 
   static disassociateEmployee(
-    notice: Assignment.AssignmentNotificationInput,
     assignmentId: number,
     employeeResponsibleId: number,
+    search: Assignment.Query,
   ) {
-    return this.Http.put<{}>(
-      `/assignments/${assignmentId}/employee-responsible/${employeeResponsibleId}/disassociate`,
-      notice,
+    const queryString = generateQueryString(search);
+    return this.Http.delete<{}>(
+      `/assignments/${assignmentId}/employee-responsible/${employeeResponsibleId}/disassociate`.concat(
+        queryString,
+      ),
     ).then(this.getStatus);
   }
 

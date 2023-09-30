@@ -50,9 +50,19 @@ public class SupplyMovement extends BaseEntity{
         return !isNew();
     }
 
+    public boolean isNotBusy() {
+        return notBusy;
+    }
+
+    public boolean isBusy(){
+        return !isNotBusy();
+    }
+
     @PrePersist
     public void prePersist() {
-        notBusy = false;
+        notBusy = true;
+        if(getAllocatedQuantity() == null)
+            setAllocatedQuantity(0L);
     }
 
     public void vacate(){
@@ -70,6 +80,12 @@ public class SupplyMovement extends BaseEntity{
 
     public void decreaseAllocated(){
         setAllocatedQuantity(0L);
+    }
+
+    public  boolean isQuantityReservedGreaterThanAllocated() {
+        if(getAllocatedQuantity() != null)
+            return getReservedQuantity() > getAllocatedQuantity();
+        return false;
     }
 
 

@@ -14,19 +14,9 @@ import java.util.Optional;
 
 public interface UserRepository extends CustomJpaRepository<User, Long>, JpaSpecificationExecutor<User> {
 
-    @EntityGraph(attributePaths = {"role"})
+
+    @Override
     Page<User> findAll(Specification<User> specification, Pageable pageable);
-
-
-    @Query(value = "select u from User u where u not in (select ae.employeesResponsible from Assignment ae where ae.id = :assignmentId)",
-            countQuery = "select count(u) from User u where u not in (select ae.employeesResponsible from Assignment ae where ae.id = :assignmentId)")
-
-    Page<User> findAllUserAssignmentsAssigned(Pageable pageable, @Param("assignmentId") Long assignmentId);
-
-    @Query(value = "from User u where u in (select ae.employeesResponsible from Assignment ae where ae.id = :assignmentId)",
-    countQuery = "select count(u) from User u where u in (select ae.employeesResponsible from Assignment ae where ae.id = :assignmentId)")
-    Page<User> findAllUserNotAssignmentsAssigned(Pageable pageable, @Param("assignmentId") Long assignmentId);
-
     @Query("select us from User us join fetch us.role where us.email = :email")
     Optional<User> findByEmail(@Param("email") String email);
     Optional<User> findByCpf(String cpf);

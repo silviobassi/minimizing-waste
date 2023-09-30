@@ -16,5 +16,7 @@ import java.util.List;
 @Table(name = "sectors")
 public class Sector extends BaseEntity{
 
+
     private String name;
+
 }

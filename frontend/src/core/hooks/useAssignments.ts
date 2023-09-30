@@ -1,9 +1,8 @@
 import { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Assignment } from '../../sdk';
 import { AppDispatch, RootState } from '../store';
 import * as AssignmentActions from '../store/Assignment.slice';
-import * as UsersAssignmentActions from '../store/UsersAssignment.slice';
-import { Assignment } from '../../sdk';
 
 export default function useAssignments() {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,7 +19,6 @@ export default function useAssignments() {
     [dispatch],
   );
 
-  
   return {
     fetchAssignments,
     assignments,

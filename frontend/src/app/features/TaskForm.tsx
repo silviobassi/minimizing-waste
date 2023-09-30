@@ -92,7 +92,6 @@ export default function TaskForm(props: AssignmentFormDefaultProps) {
             })
             .finally(() => {
               setFetching(false);
-              form.resetFields();
             });
         }}
       >

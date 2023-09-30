@@ -1,7 +1,7 @@
 package com.dcconnect.minimizingwaste.api.v1.model;
 
 import com.dcconnect.minimizingwaste.domain.model.Nature;
-import com.dcconnect.minimizingwaste.domain.model.User;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Getter;
 import lombok.Setter;
@@ -14,7 +14,8 @@ import java.util.List;
 @Relation(collectionRelation = "assignments")
 @Getter
 @Setter
-public class AssignmentDefaultModel extends RepresentationModel<AssignmentDefaultModel> {
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class AssignmentResponsibleModel extends RepresentationModel<AssignmentResponsibleModel> {
 
     @Schema(example = "1")
     private Long id;
@@ -40,7 +41,5 @@ public class AssignmentDefaultModel extends RepresentationModel<AssignmentDefaul
     private WorkStationModel workStation;
 
     private NotificationModel notification;
-
-    private List<UserWhatsAppModel> employeesResponsible;
 
 }

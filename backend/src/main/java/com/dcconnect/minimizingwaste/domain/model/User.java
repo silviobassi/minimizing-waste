@@ -29,7 +29,6 @@ public class User extends BaseEntity {
 
     private String avatarUrl;
 
-    @JsonBackReference
     @ManyToMany(mappedBy = "employeesResponsible")
     private Set<Assignment> assignments = new HashSet<>();
 

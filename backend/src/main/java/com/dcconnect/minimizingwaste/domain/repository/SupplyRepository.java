@@ -12,6 +12,7 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 public interface SupplyRepository extends CustomJpaRepository<Supply, Long>, SupplyRepositoryQueries, JpaSpecificationExecutor<Supply> {
 
@@ -34,5 +35,7 @@ public interface SupplyRepository extends CustomJpaRepository<Supply, Long>, Sup
 
     @Query(value = "select coalesce(sum(sm.allocatedQuantity), 0) from SupplyMovement sm join sm.supply sup  where sup.id = :supplyId")
     long findAllocatedSupply(@Param("supplyId") long supplyId);
+
+    Optional<Supply> findByName(String name);
 
 }

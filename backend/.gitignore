@@ -31,3 +31,9 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Applications yml ###
+src/main/resources/application-development.yml
+src/main/resources/application-homologation.yml
+src/main/resources/application-production.yml
+src/main/resources/application.yml

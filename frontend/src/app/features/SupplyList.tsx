@@ -41,7 +41,7 @@ export default function SupplyList() {
   const { xs } = useBreakpoint();
   const navigate = useNavigate();
   useEffect(() => {
-    fetchSupplies({ page: page, size: 4, sort: ['asc'], supplyName }).catch(
+    fetchSupplies({ page: page, size: 4, sort: ["name", "asc"], supplyName }).catch(
       (err) => {
         if (err?.data?.status === 403) {
           setAccessDeniedError(true);
@@ -61,16 +61,17 @@ export default function SupplyList() {
     displayName?: string,
   ): ColumnProps<Supply.PagedModelSummary> => ({
     filterDropdown: ({}) => (
-      <Card>
-        <Input
-          type="text"
-          //@ts-ignore
-          placeholder={`Buscar ${displayName || dataIndex}`}
-          onChange={(e) => {
-            setSupplyName(e.target.value);
-          }}
-        />
-      </Card>
+      <Card style={{backgroundColor: '#D0E3F5'}}>
+      <Input
+      style={{backgroundColor: '#E8EEF5'}}
+        type="text"
+        //@ts-ignore
+        placeholder={`Buscar ${displayName || dataIndex}`}
+        onChange={(e) => {
+          setSupplyName(e.target.value);
+        }}
+      />
+    </Card>
     ),
     filterIcon: (filtered: boolean) => (
       <SearchOutlined style={{ color: filtered ? '#0099ff' : undefined }} />

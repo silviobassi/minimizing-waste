@@ -29,7 +29,6 @@ interface GrantingPermissionsFormDefaultProps {
 }
 export default function GrantForm(props: GrantingPermissionsFormDefaultProps) {
   const [form] = Form.useForm();
-  const navigate = useNavigate();
   const [notGranted, setNotGranted] = useState<string>('');
   const [receivePermissionOrRole, setReceivePermissionOrRole] = useState<{
     id: number;

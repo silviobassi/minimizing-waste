@@ -7,7 +7,6 @@ import com.dcconnect.minimizingwaste.core.security.CheckSecurity;
 import com.dcconnect.minimizingwaste.domain.model.User;
 import com.dcconnect.minimizingwaste.domain.repository.UserRepository;
 import com.dcconnect.minimizingwaste.domain.service.AssignmentService;
-import com.dcconnect.minimizingwaste.infrastructure.spec.UserSpecs;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -37,17 +36,17 @@ public class UserAssignmentAssignedController implements UserAssignmentAssignedC
     @ResponseStatus(HttpStatus.OK)
     @GetMapping("/assignments")
     public PagedModel<UserAssignedModel> allAssigned(@PageableDefault(size = 10) Pageable pageable,
-                                                                     @RequestParam Boolean assigned,
+                                                                     @RequestParam(required = true) Boolean assigned,
                                                                      @PathVariable Long assignmentId){
         assignmentService.findOrFail(assignmentId);
-        Page<User> usersPage;
+        Page<User> usersPage = null;
 
-        if(!assigned){
-            usersPage = userRepository.findAll(UserSpecs.userUnassignedAssignmentId(assignmentId), pageable);
+        if(assigned == false){
+            usersPage = userRepository.findAllUserAssignmentsAssigned(pageable, assignmentId);
             return pagedResourcesAssembler.toModel(usersPage, userAssignmentAssembler);
-       }
+        }
 
-        usersPage = userRepository.findAll(UserSpecs.userAssignedAssignmentId(assignmentId), pageable);
+        usersPage = userRepository.findAllUserNotAssignmentsAssigned(pageable, assignmentId);
         return pagedResourcesAssembler.toModel(usersPage, userAssignmentAssembler);
 
     }

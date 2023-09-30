@@ -8,6 +8,6 @@
 
 #### O CÓDIGO PARA O PROJETO DO TCC, FOI IMPLEMENTADO ATÉ O DIA 15/09/2023, COMO SE PODE VER NO LINK:
 
-[GitHub - MINIMIZING-WASTE](https://github.com/silviobassi/minimizing-executables](https://github.com/silviobassi/minimizing-waste/commit/09b7e100eed0236e3e20e8e70456267277e16b3d)
+[GitHub - MINIMIZING-WASTE](https://github.com/silviobassi/minimizing-waste/commit/09b7e100eed0236e3e20e8e70456267277e16b3d)
 
 

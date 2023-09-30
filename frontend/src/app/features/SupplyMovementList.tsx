@@ -61,7 +61,7 @@ export default function SupplyMovementList() {
   } = useSupplyMovement();
 
   useEffect(() => {
-    fetchSuppliesMovements({ page, size: 4, sort: ['id','asc'] }).catch((err) => {
+    fetchSuppliesMovements({ page, size: 4, sort: ['asc'] }).catch((err) => {
       if (err?.data?.status === 403) {
         setAccessDeniedError(true);
         return;

@@ -11,7 +11,6 @@ import {
   Tag,
   Typography,
 } from 'antd';
-import useBreakpoint from 'antd/lib/grid/hooks/useBreakpoint';
 import moment from 'moment';
 import { useEffect, useState } from 'react';
 import useAssignments from '../../core/hooks/useAssignments';
@@ -27,8 +26,6 @@ export default function AssignmentResponsibleList() {
 
   const [form] = Form.useForm();
   const [page, setPage] = useState<number>(0);
-
-  const { xs, md, sm } = useBreakpoint();
 
   useEffect(() => {
     fetchAssignments({
@@ -56,7 +53,6 @@ export default function AssignmentResponsibleList() {
           <Col xs={24} lg={10}>
             <Form.Item label="Pesquisar por nome" name={'responsibleName'}>
               <Input
-               placeholder="e.g.: Marcelo Ramos de ..."
                 size="large"
                 onChange={(e: any) => {
                   setResponsibleName(e.target.value);
@@ -75,7 +71,6 @@ export default function AssignmentResponsibleList() {
           <Col xs={24} lg={10}>
             <Form.Item label="Pesquisar por CPF" name={'responsibleCpf'}>
               <Input
-                placeholder="e.g.: 9876543213"
                 size="large"
                 onChange={(e: any) => {
                   setResponsibleCpf(e.target.value);
@@ -95,7 +90,6 @@ export default function AssignmentResponsibleList() {
       </Form>
       <Divider />
       <List
-      key={'id'}
         style={{ width: '100%' }}
         loading={fetching}
         //@ts-ignore
@@ -107,12 +101,12 @@ export default function AssignmentResponsibleList() {
           pageSize: 2,
         }}
         renderItem={(assignment: Assignment.AssignmentModel, index) => (
-          <List.Item key={index} style={{ padding: 0 }}>
+          <List.Item>
             <Row justify={'space-between'} align={'top'} gutter={30}>
               <Col xs={24} lg={12}>
-                <Divider orientation="left"  style={{ color: '#0012FF', textAlign: 'justify' }}>
-                  DESCRIÇÃO DA TAREFA: {xs || sm ? <br></br> : ''}
-                  <Typography.Text>
+                <Divider orientation="left">
+                  DESCRIÇÃO DA TAREFA:{' '}
+                  <Typography.Text style={{ color: '#0012FF' }}>
                     {assignment?.title?.toUpperCase()}
                   </Typography.Text>
                 </Divider>
@@ -122,9 +116,6 @@ export default function AssignmentResponsibleList() {
                   }}
                 >
                   <Descriptions column={1} bordered size="small">
-                  <Descriptions.Item label="Código">
-                      {assignment?.id}
-                    </Descriptions.Item>
                     <Descriptions.Item label="Ponto Específico da Tarefa">
                       {assignment?.specificPoint}
                     </Descriptions.Item>
@@ -139,16 +130,16 @@ export default function AssignmentResponsibleList() {
                     </Descriptions.Item>
                     <Descriptions.Item label="Estado de Finalização">
                       {assignment?.completed ? (
-                        <Tag color="blue">FINALIZADA</Tag>
+                        <Tag color="BLUE">FINALIZADA</Tag>
                       ) : (
-                        <Tag color="red">PENDENTE</Tag>
+                        <Tag color="RED">PENDENTE</Tag>
                       )}
                     </Descriptions.Item>
                     <Descriptions.Item label="Estado de Aprovação">
                       {assignment?.approved ? (
-                        <Tag color="blue">APROVADA</Tag>
+                        <Tag color="BLUE">APROVADA</Tag>
                       ) : (
-                        <Tag color="red">PENDENTE</Tag>
+                        <Tag color="RED">PENDENTE</Tag>
                       )}
                     </Descriptions.Item>
                     <Descriptions.Item label="Natureza da Tarefa">
@@ -159,8 +150,7 @@ export default function AssignmentResponsibleList() {
               </Col>
 
               <Col xs={24} lg={12}>
-                <Divider orientation="left" style={md ? {marginTop: '41px'} : {marginTop: 0} }>
-                  
+                <Divider orientation="left">
                   DESCRIÇÃO DO LOCAL DA TAREFA
                 </Divider>
                 <Card
@@ -184,7 +174,7 @@ export default function AssignmentResponsibleList() {
 
               <Col xs={24}>
                 <Divider orientation="left">
-                  DESCRIÇÃO DO FOCO{xs ?<br></br> : ''} E MOTIVO DA TAREFA
+                  DESCRIÇÃO DO FOCO E MOTIVO DA TAREFA
                 </Divider>
                 <Card
                   style={{

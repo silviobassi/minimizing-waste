@@ -31,7 +31,7 @@ export const removeAssignment = createAsyncThunk(
   'assignments/removeAssignment',
   async (assignmentId: number, { dispatch }) => {
     await AssignmentService.deleteExistingAssignment(assignmentId);
-    await dispatch(getAllAssignments({page: 0, size: 4, sort: ['title','asc']}));
+    await dispatch(getAllAssignments({page: 0, size: 4, sort: ['asc']}));
   },
 );
 
@@ -46,7 +46,7 @@ export const toggleComplete = createAsyncThunk(
   ) => {
     try {
       await AssignmentService.completeAssignment(completed, assignmentId);
-      await dispatch(getAllAssignments({page: 0, size: 4, sort: ['title','asc']}));
+      await dispatch(getAllAssignments({page: 0, size: 4, sort: ['asc']}));
     } catch (error: any) {
       return rejectWithValue({ ...error });
     }
@@ -64,7 +64,7 @@ export const toggleApprove = createAsyncThunk(
   ) => {
     try {
       await AssignmentService.approveAssignment(approved, assignmentId);
-      await dispatch(getAllAssignments({page: 0, size: 4, sort: ['title','asc']}));
+      await dispatch(getAllAssignments({page: 0, size: 4, sort: ['asc']}));
     } catch (error: any) {
       return rejectWithValue({ ...error });
     }

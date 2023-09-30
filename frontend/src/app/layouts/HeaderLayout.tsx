@@ -126,13 +126,12 @@ export default function HeaderLayout() {
 
   return (
     <Header
-
       style={{
         padding: 0,
-        background: "#E6EBF0",
+        background: colorBgContainer,
         position: 'sticky',
         top: 0,
-        zIndex: 99,
+        zIndex: 1,
       
       }}
     >

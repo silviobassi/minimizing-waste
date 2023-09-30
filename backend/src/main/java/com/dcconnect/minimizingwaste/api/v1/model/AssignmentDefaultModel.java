@@ -39,8 +39,6 @@ public class AssignmentDefaultModel extends RepresentationModel<AssignmentDefaul
 
     private WorkStationModel workStation;
 
-    private NotificationModel notification;
-
-    private List<UserWhatsAppModel> employeesResponsible;
+    //private List<UserDetailedModel> employeesResponsible;
 
 }

@@ -2,8 +2,6 @@ import {
   DeleteOutlined,
   EditOutlined,
   EyeOutlined,
-  KeyOutlined,
-  LockOutlined,
   SearchOutlined,
   UserOutlined,
 } from '@ant-design/icons';
@@ -72,41 +70,23 @@ export default function EmployeeList() {
   if (accessDeniedError)
     return <AccessDenied>Você não pode visualizar esses dados!</AccessDenied>;
 
-  const getColumnSearchNameProps = (
+  const getColumnSearchProps = (
     dataIndex: keyof User.PagedModelDetailed,
     displayName?: string,
   ): ColumnProps<User.PagedModelDetailed> => ({
     filterDropdown: ({}) => (
-      <Card style={{ backgroundColor: '#D0E3F5' }}>
+      <Card>
         <Input
-          style={{ backgroundColor: '#E8EEF5' }}
           type="text"
           //@ts-ignore
           placeholder={`Buscar ${displayName || dataIndex}`}
           onChange={(e) => {
-            setUserName(e.target.value);
-          }}
-        />
-      </Card>
-    ),
-    filterIcon: (filtered: boolean) => (
-      <SearchOutlined style={{ color: filtered ? '#0099ff' : undefined }} />
-    ),
-  });
-
-  const getColumnSearchCpfProps = (
-    dataIndex: keyof User.PagedModelDetailed,
-    displayName?: string,
-  ): ColumnProps<User.PagedModelDetailed> => ({
-    filterDropdown: ({}) => (
-      <Card style={{ backgroundColor: '#D0E3F5' }}>
-        <Input
-          style={{ backgroundColor: '#E8EEF5' }}
-          type="text"
-          //@ts-ignore
-          placeholder={`Buscar ${displayName || dataIndex}`}
-          onChange={(e) => {
-            setUserCpf(e.target.value);
+            let value = e.target.value;
+            if (dataIndex === 'cpf') {
+              setUserCpf(value);
+              return;
+            }
+            setUserName(value);
           }}
         />
       </Card>
@@ -196,9 +176,7 @@ export default function EmployeeList() {
                             {user?.role?.name.toUpperCase()}
                           </Tag>
                         ) : (
-                          <Tag color="red">
-                            SEM ACESSO
-                          </Tag>
+                          <Tag color="red">SEM ACESSO</Tag>
                         )}
                       </Descriptions.Item>
 
@@ -261,14 +239,14 @@ export default function EmployeeList() {
               dataIndex: 'name',
               width: 450,
               responsive: ['sm'],
-              ...getColumnSearchNameProps('name', 'Nome'),
+              ...getColumnSearchProps('name', 'Nome'),
             },
             {
               title: 'CPF',
               dataIndex: 'cpf',
               width: 150,
               responsive: ['sm'],
-              ...getColumnSearchCpfProps('cpf', 'CPF'),
+              ...getColumnSearchProps('cpf', 'CPF'),
               render(cpf: string) {
                 return cpfToFormat(cpf);
               },
@@ -300,13 +278,9 @@ export default function EmployeeList() {
                 return (
                   <>
                     {user?.role?.name ? (
-                      <Tag color="blue">
-                        {user?.role?.name.toUpperCase()}
-                      </Tag>
+                      <Tag color="blue">{user?.role?.name.toUpperCase()}</Tag>
                     ) : (
-                      <Tag color="red">
-                        AUTENTICADO
-                      </Tag>
+                      <Tag color="red">{'sem acesso'.toUpperCase()}</Tag>
                     )}
                   </>
                 );

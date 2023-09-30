@@ -31,7 +31,7 @@ export const removeWorkStation = createAsyncThunk(
   'work-stations/removeWorkStation',
   async (workStationId: number, { dispatch }) => {
     await WorkStationService.deleteExistingWorkStation(workStationId);
-    await dispatch(getAllWorkStations({page: 0, size: 4, sort: ['name','asc']}));
+    await dispatch(getAllWorkStations({page: 0, size: 4, sort: ['asc']}));
   },
 );
 

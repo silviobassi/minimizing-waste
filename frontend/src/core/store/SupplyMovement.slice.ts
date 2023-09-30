@@ -31,7 +31,7 @@ export const removeSupplyMovement = createAsyncThunk(
   'supplies-movements/removeSupplyMovement',
   async (supplyMovementId: number, { dispatch }) => {
     await SupplyMovementService.deleteExistingSupplyMovement(supplyMovementId);
-    await dispatch(getAllSuppliesMovements({page: 0, size: 4, sort: ['id','asc']}));
+    await dispatch(getAllSuppliesMovements({page: 0, size: 4, sort: ['asc']}));
   },
 );
 
@@ -39,7 +39,7 @@ export const vacateSupplyMovement = createAsyncThunk(
   'supplies-movements/vacateSupplyMovement',
   async (supplyMovementId: number, { dispatch }) => {
     await SupplyMovementService.vacateSupplyMovement(supplyMovementId);
-    await dispatch(getAllSuppliesMovements({page: 0, size: 4,  sort: ['id','asc']}));
+    await dispatch(getAllSuppliesMovements({page: 0, size: 4, sort: ['asc']}));
   },
 );
 
@@ -59,7 +59,7 @@ export const giveBackSupplyMovement = createAsyncThunk(
       supplyMovementId,
       movementDevolved,
     );
-    await dispatch(getAllSuppliesMovements({page: 0, size: 4,  sort: ['id','asc']}));
+    await dispatch(getAllSuppliesMovements({page: 0, size: 4, sort: ['asc']}));
   },
 );
 
@@ -67,7 +67,7 @@ export const endSupply = createAsyncThunk(
   'supplies-movements/endSupply',
   async (supplyMovementId: number, { dispatch }) => {
     await SupplyMovementService.endSupply(supplyMovementId);
-    await dispatch(getAllSuppliesMovements({page: 0, size: 4,  sort: ['id','asc']}));
+    await dispatch(getAllSuppliesMovements({page: 0, size: 4, sort: ['asc']}));
   },
 );
 

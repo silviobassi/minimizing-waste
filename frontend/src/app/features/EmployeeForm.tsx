@@ -181,7 +181,6 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
           <Col xs={24} xl={10}>
             <Form.Item label="CPF:" name={'cpf'}>
               <MaskedInput
-                style={{ borderRadius: 0 }}
                 size="large"
                 mask={'000.000.000-00'}
                 placeholder="e.g.: 000.000.000-00"
@@ -220,7 +219,6 @@ export default function EmployeeForm(props: TaskFormDefaultProps) {
               ]}
             >
               <MaskedInput
-                style={{ borderRadius: 0 }}
                 size="large"
                 mask="(00) 00000-0000"
                 placeholder={'(00) 00000-0000'}

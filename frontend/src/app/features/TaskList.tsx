@@ -7,7 +7,6 @@ import {
 } from '@ant-design/icons';
 import {
   Button,
-  Card,
   Checkbox,
   Col,
   DatePicker,
@@ -60,7 +59,7 @@ export default function TaskList() {
     fetchAssignments({
       page,
       size: 4,
-      sort: ['title', 'asc'],
+      sort: ['asc'],
       assignmentTitle,
       startDate,
       endDate,
@@ -130,9 +129,8 @@ export default function TaskList() {
     displayName?: string,
   ): ColumnProps<Assignment.PagedModelAssignment> => ({
     filterDropdown: ({}) => (
-      <Card style={{ backgroundColor: '#D0E3F5' }}>
+      <Form.Item name={'name'}>
         <Input
-          style={{ backgroundColor: '#E8EEF5' }}
           type="text"
           //@ts-ignore
           placeholder={`Buscar ${displayName || dataIndex}`}
@@ -140,7 +138,7 @@ export default function TaskList() {
             setAssignmentTitle(e.target.value);
           }}
         />
-      </Card>
+      </Form.Item>
     ),
     filterIcon: (filtered: boolean) => (
       <SearchOutlined style={{ color: filtered ? '#0099ff' : undefined }} />
@@ -216,9 +214,8 @@ export default function TaskList() {
           />
         )}
         <Table<Assignment.PagedModelAssignment>
-          rowKey="id"
           loading={fetching}
-          //@ts-ignore
+            //@ts-ignore
           dataSource={assignments?._embedded?.assignments}
           columns={[
             {
@@ -562,11 +559,11 @@ export default function TaskList() {
           ]}
           pagination={{
             onChange: (page: number) => setPage(page - 1),
-            //@ts-ignore
+              //@ts-ignore
             total: assignments?.page?.totalElements,
             pageSize: 4,
           }}
-          key="id"
+          rowKey="id"
         />
       </WrapperDefault>
     </>

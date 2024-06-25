@@ -1,0 +1,24 @@
+#!/bin/bash
+
+./mvnw package
+# Faça login no Docker Hub
+echo "Logging into Docker Hub"
+docker login
+
+# Construa a imagem Docker
+echo "Building Docker image"
+docker build -t minimizing-api .
+
+# Marque a imagem
+echo "Tagging Docker image"
+docker tag minimizing-api:latest silviobassi/minimizing-api
+
+# Envie a imagem para o Docker Hub
+echo "Pushing Docker image to Docker Hub"
+docker push silviobassi/minimizing-api
+
+docker rmi silviobassi/minimizing-api
+
+docker rmi minimizing-api
+
+echo "✅ Done"

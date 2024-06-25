@@ -69,7 +69,7 @@ Automatizar a gestão de materiais e recursos na construção civil para reduzir
 
     - ☕ Java
     - 🌱 Spring Security (OAuth2), Spring Data JPA, Spring MVC, Spring Hateoas, Spring Redis
-    - 🐬 MySQL
+    - 🗄️ MySQL
     - 🌐 Nginx
     - 🗄️ Redis
 

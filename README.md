@@ -103,8 +103,5 @@ O sistema desenvolvido proporciona uma solução robusta e eficiente para a mini
 
 ---
 
-<div align="center">
-  <img src="https://img.shields.io/badge/status-em%20desenvolvimento-yellow" alt="Status">
-  <img src="https://img.shields.io/github/issues-pr-raw/username/repository" alt="Pull Requests">
-  <img src="https://img.shields.io/github/license/username/repository" alt="License">
-</div>
+![GitHub](https://img.shields.io/badge/GitHub-MinimizingWaste-blue?logo=github)
+![Status](https://img.shields.io/badge/Status-Concluído-green)

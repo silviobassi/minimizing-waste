@@ -1,4 +1,4 @@
-### 📋 Desenvolvimento de um Sistema Web para Gestão de Materiais de Construção Civil
+### 📋 Desenvolvimento de um Sistema Web para Minimização de desperdícios de tempos e materiais, na construção civil
 
 🛠 **Nome do Projeto:** Sistema de Gestão de Materiais de Construção Civil
 
